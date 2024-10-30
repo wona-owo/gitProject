@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>member.jsp</title>
 </head>
 <body>
-	<h3>깃 플로우 테스트!!</h3>
+	<h3>깃 플로우 테스트!</h3>
 </body>
 </html>
