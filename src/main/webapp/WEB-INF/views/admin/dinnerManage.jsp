@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,7 +46,6 @@
 	border: none;
 	border-radius: 5px;
 }
-
 </style>
 
 </head>
@@ -60,8 +60,6 @@
 						<button onclick="/">검색</button>
 					</div>
 				</c:if>
-
-
 
 				<div class="list-content">
 					<table class="tbl hover">
@@ -89,6 +87,6 @@
 				<div id="pageNavi" style="margin-top: 20px">${pageNavi}</div>
 			</section>
 		</main>
-		</div>
+	</div>
 </body>
 </html>
