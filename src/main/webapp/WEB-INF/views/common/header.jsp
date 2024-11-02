@@ -1,0 +1,34 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<link rel="stylesheet" href="/resources/css/default.css" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	type="text/css" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
+
+<header class="header">
+	<div>
+		<div class="logo">
+			<img src="/resources/images/logo.png" class="logo-img" /> <a href="/">Menu
+				Pick!</a>
+		</div>
+
+		<ul class="sub-menu">
+			<li><a href="#">인기식당</a></li>
+			<li><a href="#">로그인</a></li>
+		</ul>
+	</div>
+
+	<script>
+		function msg(title, text, icon) {
+			swal({
+				title : title,
+				text : text,
+				icon : icon
+			});
+		}
+	</script>
+
+</header>
