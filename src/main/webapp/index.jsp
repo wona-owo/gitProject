@@ -13,6 +13,9 @@
 	<div>
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
+		
+		<div><a href="/member/dinnerCalendar">Goes to dinnerCalendar.jsp</a></div>
+
 		<div class="wrap">
 			<!-- 메인 콘텐츠 -->
 			<main>
@@ -61,7 +64,6 @@
 				</div>
 			</main>
 		</div>
-
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
 
