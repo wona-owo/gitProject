@@ -16,7 +16,7 @@
 		</div>
 
 		<ul class="sub-menu">
-			<li><a href="#">인기식당</a></li>
+			<li><a href="/dinner/likeFrm">인기식당</a></li>
 			<li><a href="#">로그인</a></li>
 		</ul>
 	</div>
