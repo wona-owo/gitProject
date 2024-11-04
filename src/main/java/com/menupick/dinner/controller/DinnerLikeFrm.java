@@ -1,4 +1,4 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class DinnerLike
  */
 @WebServlet("/dinner/likeFrm")
-public class DinnerLike extends HttpServlet {
+public class DinnerLikeFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DinnerLike() {
+    public DinnerLikeFrm() {
         super();
         // TODO Auto-generated constructor stub
     }
