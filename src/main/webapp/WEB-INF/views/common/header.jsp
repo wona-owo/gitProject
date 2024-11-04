@@ -11,13 +11,13 @@
 <header class="header">
 	<div>
 		<div class="logo">
-			<img src="/resources/images/logo.png" class="logo-img" /> <a href="/">Menu
-				Pick!</a>
+			<img src="/resources/images/logo.png" class="logo-img" /> <a
+				href="/">Menu Pick!</a>
 		</div>
 
 		<ul class="sub-menu">
 			<li><a href="#">인기식당</a></li>
-			<li><a href="#">로그인</a></li>
+			<li><a href="/member/loginFrm">로그인</a></li>
 		</ul>
 	</div>
 
