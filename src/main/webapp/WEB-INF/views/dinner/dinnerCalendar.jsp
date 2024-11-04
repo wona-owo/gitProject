@@ -10,7 +10,7 @@
 <body>
 
 	<div class="wrap">
-		<%-- <jsp:include page="/WEB-INF/views/common/header.jsp" /> --%>
+		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 		<main>
 			<section>
@@ -18,7 +18,7 @@
 			</section>
 		</main>
 
-		<%-- <jsp:include page="/WEB-INF/views/common/footer.jsp" /> --%>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
 
 	<script>
