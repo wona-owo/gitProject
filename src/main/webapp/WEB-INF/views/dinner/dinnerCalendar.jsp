@@ -88,6 +88,7 @@ section {
 
 .days span div {
 	/* Optional: Customize the appearance */
+	
 }
 
 .today {
@@ -172,6 +173,32 @@ section {
 									daysContainer.append("<span></span>");
 								}
 
+								// for getting reservation infos
+								$
+										.ajax({
+											url : "/dinner/reservation",
+											data : {
+												"displayMonth" : $("#month")
+														.text(),
+												"displayYear" : $("#year")
+														.text()
+											},
+											type : "GET",
+											success : function(res) {
+												if (res == 0) {
+													console
+															.log("no return from servlet");
+												} else {
+													console
+															.log("yes return from servlet");
+												}
+											},
+											error : function() {
+												console
+														.log('AJAX error has occured!!!');
+											}
+										});
+
 								for (let day = 1; day <= daysInMonth; day++) {
 									// 날짜 및에 테스트용 예약 건수 보이게
 									const dayElement = $("<span></span>");
@@ -184,6 +211,7 @@ section {
 											"<div></div>").text(
 											reservationCount);
 
+									// BUG not working
 									// contition about adding reservation count
 									if (dayNumberElement == 0) {
 										dayElement
