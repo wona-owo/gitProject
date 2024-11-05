@@ -1,4 +1,4 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 
@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class MemberDinnerServlet
  */
 @WebServlet("/member/dinnerCalendar")
-public class MemberDinnerServlet extends HttpServlet {
+public class DinnerCalendarFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberDinnerServlet() {
+	public DinnerCalendarFrmServlet() {
 		super();
 	}
 
