@@ -1,11 +1,16 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.Dinner;
 
 /**
  * Servlet implementation class DinnerLike
@@ -34,6 +39,11 @@ public class DinnerLike extends HttpServlet {
 		String foodNo = request.getParameter("food_no");
 		String foodName = request.getParameter("food_name");
 		String dinerAddr = request.getParameter("diner_addr");
+		
+		//3. 로직
+		DinnerService service = new DinnerService();
+		ArrayList<Dinner> dinner = new ArrayList<Dinner>();
+		dinner =  service.likeDinner(dinner);
 	}
 
 	/**
