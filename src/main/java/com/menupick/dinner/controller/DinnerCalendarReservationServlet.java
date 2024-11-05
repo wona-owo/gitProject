@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class DinnerCalendarReservaitionServlet
  */
 @WebServlet("/dinner/reservation")
-public class DinnerCalendarReservaitionServlet extends HttpServlet {
+public class DinnerCalendarReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DinnerCalendarReservaitionServlet() {
+    public DinnerCalendarReservationServlet() {
         super();
     }
 
@@ -28,7 +28,8 @@ public class DinnerCalendarReservaitionServlet extends HttpServlet {
 		String displayMonth = request.getParameter("displayMonth");
 		String displayYear = request.getParameter("displayYear");
 		
-		response.getWriter().print(displayMonth);
+		String result = "foo";
+		response.getWriter().print(result);
 	}
 
 	/**

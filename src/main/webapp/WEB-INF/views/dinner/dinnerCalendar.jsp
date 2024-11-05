@@ -185,7 +185,7 @@ section {
 											},
 											type : "GET",
 											success : function(res) {
-												if (res == 0) {
+												if (res == null) {
 													console
 															.log("no return from servlet");
 												} else {
