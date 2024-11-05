@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>dinnerCalendar.jsp</title>
 <style>
-
 main {
 	display: flex;
 	justify-content: center;

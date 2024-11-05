@@ -28,10 +28,10 @@ public class MemberCheckReservationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		String displayMonth = request.getParameter("dispayMonth");
 		String displayYear = request.getParameter("dispayYear");
-		
+
 		System.out.println(displayMonth);
 		System.out.println(displayYear);
 
