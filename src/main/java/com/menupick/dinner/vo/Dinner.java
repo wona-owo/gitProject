@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Dinner {
-	
 	private String dinnerNo;
 	private String dinnerName;
 	private String dinnerAddr;
@@ -21,9 +20,4 @@ public class Dinner {
 	private String dinnerId;
 	private String dinnerPw;
 	private String dinnerAdmit;
-	
-	
-	
-	
-
 }
