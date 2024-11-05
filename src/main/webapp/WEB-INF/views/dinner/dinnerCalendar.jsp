@@ -18,6 +18,7 @@ section {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+	width: 60%;
 }
 
 .calendar {
@@ -71,6 +72,28 @@ section {
 	color: #fff;
 	font-weight: bold;
 }
+
+/* After adding reservaion elements */
+.days {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.days span {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 5px;
+}
+
+.days span div {
+	/* Optional: Customize the appearance */
+}
+
+.today {
+	background-color: #f0f8ff;
+	border-radius: 50%;
+}
 </style>
 
 </head>
@@ -114,63 +137,101 @@ section {
 	</div>
 
 	<script>
-		$(document).ready(
-				function() {
-					const daysContainer = $("#days");
-					const monthDisplay = $("#month");
-					const yearDisplay = $("#year");
+		$(document)
+				.ready(
+						function() {
+							const daysContainer = $("#days");
+							const monthDisplay = $("#month");
+							const yearDisplay = $("#year");
 
+							let currentDate = new Date();
 
-					let currentDate = new Date();
-
-					function renderCalendar() {
-						daysContainer.html("");
-						const year = currentDate.getFullYear();
-						const month = currentDate.getMonth();
-
-						const firstDayOfMonth = new Date(year, month, 1)
-								.getDay();
-						const daysInMonth = new Date(year, month + 1, 0)
-								.getDate();
-
-						monthDisplay.text(currentDate.toLocaleString("default",
-								{
-									month : "long"
-								}));
-						yearDisplay.text(year);
-
-						for (let i = 0; i < firstDayOfMonth; i++) {
-							daysContainer.append("<span></span>");
-						}
-
-						for (let day = 1; day <= daysInMonth; day++) {
-							const dayElement = $("<span></span>").text(day);
-							if (day === new Date().getDate()
-									&& year === new Date().getFullYear()
-									&& month === new Date().getMonth()) {
-								dayElement.addClass("today");
+							function getReservationCount(year, month, day) {
+								// Implement logic to fetch the reservation count for the given date
+								// For now, return a placeholder value
+								return 0; // Replace with actual reservation count
 							}
-							daysContainer.append(dayElement);
-						}
-					}
 
-					$("#prev-month").on("click", function() {
-						currentDate.setMonth(currentDate.getMonth() - 1);
-						renderCalendar();
-					});
+							function renderCalendar() {
+								daysContainer.html("");
+								const year = currentDate.getFullYear();
+								const month = currentDate.getMonth();
 
-					$("#next-month").on("click", function() {
-						currentDate.setMonth(currentDate.getMonth() + 1);
-						renderCalendar();
-					});
+								const firstDayOfMonth = new Date(year, month, 1)
+										.getDay();
+								const daysInMonth = new Date(year, month + 1, 0)
+										.getDate();
 
-					$("#check-today").on("click", function() {
-						currentDate = new Date();
-						renderCalendar();
-					});
+								monthDisplay.text(currentDate.toLocaleString(
+										"default", {
+											month : "long"
+										}));
+								yearDisplay.text(year);
 
-					renderCalendar();
-				});
+								for (let i = 0; i < firstDayOfMonth; i++) {
+									daysContainer.append("<span></span>");
+								}
+
+								for (let day = 1; day <= daysInMonth; day++) {
+									// 날짜 및에 테스트용 예약 건수 보이게
+									const dayElement = $("<span></span>");
+									const dayNumberElement = $("<div></div>")
+											.text(day);
+
+									const reservationCount = getReservationCount(
+											year, month, day);
+									const reservationCountElement = $(
+											"<div></div>").text(
+											reservationCount);
+
+									// contition about adding reservation count
+									if (dayNumberElement == 0) {
+										dayElement
+												.append(reservationCountElement);
+									} else {
+										dayElement.append(dayNumberElement);
+										dayElement
+												.append(reservationCountElement);
+									}
+
+									if (day === new Date().getDate()
+											&& year === new Date()
+													.getFullYear()
+											&& month === new Date().getMonth()) {
+										dayElement.addClass("today");
+									}
+
+									daysContainer.append(dayElement);
+								}
+							}
+
+							$("#prev-month").on(
+									"click",
+									function() {
+										currentDate.setMonth(currentDate
+												.getMonth() - 1);
+										renderCalendar();
+									});
+
+							$("#next-month").on(
+									"click",
+									function() {
+										currentDate.setMonth(currentDate
+												.getMonth() + 1);
+										renderCalendar();
+									});
+
+							$("#check-today").on("click", function() {
+								currentDate = new Date();
+								renderCalendar();
+							});
+
+							renderCalendar();
+						});
+
+		function reservationCount(year, month, date) {
+			console.log("msg from reservationCount");
+		}
 	</script>
 
 </body>
