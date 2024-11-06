@@ -1,0 +1,152 @@
+.tbl th {
+    background-color: #ff3d00;
+}
+
+.tbl {
+    border-top: 1px solid var(--main3);
+    width: 100%;
+    border-spacing: 0;
+}
+.tbl th,
+.tbl td {
+    text-align: center;
+    border-bottom: 1px solid var(--line2);
+    padding: 10px 20px;
+}
+.tbl th.left,
+.tbl td.left {
+    text-align: left;
+}
+.tbl.tbl-hover tbody > tr:hover {
+    cursor: pointer;
+    background-color: rgba(101, 146, 254, 0.1);
+}
+
+tr th {
+    color: white;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none; /* 기본 체크박스 스타일 제거 (크롬, 사파리) */
+    -moz-appearance: none; /* 기본 체크박스 스타일 제거 (파이어폭스) */
+    appearance: none; /* 기본 체크박스 스타일 제거 (모든 브라우저) */
+    width: 20px; /* 체크박스 너비 */
+    height: 20px; /* 체크박스 높이 */
+    border: 2px solid #ff3d00; /* 경계 색상 */
+    border-radius: 3px; /* 모서리 둥글게 */
+    outline: none; /* 포커스 스타일 제거 */
+    cursor: pointer; /* 마우스 포인터 변경 */
+    position: relative; /* 체크 표시를 위해 상대 위치 지정 */
+}
+
+input[type="checkbox"]:checked {
+    background-color: #ff3d00; /* 체크 시 배경 색상 */
+}
+
+input[type="checkbox"]:checked::after {
+    content: ""; /* 체크 표시 추가 */
+    position: absolute; /* 체크 표시 위치 조정 */
+    left: 4px; /* 왼쪽 위치 */
+    top: 1px; /* 위쪽 위치 */
+    width: 6px; /* 체크 표시 너비 */
+    height: 12px; /* 체크 표시 높이 */
+    border: solid white; /* 체크 표시 색상 */
+    border-width: 0 2px 2px 0; /* 체크 표시 모양 */
+    transform: rotate(45deg); /* 체크 표시 회전 */
+}
+
+.btn-selectlv {
+    background-color: #ff3d00;
+    color: white;
+    border: 2px solid #ff3d00 !important;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px; /* 버튼 사이 간격 */
+}
+
+.btn-selectlv:hover {
+    background-color: white;
+    color: #ff3d00;
+}
+
+.btn-selectrm {
+    background-color: #ff3d00;
+    color: white;
+    border: 2px solid #ff3d00 !important;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-selectrm:hover {
+    background-color: white;
+    color: #ff3d00;
+}
+
+.select {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center;
+}
+
+.select select {
+    padding: 5px;
+    border-radius: 4px; /* 둥근 테두리 */
+    outline: none;
+    background-color: white; /* 배경색 */
+    color: #333; /* 글자색 */
+    text-align: center; /* 글자 중앙 정렬 */
+    text-align-last: center; /* 선택된 항목 중앙 정렬 */
+}
+
+
+.table-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    position: absolute;
+    top: -60px; /* 테이블 위쪽에 배치 (조정 가능) */
+    right: -20px; /* 오른쪽에 고정 */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-box input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.search-box button {
+    padding: 8px 12px;
+    background-color: #ff3d00;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background-color: #e03500;
+}
