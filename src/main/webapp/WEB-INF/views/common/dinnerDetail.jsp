@@ -22,7 +22,7 @@
 					<div class="restaurant-detail">
 						<div class="restaurant-detail-container">
 							<div class="restaurant-category">청담 | 한식</div>
-							<div class="restaurant-name">${dinner.dinnerName}</div>
+							<div class="restaurant-name">${dinner.dinnerName}</div></div>
 							<div class="restaurant-info">
 								<i class="fa-solid fa-location-dot"></i><span id="location">${dinner.dinnerAddr}</span><br /> <i class="fa-solid fa-clock"></i><span
 									id="time">${dinner.dinnerOpen} ~ ${dinner.dinnerClose}</span><br /> <i

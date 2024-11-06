@@ -1,6 +1,7 @@
 package com.menupick.member.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,17 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
+
 /**
- * Servlet implementation class AdminDinnerManageFrm
+ * Servlet implementation class AdminMemberDetailServlet
  */
-@WebServlet("/admin/adminDinnerManageFrm")
-public class AdminDinnerManageFrm extends HttpServlet {
+@WebServlet("/admin/memberDetail")
+public class AdminMemberDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminDinnerManageFrm() {
+    public AdminMemberDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,9 +32,18 @@ public class AdminDinnerManageFrm extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//1. 인코딩
 		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerManage.jsp");
-		view.forward(request, response);
+		//2. 값 추출
+		String memberNo = request.getParameter("memberNo");
+		
+		//3. 로직
+		MemberService service = new MemberService();
+		Member member = service.getMemberNo(memberNo);
+		
+		request.setAttribute("member", member);
+		request.getRequestDispatcher("/WEB-INF/views/admin/adminMemberDetail.jsp").forward(request, response);
+		
 	}
 
 	/**

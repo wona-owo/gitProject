@@ -1,25 +1,24 @@
 package com.menupick.member.controller;
 
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class AdminDinnerManageFrm
+ * Servlet implementation class MemberLogoutServlet
  */
-@WebServlet("/admin/adminDinnerManageFrm")
-public class AdminDinnerManageFrm extends HttpServlet {
+@WebServlet("/member/logout")
+public class MemberLogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminDinnerManageFrm() {
+    public MemberLogoutServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,9 +27,13 @@ public class AdminDinnerManageFrm extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerManage.jsp");
-		view.forward(request, response);
+		if (session != null) {
+			session.invalidate(); // 세션 객체에 저장된 모든 정보 소멸
+		}
+		
+		response.sendRedirect("/"); //메인 페이지 이동
 	}
 
 	/**
