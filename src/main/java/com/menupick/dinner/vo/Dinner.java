@@ -22,14 +22,8 @@ public class Dinner {
 	private String busiNum;
 	private String dinnerId;
 	private String dinnerPw;
-<<<<<<< HEAD
-	private String dinnerConfirm;  
-	
-	//종속 데이터 변수 추가
-=======
 	private String dinnerConfirm;
 
 	// 종속 데이터 변수 추가
->>>>>>> dev
 	private ArrayList<Dinner> dinnerList;
 }
