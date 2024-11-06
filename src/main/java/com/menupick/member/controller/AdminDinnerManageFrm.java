@@ -1,6 +1,8 @@
-package com.menupick.dinner.controller;
+package com.menupick.member.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class DinnerLike
+ * Servlet implementation class AdminDinnerManageFrm
  */
-@WebServlet("/dinner/likeFrm")
-public class DinnerLikeFrm extends HttpServlet {
+@WebServlet("/admin/adminDinnerManageFrm")
+public class AdminDinnerManageFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DinnerLikeFrm() {
+    public AdminDinnerManageFrm() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,8 +28,9 @@ public class DinnerLikeFrm extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/likedinner/like.jsp").forward(request, response);
 		
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerManage.jsp");
+		view.forward(request, response);
 	}
 
 	/**

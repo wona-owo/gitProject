@@ -1,5 +1,7 @@
 package com.menupick.dinner.vo;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,10 +16,20 @@ public class Dinner {
 	private String dinnerOpen;
 	private String dinnerClose;
 	private String dinnerPhone;
+	private String dinnerEmail;
 	private String dinnerParking;
-	private String dinnerTimeMax;
-	private String dinnerNum;
+	private String dinnerMaxPerson;
+	private String busiNum;
 	private String dinnerId;
 	private String dinnerPw;
-	private String dinnerAdmit;
+<<<<<<< HEAD
+	private String dinnerConfirm;  
+	
+	//종속 데이터 변수 추가
+=======
+	private String dinnerConfirm;
+
+	// 종속 데이터 변수 추가
+>>>>>>> dev
+	private ArrayList<Dinner> dinnerList;
 }

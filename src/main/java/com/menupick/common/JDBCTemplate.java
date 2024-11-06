@@ -13,7 +13,7 @@ public class JDBCTemplate {
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			// TODO : 계정명과 비밀번호 바꿀것
+
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "menudb", "1234");
 
 			conn.setAutoCommit(false);

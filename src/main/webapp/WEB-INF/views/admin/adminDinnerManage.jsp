@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<link rel="stylesheet" href="/resources/css/diner_admin_member.css" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,43 +51,60 @@
 
 </head>
 <body>
-	<div>
+	<div class="wrap">
+		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
-			<section class="section notice-list-wrap">
+			<section class="section admin-wrap">
 				<div class="page-title">매장 관리 페이지</div>
-				<c:if test="${not empty loginMember}">
-					<div class="search-section">
-						<input type="text" placeholder="검색할 매장명을 입력해주세요 " id="searchInput">
-						<button onclick="/">검색</button>
+				<div class="table-container">
+					<div class="search-box">
+						<select id="filterSelect">
+							<option value="">매장 이름정렬 순</option>
+							<option value="approved">매장 승인 순</option>
+						</select> <input type="text" placeholder="매장 이름 검색" id="searchInput">
+						<button onclick="searchDinner()">검색</button>
 					</div>
-				</c:if>
-
-				<div class="list-content">
-					<table class="tbl hover">
-						<tr>
-							<th style="width: 5%">식당코드</th>
-							<th style="width: 30%">매장명</th>
-							<th style="width: 15%">매장 주소</th>
-							<th style="width: 5%">담당자 이름</th>
-							<th style="width: 10%">담당자 연락처</th>
-							<th style="width: 10%">매장 전화번호</th>
-							<th style="width: 10%">승인 여부</th>
-						</tr>
-						<c:forEach var="notice" items="${noticeList}">
-							<tr>
-								<td>${notice.noticeNo}</td>
-								<td><a href='/notice/view?noticeNo=${notice.noticeNo}'>${notice.noticeTitle}</a></td>
-								<td>${notice.noticeWriter}</td>
-								<td>${notice.noticeDate}</td>
-								<td>${notice.readCount}</td>
-							</tr>
-
-						</c:forEach>
-					</table>
 				</div>
-				<div id="pageNavi" style="margin-top: 20px">${pageNavi}</div>
+
+				<table class="tbl tbl_hover">
+					<tr>
+						<th style="width: 5%">식당코드</th>
+						<th style="width: 10%">식당이름</th>
+						<th style="width: 15%">주소</th>
+						<th style="width: 10%">이메일</th>
+						<th style="width: 10%">매장 번호</th>
+						<th style="width: 5%">승인여부</th>
+					</tr>
+
+					<c:forEach var="d" items="${dinnerList}">
+						<tr>
+							<td class="dinnerNo">${d.dinnerNo}</td>
+							<td>${d.dinnerName}</td>
+							<td>${d.dinnerAddr}</td>
+							<td>${d.dinnerEmail}</td>
+							<td>${d.dinnerPhone}</td>
+							<td>${d.dinnerConfirm}</td>
+						</tr>
+					</c:forEach>
+				</table>
+
+				<!-- 페이지 넘버 생성 -->
+				<div class="pagination">
+					<c:forEach var="i" begin="1" end="${totalPages}" step="5">
+						<c:choose>
+							<c:when test="${currentPage >= i && currentPage < i + 5}">
+								<a href="?page=${i}" class="active">${i}</a>
+							</c:when>
+							<c:otherwise>
+								<a href="?page=${i}">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</div>
 			</section>
 		</main>
 	</div>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
 </body>
 </html>

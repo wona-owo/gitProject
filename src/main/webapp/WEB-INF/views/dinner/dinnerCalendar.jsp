@@ -113,6 +113,10 @@ section {
 
 					<div class="month-year">
 						<span id="month"></span> <span id="year"></span>
+
+						<%-- TODO loginMember.dinnerNo 동작하는지 확인 --%>
+						<input type="hidden" name="dinnerNo"
+							value="${loginMember.dinnerNo}">
 					</div>
 				</div>
 
@@ -173,34 +177,37 @@ section {
 									daysContainer.append("<span></span>");
 								}
 
-								// for getting reservation infos
+								console.log("displayMonth : "
+										+ $("#month").html());
+								console.log("displayYear : "
+										+ $("#year").html());
+
+								// For getting reservation info
 								$
 										.ajax({
 											url : "/dinner/reservation",
 											data : {
-												"displayMonth" : $("#month")
+												displayMonth : $("#month")
 														.text(),
-												"displayYear" : $("#year")
-														.text()
+												displayYear : $("#year").text()
 											},
 											type : "GET",
 											success : function(res) {
 												if (res == null) {
 													console
-															.log("no return from servlet");
+															.log("No return from servlet");
 												} else {
 													console
-															.log("yes return from servlet");
+															.log("Response received from servlet");
 												}
 											},
 											error : function() {
 												console
-														.log('AJAX error has occured!!!');
+														.log("AJAX error has occurred!");
 											}
 										});
 
 								for (let day = 1; day <= daysInMonth; day++) {
-									// 날짜 및에 테스트용 예약 건수 보이게
 									const dayElement = $("<span></span>");
 									const dayNumberElement = $("<div></div>")
 											.text(day);
@@ -212,7 +219,7 @@ section {
 											reservationCount);
 
 									// BUG not working
-									// contition about adding reservation count
+									// condition about adding reservation count
 									if (dayNumberElement == 0) {
 										dayElement
 												.append(reservationCountElement);
@@ -256,10 +263,6 @@ section {
 
 							renderCalendar();
 						});
-
-		function reservationCount(year, month, date) {
-			console.log("msg from reservationCount");
-		}
 	</script>
 
 </body>

@@ -1,28 +1,29 @@
-package com.menupick.dinner.controller;
+package com.menupick.member.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.menupick.dinner.service.DinnerService;
-import com.menupick.dinner.vo.Dinner;
+import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 
 /**
- * Servlet implementation class DinnerLike
+ * Servlet implementation class AdminMemberDetailServlet
  */
-@WebServlet("/DinnerLike")
-public class DinnerLike extends HttpServlet {
+@WebServlet("/admin/memberDetail")
+public class AdminMemberDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DinnerLike() {
+    public AdminMemberDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,16 +35,15 @@ public class DinnerLike extends HttpServlet {
 		//1. 인코딩
 		
 		//2. 값 추출
-		String dinnerNo = request.getParameter("dinner_no");
-		String dinnerName = request.getParameter("dinner_name");
-		String foodNo = request.getParameter("food_no");
-		String foodName = request.getParameter("food_name");
-		String dinerAddr = request.getParameter("diner_addr");
+		String memberNo = request.getParameter("memberNo");
 		
 		//3. 로직
-		DinnerService service = new DinnerService();
-		ArrayList<Dinner> dinner = new ArrayList<Dinner>();
-		dinner =  service.likeDinner(dinner);
+		MemberService service = new MemberService();
+		Member member = service.getMemberNo(memberNo);
+		
+		request.setAttribute("member", member);
+		request.getRequestDispatcher("/WEB-INF/views/admin/adminMemberDetail.jsp").forward(request, response);
+		
 	}
 
 	/**
