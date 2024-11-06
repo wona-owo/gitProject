@@ -51,55 +51,60 @@
 
 </head>
 <body>
- <div class="wrap">
-      <main class="content">
-         <section class="section admin-wrap">
-            <div class="page-title">회원 관리 페이지</div>
-            <div class="table-container">
-                <div class="search-box">
-                    <input type="text" placeholder="회원 이름 검색" id="searchInput">
-                    <button onclick="searchMembers()">검색</button>
-                </div>
-            
-            <table class="tbl tbl_hover">
-               <tr>
-                  <th style="width: 5%">식당코드</th>
-                  <th style="width: 10%">식당이름</th>
-                  <th style="width: 15%">주소</th>
-                  <th style="width: 10%">이메일</th>
-                  <th style="width: 10%">매장 번호</th>
-                  <th style="width: 5%">승인여부</th>
-               </tr>
-               
-               <c:forEach var="m" items="${memberList}">
-               <tr>
-                  <td> <!-- 선택 -->
-                     <div class="input-wrap">
-                        <input type="checkbox" class="chk">
-                        <label onclick="chkLabel(this)"></label>
-                     </div>
-                  </td>
-                  <td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberNo}</a></td>       <!-- 번호 -->
-                  <td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberId}</a></td>        <!-- 아이디 -->
-                  <td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberNick}</a></td>      <!-- 별명 -->
-                  <td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberEmail}</a></td>    <!-- 이메일 -->
-                  <td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberPhone}</a></td>    <!-- 전화번호 -->
-                  <td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberAddr}</a></td>        <!-- 주소 -->
+	<div class="wrap">
+		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+		<main class="content">
+			<section class="section admin-wrap">
+				<div class="page-title">매장 관리 페이지</div>
+				<div class="table-container">
+					<div class="search-box">
+						<select id="filterSelect">
+							<option value="">매장 이름정렬 순</option>
+							<option value="approved">매장 승인 순</option>
+						</select> <input type="text" placeholder="매장 이름 검색" id="searchInput">
+						<button onclick="searchDinner()">검색</button>
+					</div>
+				</div>
 
-               </c:forEach>
-                  
-               <tr>
-                  <td colspan="10">
-                     <button class="btn-selectlv lg" onclick="chgLevel(this)">매장 정보 수정</button>
-                  </td>
-               </tr>
-            </table>
-            </div>
-         </section>
-      </main>
-   </div>
+				<table class="tbl tbl_hover">
+					<tr>
+						<th style="width: 5%">식당코드</th>
+						<th style="width: 10%">식당이름</th>
+						<th style="width: 15%">주소</th>
+						<th style="width: 10%">이메일</th>
+						<th style="width: 10%">매장 번호</th>
+						<th style="width: 5%">승인여부</th>
+					</tr>
 
-   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+					<c:forEach var="d" items="${dinnerList}">
+						<tr>
+							<td class="dinnerNo">${d.dinnerNo}</td>
+							<td>${d.dinnerName}</td>
+							<td>${d.dinnerAddr}</td>
+							<td>${d.dinnerEmail}</td>
+							<td>${d.dinnerPhone}</td>
+							<td>${d.dinnerConfirm}</td>
+						</tr>
+					</c:forEach>
+				</table>
+
+				<!-- 페이지 넘버 생성 -->
+				<div class="pagination">
+					<c:forEach var="i" begin="1" end="${totalPages}" step="5">
+						<c:choose>
+							<c:when test="${currentPage >= i && currentPage < i + 5}">
+								<a href="?page=${i}" class="active">${i}</a>
+							</c:when>
+							<c:otherwise>
+								<a href="?page=${i}">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</div>
+			</section>
+		</main>
+	</div>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>

@@ -7,10 +7,43 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
+import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Food;
 
 public class DinnerDao {
+
+	public ArrayList<Dinner> selectAllMember(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Dinner> list = new ArrayList<>();
+		String query = "SELECT * FROM TBL_DINNER";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				// 매장 DB가져오기
+				Dinner d = new Dinner();
+
+				d.setDinnerNo(rset.getString("dinner_no")); // 식당코드
+				d.setDinnerName(rset.getString("dinner_name")); // 식당이름
+				d.setDinnerAddr(rset.getString("dinner_addr")); // 주소
+				d.setDinnerEmail(rset.getString("dinner_email")); // 이메일
+				d.setDinnerPhone(rset.getString("dinner_phone")); // 매장번호
+				d.setDinnerConfirm(rset.getString("dinner_confirm")); // 승인여부
+				list.add(d);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
+	}
 
 	public ArrayList<Dinner> likeDinner(Connection conn, String dinnerNo, String dinnerName) {
 		PreparedStatement pstmt = null;
@@ -76,7 +109,61 @@ public class DinnerDao {
 			JDBCTemplate.close(rt);
 			JDBCTemplate.close(pt);
 		}
-
 		return bookList;
+	}
+
+	public ArrayList<Food> filterNation(Connection conn, String foodNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select * from TBL_FOOD";
+		ArrayList<Food> foodList = new ArrayList<Food>();
+		Food food = new Food();
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				food.setFoodNo(rset.getString("FOOD_NO"));
+				food.setFoodName(rset.getString("FOOD_NAME"));
+				food.setFoodNation(rset.getString("FOOD_NATION"));
+				food.setFoodCat(rset.getString("FOOD_CAT"));
+				foodList.add(food);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return foodList;
+	}
+
+	// DB에서 식당 주소 리스트 및 이름 반환
+	public ArrayList<Address> getDinnerAddress(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select dinner_name, dinner_addr from tbl_dinner where dinner_confirm='y'";
+		ArrayList<Address> addressList = new ArrayList<>();
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				String name = rset.getString("dinner_name");
+				String addr = rset.getString("dinner_addr");
+
+				// Address 객체 생성 후 리스트에 추가
+				addressList.add(new Address(name, addr));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return addressList;
 	}
 }
