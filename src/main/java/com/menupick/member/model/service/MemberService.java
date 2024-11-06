@@ -1,6 +1,7 @@
 package com.menupick.member.model.service;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
 import com.menupick.member.model.dao.MemberDao;
@@ -18,6 +19,26 @@ public class MemberService {
 		Member member = dao.memberLogin(conn, loginId, loginPw);
 		JDBCTemplate.close(conn);
 		return member;
+	}
+
+	public ArrayList<Member> selectAllMember() {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Member> list = dao.selectAllMember(conn);
+		return list;
+	}
+
+	public int deleteMember(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.deleteMember(conn, memberNo);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		
+		return result;
 	}
 
 }

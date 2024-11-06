@@ -18,6 +18,8 @@
 		<ul class="sub-menu">
 			<li><a href="/dinner/likeFrm">인기식당</a></li>
 			<li><a href="/member/loginFrm">로그인</a></li>
+			<li><a href="/admin/member">회원 관리(테스트)</a></li>
+			<li><a href="/member/adminMemberDetailFrm">회원 상세(테스트)</a></li>
 		</ul>
 	</div>
 
