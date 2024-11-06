@@ -35,6 +35,10 @@
 					</tr>
 					
 					<c:forEach var="m" items="${memberList}">
+					<form id="updateForm" method="POST" style="display:none;">
+					    <input type="hidden" name="memberNo" value="${m.memberNo}">
+					</form>
+					
 					<tr>
 						<td> <!-- 선택 -->
 							<div class="input-wrap">
@@ -42,20 +46,20 @@
 								<label onclick="chkLabel(this)"></label>
 							</div>
 						</td>
-						<td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberNo}</a></td>		 <!-- 번호 -->
-						<td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberId}</a></td> 		 <!-- 아이디 -->
-						<td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberNick}</a></td>      <!-- 별명 -->
-						<td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberEmail}</a></td>	 <!-- 이메일 -->
-						<td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberPhone}</a></td>	 <!-- 전화번호 -->
-						<td><a href="/memberDetail?memberNo=${m.memberNo}">${m.memberAddr}</a></td>	     <!-- 주소 -->
+						<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberNo}</a></td>		 <!-- 번호 -->
+						<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberId}</a></td> 		 <!-- 아이디 -->
+						<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberNick}</a></td>      <!-- 별명 -->
+						<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberEmail}</a></td>	 <!-- 이메일 -->
+						<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberPhone}</a></td>	 <!-- 전화번호 -->
+						<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberAddr}</a></td>	     <!-- 주소 -->
 						
 						<td>						 													 <!-- 등급변경 -->
 							<div class="select">
-								<select>
-									<option value="1" selected>회원</option>
-									<option value="2">가맹점</option>
-								</select>
-							</div>
+						        <select onchange="memberLevelChange(this)">
+						            <option value="1" ${m.memberLevel == 1 ? 'selected' : ''}>회원</option>
+						            <option value="2" ${m.memberLevel == 2 ? 'selected' : ''}>가맹점</option>
+						        </select>
+						    </div>
 						</td>
 						
 						<td>							                                                 <!--  탈퇴 -->
@@ -63,7 +67,7 @@
 						</td>
 					</tr>
 					</c:forEach>
-						
+					
 					<tr>
 						<td colspan="10">
 							<button class="btn-selectlv lg" onclick="chgLevel(this)">선택 등급 변경</button>
@@ -83,30 +87,39 @@
 <script>
 
 //탈퇴
-function selectRemove(memberNo){
-	// 탈퇴 확인
-    if (confirm("정말로 이 회원을 탈퇴 처리하시겠습니까?")) {
-        // Ajax 요청으로 특정 회원 탈퇴 처리
-        $.ajax({
-            url: "/admin/memberRemove", // 실제 탈퇴 처리를 담당하는 URL
-            type: "POST",
-            data: { memberNo: memberNo }, // 데이터 전송 (URL 인코딩 없이 기본 객체 형식)
-            success: function(response) {
-                if (response === "success") {
-                    alert("회원이 성공적으로 탈퇴되었습니다.");
-                    location.reload(); // 페이지 새로고침으로 목록 업데이트
-                } else {
-                    alert("탈퇴 처리 중 오류가 발생했습니다.");
-                }
+function selectRemove(memberNo) {
+    swal({
+        title: "회원탈퇴",
+        text: "정말 회원탈퇴를 하시겠습니까?",
+        icon: "warning",
+        buttons: {
+            cancel: {
+                text: "취소",
+                value: false,
+                visible: true,
+                closeModal: true
             },
-            error: function(xhr, status, error) {
-                console.log("ajax 통신 오류", status, error);
-                alert("서버와의 통신에 실패하였습니다.");
+            confirm: {
+                text: "탈퇴",
+                value: true,
+                visible: true,
+                closeModal: true
             }
-        });
-    }
+        }
+    }).then(function(confirm) {
+        if (confirm) {
+            $('#updateForm').attr('action', '/admin/memberRemove');
+            $('#updateForm').submit();
+        }
+    });
 }
 
+//등급 변경하면 자동으로 체크 활성화
+
+function memberLevelChange(selectElement) {
+    // selectElement는 현재 드롭다운(select) 요소 자체
+    $(selectElement).closest("tr").find(".chk").prop("checked", true);
+}
 
 //선택 등급 변경
 function chgLevel(obj) {

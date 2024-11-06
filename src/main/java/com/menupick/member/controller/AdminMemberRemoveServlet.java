@@ -29,32 +29,28 @@ public class AdminMemberRemoveServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String memberNo = request.getParameter("memberNo");
-		
-		MemberService service = new MemberService();
-		int result = service.deleteMember(memberNo);
-		System.out.println("서블릿 result :" + result);
-		System.out.println("result > 0 인지 확인: " + (result > 0));
-		
-		if(result > 0) {
-			HttpSession session = request.getSession(false);
-			if(session != null) {
-				session.invalidate();
-			}
-			
-			request.setAttribute("title", "알림");
-			request.setAttribute("msg", "회원 탈퇴가 완료 되었습니다.");
-			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/");
-		}else {
-			request.setAttribute("title", "알림");
-			request.setAttribute("msg", "회원 탈퇴 중 오류가 발생하였습니다.");
-			request.setAttribute("icon", "error");
-			request.setAttribute("loc", "/admin/member");
-		}
-		
-		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-		
+		 String memberNo = request.getParameter("memberNo");
+
+		    MemberService service = new MemberService();
+		    int result = service.selectRemove(memberNo);
+
+		    if (result > 0) {
+		        HttpSession session = request.getSession(false);
+		        if (session != null) {
+		            session.invalidate();
+		        }
+		        request.setAttribute("title", "알림");
+				request.setAttribute("msg", "회원 탈퇴가 완료 되었습니다");
+				request.setAttribute("icon", "success");
+				request.setAttribute("loc", "/admin/member");
+
+		    } else {
+		    	request.setAttribute("title", "알림");
+				request.setAttribute("msg", "회원 탈퇴 중 오류가 발생하였습니다");
+				request.setAttribute("icon", "error");
+				request.setAttribute("loc", "/admin/member");
+		    }
+		    request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 	}
 
 	/**

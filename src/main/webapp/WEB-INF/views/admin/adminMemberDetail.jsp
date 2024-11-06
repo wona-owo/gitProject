@@ -40,8 +40,8 @@
 	                    <td>${member.memberAddr}</td>
 	                    <td>${member.memberGender}</td>
 	                    <td>${member.memberEmail}</td>
-	                    <td>${member.memberEnrollDate}</td>
-	                    <td>${member.memberAdultValid}</td>
+	                    <td>${member.enrollDate}</td>					
+	                    <td>${member.adultValid}</td>
 	                    <td>${member.memberLevel}</td>
 					</tr>
 				</table>

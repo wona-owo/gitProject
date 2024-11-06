@@ -1,7 +1,6 @@
 package com.menupick.member.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,20 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.menupick.member.model.service.MemberService;
-import com.menupick.member.model.vo.Member;
-
 /**
- * Servlet implementation class AdminMemberServlet
+ * Servlet implementation class AdminDinnerManageFrm
  */
-@WebServlet("/admin/member")
-public class AdminMemberServlet extends HttpServlet {
+@WebServlet("/admin/adminDinnerManageFrm")
+public class AdminDinnerManageFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminMemberServlet() {
+    public AdminDinnerManageFrm() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,13 +28,8 @@ public class AdminMemberServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		MemberService service = new MemberService();
-		ArrayList<Member> list = service.selectAllMember();
-		
-		request.setAttribute("memberList", list);
-		request.getRequestDispatcher("/WEB-INF/views/admin/adminMember.jsp").forward(request, response);
-		
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerManage.jsp");
+		view.forward(request, response);
 	}
 
 	/**

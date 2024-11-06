@@ -200,6 +200,20 @@ section.section {
   display: none;
 }
 
+/* 특정 체크박스 컨테이너에만 스타일 적용 */
+.input-wrap.checkbox-container {
+    display: flex;
+    align-items: center; /* 체크박스와 레이블 수직 가운데 정렬 */
+    gap: 5px; /* 체크박스와 레이블 사이의 간격 조절 */
+}
+
+#saveId {
+    display: inline-block; /* 체크박스가 보이도록 설정 */
+    position: relative; /* 위치 설정 */
+    margin: 0; /* 불필요한 여백 제거 */
+}
+
+
 .input-wrap > input[type="checkbox"] + label {
   position: relative;
   display: block;

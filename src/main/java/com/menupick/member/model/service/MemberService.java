@@ -17,7 +17,7 @@ public class MemberService {
 	public Member memberLogin(String loginId, String loginPw) {
 		Connection conn = JDBCTemplate.getConnection(); // 오라클과 연결
 		Member member = dao.memberLogin(conn, loginId, loginPw);
-		JDBCTemplate.close(conn);
+		JDBCTemplate.close(conn); 
 		return member;
 	}
 
@@ -27,9 +27,9 @@ public class MemberService {
 		return list;
 	}
 
-	public int deleteMember(String memberNo) {
+	public int selectRemove(String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.deleteMember(conn, memberNo);
+		int result = dao.selectRemove(conn, memberNo);
 		
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
@@ -39,6 +39,14 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		
 		return result;
+	}
+
+	public Member getMemberNo(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Member member = dao.getMemberNo(conn, memberNo);
+		
+		JDBCTemplate.close(conn);
+		return member;
 	}
 
 }
