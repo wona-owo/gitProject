@@ -15,8 +15,9 @@ public class JDBCTemplate {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			// TODO : 계정명과 비밀번호 바꿀것
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "notice", "1234");//menudb
-			
+
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "menuDb", "1234");//menudb
+
 			conn.setAutoCommit(false);
 
 		} catch (ClassNotFoundException e) {

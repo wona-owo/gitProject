@@ -165,24 +165,23 @@
         </div>
 
         <!-- 콤팩트 필터 컨테이너 -->
+        
         <div class="filter-container">
             <div class="filter-title">국가별 필터</div>
+            <c:forEach var="food" items="${foodList}">
             <div class="filter-section">
-                <span class="filter-button" data-value="한식" onclick="toggleFilter(event, 'cuisine')">${food.foodCat}</span>
-                <span class="filter-button" data-value="양식" onclick="toggleFilter(event, 'cuisine')">양식</span>
-                <span class="filter-button" data-value="중식" onclick="toggleFilter(event, 'cuisine')">중식</span>
-                <span class="filter-button" data-value="일식" onclick="toggleFilter(event, 'cuisine')">일식</span>
+                <span class="filter-button" data-value="${food.foodNation}" onclick="toggleFilter(event, 'cuisine')">${food.foodNation}</span>
             </div>
-
+            </c:forEach>
+            
             <div class="filter-title">음식 유형 필터</div>
             <div class="filter-section">
-                <span class="filter-button" data-value="육류" onclick="toggleFilter(event, 'type')">육류</span>
-                <span class="filter-button" data-value="생선" onclick="toggleFilter(event, 'type')">생선</span>
-                <span class="filter-button" data-value="피자" onclick="toggleFilter(event, 'type')">피자</span>
-                <span class="filter-button" data-value="비건" onclick="toggleFilter(event, 'type')">비건</span>
-                <span class="filter-button" data-value="디저트" onclick="toggleFilter(event, 'type')">디저트</span>
+            <c:forEach var="food" items="${foodList}">
+                <span class="filter-button" data-value="${food.foodCat}" onclick="toggleFilter(event, 'type')">${food.foodCat}</span>
             </div>
         </div>
+        </c:forEach>
+        
 
         <!-- 예시 카드 -->
         <div class="card-container">
@@ -190,7 +189,7 @@
             <div class="card" data-cuisine="한식" data-type="육류" >
                 <a href="/dinner/like?dinnerNo=${dinner.dinnerNo}"><img src="img/jungsik.jpg" alt="음식 이미지"></a>
                 <div class="card-info">
-                    <h3>${dinner.dinnerName}</h3>
+                    <h3><a href="/">${dinner.dinnerName}</a></h3>
                     <p>${dinner.dinnerAddr}</p>
                     <p class="cuisine-type"></p>
                 </div>
