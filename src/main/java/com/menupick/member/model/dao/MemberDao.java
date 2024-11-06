@@ -73,7 +73,7 @@ public class MemberDao {
 				m.setMemberAddr(rset.getString("member_addr"));
 				m.setMemberGender(rset.getString("member_gender"));
 				m.setMemberEmail(rset.getString("member_email"));
-				m.setEnrollDate(rset.getString("enrol_date")); 					//테스트라 enrol인데 나중에 enroll로 수정해야함.
+				m.setEnrollDate(rset.getString("enroll_date")); 					//테스트라 enrol인데 나중에 enroll로 수정해야함.(수정완)
 				m.setAdultValid(rset.getString("adult_valid"));
 				m.setMemberLevel(rset.getInt("member_level"));
 				list.add(m);
@@ -138,7 +138,7 @@ public class MemberDao {
 				m.setMemberAddr(rset.getString("member_addr"));
 				m.setMemberGender(rset.getString("member_gender"));
 				m.setMemberEmail(rset.getString("member_email"));
-				m.setEnrollDate(rset.getString("enrol_date"));     					//enroll 수정해야함.
+				m.setEnrollDate(rset.getString("enroll_date"));     					//enroll 수정해야함. (수정완)
 				m.setAdultValid(rset.getString("adult_valid"));
 				m.setMemberLevel(rset.getInt("member_level"));
 			}
