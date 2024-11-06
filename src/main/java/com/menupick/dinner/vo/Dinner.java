@@ -16,12 +16,13 @@ public class Dinner {
 	private String dinnerOpen;
 	private String dinnerClose;
 	private String dinnerPhone;
+	private String dinnerEmail;
 	private String dinnerParking;
-	private String dinnerTimeMax;
-	private String buisNum;
+	private String dinnerMaxPerson;
+	private String busiNum;
 	private String dinnerId;
 	private String dinnerPw;
-	private String dinnerAdmit;
+	private String dinnerConfirm;  
 	
 	//종속 데이터 변수 추가
 	private ArrayList<Dinner> dinnerList;

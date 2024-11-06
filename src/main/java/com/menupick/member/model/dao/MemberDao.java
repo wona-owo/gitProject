@@ -11,20 +11,20 @@ import com.menupick.member.model.vo.Member;
 public class MemberDao {
 
 	public Member memberLogin(Connection conn, String loginId, String loginPw) {
-		
+
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Member m = null;
-		
-		String query ="select * from tbl_member where member_id =? and member_pw =?";
-		
+
+		String query = "select * from tbl_member where member_id =? and member_pw =?";
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, loginId);
 			pstmt.setString(2, loginPw);
 			rset = pstmt.executeQuery();
-			
-			if(rset.next()) {
+
+			if (rset.next()) {
 				m = new Member();
 				m.setMemberNo(rset.getString("member_no"));
 				m.setMemberId(rset.getString("member_id"));
@@ -36,18 +36,17 @@ public class MemberDao {
 				m.setMemberGender(rset.getString("member_gender"));
 				m.setMemberEmail(rset.getString("member_email"));
 				m.setEnrollDate(rset.getString("enroll_date"));
-				m.setAdultValid(rset.getString("adult_valid"));
+				m.setAdultValid(rset.getString("adult_confirm"));
 				m.setMemberLevel(rset.getInt("member_level"));
 			}
-			
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-	
+
 		return m;
 	}
 
