@@ -10,18 +10,6 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Dinner;
 
 public class DinnerService {
-	
-	private DinnerDao dao;
-	
-	public DinnerService(){
-		dao = new DinnerDao();
-	}
-	
-	public ArrayList<Dinner> likeDinner(ArrayList<Dinner> dinner) {
-=======
-import com.menupick.dinner.vo.Dinner;
-
-public class DinnerService {
 	DinnerDao dao;
 	
 	public DinnerService() {
@@ -37,13 +25,12 @@ public class DinnerService {
 		return dinnerList;
 	}
 
-	public List<Address> getDinnerAddress() {
+	public ArrayList<Address> getDinnerAddress() {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Address> addList = dao.getDinnerAddress(conn);
 		
 		JDBCTemplate.close(conn);
-		
-		return null;
+		return addList;
 	}
 
 }
