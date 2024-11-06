@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,8 @@
 
 		<!-- 레스토랑 상세 정보 섹션 -->
 		<main>
-			<form class="form">
+	
+			<form class="form" action="/dinner/detail" method="GET">
 				<section class="restaurant-detail-header">
 					<div class="dinner-main-img">
 						<img src="/resources/images/jungsik.jpg" id="main-img" alt="Restaurant Image" />
@@ -20,13 +22,12 @@
 					<div class="restaurant-detail">
 						<div class="restaurant-detail-container">
 							<div class="restaurant-category">청담 | 한식</div>
-							<div class="restaurant-name">정식당</div>
+							<div class="restaurant-name">${dinner.dinnerName}</div>
 							<div class="restaurant-info">
-								<i class="fa-solid fa-location-dot"></i><span id="location">서울
-									강남구 선릉로 158길 11</span><br /> <i class="fa-solid fa-clock"></i><span
-									id="time">매일 12:00 - 22:00</span><br /> <i
-									class="fa-solid fa-phone"></i><span id="phone">02-517-4654</span><br />
-								<i class="fa-solid fa-car"></i><span id="parking">주차가능</span><br />
+								<i class="fa-solid fa-location-dot"></i><span id="location">${dinner.dinnerAddr}</span><br /> <i class="fa-solid fa-clock"></i><span
+									id="time">${dinner.dinnerOpen} ~ ${dinner.dinnerClose}</span><br /> <i
+									class="fa-solid fa-phone"></i><span id="phone">${dinner.dinnerPhone}</span><br />
+								<i class="fa-solid fa-car"></i><span id="parking">${dinner.dinnerParking}</span><br />
 							</div>
 							<button id="book" class="btn-primary">예약</button>
 						</div>

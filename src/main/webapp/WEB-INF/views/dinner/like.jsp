@@ -1,11 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-    <style>
+<title>인기식당</title>
+<style>
+	    @font-face {
+	    font-family: 'LINESeedKR-Bd';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
+	    font-weight: 700;
+	    font-style: normal;
+	}
 
         /* 콤팩트한 필터 스타일 */
         .filter-container {
@@ -146,7 +153,6 @@
         }
 
     </style>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -162,7 +168,7 @@
         <div class="filter-container">
             <div class="filter-title">국가별 필터</div>
             <div class="filter-section">
-                <span class="filter-button" data-value="한식" onclick="toggleFilter(event, 'cuisine')">한식</span>
+                <span class="filter-button" data-value="한식" onclick="toggleFilter(event, 'cuisine')">${food.foodCat}</span>
                 <span class="filter-button" data-value="양식" onclick="toggleFilter(event, 'cuisine')">양식</span>
                 <span class="filter-button" data-value="중식" onclick="toggleFilter(event, 'cuisine')">중식</span>
                 <span class="filter-button" data-value="일식" onclick="toggleFilter(event, 'cuisine')">일식</span>
@@ -180,14 +186,16 @@
 
         <!-- 예시 카드 -->
         <div class="card-container">
-            <div class="card" data-cuisine="한식" data-type="육류" onclick="window.location.href='diner_detail.html'">
-                <img src="img/jungsik.jpg" alt="음식 이미지">
+            <c:forEach var="dinner" items="${dinnerList}">
+            <div class="card" data-cuisine="한식" data-type="육류" >
+                <a href="/dinner/like?dinnerNo=${dinner.dinnerNo}"><img src="img/jungsik.jpg" alt="음식 이미지"></a>
                 <div class="card-info">
-                    <h3>정식당</h3>
-                    <p>서울특별시 강남구</p>
-                    <p class="cuisine-type">한식</p>
+                    <h3>${dinner.dinnerName}</h3>
+                    <p>${dinner.dinnerAddr}</p>
+                    <p class="cuisine-type"></p>
                 </div>
             </div>
+            </c:forEach>
             <div class="card" data-cuisine="양식" data-type="피자" onclick="window.location.href='detail2.html'">
                 <img src="img/yangsik.png" alt="음식 이미지">
                 <div class="card-info">
@@ -249,6 +257,5 @@ const filters = {
         arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
     }
 </script>
-	
 </body>
 </html>
