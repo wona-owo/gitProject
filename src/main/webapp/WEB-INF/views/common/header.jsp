@@ -18,11 +18,16 @@
 		<ul class="sub-menu">
 		<c:choose>
  			<c:when test="${empty sessionScope.loginMember }">
- 				<li><a href="/admin/adminDinnerManageFrm">매장 관리페이지</a></li>
+ 				<li><a href="/admin/adminDinnerManage">매장 관리페이지</a></li>
 				<li><a href="/dinner/likeFrm">인기식당</a></li>
 				<li><a href="/member/loginFrm">로그인</a></li>
 			</c:when>
 			<c:otherwise>
+			<c:if test="${loginMember.memberLevel eq 1}">
+								<button type="button" onclick="moveAdminPage()"
+									class="btn-point lg">관리자 페이지</button>						
+				<li><a href="/admin/adminDinnerManageFrm">매장 관리페이지</a></li>
+				</c:if>
 				<li><a href="/member/mypage">${loginMember.memberName}님</a></li>
 				<li><a href="/member/logout">로그아웃</a></li>
 			</c:otherwise>

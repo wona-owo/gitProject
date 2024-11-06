@@ -14,10 +14,11 @@ public class Dinner {
 	private String dinnerOpen;
 	private String dinnerClose;
 	private String dinnerPhone;
+	private String dinnerEmail;
 	private String dinnerParking;
 	private String dinnerTimeMax;
 	private String dinnerNum;
 	private String dinnerId;
 	private String dinnerPw;
-	private String dinnerAdmit;
+	private String dinnerConfirm;
 }
