@@ -33,8 +33,7 @@ public class MemberLoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// System.out.println("saveId : " + request.getParameter("saveId")); <- 체크시 chk,
 		// 체크 안하는 경우 null
 
@@ -53,35 +52,18 @@ public class MemberLoginServlet extends HttpServlet {
 		if (loginMember != null) {
 			// 정상로그인 !
 
-			// 로그인 정보는 존재하지만, level값이 3인 회원인 경우
-			if (loginMember.getMemberLevel() == 3) {
-				request.setAttribute("title", "알림");
-				request.setAttribute("msg", "로그인 권한이 없습니다. 관리자에게 문의하세요.");
-				request.setAttribute("icon", "error");
-				request.setAttribute("loc", "/member/loginFrm");
-
-				request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-				return;
+			// 레벨이 1일때 어드민 페이지로 이동하는 기능 넣어야함
+			
+			/*
+			if (loginMember.getMemberLevel() == 1) {
+			
+				request.getRequestDispatcher("/어드민일때 접근 가능한 페이지 주소? 메인?/").forward(request, response);
 			}
-			/*
-			 * getSession() : 매개변수에 true를 전달한 것과 동일 getSession(true) : 기존에 세션이 존재하면, 해당 세션을
-			 * 반환. 존재하지 않으면 새로운 세션을 생성하여 반환 getSession(false) : 기존에 세션이 존재하면, 해당 세션을 반환.
-			 * 존재하지 않으면 null을 반환
-			 */
-
+			*/
+			
 			HttpSession session = request.getSession(true);
-			session.setAttribute("loginMember", loginMember); // 세션에 로그인 회원 정보 등록
-			session.setMaxInactiveInterval(600); // 단위 == 초 == 600초 == 10분
-
-			/*
-			 * 세션은 웹서버에 저장됨 세션도 쿠키를 이용하긴 함. 아이디 정보는 클라이언트(브라우저)에 저장함(상대적으로 덜 중요. 상대적으로 보안성
-			 * 부족 but 속도는 빠름) -> 아이디는 쿠키에 저장함
-			 */
-
-			/*
-			 * 쿠키 : 클라이언트에 저장되는 공간을 의미함 - 세션에 비해 상대적으로 보안이 취약함
-			 */
-
+			session.setAttribute("loginMember", loginMember); 
+			session.setMaxInactiveInterval(600); 
 			Cookie cookie = new Cookie("saveId", loginId);
 
 			if (request.getParameter("saveId") != null) {
@@ -95,15 +77,14 @@ public class MemberLoginServlet extends HttpServlet {
 			// 쿠키를 적용시킬 경로
 			cookie.setPath("/member/loginFrm");
 
-			// 쿠키는 클라이언트에 저장되는 정보이므로, 응답객체를 통해 전달해 줌
 			response.addCookie(cookie);
 
 			response.sendRedirect("/");
 
 		} else {
-			// null 일때 == 입력한 아이디, 비밀번호와 일치하는 회원이 없을 때 == 로그인 실패
+			// 로그인 실패
 			request.setAttribute("title", "알림");
-			request.setAttribute("msg", "아아디 또는 비밀번호를 확인하세요.");
+			request.setAttribute("msg", "아이디 또는 비밀번호를 확인하세요.");
 			request.setAttribute("icon", "error");
 			request.setAttribute("loc", "/member/loginFrm"); // 다시 로그인 페이지로 이동할 수 있도록
 

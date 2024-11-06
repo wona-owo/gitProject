@@ -16,8 +16,16 @@
 		</div>
 
 		<ul class="sub-menu">
-			<li><a href="/dinner/likeFrm">인기식당</a></li>
-			<li><a href="/member/loginFrm">로그인</a></li>
+		<c:choose>
+ 			<c:when test="${empty sessionScope.loginMember }">
+				<li><a href="/dinner/likeFrm">인기식당</a></li>
+				<li><a href="/member/loginFrm">로그인</a></li>
+			</c:when>
+			<c:otherwise>
+				<li><a href="/member/mypage">${loginMember.memberName}님</a></li>
+				<li><a href="/member/logout">로그아웃</a></li>
+			</c:otherwise>
+ 		</c:choose>
 		</ul>
 	</div>
 
