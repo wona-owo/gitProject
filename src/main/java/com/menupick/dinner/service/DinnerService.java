@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.dao.DinnerDao;
+import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
 
@@ -29,6 +30,14 @@ public class DinnerService {
 		foodList = dao.filterNation(conn, foodNo);
 		JDBCTemplate.close(conn);
 		return foodList;
+	}
+
+	public ArrayList<Address> getDinnerAddress() {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Address> addList = dao.getDinnerAddress(conn);
+		
+		JDBCTemplate.close(conn);
+		return addList;
 	}
 
 	public ArrayList<Dinner> selectAllMember() {

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
+import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
 
@@ -103,5 +104,34 @@ public class DinnerDao {
 			JDBCTemplate.close(rset);
 		}
 		return foodList;
+	}
+
+	// DB에서 식당 주소 리스트 및 이름 반환
+	public ArrayList<Address> getDinnerAddress(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select dinner_name, dinner_addr from tbl_dinner where dinner_confirm='y'";
+		ArrayList<Address> addressList = new ArrayList<>();
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				String name = rset.getString("dinner_name");
+				String addr = rset.getString("dinner_addr");
+
+				// Address 객체 생성 후 리스트에 추가
+				addressList.add(new Address(name, addr));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return addressList;
 	}
 }
