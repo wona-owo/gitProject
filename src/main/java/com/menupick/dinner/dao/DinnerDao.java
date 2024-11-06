@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Food;
 
 public class DinnerDao {
 
@@ -32,11 +33,11 @@ public class DinnerDao {
                 d.setDinnerClose(rset.getString("DINNER_CLOSE"));
                 d.setDinnerPhone(rset.getString("DINNER_PHONE"));
                 d.setDinnerParking(rset.getString("DINNER_PARKING"));
-                d.setDinnerTimeMax(rset.getString("DINNER_TIME_MAX"));
-                d.setBuisNum(rset.getString("BUIS_NUM"));
+                d.setDinnerTimeMax(rset.getString("DINNER_MAX_PERSON"));
+                d.setBuisNum(rset.getString("BUSI_NO"));
                 d.setDinnerId(rset.getString("DINNER_ID"));
                 d.setDinnerPw(rset.getString("DINNER_PW"));
-                d.setDinnerAdmit(rset.getString("DINNER_ADMIT"));
+                d.setDinnerAdmit(rset.getString("DINNER_CONFIRM"));
 				dinnerList.add(d);
 			}
 		} catch (SQLException e) {
@@ -48,5 +49,35 @@ public class DinnerDao {
 		
 		
 		return dinnerList;
+	}
+
+
+	public ArrayList<Food> filterNation(Connection conn, String foodNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select * from TBL_FOOD";
+		ArrayList<Food> foodList = new ArrayList<Food>();
+		Food food = new Food();
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				food.setFoodNo(rset.getString("FOOD_NO"));
+				food.setFoodName(rset.getString("FOOD_NAME"));
+				food.setFoodNation(rset.getString("FOOD_NATION"));
+				food.setFoodCat(rset.getString("FOOD_CAT"));
+				foodList.add(food);
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		return foodList;
 	}
 }

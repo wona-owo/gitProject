@@ -19,7 +19,7 @@
 		<c:choose>
  			<c:when test="${empty sessionScope.loginMember }">
  				<li><a href="/admin/adminDinnerManageFrm">매장 관리페이지</a></li>
-				<li><a href="/dinner/likeFrm">인기식당</a></li>
+				<li><a href="/dinner/like">인기식당</a></li>
 				<li><a href="/member/loginFrm">로그인</a></li>
 			</c:when>
 			<c:otherwise>
