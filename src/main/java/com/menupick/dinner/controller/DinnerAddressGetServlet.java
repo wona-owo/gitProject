@@ -19,38 +19,39 @@ import com.menupick.dinner.vo.Address;
 @WebServlet("/locations")
 public class DinnerAddressGetServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DinnerAddressGetServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		DinnerService service = new DinnerService();
-		
-		// 주소 데이터 가져오기
-        List<Address> addresses = service.getDinnerAddress();
-        
-        
-        // JSON 변환 및 응답
-        Gson gson = new Gson();
-        String json = gson.toJson(addresses);
-             
-        response.getWriter().write(json);
+	public DinnerAddressGetServlet() {
+		super();
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		DinnerService service = new DinnerService();
+
+		// 주소 데이터 가져오기
+		List<Address> addresses = service.getDinnerAddress();
+
+		// JSON 변환 및 응답
+		Gson gson = new Gson();
+		String json = gson.toJson(addresses);
+
+		response.getWriter().write(json);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 
