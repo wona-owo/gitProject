@@ -5,11 +5,8 @@ import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.dao.DinnerDao;
-<<<<<<< HEAD
-import com.menupick.dinner.vo.Book;
-=======
 import com.menupick.dinner.vo.Address;
->>>>>>> dev
+import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
 
@@ -28,7 +25,6 @@ public class DinnerService {
 		return dinnerList;
 	}
 
-<<<<<<< HEAD
 	public ArrayList<Book> checkReservation(String dinnerNo, String displayMonth, String displayYear) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Book> bookList = null;
@@ -38,7 +34,8 @@ public class DinnerService {
 		System.out.println(bookList);
 
 		return bookList;
-=======
+	}
+
 	public ArrayList<Food> filterNation(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Food> foodList = null;
@@ -50,7 +47,7 @@ public class DinnerService {
 	public ArrayList<Address> getDinnerAddress() {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Address> addList = dao.getDinnerAddress(conn);
-		
+
 		JDBCTemplate.close(conn);
 		return addList;
 	}
@@ -59,9 +56,7 @@ public class DinnerService {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> list = dao.selectAllMember(conn);
 		JDBCTemplate.close(conn);
-
 		return list;
->>>>>>> dev
 	}
 
 }
