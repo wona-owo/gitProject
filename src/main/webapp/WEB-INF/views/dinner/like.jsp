@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>인기식당</title>
 <style>
 	    @font-face {
 	    font-family: 'LINESeedKR-Bd';
@@ -192,7 +192,7 @@
                 <div class="card-info">
                     <h3>${dinner.dinnerName}</h3>
                     <p>${dinner.dinnerAddr}</p>
-                    <p class="cuisine-type">한식</p>
+                    <p class="cuisine-type"></p>
                 </div>
             </div>
             </c:forEach>

@@ -15,16 +15,15 @@ import com.menupick.dinner.vo.Dinner;
 /**
  * Servlet implementation class DinnerLike
  */
-@WebServlet("/DinnerLike")
-public class DinnerLike extends HttpServlet {
+@WebServlet("/dinner/like")
+public class DinnerLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DinnerLike() {
+    public DinnerLikeServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -38,19 +37,22 @@ public class DinnerLike extends HttpServlet {
 		String dinnerName = request.getParameter("dinner_name");
 		String foodNo = request.getParameter("food_no");
 		String foodName = request.getParameter("food_name");
-		String dinerAddr = request.getParameter("diner_addr");
+		String dinnerAddr = request.getParameter("dinner_addr");
 		
 		//3. 로직
 		DinnerService service = new DinnerService();
-		ArrayList<Dinner> dinner = new ArrayList<Dinner>();
-		dinner =  service.likeDinner(dinner);
+		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
+		dinnerList =  service.likeDinner(dinnerNo, dinnerName);
+		request.setAttribute("dinnerName", dinnerName);
+		request.setAttribute("dinnerAddr", dinnerAddr);
+		request.setAttribute("dinnerList", dinnerList);
+		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
