@@ -1,111 +1,115 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>오늘 메뉴 픽해볼까? Menu Pick!</title>
 <link rel="stylesheet" href="/resources/css/default.css" />
-<script
-	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1ca3b7a5df74e4b03123d97229e9ebde"></script>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1ca3b7a5df74e4b03123d97229e9ebde&libraries=services"></script>
 </head>
 <body>
 	<div>
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-
-		
-		<div><a href="/member/dinnerCalendar">Goes to dinnerCalendar.jsp via DinnerCalendarFrmServlet.java</a></div>
-
 		<div class="wrap">
-			<!-- 메인 콘텐츠 -->
 			<main>
-				<!-- 검색창 -->
 				<div class="search-box">
-					<input type="text" class="search-input"
-						placeholder="식당 이름, 지역 등을 입력하세요" />
+					<input type="text" class="search-input" placeholder="식당 이름, 지역 등을 입력하세요" />
 					<button type="submit" class="search-button">검색</button>
 				</div>
-
-				<!-- 지도 및 포커스 식당 정보 -->
 				<section class="map-focus-section">
-					<!-- 지도 -->
 					<div class="map-container">
-						<div id="map"></div>
+						<div id="map" style="width:100%;height:400px;"></div>
 					</div>
-
-					<!-- 클릭된 핀의 정보 표시 -->
 					<div class="focus-info" id="info">
 						<h2 class="focus-title" id="info-title">식당 이름</h2>
-						<p class="focus-description" id="info-description">식당 정보나 사진이
-							여기 뜰 예정이에용</p>
+						<p class="focus-description" id="info-description">식당 정보나 사진이 여기 뜰 예정이에용</p>
 					</div>
 				</section>
-
-				<!-- 요즘 많이 찾는 카테고리: 검색 데이터 따라 상위 키워드 자동 삽입 예정-->
-				<section class="trending-section">
-					<h2 class="section-title">요즘 많이 찾는</h2>
-					<div class="category-container">
-						<div class="category-item">#한식</div>
-						<div class="category-item">#일식</div>
-						<div class="category-item">#양식</div>
-						<div class="category-item">#중식</div>
-					</div>
-				</section>
-
-				<!-- 내 근처 맛집 섹션 -->
-				<section class="nearby-section">
-					<h2 class="section-title">내 근처 맛집</h2>
-					<div class="nearby-content">스크롤해서 식당 정보 계속 노출</div>
-				</section>
-
-				<!-- 상단으로 이동 버튼 -->
-				<div class="top-button">
-					<a href="#top" class="top">TOP ↑</a>
-				</div>
 			</main>
 		</div>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
 
 	<script>
-      // 식당 데이터 (예시 데이터) - 추후 DB 연동 필요
-      const restaurantData = [
-        { name: "우육면관 청계천점", description: "서울시 종로구 청계천로 1", lat: 37.5665, lng: 126.978, },
-        { name: "송화산시도삭면 2호점", description: "서울시 중구 을지로 2", lat: 37.5675, lng: 126.977, },
-        { name: "팀호완", description: "서울시 용산구 이태원로 3", lat: 37.5705, lng: 126.982, },
-        { name: "대가방 본점", description: "서울시 강남구 강남대로 4", lat: 37.5645, lng: 126.989, },
-      ];
+        document.addEventListener("DOMContentLoaded", function () {
+            const mapContainer = document.getElementById("map");
+            const mapOptions = {
+                center: new kakao.maps.LatLng(37.5665, 126.978),
+                level: 3,
+            };
+            const map = new kakao.maps.Map(mapContainer, mapOptions);
 
-      // DOMContentLoaded 이벤트 이후에 초기화되도록 설정
-      document.addEventListener("DOMContentLoaded", function () {
-        const mapContainer = document.getElementById("map");
-        const mapOptions = {
-          center: new kakao.maps.LatLng(37.5665, 126.978), // 초기 중심 좌표
-          level: 3, // 지도 확대 레벨
-        };
+            // 사용자 정의 마커 이미지 설정
+            const imageSrc = '<%= request.getContextPath() %>/resources/images/pin.png';
+            const imageSize = new kakao.maps.Size(64, 64);
+            const imageOption = { offset: new kakao.maps.Point(32, 64) };
+            const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-        const map = new kakao.maps.Map(mapContainer, mapOptions);
+            // 지오코더 객체 생성
+            const geocoder = new kakao.maps.services.Geocoder();
 
-        // 핀(마커)을 추가하고 클릭 이벤트 설정
-        restaurantData.forEach((restaurant) => {
-          const markerPosition = new kakao.maps.LatLng(
-            restaurant.lat,
-            restaurant.lng
-          );
-          const marker = new kakao.maps.Marker({
-            position: markerPosition,
-            map: map,
-          });
+            // 주소 데이터를 가져와 지오코딩 후 마커 표시
+            fetch('<%= request.getContextPath() %>/locations')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(location => {
+                        // 지오코딩을 통해 주소를 좌표로 변환
+                        geocoder.addressSearch(location.address, function(result, status) {
+                            if (status === kakao.maps.services.Status.OK) {
+                                const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-          // 마커 클릭 시 정보 업데이트
-          kakao.maps.event.addListener(marker, "click", function () {
-            document.getElementById("info-title").innerText = restaurant.name;
-            document.getElementById("info-description").innerText =
-              restaurant.description;
-          });
+                                // 마커 생성 및 설정
+                                const marker = new kakao.maps.Marker({
+                                    position: coords,
+                                    map: map,
+                                    image: markerImage
+                                });
+
+                                // 마커 클릭 시 정보창 및 애니메이션 업데이트
+                                kakao.maps.event.addListener(marker, "click", function () {
+                                    document.getElementById("info-title").innerText = location.name;
+                                    document.getElementById("info-description").innerText = location.description;
+                                    animateMarkerDrop(marker);
+                                });
+                            } else {
+                                console.error("지오코딩 실패:", location.address);
+                            }
+                        });
+                    });
+                })
+                .catch(error => console.error("주소 데이터 가져오기 실패:", error));
         });
-      });
-    </script>
 
+        // 클릭 시 마커가 내려찍히는 애니메이션 함수
+        function animateMarkerDrop(marker) {
+            let originalPosition = marker.getPosition();
+            let dropHeight = 20; // 내려가는 높이
+            let duration = 300; // 내려찍는 애니메이션 시간
+            let start = null;
+
+            function dropAnimationStep(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+                let amount = Math.min(progress / duration, 1); // 진행률 계산
+
+                // 내려찍히는 동작: 내려갔다가 원위치로 돌아옴
+                let displacement = dropHeight * Math.sin(amount * Math.PI); // 내려갔다가 올라오는 효과
+
+                let newPosition = new kakao.maps.LatLng(
+                    originalPosition.getLat() - displacement / 100000, // 미세 조정으로 자연스러운 효과
+                    originalPosition.getLng()
+                );
+                marker.setPosition(newPosition);
+
+                if (amount < 1) {
+                    requestAnimationFrame(dropAnimationStep); // 애니메이션 계속
+                } else {
+                    marker.setPosition(originalPosition); // 애니메이션 종료 후 원래 위치
+                }
+            }
+
+            requestAnimationFrame(dropAnimationStep);
+        }
+    </script>
 </body>
 </html>

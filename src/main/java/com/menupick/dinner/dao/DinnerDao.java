@@ -3,6 +3,27 @@ package com.menupick.dinner.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+<<<<<<< HEAD
+import java.util.ArrayList;
+
+import com.menupick.common.JDBCTemplate;
+import com.menupick.dinner.vo.Address;
+
+public class DinnerDao {
+
+	//DB에서 식당 주소 => 좌표변환
+	public ArrayList<Address> getDinnerAddress(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		
+				
+		return null;
+	}
+
+	
+	
+=======
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -49,4 +70,5 @@ public class DinnerDao {
 		
 		return dinnerList;
 	}
+>>>>>>> 1b1f6dbf67dd923fcbe089085748fa8061e03617
 }
