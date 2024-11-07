@@ -3,7 +3,6 @@ package com.menupick.dinner.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,45 +19,43 @@ import com.menupick.dinner.vo.Food;
 @WebServlet("/dinner/detail")
 public class DinnerDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DinnerDetailServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public DinnerDetailServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinner_no");
 		String dinnerName = request.getParameter("dinner_name");
-		
+
 		String foodNo = request.getParameter("food_no");
-		
+
 		DinnerService service = new DinnerService();
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 		dinnerList = service.likeDinner(dinnerNo, dinnerName);
 		ArrayList<Food> foodList = new ArrayList<Food>();
 		foodList = service.filterNation(foodNo);
-		
+
 		request.setAttribute("dinnerList", dinnerList);
 		request.setAttribute("foodList", foodList);
-		//request.getRequestDispatcher();
-		
-		
-		
-		
-		
+		// request.getRequestDispatcher();
+
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

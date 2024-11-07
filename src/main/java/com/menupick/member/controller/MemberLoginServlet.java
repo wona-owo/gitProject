@@ -26,14 +26,14 @@ public class MemberLoginServlet extends HttpServlet {
 	 */
 	public MemberLoginServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// System.out.println("saveId : " + request.getParameter("saveId")); <- 체크시 chk,
 		// 체크 안하는 경우 null
 
@@ -53,17 +53,17 @@ public class MemberLoginServlet extends HttpServlet {
 			// 정상로그인 !
 
 			// 레벨이 1일때 어드민 페이지로 이동하는 기능 넣어야함
-			
+
 			/*
-			if (loginMember.getMemberLevel() == 1) {
-			
-				request.getRequestDispatcher("/어드민일때 접근 가능한 페이지 주소? 메인?/").forward(request, response);
-			}
-			*/
-			
+			 * if (loginMember.getMemberLevel() == 1) {
+			 * 
+			 * request.getRequestDispatcher("/어드민일때 접근 가능한 페이지 주소? 메인?/").forward(request,
+			 * response); }
+			 */
+
 			HttpSession session = request.getSession(true);
-			session.setAttribute("loginMember", loginMember); 
-			session.setMaxInactiveInterval(600); 
+			session.setAttribute("loginMember", loginMember);
+			session.setMaxInactiveInterval(600);
 			Cookie cookie = new Cookie("saveId", loginId);
 
 			if (request.getParameter("saveId") != null) {
@@ -100,7 +100,6 @@ public class MemberLoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
