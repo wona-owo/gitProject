@@ -16,7 +16,7 @@ import com.menupick.dinner.vo.Food;
 /**
  * Servlet implementation class DinnerLike
  */
-@WebServlet("/dinner/like")
+@WebServlet("/dinner/likeFrm")
 public class DinnerLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -53,6 +53,8 @@ public class DinnerLikeServlet extends HttpServlet {
 		request.setAttribute("dinnerList", dinnerList);
 		request.setAttribute("foodList", foodList);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
+		
+		
 	}
 
 	/**

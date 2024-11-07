@@ -62,9 +62,10 @@ public class DinnerDao {
 				d.setDinnerOpen(rset.getString("DINNER_OPEN"));
 				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
 				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
+				d.setDinnerEmail(rset.getString("dinner_email"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
-				d.setDinnerTimeMax(rset.getString("DINNER_TIME_MAX"));
-				d.setBuisNum(rset.getString("BUIS_NUM"));
+				d.setDinnerTimeMax(rset.getString("DINNER_MAX_PERSON"));
+				d.setBuisNum(rset.getString("BUSI_NO"));
 				d.setDinnerId(rset.getString("DINNER_ID"));
 				d.setDinnerPw(rset.getString("DINNER_PW"));
 				d.setDinnerConfirm(rset.getString("DINNER_CONFIRM"));
