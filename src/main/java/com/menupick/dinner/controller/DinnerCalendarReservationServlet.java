@@ -36,11 +36,14 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 		String displayMonth = request.getParameter("displayMonth");
 		String justMonth = displayMonth.substring(0, displayMonth.length() - 1);
 		String displayYear = request.getParameter("displayYear");
-		
+
 		DinnerService service = new DinnerService();
 		ArrayList<Book> bookList = service.checkReservation(dinnerNo, justMonth, displayYear);
-		
-		System.out.println(bookList);
+
+		for (Book book : bookList) {
+			String justDate = book.getBookDate().substring(8, 10);
+			System.out.println(justDate);
+		}
 
 		int foo = 0;
 		response.getWriter().print(foo);
