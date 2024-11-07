@@ -18,8 +18,8 @@ public class Dinner {
 	private String dinnerPhone;
 	private String dinnerEmail;
 	private String dinnerParking;
-	private String dinnerTimeMax;
-	private String buisNum;
+	private String dinnerMaxPerson;
+	private String busiNum;
 	private String dinnerId;
 	private String dinnerPw;
 	private String dinnerConfirm;

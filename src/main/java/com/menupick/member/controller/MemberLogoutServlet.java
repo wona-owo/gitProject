@@ -7,18 +7,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class AdminDinnerManageDetail
+ * Servlet implementation class MemberLogoutServlet
  */
-@WebServlet("/AdminDinnerManageDetail")
-public class AdminDinnerManageDetail extends HttpServlet {
+@WebServlet("/member/logout")
+public class MemberLogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AdminDinnerManageDetail() {
+	public MemberLogoutServlet() {
 		super();
 	}
 
@@ -28,7 +29,13 @@ public class AdminDinnerManageDetail extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		HttpSession session = request.getSession();
+
+		if (session != null) {
+			session.invalidate(); // 세션 객체에 저장된 모든 정보 소멸
+		}
+
+		response.sendRedirect("/"); // 메인 페이지 이동
 	}
 
 	/**
