@@ -82,29 +82,30 @@ public class DinnerDao {
 		return dinnerList;
 	}
 
-	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String displayMonth, String displayYear) {
+	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<Book> bookList = new ArrayList<>();
-		String query = "select book_no, book_date from tbl_book where book_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
-
+		String query = "select * from tbl_book where dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+		
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
-			pt.setString(2, displayMonth);
-			pt.setString(3, displayYear);
+	        pt.setInt(2, Integer.parseInt(justMonth));
+	        pt.setInt(3, Integer.parseInt(displayYear));
 
 			rt = pt.executeQuery();
 
 			while (rt.next()) {
 				Book b = new Book();
 				b.setBookNo(rt.getString("book_no"));
+				b.setDinnerNo(rt.getString("dinner_no"));
+				b.setMemberNo(rt.getString("member_no"));
 				b.setBookDate(rt.getString("book_date"));
+				b.setBookTime(rt.getString("book_time"));
+				b.setBookCnt(rt.getString("book_cnt"));
 				bookList.add(b);
 			}
-			
-			System.out.println("bookList from dao : " + bookList);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

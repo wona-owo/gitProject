@@ -25,14 +25,11 @@ public class DinnerService {
 		return dinnerList;
 	}
 
-	public ArrayList<Book> checkReservation(String dinnerNo, String displayMonth, String displayYear) {
+	public ArrayList<Book> checkReservation(String dinnerNo, String justMonth, String displayYear) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Book> bookList = null;
-		bookList = dao.checkReservation(conn, dinnerNo, displayMonth, displayYear);
+		bookList = dao.checkReservation(conn, dinnerNo, justMonth, displayYear);
 		JDBCTemplate.close(conn);
-
-		System.out.println("bookList from service :"+bookList);
-
 		return bookList;
 	}
 
