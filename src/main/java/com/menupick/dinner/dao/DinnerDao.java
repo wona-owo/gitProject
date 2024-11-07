@@ -87,12 +87,12 @@ public class DinnerDao {
 		ResultSet rt = null;
 		ArrayList<Book> bookList = new ArrayList<>();
 		String query = "select * from tbl_book where dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
-		
+
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
-	        pt.setInt(2, Integer.parseInt(justMonth));
-	        pt.setInt(3, Integer.parseInt(displayYear));
+			pt.setInt(2, Integer.parseInt(justMonth));
+			pt.setInt(3, Integer.parseInt(displayYear));
 
 			rt = pt.executeQuery();
 
@@ -168,5 +168,45 @@ public class DinnerDao {
 		}
 
 		return addressList;
+	}
+
+	public Dinner memberLogin(Connection conn, String loginId, String loginPw) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select * from tbl_dinner where dinner_id =? and dinner_pw =?";
+		Dinner d = null;
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, loginId);
+			pstmt.setString(2, loginPw);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				d = new Dinner();
+				d.setDinnerNo(rset.getString("dinner_no"));
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setDinnerOpen(rset.getString("dinnerOpen"));
+				d.setDinnerClose(rset.getString("dinner_close"));
+				d.setDinnerPhone(rset.getString("dinner_phone"));
+				d.setDinnerEmail(rset.getString("dinner_email"));
+				d.setDinnerParking(rset.getString("dinner_parking"));
+				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+				d.setBusiNum(rset.getString("busi_num"));
+				d.setDinnerId(rset.getString("dinner_id"));
+				d.setDinnerPw(rset.getString("dinner_pw"));
+				d.setDinnerConfirm(rset.getString("dinner_confirm"));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return d;
 	}
 }

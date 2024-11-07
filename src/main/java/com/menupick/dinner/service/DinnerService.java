@@ -56,4 +56,11 @@ public class DinnerService {
 		return list;
 	}
 
+	public Dinner memberLogin(String loginId, String loginPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		Dinner dinner = dao.memberLogin(conn, loginId, loginPw);
+		JDBCTemplate.close(conn);
+		return dinner;
+	}
+
 }
