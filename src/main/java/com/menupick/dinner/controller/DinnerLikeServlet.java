@@ -52,8 +52,6 @@ public class DinnerLikeServlet extends HttpServlet {
 		request.setAttribute("dinnerList", dinnerList);
 		request.setAttribute("foodList", foodList);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
-		
-		
 	}
 
 	/**
