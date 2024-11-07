@@ -115,8 +115,8 @@ section {
 						<span id="month"></span> <span id="year"></span>
 
 						<%-- TODO loginMember.dinnerNo 동작하는지 확인 --%>
-						<input type="hidden" name="dinnerNo"
-							value="${loginMember.dinnerNo}">
+						<input type="hidden" name="dinnerNo" id="dinnerNo"
+							value="${dinnerNo}">
 					</div>
 				</div>
 
@@ -177,18 +177,12 @@ section {
 									daysContainer.append("<span></span>");
 								}
 
-								console.log("displayMonth : "
-										+ $("#month").html());
-								console.log("displayYear : "
-										+ $("#year").html());
-
 								// For getting reservation info
-								$
-										.ajax({
+								$.ajax({
 											url : "/dinner/reservation",
 											data : {
-												displayMonth : $("#month")
-														.text(),
+												dinnerNo : $("#dinnerNo").val(),
+												displayMonth : $("#month") .text(),
 												displayYear : $("#year").text()
 											},
 											type : "GET",
