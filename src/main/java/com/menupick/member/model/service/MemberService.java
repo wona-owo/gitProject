@@ -17,7 +17,7 @@ public class MemberService {
 	public Member memberLogin(String loginId, String loginPw) {
 		Connection conn = JDBCTemplate.getConnection(); // 오라클과 연결
 		Member member = dao.memberLogin(conn, loginId, loginPw);
-		JDBCTemplate.close(conn); 
+		JDBCTemplate.close(conn);
 		return member;
 	}
 

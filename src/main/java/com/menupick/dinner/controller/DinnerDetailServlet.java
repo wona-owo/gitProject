@@ -10,19 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
-import com.menupick.dinner.vo.Book;
+import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Food;
 
 /**
- * Servlet implementation class DinnerCalendarReservaitionServlet
+ * Servlet implementation class DinnerDetailServlet
  */
-@WebServlet("/dinner/reservation")
-public class DinnerCalendarReservationServlet extends HttpServlet {
+@WebServlet("/dinner/dinnerDetail")
+public class DinnerDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DinnerCalendarReservationServlet() {
+	public DinnerDetailServlet() {
 		super();
 	}
 
@@ -32,22 +33,21 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String dinnerNo = request.getParameter("dinnerNo");
-		String displayMonth = request.getParameter("displayMonth");
-		String justMonth = displayMonth.substring(0, displayMonth.length() - 1);
-		String displayYear = request.getParameter("displayYear");
+		String dinnerNo = request.getParameter("dinner_no");
+		String dinnerName = request.getParameter("dinner_name");
 
-		System.out.println("dinnerNo : " + dinnerNo);
-		System.out.println("displayMonth : " + justMonth);
-		System.out.println("displayYear : " + displayYear);
+		String foodNo = request.getParameter("food_no");
 
 		DinnerService service = new DinnerService();
-		ArrayList<Book> bookList = service.checkReservation(dinnerNo, justMonth, displayYear);
+		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
+		dinnerList = service.likeDinner(dinnerNo, dinnerName);
+		ArrayList<Food> foodList = new ArrayList<Food>();
+		foodList = service.filterNation(foodNo);
 
-		System.out.println("bookList : " + bookList);
+		request.setAttribute("dinnerList", dinnerList);
+		request.setAttribute("foodList", foodList);
+		// request.getRequestDispatcher();
 
-		int foo = 0;
-		response.getWriter().print(foo);
 	}
 
 	/**
