@@ -158,6 +158,27 @@
 <body>
 	<div class="wrap">
 		<main class="content">
+
+			<!-- 검색 박스 -->
+			<div class="search-box">
+				<button class="filter-button" onclick="toggleFilterContainer()">
+					필터 <span class="arrow">▼</span>
+				</button>
+				<input type="text" id="searchInput" class="search-input"
+					placeholder="식당 이름 또는 메뉴 검색">
+				<button class="search-button" onclick="search()">검색</button>
+			</div>
+
+			<!-- 콤팩트 필터 컨테이너 -->
+
+			<div class="filter-container">
+				<div class="filter-title">국가별 필터</div>
+				<div class="filter-section">
+					<c:forEach var="food" items="${foodList}">
+						<span class="filter-button" data-value="${food.foodNation}"
+							onclick="toggleFilter(event, 'cuisine')">${food.foodNation}</span>
+					</c:forEach>
+				</div>
 			<!-- 검색 박스 -->
 			<div class="search-box">
 				<button class="filter-button" onclick="toggleFilterContainer()">
@@ -178,7 +199,6 @@
 							onclick="toggleFilter(event, 'cuisine')">${food.foodNation}</span>
 					</div>
 				</c:forEach>
-
 				<div class="filter-title">음식 유형 필터</div>
 				<div class="filter-section">
 					<c:forEach var="food" items="${foodList}">
@@ -192,6 +212,20 @@
 			<!-- 예시 카드 -->
 			<div class="card-container">
 				<c:forEach var="dinner" items="${dinnerList}">
+					<c:forEach var="food" items="${foodList}">
+						<div class="card" data-cuisine="${food.foodNation}"
+							data-type="${food.foodCat}">
+							<a href="/dinner/like?dinnerNo=${dinner.dinnerNo}"><img
+								src="img/jungsik.jpg" alt="음식 이미지"></a>
+							<div class="card-info">
+								<h3>
+									<a href="/dinner/detail">${dinner.dinnerName}</a>
+								</h3>
+								<p>${dinner.dinnerAddr}</p>
+								<p class="cuisine-type">${food.foodNation}</p>
+							</div>
+						</div>
+					</c:forEach>
 					<div class="card" data-cuisine="한식" data-type="육류">
 						<a href="/dinner/like?dinnerNo=${dinner.dinnerNo}"><img
 							src="img/jungsik.jpg" alt="음식 이미지"></a>
@@ -214,6 +248,7 @@
 					</div>
 				</div>
 			</div>
+
 		</main>
 	</div>
 	<script>

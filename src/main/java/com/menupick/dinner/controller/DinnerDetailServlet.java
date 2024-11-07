@@ -16,7 +16,7 @@ import com.menupick.dinner.vo.Food;
 /**
  * Servlet implementation class DinnerDetailServlet
  */
-@WebServlet("/dinner/dinnerDetail")
+@WebServlet("/dinner/detail")
 public class DinnerDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
