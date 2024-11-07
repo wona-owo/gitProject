@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class MemberDinnerServlet
@@ -28,6 +29,11 @@ public class DinnerCalendarFrmServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		// TESTCODE 
+		HttpSession session = request.getSession(true);
+		session.setAttribute("dinnerNo", "d2411060001");
+		
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerCalendar.jsp").forward(request, response);
 	}
 
