@@ -19,7 +19,7 @@ public class Dinner {
 	private String dinnerEmail;
 	private String dinnerParking;
 	private String dinnerMaxPerson;
-	private String busiNum;
+	private String busiNo;
 	private String dinnerId;
 	private String dinnerPw;
 	private String dinnerConfirm;
