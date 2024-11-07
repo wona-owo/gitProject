@@ -124,7 +124,7 @@
                     marker.setPosition(originalPosition);
                 }
             }
-
+   
             requestAnimationFrame(dropAnimationStep);
         }
     });
