@@ -8,6 +8,7 @@ import com.menupick.dinner.dao.DinnerDao;
 import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.DinnerMember;
 import com.menupick.dinner.vo.Food;
 
 public class DinnerService {
@@ -57,6 +58,13 @@ public class DinnerService {
 		ArrayList<Dinner> list = dao.selectAllMember(conn);
 		JDBCTemplate.close(conn);
 		return list;
+	}
+
+	public Dinner memberLogin(String loginId, String loginPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		Dinner dinner = dao.memberLogin(conn, loginId, loginPw);
+		JDBCTemplate.close(conn);
+		return dinner;
 	}
 
 }
