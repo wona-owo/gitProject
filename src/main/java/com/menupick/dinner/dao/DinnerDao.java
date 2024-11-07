@@ -67,7 +67,7 @@ public class DinnerDao {
 				d.setDinnerEmail(rset.getString("DINNER_EMAIL"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
 				d.setDinnerMaxPerson(rset.getString("DINNER_MAX_PERSON"));
-				d.setBusiNum(rset.getString("BUSI_NUM"));
+				d.setBusiNo(rset.getString("BUSI_NO"));
 				d.setDinnerId(rset.getString("DINNER_ID"));
 				d.setDinnerPw(rset.getString("DINNER_PW"));
 				d.setDinnerConfirm(rset.getString("DINNER_CONFIRM"));
@@ -165,5 +165,39 @@ public class DinnerDao {
 		}
 
 		return addressList;
+	}
+
+	public Dinner dinnerDetail(Connection conn, String dinnerNo, String foodNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Dinner d = null;
+		String query = "select dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
+		
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				d = new Dinner();
+				d.setDinnerName(rset.getString("DINNER_NAME"));
+				d.setDinnerAddr(rset.getString("DINNER_ADDR"));
+				d.setDinnerOpen(rset.getString("DINNER_OPEN"));
+				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
+				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
+				d.setDinnerParking(rset.getString("DINNER_PARKING"));
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return d;
 	}
 }

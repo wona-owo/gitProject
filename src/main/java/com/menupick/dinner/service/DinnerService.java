@@ -59,4 +59,11 @@ public class DinnerService {
 		return list;
 	}
 
+	public Dinner dinnerDetail(String dinnerNo, String foodNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Dinner dinner = dao.dinnerDetail(conn, dinnerNo, foodNo);
+		JDBCTemplate.close(conn);
+		return dinner;
+	}
+
 }
