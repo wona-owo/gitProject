@@ -57,11 +57,10 @@
 			<section class="section admin-wrap">
 				<div class="page-title">매장 관리 페이지</div>
 				<div class="table-container">
-					<div class="search-box">
-						<select id="filterSelect">
-							<option value="">매장 이름정렬 순</option>
-							<option value="approved">매장 승인 순</option>
-						</select> <input type="text" placeholder="매장 이름 검색" id="searchInput">
+					<div class="search-box">						
+						<button type="button" id="firstname" class="btn-primary">매장이름순 정렬</button>
+						<button type="button" id="firstCon" class="btn-primary">승인여부 순 정렬</button>
+						<input type="text" placeholder="매장 이름 검색" id="searchInput">
 						<button onclick="searchDinner()">검색</button>
 					</div>
 				</div>
@@ -75,9 +74,9 @@
 						<th style="width: 10%">매장 번호</th>
 						<th style="width: 5%">승인여부</th>
 					</tr>
-
 					<c:forEach var="d" items="${dinnerList}">
-						<tr>
+						<tr onclick="location.href='/dinnerDetail?dinnerNo=${d.dinnerNo}'"
+							style="cursor: pointer;">
 							<td class="dinnerNo">${d.dinnerNo}</td>
 							<td>${d.dinnerName}</td>
 							<td>${d.dinnerAddr}</td>
@@ -87,24 +86,21 @@
 						</tr>
 					</c:forEach>
 				</table>
-
-				<!-- 페이지 넘버 생성 -->
-				<div class="pagination">
-					<c:forEach var="i" begin="1" end="${totalPages}" step="5">
-						<c:choose>
-							<c:when test="${currentPage >= i && currentPage < i + 5}">
-								<a href="?page=${i}" class="active">${i}</a>
-							</c:when>
-							<c:otherwise>
-								<a href="?page=${i}">${i}</a>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</div>
 			</section>
 		</main>
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+	<script>
+	$("#firstname").on("click", function(){
+		
+		
+		
+		
+	}
+	</script>
+	
+	
+	
+	
 </body>
 </html>
