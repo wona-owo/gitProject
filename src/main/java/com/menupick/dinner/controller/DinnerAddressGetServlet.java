@@ -32,19 +32,23 @@ public class DinnerAddressGetServlet extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	        throws ServletException, IOException {
 
-		DinnerService service = new DinnerService();
+	    // JSON 응답 설정
+	    response.setContentType("application/json; charset=UTF-8"); // JSON 응답을 UTF-8로 설정
 
-		// 주소 데이터 가져오기
-		List<Address> addresses = service.getDinnerAddress();
+	    DinnerService service = new DinnerService();
 
-		// JSON 변환 및 응답
-		Gson gson = new Gson();
-		String json = gson.toJson(addresses);
+	    // 주소 데이터 가져오기
+	    List<Address> addresses = service.getDinnerAddress();
 
-		response.getWriter().write(json);
+	    // JSON 변환 및 응답
+	    Gson gson = new Gson();
+	    String json = gson.toJson(addresses);
+
+	    response.getWriter().write(json); // UTF-8로 인코딩된 JSON을 응답으로 작성
 	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

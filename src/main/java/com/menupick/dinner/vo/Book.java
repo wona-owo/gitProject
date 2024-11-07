@@ -13,5 +13,5 @@ public class Book {
 	private String memberNo;
 	private String bookDate;
 	private String bookTime;
-	private String book_cnt;
+	private String bookCnt;
 }

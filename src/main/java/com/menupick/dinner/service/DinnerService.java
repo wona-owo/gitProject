@@ -25,14 +25,11 @@ public class DinnerService {
 		return dinnerList;
 	}
 
-	public ArrayList<Book> checkReservation(String dinnerNo, String displayMonth, String displayYear) {
+	public ArrayList<Book> checkReservation(String dinnerNo, String justMonth, String displayYear) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Book> bookList = null;
-		bookList = dao.checkReservation(conn, dinnerNo, displayMonth, displayYear);
+		bookList = dao.checkReservation(conn, dinnerNo, justMonth, displayYear);
 		JDBCTemplate.close(conn);
-
-		System.out.println(bookList);
-
 		return bookList;
 	}
 
@@ -59,9 +56,17 @@ public class DinnerService {
 		return list;
 	}
 
+
 	public Dinner dinnerDetail(String dinnerNo, String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = dao.dinnerDetail(conn, dinnerNo, foodNo);
+		JDBCTemplate.close(conn);
+		return dinner;
+	}
+	public Dinner memberLogin(String loginId, String loginPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		Dinner dinner = dao.memberLogin(conn, loginId, loginPw);
+
 		JDBCTemplate.close(conn);
 		return dinner;
 	}
