@@ -84,7 +84,7 @@ public class DinnerDao {
 		return dinnerList;
 	}
 
-	public ArrayList<Book> likeDinner(Connection conn, String dinnerNo, String displayMonth, String displayYear) {
+	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String displayMonth, String displayYear) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<Book> bookList = new ArrayList<>();

@@ -29,7 +29,7 @@ public class DinnerService {
 	public ArrayList<Book> checkReservation(String dinnerNo, String displayMonth, String displayYear) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Book> bookList = null;
-		bookList = dao.likeDinner(conn, dinnerNo, displayMonth, displayYear);
+		bookList = dao.checkReservation(conn, dinnerNo, displayMonth, displayYear);
 		JDBCTemplate.close(conn);
 
 		System.out.println(bookList);
