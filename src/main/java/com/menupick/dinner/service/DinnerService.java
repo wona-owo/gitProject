@@ -16,7 +16,7 @@ public class DinnerService {
 	public DinnerService() {
 		dao = new DinnerDao();
 	}
-
+	//인기식당 페이지
 	public ArrayList<Dinner> likeDinner(String dinnerNo, String dinnerName) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> dinnerList = null;
@@ -56,19 +56,23 @@ public class DinnerService {
 		return list;
 	}
 
-
-	public Dinner dinnerDetail(String dinnerNo, String foodNo) {
+	//식당 상세페이지
+	public Dinner dinnerDetail(String dinnerNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		Dinner dinner = dao.dinnerDetail(conn, dinnerNo, foodNo);
+		Dinner dinner = dao.dinnerDetail(conn, dinnerNo);
 		JDBCTemplate.close(conn);
 		return dinner;
 	}
 	public Dinner memberLogin(String loginId, String loginPw) {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = dao.memberLogin(conn, loginId, loginPw);
-
 		JDBCTemplate.close(conn);
 		return dinner;
+	}
+	//음식 태그별 분류 Service
+	public Food foodDetail(String foodNo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

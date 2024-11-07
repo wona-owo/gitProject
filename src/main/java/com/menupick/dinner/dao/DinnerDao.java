@@ -171,7 +171,7 @@ public class DinnerDao {
 	}
 
 
-	public Dinner dinnerDetail(Connection conn, String dinnerNo, String foodNo) {
+	public Dinner dinnerDetail(Connection conn, String dinnerNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner d = null;
