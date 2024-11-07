@@ -44,7 +44,7 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 		DinnerService service = new DinnerService();
 		ArrayList<Book> bookList = service.checkReservation(dinnerNo, justMonth, displayYear);
 
-		System.out.println("bookList : " + bookList);
+		System.out.println("bookList fro servlet : " + bookList);
 
 		int foo = 0;
 		response.getWriter().print(foo);

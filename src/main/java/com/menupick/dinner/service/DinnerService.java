@@ -31,7 +31,7 @@ public class DinnerService {
 		bookList = dao.checkReservation(conn, dinnerNo, displayMonth, displayYear);
 		JDBCTemplate.close(conn);
 
-		System.out.println(bookList);
+		System.out.println("bookList from service :"+bookList);
 
 		return bookList;
 	}

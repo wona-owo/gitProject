@@ -1,28 +1,37 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>오늘 메뉴 픽해볼까? Menu Pick!</title>
 <link rel="stylesheet" href="/resources/css/default.css" />
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1ca3b7a5df74e4b03123d97229e9ebde&libraries=services"></script>
+<script
+	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1ca3b7a5df74e4b03123d97229e9ebde&libraries=services"></script>
 </head>
 <body>
 	<div>
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<div class="wrap">
 			<main>
+				<div>
+					<a href='member/dinnerCalendar'>goes to dinnerCalendar.jsp via
+						DinnerCalendarFrmServlet.java</a>
+				</div>
+
 				<div class="search-box">
-					<input type="text" class="search-input" placeholder="식당 이름, 지역 등을 입력하세요" />
+					<input type="text" class="search-input"
+						placeholder="식당 이름, 지역 등을 입력하세요" />
 					<button type="submit" class="search-button">검색</button>
 				</div>
 				<section class="map-focus-section">
 					<div class="map-container">
-						<div id="map" style="width:100%;height:400px;"></div>
+						<div id="map" style="width: 100%; height: 400px;"></div>
 					</div>
 					<div class="focus-info" id="info">
 						<h2 class="focus-title" id="info-title">식당 이름</h2>
-						<p class="focus-description" id="info-description">식당 정보나 사진이 여기 뜰 예정이에용</p>
+						<p class="focus-description" id="info-description">식당 정보나 사진이
+							여기 뜰 예정이에용</p>
 					</div>
 				</section>
 			</main>
@@ -40,7 +49,7 @@
         const map = new kakao.maps.Map(mapContainer, mapOptions);
 
         // 사용자 정의 마커 이미지 설정
-        const imageSrc = '<%= request.getContextPath() %>/resources/images/pin.png';
+        const imageSrc = '<%=request.getContextPath()%>/resources/images/pin.png';
         const imageSize = new kakao.maps.Size(64, 64);
         const imageOption = { offset: new kakao.maps.Point(32, 64) };
         const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
@@ -58,7 +67,7 @@
             const bounds = map.getBounds(); // 현재 지도 경계를 가져옴
 
             // 서버에서 장소 데이터 가져오기
-            fetch('<%= request.getContextPath() %>/locations')
+            fetch('<%=request.getContextPath()%>/locations')
                 .then(response => response.json())
                 .then(data => {
                     removeMarkers(); // 기존 마커 제거

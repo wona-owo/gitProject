@@ -102,6 +102,8 @@ public class DinnerDao {
 				b.setBookDate(rt.getString("book_date"));
 				bookList.add(b);
 			}
+			
+			System.out.println("bookList from dao : " + bookList);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
