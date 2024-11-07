@@ -8,7 +8,6 @@ import com.menupick.dinner.dao.DinnerDao;
 import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
-import com.menupick.dinner.vo.DinnerMember;
 import com.menupick.dinner.vo.Food;
 
 public class DinnerService {
