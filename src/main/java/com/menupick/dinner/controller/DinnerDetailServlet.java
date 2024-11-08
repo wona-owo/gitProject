@@ -1,6 +1,7 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +16,7 @@ import com.menupick.dinner.vo.Food;
 /**
  * Servlet implementation class DinnerDetailServlet
  */
-@WebServlet("/dinner/detail")
+@WebServlet("/dinner/dinnerDetail")
 public class DinnerDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -34,15 +35,14 @@ public class DinnerDetailServlet extends HttpServlet {
 		String dinnerNo = request.getParameter("dinner_no");
 		
 		
-		String foodNo = request.getParameter("food_no");
-		
 		DinnerService service = new DinnerService();
 		Dinner dinner = service.dinnerDetail(dinnerNo);
-		Food food = service.foodDetail(foodNo);
-
+		
+		
 		request.setAttribute("dinner", dinner);
-		request.setAttribute("food", food);
+		
 		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
+		
 
 	}
 

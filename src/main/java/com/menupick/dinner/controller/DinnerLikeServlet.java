@@ -48,6 +48,7 @@ public class DinnerLikeServlet extends HttpServlet {
 		dinnerList =  service.likeDinner(dinnerNo, dinnerName);
 		foodList = service.filterNation(foodNo);
 		
+		
 		//4. 값 추출
 		request.setAttribute("dinnerList", dinnerList);
 		request.setAttribute("foodList", foodList);

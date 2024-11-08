@@ -18,6 +18,7 @@
 					<img src="/resources/images/jungsik.jpg" id="main-img"
 						alt="Restaurant Image" />
 				</div>
+				
 				<div class="restaurant-detail">
 					<div class="restaurant-detail-container">
 						<div class="restaurant-category">${food.foodName}</div>
@@ -30,8 +31,10 @@
 							class="fa-solid fa-phone"></i> <span id="phone">${dinner.dinnerPhone}</span><br />
 						<i class="fa-solid fa-car"></i> <span id="parking">${dinner.dinnerParking}</span><br />
 					</div>
+					
 					<button id="book" class="btn-primary">예약</button>
 				</div>
+				
 
 			</section>
 
@@ -62,6 +65,8 @@
 					<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
 					<div class="tab-content" id="around-content">주변 콘텐츠</div>
+					
+
 				</div>
 			</section>
 		</main>

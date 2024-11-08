@@ -178,29 +178,28 @@
 						<span class="filter-button" data-value="${food.foodNation}"
 							onclick="toggleFilter(event, 'cuisine')">${food.foodNation}</span>
 					</div>
-				</c:forEach>
+				
 				<div class="filter-title">음식 유형 필터</div>
 				<div class="filter-section">
-					<c:forEach var="food" items="${foodList}">
 						<span class="filter-button" data-value="${food.foodCat}"
 							onclick="toggleFilter(event, 'type')">${food.foodCat}</span>
-					</c:forEach>
 				</div>
+				</c:forEach>
 				</div>
 			
 
 
 			<!-- 예시 카드 -->
 			<div class="card-container">
+			
 				<c:forEach var="dinner" items="${dinnerList}">
 					<c:forEach var="food" items="${foodList}">
 						<div class="card" data-cuisine="${food.foodNation}"
 							data-type="${food.foodCat}">
-							<a href="/WEB-INF/views/common/dinnerDetail.jsp"><img
-								src="img/jungsik.jpg" alt="음식 이미지"></a>
+							<img src="img/jungsik.jpg" alt="음식 이미지">
 							<div class="card-info">
 								<h3>
-									<a href="/dinner/dinnerDetailFrm?dinnerNo=${dinner.dinnerNo}">${dinner.dinnerName}</a>
+									<a href="/dinner/dinnerDetail?dinner_no=${dinner.dinnerNo}&food_no=${food.foodNo}">${dinner.dinnerName}</a>
 								</h3>
 								<p>${dinner.dinnerAddr}</p>
 								<p class="cuisine-type">${food.foodNation}</p>
@@ -218,6 +217,7 @@
 						<p class="cuisine-type">양식</p>
 					</div>
 				</div>
+				
 			</div>
 		</main>
 	</div>
@@ -270,6 +270,8 @@ const filters = {
         filterContainer.style.display = isOpen ? 'none' : 'block';
         arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
     }
+    
+
 </script>
 </body>
 </html>

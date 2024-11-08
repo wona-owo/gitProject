@@ -59,8 +59,10 @@ public class DinnerService {
 	//식당 상세페이지
 	public Dinner dinnerDetail(String dinnerNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		Dinner dinner = dao.dinnerDetail(conn, dinnerNo);
+		Dinner dinner = new Dinner();
+		dinner = dao.dinnerDetail(conn, dinnerNo);
 		JDBCTemplate.close(conn);
+		System.out.println(dinner);
 		return dinner;
 	}
 	public Dinner memberLogin(String loginId, String loginPw) {
@@ -69,10 +71,15 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return dinner;
 	}
-	//음식 태그별 분류 Service
+	//음식 상세페이지 출력
 	public Food foodDetail(String foodNo) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = JDBCTemplate.getConnection();
+		Food food = new Food();
+		System.out.println(food);
+		food = dao.foodDetail(conn, foodNo);
+		JDBCTemplate.close(conn);
+		return food;
 	}
+
 
 }

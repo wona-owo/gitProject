@@ -174,8 +174,9 @@ public class DinnerDao {
 	public Dinner dinnerDetail(Connection conn, String dinnerNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		Dinner d = null;
+		Dinner d = new Dinner();
 		String query = "select dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
+		
 		
 		
 		try {
@@ -184,14 +185,15 @@ public class DinnerDao {
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
-				d = new Dinner();
-				d.setDinnerName(rset.getString("DINNER_NAME"));
-				d.setDinnerAddr(rset.getString("DINNER_ADDR"));
-				d.setDinnerOpen(rset.getString("DINNER_OPEN"));
-				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
-				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
-				d.setDinnerParking(rset.getString("DINNER_PARKING"));
-				
+				 
+				d.setDinnerNo(dinnerNo);
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setDinnerOpen(rset.getString("dinner_open"));
+				d.setDinnerClose(rset.getString("dinner_close"));
+				d.setDinnerPhone(rset.getString("dinner_phone"));				
+				d.setDinnerParking(rset.getString("dinner_parking"));
+			
 			}
 			
 		} catch (SQLException e) {
@@ -243,5 +245,34 @@ public class DinnerDao {
 
 
 		return d;
+	}
+
+	public Food foodDetail(Connection conn, String foodNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Food food = new Food();
+		String query = "select food_name, food_cat from tbl_food where food_no = ?";
+		System.out.println(food);
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, foodNo);
+			rset = pstmt.executeQuery();
+			
+			
+			if(rset.next()) {
+				food.setFoodNo(foodNo);
+				food.setFoodCat("food_cat");
+				food.setFoodName("food_name");
+				food.setFoodNation("food_nation");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return food;
 	}
 }
