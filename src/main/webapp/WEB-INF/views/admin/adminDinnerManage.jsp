@@ -57,9 +57,11 @@
 			<section class="section admin-wrap">
 				<div class="page-title">매장 관리 페이지</div>
 				<div class="table-container">
-					<div class="search-box">						
-						<button type="button" id="firstname" class="btn-primary">매장이름순 정렬</button>
-						<button type="button" id="firstCon" class="btn-primary">승인여부 순 정렬</button>
+					<div class="search-box">
+						<button type="button" id="firstname" class="btn-primary">매장이름순
+							정렬</button>
+						<button type="button" id="firstCon" class="btn-primary">승인여부
+							순 정렬</button>
 						<input type="text" placeholder="매장 이름 검색" id="searchInput">
 						<button onclick="searchDinner()">검색</button>
 					</div>
@@ -78,29 +80,72 @@
 						<tr onclick="location.href='/dinnerDetail?dinnerNo=${d.dinnerNo}'"
 							style="cursor: pointer;">
 							<td class="dinnerNo">${d.dinnerNo}</td>
-							<td>${d.dinnerName}</td>
+							<td class="dinnerName">${d.dinnerName}</td>
 							<td>${d.dinnerAddr}</td>
 							<td>${d.dinnerEmail}</td>
 							<td>${d.dinnerPhone}</td>
-							<td>${d.dinnerConfirm}</td>
+							<td class="dinnerConfirm">${d.dinnerConfirm}</td>
 						</tr>
 					</c:forEach>
 				</table>
 			</section>
 		</main>
+
+		<script>
+			function sortTableByName() {
+				const table = document.getElementById("dinnerTable");
+				let rows, switching, i, x, y, shouldSwitch;
+				switching = true;
+				while (switching) {
+					switching = false;
+					rows = table.rows;
+					for (i = 1; i < rows.length - 1; i++) {
+						shouldSwitch = false;
+						x = rows[i].getElementsByClassName("dinnerName")[0];
+						y = rows[i + 1].getElementsByClassName("dinnerName")[0];
+						if (x.innerHTML.toLowerCase() > y.innerHTML
+								.toLowerCase()) {
+							shouldSwitch = true;
+							break;
+						}
+					}
+					if (shouldSwitch) {
+						rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+						switching = true;
+					}
+				}
+			}
+
+			function sortTableByConfirm() {
+				const table = document.getElementById("dinnerTable");
+				let rows, switching, i, x, y, shouldSwitch;
+				switching = true;
+				while (switching) {
+					switching = false;
+					rows = table.rows;
+					for (i = 1; i < rows.length - 1; i++) {
+						shouldSwitch = false;
+						x = rows[i].getElementsByClassName("dinnerConfirm")[0];
+						y = rows[i + 1].getElementsByClassName("dinnerConfirm")[0];
+						if (x.innerHTML.toLowerCase() > y.innerHTML
+								.toLowerCase()) {
+							shouldSwitch = true;
+							break;
+						}
+					}
+					if (shouldSwitch) {
+						rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+						switching = true;
+					}
+				}
+			}
+		</script>
+
+
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	<script>
-	$("#firstname").on("click", function(){
 		
-		
-		
-		
-	}
 	</script>
-	
-	
-	
-	
 </body>
 </html>

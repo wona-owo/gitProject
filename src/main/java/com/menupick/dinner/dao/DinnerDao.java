@@ -14,11 +14,11 @@ import com.menupick.dinner.vo.Food;
 
 public class DinnerDao {
 
-	public ArrayList<Dinner> selectAllMember(Connection conn) {
+	public ArrayList<Dinner> selectAllDinner(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
-		String query = "SELECT * FROM TBL_DINNER";
+		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name ASC";
 
 		try {
 			pstmt = conn.prepareStatement(query);
