@@ -37,7 +37,7 @@ public class MemberDao {
 				m.setMemberGender(rset.getString("member_gender"));
 				m.setMemberEmail(rset.getString("member_email"));
 				m.setEnrollDate(rset.getString("enroll_date"));
-				m.setAdultValid(rset.getString("adult_confirm"));
+				m.setAdultConfirm(rset.getString("adult_confirm"));
 				m.setMemberLevel(rset.getInt("member_level"));
 			}
 		} catch (SQLException e) {
@@ -53,7 +53,6 @@ public class MemberDao {
 	public int selectRemove(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		// TODO GPT가 짜준 memberno가 문자열이 들어가 '?' 로 해놓음 추후에 보고 수정할 것.
 		String query = "delete from tbl_member where member_no = ?";
 
 		try {
@@ -96,7 +95,7 @@ public class MemberDao {
 				m.setMemberGender(rset.getString("member_gender"));
 				m.setMemberEmail(rset.getString("member_email"));
 				m.setEnrollDate(rset.getString("enroll_date"));
-				m.setAdultValid(rset.getString("adult_confirm"));
+				m.setAdultConfirm(rset.getString("adult_confirm"));
 				m.setMemberLevel(rset.getInt("member_level"));
 			}
 		} catch (SQLException e) {
@@ -107,6 +106,55 @@ public class MemberDao {
 		}
 		return m;
 	}
+	
+	public int insertMember(Connection conn, Member member) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "insert into tbl_member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, N, 2)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, member.getMemberId());
+			pstmt.setString(2, member.getMemberPw());
+			pstmt.setString(3, member.getMemberName());
+			pstmt.setString(4, member.getMemberNick());
+			pstmt.setString(5, member.getMemberPhone());
+			pstmt.setString(6, member.getMemberAddr());
+			pstmt.setString(7, member.getMemberGender());
+			pstmt.setString(8, member.getMemberEmail());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	//아이디 중복 체크
+			public int idDuplChk(Connection conn, String memberId) {
+				PreparedStatement pstmt = null;
+				ResultSet rset = null;
+				String query = "select count(*) as cnt from tbl_member where member_id = ?";
+				int cnt = 0;
+				
+				try {
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, memberId);
+					rset = pstmt.executeQuery();
+					
+					if(rset.next()) {
+						cnt = rset.getInt("cnt");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					JDBCTemplate.close(rset);
+					JDBCTemplate.close(pstmt);
+				}
+				return 0;
+			}
 
 	public int updChgLevel(Connection conn, String memberNo, String memberLevel) {
 		PreparedStatement pstmt = null;
@@ -183,7 +231,7 @@ public class MemberDao {
 	            m.setMemberGender(rset.getString("member_gender"));
 	            m.setMemberEmail(rset.getString("member_email"));
 	            m.setEnrollDate(rset.getString("enroll_date"));
-	            m.setAdultValid(rset.getString("adult_confirm"));
+	            m.setAdultConfirm(rset.getString("adult_confirm"));
 	            m.setMemberLevel(rset.getInt("member_level"));
 	            members.add(m);
 	        }
