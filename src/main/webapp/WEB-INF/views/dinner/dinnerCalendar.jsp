@@ -88,7 +88,6 @@ section {
 
 .days span div {
 	/* Optional: Customize the appearance */
-	
 }
 
 .today {
@@ -158,12 +157,14 @@ section {
 				}));
 				yearDisplay.text(year);
 
-				// Created empty calendar box
 				for (let i = 0; i < firstDayOfMonth; i++) {
 					daysContainer.append("<span></span>");
 				}
 
-				let bookData = null;
+				function getBookCnt(day, data) {
+					let dayStr = day.toString().padStart(2, '0');
+				    return data[dayStr] || 0;
+				}
 
 				$.ajax({
 					url : "/dinner/reservation",
@@ -174,44 +175,33 @@ section {
 					},
 					type : "GET",
 					success : function(res) {
-						if (res == null) {
-							console.log("foobar");
-						} else {
-							bookData = res;
-							console.log(bookData);
+
+						for (let day = 1; day <= daysInMonth; day++) {
+							const dayEl = $("<span></span>");
+							const dayNumEl = $("<div></div>").text(day);
+
+							const bookCnt = getBookCnt(day, res);
+							const bookCntEl = $("<div></div>").text(bookCnt);
+
+							if (bookCnt == 0) {
+								dayEl.append(dayNumEl);
+							} else {
+								dayEl.append(dayNumEl);
+								dayEl.append(bookCntEl);
+							}
+
+							if (day === new Date().getDate()
+									&& year === new Date().getFullYear()
+									&& month === new Date().getMonth()) {
+								dayEl.addClass("today");
+							}
+							daysContainer.append(dayEl);
 						}
 					},
 					error : function() {
 						console.log("poop");
 					}
 				});
-
-				function getBookCnt(day) {
-					let dayStr = day.toString().padStart(2, '0');
-					return 1;
-				}
-
-				for (let day = 1; day <= daysInMonth; day++) {
-					const dayEl = $("<span></span>");
-					const dayNumEl = $("<div></div>").text(day);
-
-					const bookCnt = getBookCnt(day);
-					const bookCntEl = $("<div></div>").text(bookCnt);
-
-					if (bookCnt == 0) {
-						dayEl.append(dayNumEl);
-					} else {
-						dayEl.append(dayNumEl);
-						dayEl.append(bookCntEl);
-					}
-
-					if (day === new Date().getDate()
-							&& year === new Date().getFullYear()
-							&& month === new Date().getMonth()) {
-						dayEl.addClass("today");
-					}
-					daysContainer.append(dayEl);
-				}
 			}
 
 			$("#prev-month").on("click", function() {
