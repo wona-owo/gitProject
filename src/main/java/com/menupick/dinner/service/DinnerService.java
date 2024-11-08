@@ -49,10 +49,11 @@ public class DinnerService {
 		return addList;
 	}
 
-	public ArrayList<Dinner> selectAllMember() {
+	public ArrayList<Dinner> selectAllDinner() {
 		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<Dinner> list = dao.selectAllMember(conn);
+		ArrayList<Dinner> list = dao.selectAllDinner(conn);
 		JDBCTemplate.close(conn);
+		
 		return list;
 	}
 
