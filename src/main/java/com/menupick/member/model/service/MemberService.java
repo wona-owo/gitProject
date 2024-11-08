@@ -48,5 +48,35 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return member;
 	}
+	
+	public int insertMember(Member member) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.insertMember(conn, member);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+				
+		return result;
+	}
+	
+	public int idDuplChk(String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.idDuplChk(conn,memberId);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int nickDuplChk(String memberNick) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.nickDuplChk(conn,memberNick);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	
+
 
 }
