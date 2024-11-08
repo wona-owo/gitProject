@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
+import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.dao.MemberDao;
 import com.menupick.member.model.vo.Member;
 
@@ -62,6 +63,29 @@ public class MemberService {
 				
 		return result;
 	}
+	
+	public int idDuplChk(String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.idDuplChk(conn,memberId);
+		JDBCTemplate.close(conn);
+		return result;
+	}
 
+	public int nickDuplChk(String memberNick) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.nickDuplChk(conn,memberNick);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	
+
+
+	public ArrayList<Dinner> memberLikeList(String memberNo) {
+		Connection conn  = JDBCTemplate.getConnection();
+		ArrayList<Dinner> likeList = dao.memberLikeList(conn,memberNo);
+		
+		JDBCTemplate.close(conn);
+		return likeList;
+	}
 
 }
