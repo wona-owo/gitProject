@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,12 +105,12 @@ public class MemberDao {
 		}
 		return m;
 	}
-	
+
 	public int insertMember(Connection conn, Member member) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String query = "insert into tbl_member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, N, 2)";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, member.getMemberId());
@@ -131,30 +130,31 @@ public class MemberDao {
 		}
 		return result;
 	}
-	//아이디 중복 체크
-			public int idDuplChk(Connection conn, String memberId) {
-				PreparedStatement pstmt = null;
-				ResultSet rset = null;
-				String query = "select count(*) as cnt from tbl_member where member_id = ?";
-				int cnt = 0;
-				
-				try {
-					pstmt = conn.prepareStatement(query);
-					pstmt.setString(1, memberId);
-					rset = pstmt.executeQuery();
-					
-					if(rset.next()) {
-						cnt = rset.getInt("cnt");
-					}
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					JDBCTemplate.close(rset);
-					JDBCTemplate.close(pstmt);
-				}
-				return 0;
+
+	// 아이디 중복 체크
+	public int idDuplChk(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select count(*) as cnt from tbl_member where member_id = ?";
+		int cnt = 0;
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				cnt = rset.getInt("cnt");
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return 0;
+	}
 
 	public int updChgLevel(Connection conn, String memberNo, String memberLevel) {
 		PreparedStatement pstmt = null;
@@ -166,7 +166,7 @@ public class MemberDao {
 			pstmt.setString(1, memberLevel);
 			pstmt.setString(2, memberNo);
 			result = pstmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -175,7 +175,7 @@ public class MemberDao {
 		return result;
 	}
 
-	public int updChgLevel(Connection conn, String memberNo) {
+	public int memberRemoveAll(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String query = "delete from tbl_member where member_no = ?";
@@ -184,7 +184,7 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
 			result = pstmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -194,70 +194,65 @@ public class MemberDao {
 	}
 
 	public List<Member> getMembers(Connection conn, int page, int pageSize) {
-	    PreparedStatement pstmt = null;
-	    List<Member> members = new ArrayList<>();
-	    ResultSet rset = null;
+		PreparedStatement pstmt = null;
+		List<Member> members = new ArrayList<>();
+		ResultSet rset = null;
 
-	    // Oracle에서의 페이징 쿼리
-	    String query = "SELECT * FROM (" +
-	                   "    SELECT a.*, ROWNUM AS rnum FROM (" +
-	                   "        SELECT * FROM tbl_member ORDER BY member_no" +
-	                   "    ) a " +
-	                   "    WHERE ROWNUM <= ?" +
-	                   ") " +
-	                   "WHERE rnum > ? and member_level > 1";
+		// Oracle에서의 페이징 쿼리
+		String query = "SELECT * FROM (" + "    SELECT a.*, ROWNUM AS rnum FROM ("
+				+ "        SELECT * FROM tbl_member ORDER BY member_no" + "    ) a " + "    WHERE ROWNUM <= ?" + ") "
+				+ "WHERE rnum > ? and member_level > 1";
 
-	    try {
-	        pstmt = conn.prepareStatement(query);
+		try {
+			pstmt = conn.prepareStatement(query);
 
-	        // 페이지 끝과 시작을 설정
-	        int endRow = page * pageSize;           // 페이지의 마지막 레코드 위치
-	        int startRow = (page - 1) * pageSize;   // 페이지의 시작 레코드 위치
+			// 페이지 끝과 시작을 설정
+			int endRow = page * pageSize; // 페이지의 마지막 레코드 위치
+			int startRow = (page - 1) * pageSize; // 페이지의 시작 레코드 위치
 
-	        pstmt.setInt(1, endRow);  // 마지막 레코드 위치
-	        pstmt.setInt(2, startRow); // 시작 레코드 위치
+			pstmt.setInt(1, endRow); // 마지막 레코드 위치
+			pstmt.setInt(2, startRow); // 시작 레코드 위치
 
-	        rset = pstmt.executeQuery();
+			rset = pstmt.executeQuery();
 
-	        while (rset.next()) {
-	            Member m = new Member();
-	            m.setMemberNo(rset.getString("member_no"));
-	            m.setMemberId(rset.getString("member_id"));
-	            m.setMemberPw(rset.getString("member_pw"));
-	            m.setMemberName(rset.getString("member_name"));
-	            m.setMemberNick(rset.getString("member_nick"));
-	            m.setMemberPhone(rset.getString("member_phone"));
-	            m.setMemberAddr(rset.getString("member_addr"));
-	            m.setMemberGender(rset.getString("member_gender"));
-	            m.setMemberEmail(rset.getString("member_email"));
-	            m.setEnrollDate(rset.getString("enroll_date"));
-	            m.setAdultConfirm(rset.getString("adult_confirm"));
-	            m.setMemberLevel(rset.getInt("member_level"));
-	            members.add(m);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        JDBCTemplate.close(rset);
-	        JDBCTemplate.close(pstmt);
-	    }
-	    return members;
+			while (rset.next()) {
+				Member m = new Member();
+				m.setMemberNo(rset.getString("member_no"));
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberPw(rset.getString("member_pw"));
+				m.setMemberName(rset.getString("member_name"));
+				m.setMemberNick(rset.getString("member_nick"));
+				m.setMemberPhone(rset.getString("member_phone"));
+				m.setMemberAddr(rset.getString("member_addr"));
+				m.setMemberGender(rset.getString("member_gender"));
+				m.setMemberEmail(rset.getString("member_email"));
+				m.setEnrollDate(rset.getString("enroll_date"));
+				m.setAdultConfirm(rset.getString("adult_confirm"));
+				m.setMemberLevel(rset.getInt("member_level"));
+				members.add(m);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return members;
 	}
 
 	public int getTotalMemberCount(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		
+
 		String query = "select count(*) from tbl_member";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
-			if(rset.next()) {
+			if (rset.next()) {
 				return rset.getInt(1);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -265,4 +260,28 @@ public class MemberDao {
 		}
 		return 0;
 	}
+
+	public int nickDuplChk(Connection conn, String memberNick) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select count(*) as cnt from tbl_member where member_nick = ?";
+		int cnt = 0;
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNick);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				cnt = rset.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return 0;
+	}
+
 }

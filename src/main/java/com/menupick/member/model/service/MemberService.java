@@ -66,6 +66,14 @@ public class MemberService {
 		return result;
 	}
 
+	public int nickDuplChk(String memberNick) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.nickDuplChk(conn,memberNick);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	
+
 
 	public int updChgLevel(String memberNoArr, String memberLevelArr) {
 		Connection conn = JDBCTemplate.getConnection();
@@ -111,7 +119,7 @@ public class MemberService {
 		while (st.hasMoreTokens()) {
 			String memberNo = st.nextToken();
 
-			int result = dao.updChgLevel(conn, memberNo);
+			int result = dao.memberRemoveAll(conn, memberNo);
 
 			if (result < 1) {
 				resultChk = false;
