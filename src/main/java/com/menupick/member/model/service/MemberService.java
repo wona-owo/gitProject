@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
+import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.dao.MemberDao;
 import com.menupick.member.model.vo.Member;
 
@@ -47,6 +48,14 @@ public class MemberService {
 		
 		JDBCTemplate.close(conn);
 		return member;
+	}
+
+	public ArrayList<Dinner> memberLikeList(String memberNo) {
+		Connection conn  = JDBCTemplate.getConnection();
+		ArrayList<Dinner> likeList = dao.memberLikeList(conn,memberNo);
+		
+		JDBCTemplate.close(conn);
+		return likeList;
 	}
 
 }
