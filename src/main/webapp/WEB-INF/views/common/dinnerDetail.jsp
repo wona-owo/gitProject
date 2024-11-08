@@ -33,6 +33,8 @@
 					</div>
 					
 					<button id="book" class="btn-primary">예약</button>
+					<br>
+					<button id="edit" class="btn-primary">수정</button>
 				</div>
 				
 
