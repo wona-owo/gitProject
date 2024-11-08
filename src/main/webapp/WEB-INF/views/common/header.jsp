@@ -28,7 +28,9 @@
 				<c:when test="${sessionScope.loginType eq 'member'}">
 					<c:choose>
 						<c:when test="${sessionScope.memberLevel == 1}">
-							<li><a href="/admin/adminPage">관리자 페이지</a></li>
+						<li><a href="/reviewWrite">리뷰쓰기(테스트)</a></li>
+						
+							<li><a href="/admin/member">회원 관리</a></li>
 							<li><a href="/admin/adminDinnerManageFrm">매장 관리</a></li>
 						</c:when>
 						<c:when test="${sessionScope.memberLevel == 2}">

@@ -8,17 +8,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.member.model.service.MemberService;
+
 /**
  * Servlet implementation class MemberChgLevelServlet
  */
 @WebServlet("/member/chgLevel")
-public class MemberChgLevelServlet extends HttpServlet {
+public class AdminMemberChgLevelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberChgLevelServlet() {
+	public AdminMemberChgLevelServlet() {
 		super();
 	}
 
@@ -30,13 +32,16 @@ public class MemberChgLevelServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// 회원 등급 변경!!
 
-		// 1. 인코딩 -> 필터
-
-		// 2. 값 추출
-
-		// 3. 로직
-
-		// 4. 결과처리
+		String memberNoArr = request.getParameter("memberNoArr");
+		String memberLevelArr = request.getParameter("memberLevelArr");
+		
+		System.out.println("memberNoArr :" +memberNoArr);
+		System.out.println("memberLevelArr : " +memberLevelArr);
+		
+		MemberService service = new MemberService();
+		int result = service.updChgLevel(memberNoArr, memberLevelArr);
+		
+		response.getWriter().print(result);
 	}
 
 	/**
