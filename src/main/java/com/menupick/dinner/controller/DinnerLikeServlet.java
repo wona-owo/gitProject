@@ -31,8 +31,7 @@ public class DinnerLikeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. 인코딩
-		
+
 		//2. 값 추출
 		//dinner 값
 		String dinnerNo = request.getParameter("dinner_no");
@@ -53,8 +52,6 @@ public class DinnerLikeServlet extends HttpServlet {
 		request.setAttribute("dinnerList", dinnerList);
 		request.setAttribute("foodList", foodList);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
-		
-		
 	}
 
 	/**

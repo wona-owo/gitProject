@@ -151,12 +151,6 @@ section {
 
 							let currentDate = new Date();
 
-							function getReservationCount(year, month, day) {
-								// Implement logic to fetch the reservation count for the given date
-								// For now, return a placeholder value
-								return 0; // Replace with actual reservation count
-							}
-
 							function renderCalendar() {
 								daysContainer.html("");
 								const year = currentDate.getFullYear();
@@ -173,33 +167,37 @@ section {
 										}));
 								yearDisplay.text(year);
 
+								// Created empty calendar box
 								for (let i = 0; i < firstDayOfMonth; i++) {
 									daysContainer.append("<span></span>");
 								}
 
 								// For getting reservation info
 								$.ajax({
-											url : "/dinner/reservation",
-											data : {
-												dinnerNo : $("#dinnerNo").val(),
-												displayMonth : $("#month") .text(),
-												displayYear : $("#year").text()
-											},
-											type : "GET",
-											success : function(res) {
-												if (res == null) {
-													console
-															.log("No return from servlet");
-												} else {
-													console
-															.log("Response received from servlet");
-												}
-											},
-											error : function() {
-												console
-														.log("AJAX error has occurred!");
-											}
-										});
+									url : "/dinner/reservation",
+									data : {
+										dinnerNo : $("#dinnerNo").val(),
+										displayMonth : $("#month").text(),
+										displayYear : $("#year").text()
+									},
+									type : "GET",
+									success : function(res) {
+										if (res == null) {
+											console.log("foobar");
+										} else {
+											console.log(res);
+										}
+									},
+									error : function() {
+										console.log("foobar");
+									}
+								});
+
+								function getReservationCount(year, month, day) {
+									// Implement logic to fetch the reservation count for the given date
+									// For now, return a placeholder value
+									return 0; // Replace with actual reservation count
+								}
 
 								for (let day = 1; day <= daysInMonth; day++) {
 									const dayElement = $("<span></span>");
@@ -214,7 +212,7 @@ section {
 
 									// BUG not working
 									// condition about adding reservation count
-									if (dayNumberElement == 0) {
+									if (dayNumberElement === 0) {
 										dayElement
 												.append(reservationCountElement);
 									} else {
@@ -255,9 +253,9 @@ section {
 								renderCalendar();
 							});
 
+							// Initial render
 							renderCalendar();
 						});
 	</script>
-
 </body>
 </html>
