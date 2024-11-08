@@ -70,5 +70,13 @@ public class MemberService {
 		return result;
 	}
 
+	public int nickDuplChk(String memberNick) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.nickDuplChk(conn,memberNick);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	
+
 
 }

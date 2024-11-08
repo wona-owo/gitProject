@@ -193,4 +193,28 @@ public class MemberDao {
 				return 0;
 			}
 
+			public int nickDuplChk(Connection conn, String memberNick) {
+				PreparedStatement pstmt = null;
+				ResultSet rset = null;
+				String query = "select count(*) as cnt from tbl_member where member_nick = ?";
+				int cnt = 0;
+				
+				try {
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, memberNick);
+					rset = pstmt.executeQuery();
+					
+					if(rset.next()) {
+						cnt = rset.getInt("cnt");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					JDBCTemplate.close(rset);
+					JDBCTemplate.close(pstmt);
+				}
+				return 0;
+			}
+
 }
