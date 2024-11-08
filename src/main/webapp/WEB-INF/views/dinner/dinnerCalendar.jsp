@@ -88,6 +88,12 @@ section {
 
 .days span div {
 	/* Optional: Customize the appearance */
+	
+}
+
+/* 예약 숫자 색 지정*/
+#days>span>div:last-child {
+	color: red;
 }
 
 .today {
@@ -163,7 +169,7 @@ section {
 
 				function getBookCnt(day, data) {
 					let dayStr = day.toString().padStart(2, '0');
-				    return data[dayStr] || 0;
+					return data[dayStr] || 0;
 				}
 
 				$.ajax({
@@ -183,18 +189,21 @@ section {
 							const bookCnt = getBookCnt(day, res);
 							const bookCntEl = $("<div></div>").text(bookCnt);
 
+							dayEl.append(dayNumEl);
+
 							if (bookCnt == 0) {
-								dayEl.append(dayNumEl);
-							} else {
-								dayEl.append(dayNumEl);
-								dayEl.append(bookCntEl);
+								// Set the content to a non-breaking space to maintain height
+								bookCntEl.html("&nbsp;");
 							}
+
+							dayEl.append(bookCntEl);
 
 							if (day === new Date().getDate()
 									&& year === new Date().getFullYear()
 									&& month === new Date().getMonth()) {
 								dayEl.addClass("today");
 							}
+
 							daysContainer.append(dayEl);
 						}
 					},
