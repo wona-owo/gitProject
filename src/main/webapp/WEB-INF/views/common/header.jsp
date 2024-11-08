@@ -19,7 +19,7 @@
          <c:choose>
             <%-- 비로그인 상태 --%>
             <c:when test="${empty sessionScope.loginMember}">
-               <li><a href="/admin/adminDinnerManage">매장 관리페이지</a></li>
+              
                <li><a href="/dinner/likeFrm">인기식당</a></li>
                <li><a href="/member/loginFrm">로그인</a></li>
             </c:when>
@@ -28,7 +28,7 @@
             <c:when test="${sessionScope.loginType eq 'member'}">
                <c:choose>
                   <c:when test="${sessionScope.memberLevel == 1}">
-                     <li><a href="/admin/adminPage">관리자 페이지</a></li>
+                      <li><a href="/admin/adminDinnerManage">매장 관리페이지</a></li>
                      <li><a href="/admin/adminDinnerManageFrm">매장 관리</a></li>
                   </c:when>
                   <c:when test="${sessionScope.memberLevel == 2}">
@@ -55,9 +55,11 @@
       <script>
       function msg(title, text, icon) {
          swal({
+        	 
             title : title,
             text : text,
             icon : icon
+            
          });
       }
    </script>

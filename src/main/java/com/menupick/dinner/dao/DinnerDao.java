@@ -14,11 +14,11 @@ import com.menupick.dinner.vo.Food;
 
 public class DinnerDao {
 
-	public ArrayList<Dinner> selectAllMember(Connection conn) {
+	public ArrayList<Dinner> selectAllDinner(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
-		String query = "SELECT * FROM TBL_DINNER";
+		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name ASC";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -67,7 +67,7 @@ public class DinnerDao {
 				d.setDinnerEmail(rset.getString("DINNER_EMAIL"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
 				d.setDinnerMaxPerson(rset.getString("DINNER_MAX_PERSON"));
-				d.setBusiNum(rset.getString("BUSI_NUM"));
+				d.setBusiNo(rset.getString("BUSI_NO"));
 				d.setDinnerId(rset.getString("DINNER_ID"));
 				d.setDinnerPw(rset.getString("DINNER_PW"));
 				d.setDinnerConfirm(rset.getString("DINNER_CONFIRM"));
@@ -193,7 +193,7 @@ public class DinnerDao {
 				d.setDinnerEmail(rset.getString("dinner_email"));
 				d.setDinnerParking(rset.getString("dinner_parking"));
 				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
-				d.setBusiNum(rset.getString("busi_num"));
+				d.setBusiNo(rset.getString("busi_no"));
 				d.setDinnerId(rset.getString("dinner_id"));
 				d.setDinnerPw(rset.getString("dinner_pw"));
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
