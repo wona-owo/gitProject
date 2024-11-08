@@ -32,7 +32,7 @@ public class AdminDinnerManageServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		DinnerService service = new DinnerService();
-		ArrayList<Dinner> list = service.selectAllMember();
+		ArrayList<Dinner> list = service.selectAllDinner();
 		
 		// 4. Process results
 		request.setAttribute("dinnerList", list);
