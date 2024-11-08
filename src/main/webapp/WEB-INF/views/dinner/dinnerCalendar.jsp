@@ -102,12 +102,10 @@ section {
 
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-
 		<main class="content">
 			<div>
 				<button id="prev-month">◀</button>
 			</div>
-
 			<section class="section">
 				<div class="calendar-header">
 
@@ -132,12 +130,10 @@ section {
 				</div>
 
 			</section>
-
 			<div>
 				<button id="next-month">▶</button>
 			</div>
 		</main>
-
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
 
@@ -191,10 +187,8 @@ section {
 				});
 
 				function getBookCnt(day) {
-					// Format day as a two-digit string to match the keys in bookData
 					let dayStr = day.toString().padStart(2, '0');
-					// Return the reservation count if the day exists in bookData, otherwise 0
-					return bookData && bookData[dayStr] ? bookData[dayStr] : 0;
+					return 1;
 				}
 
 				for (let day = 1; day <= daysInMonth; day++) {
