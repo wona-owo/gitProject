@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +14,31 @@
         text-align: center;
     }
 
+    /* 마이페이지 타이틀 스타일 */
+    .my-page-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .page-title::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 2px;
+        background-color: #hh4400;
+        margin: 8px auto 20px;
+    }
+
+    /* 버튼 그룹 컨테이너 스타일 */
+    .button-group-container {
+        max-width: 800px; /* 폭을 줄임 */
+        margin: 0 auto; /* 중앙 정렬 */
+        border: 1px solid #ddd; /* 연한 회색 테두리 */
+        border-radius: 8px;
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
     /* 동그라미 버튼 스타일 */
     .circle-button {
         width: 80px;
@@ -25,13 +49,14 @@
         font-size: 12px;
         font-weight: bold;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
         text-decoration: none;
-        margin: 10px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        margin: 10px;
     }
     .circle-button:hover {
         background-color: #c30;
@@ -39,36 +64,41 @@
 
     /* 버튼 그룹 스타일 */
     .button-group {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-        padding: 20px 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2x2 그리드 */
+        gap: 15px; /* 버튼 사이 간격 */
+        justify-items: center;
     }
 </style>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/common/header.jsp" />
-    
     <div class="wrap">
         <div class="content">
 
-            <!-- 동그라미 버튼 그룹 -->
-            <div class="button-group">
-                <a href="/edit-info.html" class="circle-button">
-                    <span>정보 수정</span>
-                   
-                </a>
-                <a href="/reservations.html" class="circle-button">
-                    <span>예약 확인</span>
-                </a>
-                <a href="#reviews" class="circle-button" onclick="openTab('reviews', this)">
-                    <span>리뷰 보기</span>
-                    
-                </a>
-                <a href="#favorites" class="circle-button" onclick="openTab('favorites', this)">
-                    <span>즐겨찾기 보기</span>    
-                </a>
+            <!-- 타이틀 -->
+            <div class="my-page-title">마이페이지</div>
+
+            <!-- 동그라미 버튼 그룹 컨테이너 -->
+            <div class="button-group-container">
+                <div class="button-group">
+                    <a href="/" class="circle-button">
+                        <span>정보 수정</span>
+                        
+                    </a>
+                    <a href="/" class="circle-button">
+                        <span>예약 확인</span>
+                        
+                    </a>
+                    <a href="/" class="circle-button">
+                        <span>리뷰 보기</span>
+                        
+                    </a>
+                    <a href="/" class="circle-button">
+                        <span>즐겨찾기 보기</span>
+                        
+                    </a>
+                </div>
             </div>
 
         </div>
