@@ -41,12 +41,12 @@
 
     /* 동그라미 버튼 스타일 */
     .circle-button {
-        width: 80px;
-        height: 80px;
+        width: 200px;
+        height: 200px;
         border-radius: 50%;
         background-color: #f40;
         color: #fff;
-        font-size: 12px;
+        font-size: 25px;
         font-weight: bold;
         display: flex;
         flex-direction: column;
@@ -86,15 +86,15 @@
                         <span>정보 수정</span>
                         
                     </a>
-                    <a href="/" class="circle-button">
+                    <a href="/member/ckBook" class="circle-button">
                         <span>예약 확인</span>
                         
                     </a>
-                    <a href="/" class="circle-button">
+                    <a href="/member/ckReview" class="circle-button">
                         <span>리뷰 보기</span>
                         
                     </a>
-                    <a href="/" class="circle-button">
+                    <a href="/member/ckLike" class="circle-button">
                         <span>즐겨찾기 보기</span>
                         
                     </a>
