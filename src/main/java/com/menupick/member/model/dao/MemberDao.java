@@ -168,5 +168,29 @@ public class MemberDao {
 		}
 		return result;
 	}
+	//아이디 중복 체크
+			public int idDuplChk(Connection conn, String memberId) {
+				PreparedStatement pstmt = null;
+				ResultSet rset = null;
+				String query = "select count(*) as cnt from tbl_member where member_id = ?";
+				int cnt = 0;
+				
+				try {
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, memberId);
+					rset = pstmt.executeQuery();
+					
+					if(rset.next()) {
+						cnt = rset.getInt("cnt");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					JDBCTemplate.close(rset);
+					JDBCTemplate.close(pstmt);
+				}
+				return 0;
+			}
 
 }
