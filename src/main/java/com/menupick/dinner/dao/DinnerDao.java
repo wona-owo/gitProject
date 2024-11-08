@@ -222,7 +222,7 @@ public class DinnerDao {
 				d.setDinnerNo(rset.getString("dinner_no"));
 				d.setDinnerName(rset.getString("dinner_name"));
 				d.setDinnerAddr(rset.getString("dinner_addr"));
-				d.setDinnerOpen(rset.getString("dinnerOpen"));
+				d.setDinnerOpen(rset.getString("dinner_open"));
 				d.setDinnerClose(rset.getString("dinner_close"));
 				d.setDinnerPhone(rset.getString("dinner_phone"));
 				d.setDinnerEmail(rset.getString("dinner_email"));
