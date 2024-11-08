@@ -13,11 +13,15 @@
 		<welcome-file>default.htm</welcome-file>
 	</welcome-file-list>
 
+
+
+	
 	<!-- 필터 경로 설정 -->
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
 		<filter-class>com.menupick.common.filter.EncodingFilter</filter-class>
 	</filter>
+	
 	<!-- 어떤 URL 을 클릭하면 동작을 할지 설정 -->
 	<filter-mapping>
 		<filter-name>EncodingFilter</filter-name>
