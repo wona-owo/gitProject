@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
+import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.vo.Member;
 
 public class MemberDao {
@@ -167,6 +168,96 @@ public class MemberDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return result;
+	}
+	//아이디 중복 체크
+			public int idDuplChk(Connection conn, String memberId) {
+				PreparedStatement pstmt = null;
+				ResultSet rset = null;
+				String query = "select count(*) as cnt from tbl_member where member_id = ?";
+				int cnt = 0;
+				
+				try {
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, memberId);
+					rset = pstmt.executeQuery();
+					
+					if(rset.next()) {
+						cnt = rset.getInt("cnt");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					JDBCTemplate.close(rset);
+					JDBCTemplate.close(pstmt);
+				}
+				return 0;
+			}
+
+			public int nickDuplChk(Connection conn, String memberNick) {
+				PreparedStatement pstmt = null;
+				ResultSet rset = null;
+				String query = "select count(*) as cnt from tbl_member where member_nick = ?";
+				int cnt = 0;
+				
+				try {
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, memberNick);
+					rset = pstmt.executeQuery();
+					
+					if(rset.next()) {
+						cnt = rset.getInt("cnt");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					JDBCTemplate.close(rset);
+					JDBCTemplate.close(pstmt);
+				}
+				return 0;
+			}
+
+	public ArrayList<Dinner> memberLikeList(Connection conn, String memberNo) {
+		PreparedStatement pstmt = null;
+		ArrayList<Dinner> likeList = new ArrayList<>();
+		ResultSet rset = null;
+		
+		String query = "Select * From tbl_dinner D left join tbl_like L on (d.dinner_no= l.dinner_no) where l.member_no ='?'";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			rset = pstmt.executeQuery();
+			ArrayList<Member> likelist = new ArrayList<>();
+			
+			while (rset.next()) {
+			Dinner d = new Dinner();
+			d.setDinnerNo(rset.getString("dinner_no"));
+			d.setDinnerName(rset.getString("dinner_name"));
+			d.setDinnerAddr(rset.getString("dinner_addr"));
+			d.setDinnerOpen(rset.getString("dinner_open"));
+			d.setDinnerClose(rset.getString("dinner_close"));
+			d.setDinnerPhone(rset.getString("dinner_phone"));
+			d.setDinnerEmail(rset.getString("dinner_email"));
+			d.setDinnerParking(rset.getString("dinner_parking"));
+			d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+			d.setBusiNo(rset.getString("busi_no"));
+			d.setDinnerId(rset.getString("dinner_id"));
+			d.setDinnerPw(rset.getString("dinner_pw"));
+			d.setDinnerConfirm(rset.getString("dinner_confirm"));
+			likeList.add(d);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+				
+		return likeList;
 	}
 
 }
