@@ -44,7 +44,7 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 		ArrayList<Book> bookList = service.checkReservation(dinnerNo, justMonth, displayYear);
 
 		Map<String, Integer> dateCountMap = new HashMap<>();
-
+		
 		for (Book book : bookList) {
 			String justDate = book.getBookDate().substring(8, 10);
 			dateCountMap.put(justDate, dateCountMap.getOrDefault(justDate, 0) + 1);

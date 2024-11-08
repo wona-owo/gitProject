@@ -167,9 +167,7 @@ section {
 					daysContainer.append("<span></span>");
 				}
 
-				function getReservationCount(year, month, day) {
-					return 0;
-				}
+				let bookData = null;
 
 				$.ajax({
 					url : "/dinner/reservation",
@@ -183,7 +181,8 @@ section {
 						if (res == null) {
 							console.log("foobar");
 						} else {
-							console.log(res);
+							bookData = res;
+							console.log(bookData);
 						}
 					},
 					error : function() {
@@ -191,24 +190,33 @@ section {
 					}
 				});
 
+				function getBookCnt(day) {
+					// Format day as a two-digit string to match the keys in bookData
+					let dayStr = day.toString().padStart(2, '0');
+					// Return the reservation count if the day exists in bookData, otherwise 0
+					return bookData && bookData[dayStr] ? bookData[dayStr] : 0;
+				}
+
 				for (let day = 1; day <= daysInMonth; day++) {
-					const dayElement = $("<span></span>");
-					const dayNumberElement = $("<div></div>").text(day);
+					const dayEl = $("<span></span>");
+					const dayNumEl = $("<div></div>").text(day);
 
-					const reservationCount = getReservationCount(year, month,
-							day);
-					const reservationCountElement = $("<div></div>").text(
-							reservationCount);
+					const bookCnt = getBookCnt(day);
+					const bookCntEl = $("<div></div>").text(bookCnt);
 
-					dayElement.append(dayNumberElement);
-					dayElement.append(reservationCountElement);
+					if (bookCnt == 0) {
+						dayEl.append(dayNumEl);
+					} else {
+						dayEl.append(dayNumEl);
+						dayEl.append(bookCntEl);
+					}
 
 					if (day === new Date().getDate()
 							&& year === new Date().getFullYear()
 							&& month === new Date().getMonth()) {
-						dayElement.addClass("today");
+						dayEl.addClass("today");
 					}
-					daysContainer.append(dayElement);
+					daysContainer.append(dayEl);
 				}
 			}
 
