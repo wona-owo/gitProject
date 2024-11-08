@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MemberLoginServlet
+ * Servlet implementation class AdminDinnerManageFrm
  */
-@WebServlet("/member/loginFrm")
-public class MemberLoginFrmServlet extends HttpServlet {
+@WebServlet("/admin/adminDinnerManageFrm")
+public class AdminDinnerManageFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberLoginFrmServlet() {
+	public AdminDinnerManageFrm() {
 		super();
 	}
 
@@ -29,7 +29,7 @@ public class MemberLoginFrmServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/login.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerManage.jsp");
 		view.forward(request, response);
 	}
 

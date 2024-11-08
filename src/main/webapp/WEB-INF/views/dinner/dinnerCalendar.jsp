@@ -7,20 +7,18 @@
 <meta charset="UTF-8">
 <title>dinnerCalendar.jsp</title>
 <style>
-
 main {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
-	font-family: Arial, sans-serif;
-	background-color: #f0f0f0;
+	height: 80vh;
 }
 
 section {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+	width: 60%;
 }
 
 .calendar {
@@ -33,11 +31,13 @@ section {
 
 .calendar-header {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
+	margin: auto;
 	padding: 10px;
 	background-color: #4CAF50;
 	color: #fff;
+	padding: 10px;
 }
 
 .month-year {
@@ -72,6 +72,29 @@ section {
 	color: #fff;
 	font-weight: bold;
 }
+
+/* After adding reservaion elements */
+.days {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.days span {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 5px;
+}
+
+.days span div {
+	/* Optional: Customize the appearance */
+	
+}
+
+.today {
+	background-color: #f0f8ff;
+	border-radius: 50%;
+}
 </style>
 
 </head>
@@ -80,78 +103,159 @@ section {
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-		<main>
-			<section>
+		<main class="content">
+			<div>
+				<button id="prev-month">◀</button>
+			</div>
+
+			<section class="section">
 				<div class="calendar-header">
-					<button id="prev-month">◀</button>
+
 					<div class="month-year">
 						<span id="month"></span> <span id="year"></span>
+
+						<%-- TODO loginMember.dinnerNo 동작하는지 확인 --%>
+						<input type="hidden" name="dinnerNo" id="dinnerNo"
+							value="${dinnerNo}">
 					</div>
-					<button id="next-month">▶</button>
 				</div>
+
 				<div class="weekdays">
 					<span>Sun</span> <span>Mon</span> <span>Tue</span> <span>Wed</span>
 					<span>Thu</span> <span>Fri</span> <span>Sat</span>
 				</div>
+
 				<div class="days" id="days"></div>
+
+				<div>
+					<button id="check-today">오늘</button>
+				</div>
+
 			</section>
+
+			<div>
+				<button id="next-month">▶</button>
+			</div>
 		</main>
 
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
 
 	<script>
-	document.addEventListener("DOMContentLoaded", () => {
-	    const daysContainer = document.getElementById("days");
-	    const monthDisplay = document.getElementById("month");
-	    const yearDisplay = document.getElementById("year");
-	    const prevButton = document.getElementById("prev-month");
-	    const nextButton = document.getElementById("next-month");
+		$(document)
+				.ready(
+						function() {
+							const daysContainer = $("#days");
+							const monthDisplay = $("#month");
+							const yearDisplay = $("#year");
 
-	    let currentDate = new Date();
+							let currentDate = new Date();
 
-	    function renderCalendar() {
-	        daysContainer.innerHTML = "";
-	        const year = currentDate.getFullYear();
-	        const month = currentDate.getMonth();
+							function renderCalendar() {
+								daysContainer.html("");
+								const year = currentDate.getFullYear();
+								const month = currentDate.getMonth();
 
-	        const firstDayOfMonth = new Date(year, month, 1).getDay();
-	        const daysInMonth = new Date(year, month + 1, 0).getDate();
+								const firstDayOfMonth = new Date(year, month, 1)
+										.getDay();
+								const daysInMonth = new Date(year, month + 1, 0)
+										.getDate();
 
-	        monthDisplay.textContent = currentDate.toLocaleString("default", { month: "long" });
-	        yearDisplay.textContent = year;
+								monthDisplay.text(currentDate.toLocaleString(
+										"default", {
+											month : "long"
+										}));
+								yearDisplay.text(year);
 
-	        for (let i = 0; i < firstDayOfMonth; i++) {
-	            daysContainer.innerHTML += "<span></span>";
-	        }
+								// Created empty calendar box
+								for (let i = 0; i < firstDayOfMonth; i++) {
+									daysContainer.append("<span></span>");
+								}
 
-	        for (let day = 1; day <= daysInMonth; day++) {
-	            const dayElement = document.createElement("span");
-	            dayElement.textContent = day;
-	            if (
-	                day === new Date().getDate() &&
-	                year === new Date().getFullYear() &&
-	                month === new Date().getMonth()
-	            ) {
-	                dayElement.classList.add("today");
-	            }
-	            daysContainer.appendChild(dayElement);
-	        }
-	    }
+								// For getting reservation info
+								$.ajax({
+									url : "/dinner/reservation",
+									data : {
+										dinnerNo : $("#dinnerNo").val(),
+										displayMonth : $("#month").text(),
+										displayYear : $("#year").text()
+									},
+									type : "GET",
+									success : function(res) {
+										if (res == null) {
+											console.log("foobar");
+										} else {
+											console.log(res);
+										}
+									},
+									error : function() {
+										console.log("foobar");
+									}
+								});
 
-	    prevButton.addEventListener("click", () => {
-	        currentDate.setMonth(currentDate.getMonth() - 1);
-	        renderCalendar();
-	    });
+								function getReservationCount(year, month, day) {
+									// Implement logic to fetch the reservation count for the given date
+									// For now, return a placeholder value
+									return 0; // Replace with actual reservation count
+								}
 
-	    nextButton.addEventListener("click", () => {
-	        currentDate.setMonth(currentDate.getMonth() + 1);
-	        renderCalendar();
-	    });
+								for (let day = 1; day <= daysInMonth; day++) {
+									const dayElement = $("<span></span>");
+									const dayNumberElement = $("<div></div>")
+											.text(day);
 
-	    renderCalendar();
-	});
+									const reservationCount = getReservationCount(
+											year, month, day);
+									const reservationCountElement = $(
+											"<div></div>").text(
+											reservationCount);
+
+									// BUG not working
+									// condition about adding reservation count
+									if (dayNumberElement === 0) {
+										dayElement
+												.append(reservationCountElement);
+									} else {
+										dayElement.append(dayNumberElement);
+										dayElement
+												.append(reservationCountElement);
+									}
+
+									if (day === new Date().getDate()
+											&& year === new Date()
+													.getFullYear()
+											&& month === new Date().getMonth()) {
+										dayElement.addClass("today");
+									}
+
+									daysContainer.append(dayElement);
+								}
+							}
+
+							$("#prev-month").on(
+									"click",
+									function() {
+										currentDate.setMonth(currentDate
+												.getMonth() - 1);
+										renderCalendar();
+									});
+
+							$("#next-month").on(
+									"click",
+									function() {
+										currentDate.setMonth(currentDate
+												.getMonth() + 1);
+										renderCalendar();
+									});
+
+							$("#check-today").on("click", function() {
+								currentDate = new Date();
+								renderCalendar();
+							});
+
+							// Initial render
+							renderCalendar();
+						});
 	</script>
-
 </body>
 </html>

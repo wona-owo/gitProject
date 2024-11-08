@@ -1,4 +1,4 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 
@@ -7,18 +7,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class MemberDinnerServlet
  */
 @WebServlet("/member/dinnerCalendar")
-public class MemberDinnerServlet extends HttpServlet {
+public class DinnerCalendarFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberDinnerServlet() {
+	public DinnerCalendarFrmServlet() {
 		super();
 	}
 
@@ -28,7 +29,11 @@ public class MemberDinnerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
+		// TESTCODE 
+		HttpSession session = request.getSession(true);
+		session.setAttribute("dinnerNo", "d2411060001");
+		
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerCalendar.jsp").forward(request, response);
 	}
 
