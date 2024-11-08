@@ -2,8 +2,6 @@ package com.menupick.dinner.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,21 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Book;
 
 /**
- * Servlet implementation class DinnerCalendarReservaitionServlet
+ * Servlet implementation class DinnerCheckReservationServlet
  */
-@WebServlet("/dinner/reservation")
-public class DinnerCalendarReservationServlet extends HttpServlet {
+@WebServlet("/dinner/checkReservation")
+public class DinnerCheckReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DinnerCalendarReservationServlet() {
+	public DinnerCheckReservationServlet() {
 		super();
 	}
 
@@ -35,27 +32,16 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		String dinnerNo = request.getParameter("dinnerNo");
-		String m = request.getParameter("displayMonth");
-		String justMonth = m.substring(0, m.length() - 1);
-		String displayYear = request.getParameter("displayYear");
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+		String day = request.getParameter("day");
 
 		DinnerService service = new DinnerService();
-		ArrayList<Book> bookList = service.checkReservation(dinnerNo, justMonth, displayYear);
+		ArrayList<Book> bookList = service.getReservationData(dinnerNo, year, month, day);
 
-		Map<String, Integer> dateCountMap = new HashMap<>();
-
-		for (Book book : bookList) {
-			String justDate = book.getBookDate().substring(8, 10);
-			dateCountMap.put(justDate, dateCountMap.getOrDefault(justDate, 0) + 1);
-		}
-
-		Gson gson = new Gson();
-		String jsonStr = gson.toJson(dateCountMap);
-
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		response.getWriter().print(jsonStr);
+		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 	}
 
 	/**

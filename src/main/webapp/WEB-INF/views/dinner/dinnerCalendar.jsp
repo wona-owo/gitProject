@@ -92,7 +92,7 @@ section {
 }
 
 /* 예약 숫자 색 지정*/
-#days>span>div:last-child {
+#days>a>span>div:last-child {
 	color: red;
 }
 
@@ -115,11 +115,9 @@ section {
 				<div class="calendar-header">
 
 					<div class="month-year">
-						<span id="month"></span> <span id="year"></span>
-
-						<%-- TODO loginMember.dinnerNo 동작하는지 확인 --%>
-						<input type="hidden" name="dinnerNo" id="dinnerNo"
-							value="${dinnerNo}">
+						<span id="month"></span> <span id="year"></span> <input
+							type="hidden" name="dinnerNo" id="dinnerNo"
+							value="${loginMember.dinnerNo}">
 					</div>
 				</div>
 
@@ -172,45 +170,55 @@ section {
 					return data[dayStr] || 0;
 				}
 
-				$.ajax({
-					url : "/dinner/reservation",
-					data : {
-						dinnerNo : $("#dinnerNo").val(),
-						displayMonth : $("#month").text(),
-						displayYear : $("#year").text()
-					},
-					type : "GET",
-					success : function(res) {
+				$
+						.ajax({
+							url : "/dinner/reservation",
+							data : {
+								dinnerNo : $("#dinnerNo").val(),
+								displayMonth : $("#month").text(),
+								displayYear : $("#year").text()
+							},
+							type : "GET",
+							success : function(res) {
+								for (let day = 1; day <= daysInMonth; day++) {
+									const dayEl = $("<span></span>");
+									const dayNumEl = $("<div></div>").text(day);
+									const bookCnt = getBookCnt(day, res);
 
-						for (let day = 1; day <= daysInMonth; day++) {
-							const dayEl = $("<span></span>");
-							const dayNumEl = $("<div></div>").text(day);
+									const bookCntEl = $("<div></div>").html(
+											bookCnt || "&nbsp;");
+									dayEl.append(dayNumEl, bookCntEl);
 
-							const bookCnt = getBookCnt(day, res);
-							const bookCntEl = $("<div></div>").text(bookCnt);
+									const today = new Date();
+									if (day === today.getDate()
+											&& year === today.getFullYear()
+											&& month === today.getMonth()) {
+										dayEl.addClass("today");
+									}
 
-							dayEl.append(dayNumEl);
+									dinnerNo = $("#dinnerNo").val();
 
-							if (bookCnt == 0) {
-								// Set the content to a non-breaking space to maintain height
-								bookCntEl.html("&nbsp;");
+									const dayLink = $("<a></a>")
+											.attr(
+													"href",
+													bookCnt ? "/dinner/checkReservation?dinnerNo="
+															+ dinnerNo
+															+ "&day="
+															+ day
+															+ "&month="
+															+ month
+															+ "&year=" + year
+															: null).addClass(
+													bookCnt ? "" : "disabled");
+
+									dayLink.append(dayEl);
+									daysContainer.append(dayLink);
+								}
+							},
+							error : function() {
+								console.error("poop");
 							}
-
-							dayEl.append(bookCntEl);
-
-							if (day === new Date().getDate()
-									&& year === new Date().getFullYear()
-									&& month === new Date().getMonth()) {
-								dayEl.addClass("today");
-							}
-
-							daysContainer.append(dayEl);
-						}
-					},
-					error : function() {
-						console.log("poop");
-					}
-				});
+						});
 			}
 
 			$("#prev-month").on("click", function() {

@@ -14,11 +14,6 @@
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<div class="wrap">
 			<main>
-				<div>
-					<a href='member/dinnerCalendar'>goes to dinnerCalendar.jsp via
-						DinnerCalendarFrmServlet.java</a>
-				</div>
-
 				<div class="search-box">
 					<input type="text" class="search-input"
 						placeholder="식당 이름, 지역 등을 입력하세요" />
