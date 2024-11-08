@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MemberDinnerServlet
+ * Servlet implementation class AdminDinnerManageDetail
  */
-@WebServlet("/member/dinnerCalendar")
-public class MemberDinnerServlet extends HttpServlet {
+@WebServlet("/AdminDinnerManageDetail")
+public class AdminDinnerManageDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberDinnerServlet() {
+	public AdminDinnerManageDetail() {
 		super();
 	}
 
@@ -28,8 +28,7 @@ public class MemberDinnerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerCalendar.jsp").forward(request, response);
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**

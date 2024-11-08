@@ -17,9 +17,9 @@ public class Member {
 	private String memberPhone;
 	private String memberAddr;
 	private String memberGender;
-	private String memnerEmail;
+	private String memberEmail;
 	private String enrollDate;
-	private String adultValid;
+	private String adultConfirm;
 	private int memberLevel;
 
 }
