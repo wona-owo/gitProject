@@ -142,120 +142,94 @@ section {
 	</div>
 
 	<script>
-		$(document)
-				.ready(
-						function() {
-							const daysContainer = $("#days");
-							const monthDisplay = $("#month");
-							const yearDisplay = $("#year");
+		$(function() {
+			const daysContainer = $("#days");
+			const monthDisplay = $("#month");
+			const yearDisplay = $("#year");
 
-							let currentDate = new Date();
+			let currentDate = new Date();
 
-							function renderCalendar() {
-								daysContainer.html("");
-								const year = currentDate.getFullYear();
-								const month = currentDate.getMonth();
+			function renderCalendar() {
+				daysContainer.html("");
+				const year = currentDate.getFullYear();
+				const month = currentDate.getMonth();
 
-								const firstDayOfMonth = new Date(year, month, 1)
-										.getDay();
-								const daysInMonth = new Date(year, month + 1, 0)
-										.getDate();
+				const firstDayOfMonth = new Date(year, month, 1).getDay();
+				const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-								monthDisplay.text(currentDate.toLocaleString(
-										"default", {
-											month : "long"
-										}));
-								yearDisplay.text(year);
+				monthDisplay.text(currentDate.toLocaleString("default", {
+					month : "long"
+				}));
+				yearDisplay.text(year);
 
-								// Created empty calendar box
-								for (let i = 0; i < firstDayOfMonth; i++) {
-									daysContainer.append("<span></span>");
-								}
+				// Created empty calendar box
+				for (let i = 0; i < firstDayOfMonth; i++) {
+					daysContainer.append("<span></span>");
+				}
 
-								// For getting reservation info
-								$.ajax({
-									url : "/dinner/reservation",
-									data : {
-										dinnerNo : $("#dinnerNo").val(),
-										displayMonth : $("#month").text(),
-										displayYear : $("#year").text()
-									},
-									type : "GET",
-									success : function(res) {
-										if (res == null) {
-											console.log("foobar");
-										} else {
-											console.log(res);
-										}
-									},
-									error : function() {
-										console.log("foobar");
-									}
-								});
+				function getReservationCount(year, month, day) {
+					return 0;
+				}
 
-								function getReservationCount(year, month, day) {
-									// Implement logic to fetch the reservation count for the given date
-									// For now, return a placeholder value
-									return 0; // Replace with actual reservation count
-								}
+				$.ajax({
+					url : "/dinner/reservation",
+					data : {
+						dinnerNo : $("#dinnerNo").val(),
+						displayMonth : $("#month").text(),
+						displayYear : $("#year").text()
+					},
+					type : "GET",
+					success : function(res) {
+						if (res == null) {
+							console.log("foobar");
+						} else {
+							console.log(res);
+						}
+					},
+					error : function() {
+						console.log("poop");
+					}
+				});
 
-								for (let day = 1; day <= daysInMonth; day++) {
-									const dayElement = $("<span></span>");
-									const dayNumberElement = $("<div></div>")
-											.text(day);
+				for (let day = 1; day <= daysInMonth; day++) {
+					const dayElement = $("<span></span>");
+					const dayNumberElement = $("<div></div>").text(day);
 
-									const reservationCount = getReservationCount(
-											year, month, day);
-									const reservationCountElement = $(
-											"<div></div>").text(
-											reservationCount);
+					const reservationCount = getReservationCount(year, month,
+							day);
+					const reservationCountElement = $("<div></div>").text(
+							reservationCount);
 
-									// BUG not working
-									// condition about adding reservation count
-									if (dayNumberElement === 0) {
-										dayElement
-												.append(reservationCountElement);
-									} else {
-										dayElement.append(dayNumberElement);
-										dayElement
-												.append(reservationCountElement);
-									}
+					dayElement.append(dayNumberElement);
+					dayElement.append(reservationCountElement);
 
-									if (day === new Date().getDate()
-											&& year === new Date()
-													.getFullYear()
-											&& month === new Date().getMonth()) {
-										dayElement.addClass("today");
-									}
+					if (day === new Date().getDate()
+							&& year === new Date().getFullYear()
+							&& month === new Date().getMonth()) {
+						dayElement.addClass("today");
+					}
+					daysContainer.append(dayElement);
+				}
+			}
 
-									daysContainer.append(dayElement);
-								}
-							}
+			$("#prev-month").on("click", function() {
+				currentDate.setMonth(currentDate.getMonth() - 1);
+				renderCalendar();
+			});
 
-							$("#prev-month").on(
-									"click",
-									function() {
-										currentDate.setMonth(currentDate
-												.getMonth() - 1);
-										renderCalendar();
-									});
+			$("#next-month").on("click", function() {
+				currentDate.setMonth(currentDate.getMonth() + 1);
+				renderCalendar();
+			});
 
-							$("#next-month").on(
-									"click",
-									function() {
-										currentDate.setMonth(currentDate
-												.getMonth() + 1);
-										renderCalendar();
-									});
+			$("#check-today").on("click", function() {
+				currentDate = new Date();
+				renderCalendar();
+			});
 
-							$("#check-today").on("click", function() {
-								currentDate = new Date();
-								renderCalendar();
-							});
-
-							// Initial render
-							renderCalendar();
-						});
+			// Initial render
+			renderCalendar();
+		});
 	</script>
 </body>
 </html>

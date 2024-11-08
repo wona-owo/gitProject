@@ -53,8 +53,6 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 		Gson gson = new Gson();
 		String jsonStr = gson.toJson(dateCountMap);
 		
-		System.out.println(jsonStr);
-
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		response.getWriter().print(jsonStr);
