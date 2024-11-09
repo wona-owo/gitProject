@@ -14,11 +14,11 @@ import com.menupick.dinner.vo.Food;
 
 public class DinnerDao {
 
-	public ArrayList<Dinner> selectAllMember(Connection conn) {
+	public ArrayList<Dinner> selectAllDinner(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
-		String query = "SELECT * FROM TBL_DINNER";
+		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name ASC";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -67,7 +67,7 @@ public class DinnerDao {
 				d.setDinnerEmail(rset.getString("DINNER_EMAIL"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
 				d.setDinnerMaxPerson(rset.getString("DINNER_MAX_PERSON"));
-				d.setBusiNum(rset.getString("BUSI_NUM"));
+				d.setBusiNo(rset.getString("BUSI_NO"));
 				d.setDinnerId(rset.getString("DINNER_ID"));
 				d.setDinnerPw(rset.getString("DINNER_PW"));
 				d.setDinnerConfirm(rset.getString("DINNER_CONFIRM"));
@@ -82,27 +82,30 @@ public class DinnerDao {
 		return dinnerList;
 	}
 
-	public ArrayList<Book> likeDinner(Connection conn, String dinnerNo, String displayMonth, String displayYear) {
+	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<Book> bookList = new ArrayList<>();
-		String query = "select book_no, book_date from tbl_book where book_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+		String query = "select * from tbl_book where dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
 
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
-			pt.setString(2, displayMonth);
-			pt.setString(3, displayYear);
+			pt.setInt(2, Integer.parseInt(justMonth));
+			pt.setInt(3, Integer.parseInt(displayYear));
 
 			rt = pt.executeQuery();
 
 			while (rt.next()) {
 				Book b = new Book();
 				b.setBookNo(rt.getString("book_no"));
+				b.setDinnerNo(rt.getString("dinner_no"));
+				b.setMemberNo(rt.getString("member_no"));
 				b.setBookDate(rt.getString("book_date"));
+				b.setBookTime(rt.getString("book_time"));
+				b.setBookCnt(rt.getString("book_cnt"));
 				bookList.add(b);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -165,5 +168,104 @@ public class DinnerDao {
 		}
 
 		return addressList;
+	}
+
+	public Dinner dinnerDetail(Connection conn, String dinnerNo, String foodNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Dinner d = null;
+		String query = "select dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				d = new Dinner();
+				d.setDinnerName(rset.getString("DINNER_NAME"));
+				d.setDinnerAddr(rset.getString("DINNER_ADDR"));
+				d.setDinnerOpen(rset.getString("DINNER_OPEN"));
+				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
+				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
+				d.setDinnerParking(rset.getString("DINNER_PARKING"));
+
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return d;
+	}
+
+	public Dinner memberLogin(Connection conn, String loginId, String loginPw) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select * from tbl_dinner where dinner_id =? and dinner_pw =?";
+		Dinner d = null;
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, loginId);
+			pstmt.setString(2, loginPw);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				d = new Dinner();
+				d.setDinnerNo(rset.getString("dinner_no"));
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setDinnerOpen(rset.getString("dinner_open"));
+				d.setDinnerClose(rset.getString("dinner_close"));
+				d.setDinnerPhone(rset.getString("dinner_phone"));
+				d.setDinnerEmail(rset.getString("dinner_email"));
+				d.setDinnerParking(rset.getString("dinner_parking"));
+				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+				d.setBusiNo(rset.getString("busi_no"));
+				d.setDinnerId(rset.getString("dinner_id"));
+				d.setDinnerPw(rset.getString("dinner_pw"));
+				d.setDinnerConfirm(rset.getString("dinner_confirm"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return d;
+	}
+
+	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String year, String month, String day) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		ArrayList<Book> book = new ArrayList<Book>();
+		String query = "select * from tbl_book where dinner_no = ? and extract(date from book_date) = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			pt.setString(2, day);
+			pt.setString(3, month);
+			pt.setString(4, year);
+			rt = pt.executeQuery();
+
+			while (rt.next()) {
+				// TODO
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+
+		return book;
 	}
 }

@@ -1,4 +1,4 @@
-package com.menupick.dinner.controller;
+package com.menupick.member.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,41 +9,50 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.menupick.dinner.service.DinnerService;
+import com.google.gson.Gson;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.member.model.service.MemberService;
 
 /**
- * Servlet implementation class AdminDinnerManageServlet
+ * Servlet implementation class MemberLikeServlet
  */
-@WebServlet("/admin/adminDinnerManage")
-public class AdminDinnerManageServlet extends HttpServlet {
+@WebServlet("/member/like")
+public class MemberLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminDinnerManageServlet() {
+    public MemberLikeServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//1. 인코딩
 		
-		DinnerService service = new DinnerService();
-		ArrayList<Dinner> list = service.selectAllDinner();
+		//2. 값 추출 - 회원 번호를 받아와서 쿼리에 전달.
+		String memberNo = request.getParameter("memberNo");
 		
-		// 4. Process results
-		request.setAttribute("dinnerList", list);
-		request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerManage.jsp").forward(request, response);
+		System.out.println(memberNo);
+		//3. 비즈니스 로직 - 회원 번호와 일치하는 식당 정보 list 추출
+		MemberService service = new MemberService();
+		ArrayList<Dinner> likeList = service.memberLikeList(memberNo);
 		
+		//4. 결과처리 
+		
+		request.setAttribute("likeList", likeList);		
+		request.getRequestDispatcher("/WEB-INF/views/checkLike.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

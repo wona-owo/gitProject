@@ -16,7 +16,7 @@ import com.menupick.dinner.vo.Food;
 /**
  * Servlet implementation class DinnerLike
  */
-@WebServlet("/dinner/like")
+@WebServlet("/dinner/likeFrm")
 public class DinnerLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -31,8 +31,7 @@ public class DinnerLikeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. 인코딩
-		
+
 		//2. 값 추출
 		//dinner 값
 		String dinnerNo = request.getParameter("dinner_no");

@@ -156,6 +156,7 @@
 </style>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<div class="wrap">
 		<main class="content">
 			<!-- 검색 박스 -->
@@ -168,6 +169,7 @@
 				<button class="search-button" onclick="search()">검색</button>
 			</div>
 
+
 			<!-- 콤팩트 필터 컨테이너 -->
 
 			<div class="filter-container">
@@ -178,7 +180,6 @@
 							onclick="toggleFilter(event, 'cuisine')">${food.foodNation}</span>
 					</div>
 				</c:forEach>
-
 				<div class="filter-title">음식 유형 필터</div>
 				<div class="filter-section">
 					<c:forEach var="food" items="${foodList}">
@@ -189,21 +190,26 @@
 			</div>
 
 
+
 			<!-- 예시 카드 -->
 			<div class="card-container">
 				<c:forEach var="dinner" items="${dinnerList}">
-					<div class="card" data-cuisine="한식" data-type="육류">
-						<a href="/dinner/like?dinnerNo=${dinner.dinnerNo}"><img
-							src="img/jungsik.jpg" alt="음식 이미지"></a>
-						<div class="card-info">
-							<h3>
-								<a href="/">${dinner.dinnerName}</a>
-							</h3>
-							<p>${dinner.dinnerAddr}</p>
-							<p class="cuisine-type"></p>
+					<c:forEach var="food" items="${foodList}">
+						<div class="card" data-cuisine="${food.foodNation}"
+							data-type="${food.foodCat}">
+							<a href="/WEB-INF/views/common/dinnerDetail.jsp"><img
+								src="img/jungsik.jpg" alt="음식 이미지"></a>
+							<div class="card-info">
+								<h3>
+									<a href="/dinner/dinnerDetailFrm?dinnerNo=${dinner.dinnerNo}">${dinner.dinnerName}</a>
+								</h3>
+								<p>${dinner.dinnerAddr}</p>
+								<p class="cuisine-type">${food.foodNation}</p>
+							</div>
 						</div>
-					</div>
+					</c:forEach>
 				</c:forEach>
+
 				<div class="card" data-cuisine="양식" data-type="피자"
 					onclick="window.location.href='detail2.html'">
 					<img src="img/yangsik.png" alt="음식 이미지">
@@ -216,6 +222,7 @@
 			</div>
 		</main>
 	</div>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	<script>
 const filters = {
         cuisine: [],
@@ -258,6 +265,41 @@ const filters = {
         });
     }
 
+ // 즐겨찾기 기능 토글
+    function toggleFavorite(element) {
+        const restaurantId = element.getAttribute('data-id');
+        const isFavorited = element.classList.toggle('active');
+
+        if (isFavorited) {
+            favoriteRestaurants.add(restaurantId);
+            alert("즐겨찾기에 추가되었습니다.");
+        } else {
+            favoriteRestaurants.delete(restaurantId);
+            alert("즐겨찾기에서 해제되었습니다.");
+        }
+        
+    //즐겨찾기 로딩
+        function loadFavorites() {
+            const memberNo = '1'; // 예시로 회원 번호 설정
+            fetch(`/member/like?member_no=${memberNo}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById("card-container");
+                    container.innerHTML = data.map(restaurant => `
+                        <div class="card" onclick="location.href='restaurantDetail.jsp?name=${restaurant.name}'">
+                            <img src="${restaurant.image}" alt="${restaurant.name} 이미지">
+                            <div class="card-info">
+                                <h3>${restaurant.name}</h3>
+                                <p class="cuisine-type">${restaurant.cuisine}</p>
+                            </div>
+                            <span class="favorite-icon active" data-id="${restaurant.id}" onclick="toggleFavorite(this, '${memberNo}'); event.stopPropagation();">
+                                <i class="fa-solid fa-map-pin"></i>
+                            </span>
+                        </div>
+                    `).join('');
+                });
+        }
+    // 필터 컨테이너 토글 기능
     function toggleFilterContainer() {
         const filterContainer = document.querySelector('.filter-container');
         const arrow = document.querySelector('.arrow');
@@ -265,6 +307,11 @@ const filters = {
         filterContainer.style.display = isOpen ? 'none' : 'block';
         arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
     }
+    
+	// 처음에도 동작할 수 있도록 페이지 로드 되면 실행
+	$(function() {
+		loadFavorites();
+	});
 </script>
 </body>
 </html>

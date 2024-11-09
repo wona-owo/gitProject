@@ -25,14 +25,11 @@ public class DinnerService {
 		return dinnerList;
 	}
 
-	public ArrayList<Book> checkReservation(String dinnerNo, String displayMonth, String displayYear) {
+	public ArrayList<Book> checkReservation(String dinnerNo, String justMonth, String displayYear) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Book> bookList = null;
-		bookList = dao.likeDinner(conn, dinnerNo, displayMonth, displayYear);
+		bookList = dao.checkReservation(conn, dinnerNo, justMonth, displayYear);
 		JDBCTemplate.close(conn);
-
-		System.out.println(bookList);
-
 		return bookList;
 	}
 
@@ -47,16 +44,36 @@ public class DinnerService {
 	public ArrayList<Address> getDinnerAddress() {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Address> addList = dao.getDinnerAddress(conn);
-
 		JDBCTemplate.close(conn);
 		return addList;
 	}
 
-	public ArrayList<Dinner> selectAllMember() {
+	public ArrayList<Dinner> selectAllDinner() {
 		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<Dinner> list = dao.selectAllMember(conn);
+		ArrayList<Dinner> list = dao.selectAllDinner(conn);
 		JDBCTemplate.close(conn);
 		return list;
+	}
+
+	public Dinner dinnerDetail(String dinnerNo, String foodNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Dinner dinner = dao.dinnerDetail(conn, dinnerNo, foodNo);
+		JDBCTemplate.close(conn);
+		return dinner;
+	}
+
+	public Dinner memberLogin(String loginId, String loginPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		Dinner dinner = dao.memberLogin(conn, loginId, loginPw);
+		JDBCTemplate.close(conn);
+		return dinner;
+	}
+
+	public ArrayList<Book> getReservationData(String dinnerNo, String year, String month, String day) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Book> book = dao.getReservationData(conn, dinnerNo, year, month, day);
+		JDBCTemplate.close(conn);
+		return book;
 	}
 
 }

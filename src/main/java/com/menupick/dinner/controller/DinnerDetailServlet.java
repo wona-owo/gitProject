@@ -16,7 +16,7 @@ import com.menupick.dinner.vo.Food;
 /**
  * Servlet implementation class DinnerDetailServlet
  */
-@WebServlet("/dinner/dinnerDetail")
+@WebServlet("/dinner/detail")
 public class DinnerDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -31,22 +31,17 @@ public class DinnerDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinner_no");
-		String dinnerName = request.getParameter("dinner_name");
-
+		
+		
 		String foodNo = request.getParameter("food_no");
-
+		
 		DinnerService service = new DinnerService();
-		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
-		dinnerList = service.likeDinner(dinnerNo, dinnerName);
-		ArrayList<Food> foodList = new ArrayList<Food>();
-		foodList = service.filterNation(foodNo);
+		Dinner dinner = service.dinnerDetail(dinnerNo, foodNo);
 
-		request.setAttribute("dinnerList", dinnerList);
-		request.setAttribute("foodList", foodList);
-		// request.getRequestDispatcher();
+		request.setAttribute("dinner", dinner);
+		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
 
 	}
 
