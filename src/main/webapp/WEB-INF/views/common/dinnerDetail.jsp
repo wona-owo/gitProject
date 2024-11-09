@@ -34,6 +34,7 @@
 					
 					<button id="book" class="btn-primary">예약</button>
 					<br>
+					
 					<button id="edit" class="btn-primary">수정</button>
 				</div>
 				
@@ -67,24 +68,24 @@
 					<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
 					<div class="tab-content" id="around-content">주변 콘텐츠</div>
-					
-
 				</div>
 			</section>
 		</main>
 
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-
+	
 	<script>
       function showContent(contentId) {
         // 모든 탭 콘텐츠 숨기기
         const contents = document.querySelectorAll(".tab-content");
         contents.forEach((content) => content.classList.remove("active"));
-
+		
         // 선택된 콘텐츠만 보이도록 설정
         document.getElementById(contentId).classList.add("active");
       }
+      
+     
     </script>
 
 </body>
