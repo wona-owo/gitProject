@@ -38,8 +38,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         const mapContainer = document.getElementById("map");
         const mapOptions = {
-            center: new kakao.maps.LatLng(37.5563, 126.9220), // 초기 지도 중심 좌표 (홍대)
-            level: 3, // 초기 지도 확대 레벨
+        		center: new kakao.maps.LatLng(37.5105, 127.1194),// 초기 지도 중심 좌표 (송파나루역-방이역)
+            	level: 4, // 초기 지도 확대 레벨
         };
         const map = new kakao.maps.Map(mapContainer, mapOptions);
 

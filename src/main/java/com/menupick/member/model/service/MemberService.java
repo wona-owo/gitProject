@@ -155,13 +155,16 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return totalMembers;
 	}
-
+	
+	//즐겨찾기 관련 메소드
 	public ArrayList<Dinner> memberLikeList(String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> likeList = dao.memberLikeList(conn, memberNo);
-
+		System.out.println("LikeList" + likeList);
 		JDBCTemplate.close(conn);
 		return likeList;
 	}
+	
+	
 
 }

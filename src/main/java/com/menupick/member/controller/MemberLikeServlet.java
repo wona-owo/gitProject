@@ -35,19 +35,17 @@ public class MemberLikeServlet extends HttpServlet {
 		//1. 인코딩
 		
 		//2. 값 추출 - 회원 번호를 받아와서 쿼리에 전달.
-		String memberNo = request.getParameter("member_no");
+		String memberNo = request.getParameter("memberNo");
 		
+		System.out.println(memberNo);
 		//3. 비즈니스 로직 - 회원 번호와 일치하는 식당 정보 list 추출
 		MemberService service = new MemberService();
 		ArrayList<Dinner> likeList = service.memberLikeList(memberNo);
 		
-		//4. 결과처리 - ajax 방식으로 계속 리스트 송출, gson 활용
-		Gson gson = new Gson();
-		String jsonStr = gson.toJson(likeList);
+		//4. 결과처리 
 		
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json"); // 응답 데이터 형식 지정
-		response.getWriter().print(jsonStr);
+		request.setAttribute("likeList", likeList);		
+		request.getRequestDispatcher("/WEB-INF/views/checkLike.jsp").forward(request, response);
 	}
 
 	/**

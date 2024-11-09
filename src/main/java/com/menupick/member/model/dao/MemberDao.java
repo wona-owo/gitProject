@@ -289,14 +289,14 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ArrayList<Dinner> likeList = new ArrayList<>();
 		ResultSet rset = null;
+		System.out.println(memberNo);
 		
-		String query = "Select * From tbl_dinner D left join tbl_like L on (d.dinner_no= l.dinner_no) where l.member_no ='?'";
+		String query = "Select * From tbl_dinner D left join tbl_like L on (d.dinner_no= l.dinner_no) where l.member_no =?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
-			rset = pstmt.executeQuery();
-			ArrayList<Member> likelist = new ArrayList<>();
+			rset = pstmt.executeQuery();	
 			
 			while (rset.next()) {
 			Dinner d = new Dinner();
@@ -313,6 +313,7 @@ public class MemberDao {
 			d.setDinnerId(rset.getString("dinner_id"));
 			d.setDinnerPw(rset.getString("dinner_pw"));
 			d.setDinnerConfirm(rset.getString("dinner_confirm"));
+			
 			likeList.add(d);
 			}
 			
