@@ -1,4 +1,4 @@
-package com.menupick.dinner.controller;
+package com.menupick.member.controller;
 
 import java.io.IOException;
 
@@ -8,17 +8,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.member.model.service.MemberService;
+
 /**
- * Servlet implementation class MemberDinnerServlet
+ * Servlet implementation class MemberChgLevelServlet
  */
-@WebServlet("/member/dinnerCalendarFrm")
-public class DinnerCalendarFrmServlet extends HttpServlet {
+@WebServlet("/member/chgLevel")
+public class AdminMemberChgLevelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DinnerCalendarFrmServlet() {
+	public AdminMemberChgLevelServlet() {
 		super();
 	}
 
@@ -28,7 +30,18 @@ public class DinnerCalendarFrmServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerCalendar.jsp").forward(request, response);
+		// 회원 등급 변경!!
+
+		String memberNoArr = request.getParameter("memberNoArr");
+		String memberLevelArr = request.getParameter("memberLevelArr");
+		
+		System.out.println("memberNoArr :" +memberNoArr);
+		System.out.println("memberLevelArr : " +memberLevelArr);
+		
+		MemberService service = new MemberService();
+		int result = service.updChgLevel(memberNoArr, memberLevelArr);
+		
+		response.getWriter().print(result);
 	}
 
 	/**

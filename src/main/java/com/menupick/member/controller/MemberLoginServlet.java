@@ -54,7 +54,6 @@ public class MemberLoginServlet extends HttpServlet {
 		
 
 		// 4. 결과 처리
-
 		if (loginMember != null) {
 			//멤버, 관리자 계정 로그인 성공
 			HttpSession session = request.getSession(true);

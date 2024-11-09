@@ -29,6 +29,7 @@
             <c:when test="${sessionScope.loginType eq 'member'}">
                <c:choose>
                   <c:when test="${sessionScope.memberLevel == 1}">
+                  	 <li><a href="/admin/member">회원 관리페이지</a></li>
                       <li><a href="/admin/adminDinnerManage">매장 관리페이지</a></li>
                      <li><a href="/admin/adminDinnerManageFrm">매장 관리</a></li>
                   </c:when>
@@ -43,7 +44,7 @@
 
 				<%-- 식당 계정 로그인 상태 --%>
 				<c:when test="${sessionScope.loginType eq 'dinner'}">
-					<li><a href="/dinner/dashboard">${sessionScope.loginMember.dinnerName}님
+					<li><a href="/member/dinnerCalendarFrm">${sessionScope.loginMember.dinnerName}님
 							(식당)</a></li>
 					<li><a href="/dinner/settings">식당 설정</a></li>
 					<li><a href="/member/logout">로그아웃</a></li>

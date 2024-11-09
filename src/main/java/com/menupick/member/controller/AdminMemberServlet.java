@@ -2,6 +2,7 @@ package com.menupick.member.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,11 +35,27 @@ public class AdminMemberServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		MemberService service = new MemberService();
-		ArrayList<Member> list = service.selectAllMember();
 
-		request.setAttribute("memberList", list);
-		request.getRequestDispatcher("/WEB-INF/views/admin/adminMember.jsp").forward(request, response);
+		int page = 1; // 기본 페이지 설정
+        int pageSize = 15; // 한 페이지당 보여줄 회원 수
 
+        // 페이지 번호가 전달된 경우, 해당 번호로 설정
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        // 데이터 및 총 페이지 수 계산
+        List<Member> members = service.getMembers(page, pageSize);
+        int totalMembers = service.getTotalMemberCount();
+        int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+
+        // JSP에 데이터 전달
+        request.setAttribute("members", members);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        request.getRequestDispatcher("/WEB-INF/views/admin/adminMember.jsp").forward(request, response);
+		
 	}
 
 	/**

@@ -44,7 +44,6 @@ public class DinnerService {
 	public ArrayList<Address> getDinnerAddress() {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Address> addList = dao.getDinnerAddress(conn);
-
 		JDBCTemplate.close(conn);
 		return addList;
 	}
@@ -53,12 +52,15 @@ public class DinnerService {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> list = dao.selectAllDinner(conn);
 		JDBCTemplate.close(conn);
-		
 		return list;
 	}
 
+<<<<<<< HEAD
 	//식당 상세페이지
 	public Dinner dinnerDetail(String dinnerNo) {
+=======
+	public Dinner dinnerDetail(String dinnerNo, String foodNo) {
+>>>>>>> dev
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = new Dinner();
 		dinner = dao.dinnerDetail(conn, dinnerNo);
@@ -66,6 +68,7 @@ public class DinnerService {
 		System.out.println(dinner);
 		return dinner;
 	}
+
 	public Dinner memberLogin(String loginId, String loginPw) {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = dao.memberLogin(conn, loginId, loginPw);
@@ -82,5 +85,12 @@ public class DinnerService {
 		return food;
 	}
 
+
+	public ArrayList<Book> getReservationData(String dinnerNo, String year, String month, String day) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Book> book = dao.getReservationData(conn, dinnerNo, year, month, day);
+		JDBCTemplate.close(conn);
+		return book;
+	}
 
 }

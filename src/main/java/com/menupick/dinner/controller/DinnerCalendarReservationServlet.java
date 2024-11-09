@@ -36,8 +36,8 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinnerNo");
-		String displayMonth = request.getParameter("displayMonth");
-		String justMonth = displayMonth.substring(0, displayMonth.length() - 1);
+		String m = request.getParameter("displayMonth");
+		String justMonth = m.substring(0, m.length() - 1);
 		String displayYear = request.getParameter("displayYear");
 
 		DinnerService service = new DinnerService();
@@ -52,8 +52,6 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 
 		Gson gson = new Gson();
 		String jsonStr = gson.toJson(dateCountMap);
-		
-		System.out.println(jsonStr);
 
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");

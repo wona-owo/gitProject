@@ -171,41 +171,46 @@ public class DinnerDao {
 	}
 
 
+
 	public Dinner dinnerDetail(Connection conn, String dinnerNo) {
+
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner d = new Dinner();
 		String query = "select dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
+
 		
 		
 		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, dinnerNo);
 			rset = pstmt.executeQuery();
-			
-			if(rset.next()) {
-				 
-				d.setDinnerNo(dinnerNo);
-				d.setDinnerName(rset.getString("dinner_name"));
-				d.setDinnerAddr(rset.getString("dinner_addr"));
-				d.setDinnerOpen(rset.getString("dinner_open"));
-				d.setDinnerClose(rset.getString("dinner_close"));
-				d.setDinnerPhone(rset.getString("dinner_phone"));				
-				d.setDinnerParking(rset.getString("dinner_parking"));
-			
+
+
+
+			if (rset.next()) {
+				d = new Dinner();
+				d.setDinnerName(rset.getString("DINNER_NAME"));
+				d.setDinnerAddr(rset.getString("DINNER_ADDR"));
+				d.setDinnerOpen(rset.getString("DINNER_OPEN"));
+				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
+				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
+				d.setDinnerParking(rset.getString("DINNER_PARKING"));
+
+
 			}
-			
+
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
 		return d;
-		}
-		
+	}
 
 	public Dinner memberLogin(Connection conn, String loginId, String loginPw) {
 		PreparedStatement pstmt = null;
@@ -243,36 +248,36 @@ public class DinnerDao {
 			JDBCTemplate.close(pstmt);
 		}
 
-
 		return d;
 	}
 
-	public Food foodDetail(Connection conn, String foodNo) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		Food food = new Food();
-		String query = "select food_name, food_cat from tbl_food where food_no = ?";
-		System.out.println(food);
+
+	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String year, String month, String day) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		ArrayList<Book> book = new ArrayList<Book>();
+		String query = "select * from tbl_book where dinner_no = ? and extract(date from book_date) = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+
 		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, foodNo);
-			rset = pstmt.executeQuery();
-			
-			
-			if(rset.next()) {
-				food.setFoodNo(foodNo);
-				food.setFoodCat("food_cat");
-				food.setFoodName("food_name");
-				food.setFoodNation("food_nation");
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			pt.setString(2, day);
+			pt.setString(3, month);
+			pt.setString(4, year);
+			rt = pt.executeQuery();
+
+			while (rt.next()) {
+				// TODO
 			}
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
 		}
-		
-		return food;
+
+		return book;
+
 	}
 }
