@@ -61,6 +61,7 @@ section {
 	padding: 8px;
 	cursor: pointer;
 	border-radius: 4px;
+	text-align: center;
 }
 
 .days span:hover {
@@ -86,11 +87,6 @@ section {
 	padding: 5px;
 }
 
-.days span div {
-	/* Optional: Customize the appearance */
-	
-}
-
 /* 예약 숫자 색 지정*/
 #days>a>span>div:last-child {
 	color: red;
@@ -104,7 +100,6 @@ section {
 
 </head>
 <body>
-
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
@@ -120,7 +115,6 @@ section {
 							value="${loginMember.dinnerNo}">
 					</div>
 				</div>
-
 				<div class="weekdays">
 					<span>Sun</span> <span>Mon</span> <span>Tue</span> <span>Wed</span>
 					<span>Thu</span> <span>Fri</span> <span>Sat</span>
@@ -131,7 +125,6 @@ section {
 				<div>
 					<button id="check-today">오늘</button>
 				</div>
-
 			</section>
 			<div>
 				<button id="next-month">▶</button>
@@ -139,7 +132,6 @@ section {
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-
 	<script>
 		$(function() {
 			const daysContainer = $("#days");
