@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class dinnerDetailFrmServlet
  */
 @WebServlet("/dinner/dinnerDetailFrm")
-public class dinnerDetailFrmServlet extends HttpServlet {
+public class DinnerDetailFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public dinnerDetailFrmServlet() {
+	public DinnerDetailFrmServlet() {
 		super();
 	}
 

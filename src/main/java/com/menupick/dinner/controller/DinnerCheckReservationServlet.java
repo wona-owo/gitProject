@@ -42,7 +42,6 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 		ArrayList<Book> bookInfo = service.getReservationData(dinnerNo, year, month, day);
 		
 		request.setAttribute("bookInfo", bookInfo);
-		
 
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 	}
