@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor // AllArgsConstructor == 일반생성자(매개변수 있는 생성자)
 @Data // @Data == getter & setter
 public class Member {
-
 	private String memberNo;
 	private String memberId;
 	private String memberPw;
@@ -21,5 +20,4 @@ public class Member {
 	private String enrollDate;
 	private String adultConfirm;
 	private int memberLevel;
-
 }

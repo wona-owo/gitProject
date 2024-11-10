@@ -98,27 +98,25 @@
 	color: gray; /* 해제 상태의 회색 */
 }
 </style>
-
-<jsp:include page="/WEB-INF/views/common/header.jsp" />
-<div class="page-title">즐겨찾는 식당</div>
-
-<div class="card-container">
-	<c:forEach var="dinner" items="${likeList}">
-		<div class="card"
-			onclick="location.href='dinnerDetail.jsp?name=${dinner.name}'">
-			<img src="${dinner.image}" alt="${dinner.name} 이미지">
-			<div class="card-info">
-				<h3>${dinner.name}</h3>
-				<p class="cuisine-type">${dinner.cuisine}</p>
+</head>
+<body>
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<div class="page-title">즐겨찾는 식당</div>
+	<div class="card-container">
+		<c:forEach var="dinner" items="${likeList}">
+			<div class="card"
+				onclick="location.href='dinnerDetail.jsp?name=${dinner.name}'">
+				<img src="${dinner.image}" alt="${dinner.name} 이미지">
+				<div class="card-info">
+					<h3>${dinner.name}</h3>
+					<p class="cuisine-type">${dinner.cuisine}</p>
+				</div>
+				<span class="favorite-icon active" data-id="${dinner.addr}">
+					<i class="fa-solid fa-map-pin"></i>
+				</span>
 			</div>
-			<span class="favorite-icon active" data-id="${dinner.addr}"> <i
-				class="fa-solid fa-map-pin"></i>
-			</span>
-		</div>
-	</c:forEach>
-</div>
-
-
-<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+		</c:forEach>
+	</div>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

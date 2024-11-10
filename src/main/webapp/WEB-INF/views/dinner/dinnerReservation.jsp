@@ -11,6 +11,5 @@
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-
 </body>
 </html>

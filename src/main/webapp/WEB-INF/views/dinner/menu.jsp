@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/resources/css/diner_admin_memberdetail.css">
+<link rel="stylesheet"
+	href="/resources/css/dinner_admin_memberdetail.css">
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
@@ -28,22 +29,22 @@
 						<th>성인인증</th>
 						<th>등급</th>
 					</tr>
-					
+
 					<tr>
 						<td>${member.memberNo}</td>
-	                    <td>${member.memberId}</td>
-	                    <td>${member.memberName}</td>
-	                    <td>${member.memberNick}</td>
-	                    <td>${member.memberPhone}</td>
-	                    <td>${member.memberAddr}</td>
-	                    <td>${member.memberGender}</td>
-	                    <td>${member.memberEmail}</td>
-	                    <td>${member.enrollDate}</td>					
-	                    <td>${member.adultValid}</td>
-	                    <td>${member.memberLevel}</td>
+						<td>${member.memberId}</td>
+						<td>${member.memberName}</td>
+						<td>${member.memberNick}</td>
+						<td>${member.memberPhone}</td>
+						<td>${member.memberAddr}</td>
+						<td>${member.memberGender}</td>
+						<td>${member.memberEmail}</td>
+						<td>${member.enrollDate}</td>
+						<td>${member.adultValid}</td>
+						<td>${member.memberLevel}</td>
 					</tr>
 				</table>
-				
+
 				<br>
 
 				<div class="my-info-box">
@@ -59,6 +60,8 @@
 						<button class="delete-button">선택삭제</button>
 					</div>
 				</div>
-
+			</section>
+		</main>
+	</div>
 </body>
 </html>

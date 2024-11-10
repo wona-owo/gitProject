@@ -76,27 +76,25 @@
 </style>
 </head>
 <body>
-
-
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<div class="wrap">
 		<div class="content">
 
-			<!-- 타이틀 -->
+			<%-- 타이틀 --%>
 			<div class="my-page-title">마이페이지</div>
 
-			<!-- 동그라미 버튼 그룹 컨테이너 -->
+			<%-- 동그라미 버튼 그룹 컨테이너 --%>
 			<div class="button-group-container">
 				<div class="button-group">
 					<a href="/" class="circle-button"> <span>정보 수정</span>
 
 					</a> <a href="/member/ckBook" class="circle-button"> <span>예약
 							확인</span>
-					
+
 					</a> <a href="/member/ckReview" class="circle-button"> <span>리뷰
 							보기</span>
-					
-					</a> <a href="/member/like" class="circle-button"> <span>즐겨찾기 
+
+					</a> <a href="/member/like" class="circle-button"> <span>즐겨찾기
 							보기</span>
 					</a>
 				</div>

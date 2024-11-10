@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<link rel="stylesheet" href="/resources/css/diner_admin_member.css" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>매장관리 페이지</title>
+<link rel="stylesheet" href="/resources/css/dinner_admin_member.css" />
 <style>
 .notice-list-wrap {
 	width: 1200px;

@@ -169,9 +169,7 @@
 				<button class="search-button" onclick="search()">검색</button>
 			</div>
 
-
 			<!-- 콤팩트 필터 컨테이너 -->
-
 			<div class="filter-container">
 				<div class="filter-title">국가별 필터</div>
 				<c:forEach var="food" items="${foodList}">
@@ -188,8 +186,6 @@
 					</c:forEach>
 				</div>
 			</div>
-
-
 
 			<!-- 예시 카드 -->
 			<div class="card-container">
