@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.menupick.member.model.vo.Member;
 import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 
 /**
  * Servlet implementation class JoinServlet
@@ -18,22 +18,20 @@ import com.menupick.member.model.service.MemberService;
 @WebServlet("/member/join")
 public class MemberJoinServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public MemberJoinServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public MemberJoinServlet() {
+		super();
+	}
 
-		
-		
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String memberId = request.getParameter("member_id");
 		String memberPw = request.getParameter("member_pw");
 		String memberName = request.getParameter("member_name");
@@ -43,12 +41,11 @@ public class MemberJoinServlet extends HttpServlet {
 		String memberGender = request.getParameter("member_gender");
 		String memberEmail = request.getParameter("member_email");
 		String adultConfirm = request.getParameter("adult_confirm");
-			
-	
+
 		MemberService service = new MemberService();
 		Member member = new Member();
 		int result = service.insertMember(member);
-		
+
 		member.setMemberId(memberId);
 		member.setMemberPw(memberPw);
 		member.setMemberName(memberName);
@@ -58,31 +55,29 @@ public class MemberJoinServlet extends HttpServlet {
 		member.setMemberGender(memberGender);
 		member.setMemberEmail(memberEmail);
 		member.setAdultConfirm(adultConfirm);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			request.setAttribute("title", "성공");
 			request.setAttribute("msg", "회원가입이 완료 되었습니다 로그인 페이지로 이동합니다");
 			request.setAttribute("icon", "success");
 			request.setAttribute("loc", "/member/loginFrm");
-		}else {
+		} else {
 			request.setAttribute("title", "실패");
 			request.setAttribute("msg", "회원가입에 실패 하였습니다 메인 페이지로 이동합니다");
 			request.setAttribute("icon", "error");
 			request.setAttribute("loc", "/");
 		}
-		
-		
+
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		view.forward(request, response);
-		
-		
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

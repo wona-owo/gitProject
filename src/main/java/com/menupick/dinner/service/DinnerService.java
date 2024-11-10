@@ -55,12 +55,10 @@ public class DinnerService {
 		return list;
 	}
 
-<<<<<<< HEAD
+
 	//식당 상세페이지
 	public Dinner dinnerDetail(String dinnerNo) {
-=======
-	public Dinner dinnerDetail(String dinnerNo, String foodNo) {
->>>>>>> dev
+
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = new Dinner();
 		dinner = dao.dinnerDetail(conn, dinnerNo);

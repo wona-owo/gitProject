@@ -1,8 +1,7 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,16 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MemberCheckLikeFrmServlet
+ * Servlet implementation class dinnerDetailFrmServlet
  */
-@WebServlet("/member/ckLike")
-public class MemberCheckLikeFrmServlet extends HttpServlet {
+@WebServlet("/dinner/dinnerDetailFrm")
+public class DinnerDetailFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberCheckLikeFrmServlet() {
+	public DinnerDetailFrmServlet() {
 		super();
 	}
 
@@ -29,8 +28,7 @@ public class MemberCheckLikeFrmServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/checkLike.jsp");
-		view.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
 	}
 
 	/**
