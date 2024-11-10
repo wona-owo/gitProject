@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>회원 관리 페이지</title>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
-<link rel="stylesheet" href="/resources/css/diner_admin_member.css">
+<link rel="stylesheet" href="/resources/css/dinner_admin_member.css">
 </head>
 <style>
 .pagination {

@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>회원 상세 페이지</title>
 <link rel="stylesheet"
-	href="/resources/css/diner_admin_memberdetail.css">
+	href="/resources/css/dinner_admin_memberdetail.css">
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
