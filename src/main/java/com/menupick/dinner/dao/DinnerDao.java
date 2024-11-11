@@ -273,4 +273,28 @@ public class DinnerDao {
 		}
 		return book;
 	}
+
+	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Dinner> list = new ArrayList<>();
+		String query = "SELECT * FROM tbl_dinner";
+		
+		try {
+			pstmt=conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()){
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
 }

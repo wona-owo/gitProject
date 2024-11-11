@@ -19,7 +19,6 @@
 			<c:choose>
 				<%-- 비로그인 상태 --%>
 				<c:when test="${empty sessionScope.loginMember}">
-
 					<li><a href="/dinner/likeFrm">인기식당</a></li>
 					<li><a href="/member/loginFrm">로그인</a></li>
 				</c:when>

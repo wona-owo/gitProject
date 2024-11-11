@@ -74,6 +74,14 @@ public class DinnerService {
 		ArrayList<Book> book = dao.getReservationData(conn, dinnerNo, year, month, day);
 		JDBCTemplate.close(conn);
 		return book;
+}
+	public ArrayList<Dinner> selectAllAdminDinner() {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Dinner> list = dao.selectAllAdminDinner(conn);
+		JDBCTemplate.close(conn);
+		
+		return list;
+
 	}
 
 }
