@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +43,7 @@
 						<td>${member.memberGender}</td>
 						<td>${member.memberEmail}</td>
 						<td>${member.enrollDate}</td>
-						<td>${member.adultValid}</td>
+						<td>${member.adultConfirm}</td>
 						<td>${member.memberLevel}</td>
 					</tr>
 				</table>
@@ -66,80 +68,40 @@
 
 				<p>회원이 쓴 리뷰</p>
 				<div class="my-info-wrap">
-					<div class="rvMainBox">
-						<div>
-							<p>식당명</p>
-							<p>신고당한 횟수 : 999+</p>
-							<p>아이디(별명)</p>
-							<br>
-							<p>작성일자</p>
-							<br>
-							<div class="reviewBox">
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fd2v80xjmx68n4w.cloudfront.net%2Fmembers%2Fportfolios%2FpQTUz1710345877.jpg%3Fw%3D718&type=a340">
+					<div class="rvMainBox">   						<!-- 리뷰 공간 건드릴려면 이거 ㅇㅇ -->
+						<c:forEach var="review" items="${reviews}">
+							<div>
+								<p>식당명: ${review.dinnerName}</p>
+								<p>신고당한 횟수: 0</p>
+								<!-- 신고 횟수는 필요 시 추가 -->
+								<p>아이디(별명): ${member.memberId} (${member.memberNick})</p>
+								<br>
+								<p>작성일자: ${review.reviewDate}</p>
+								<br>
+								<div class="reviewBox">
+									<!-- 리뷰 이미지 -->
+									<c:choose>
+										<c:when test="${review.reviewImage != null}">
+											<div class="reviewPhoto">
+												<img
+													src="data:image/jpeg;base64,${fn:escapeXml(review.reviewImage)}"
+													alt="리뷰 이미지">
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div class="reviewPhoto">
+												<img src="/resources/images/default_review.png" alt="기본 이미지">
+											</div>
+										</c:otherwise>
+									</c:choose>
 								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA2MjVfMjQ5%2FMDAxNTkzMDQ3MDkxMzA5.vg4HFQ_FqqP_KFWAdH4WxdSlvbJDc8A6Te4yQpobIpkg.rAVNRC5Is6ylpsCO0R9zl9lU0e2DhGp8YhOyoxat3yYg.JPEG.pixta%2Fpixta_58587077_M.jpg&type=sc960_832">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_043E9C8692374A58466EFADCEAA5827D.jpg&type=a340">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTA5MTFfMjU2%2FMDAxNTY4MjEwMTc3MTEy.eZeivn1BoEwOMGotJgdX99C5aWTEZuCjFkjOVZdAMD4g._K139z6KKHNRuN0Yx0-pKFmMDXF5be_jZRP-LJ03rlIg.JPEG%2F84A3A6D5-581F-459E-A7E6-F7EE91469547.jpeg&type=a340">
-								</div>
-							</div>
-							<p>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-							</p>
-							<div class="checkbox-container">
-								<input type="checkbox" name="rpchk">
-							</div>
-						</div>
-
-						<div>
-							<p>식당명</p>
-							<p>신고당한 횟수 : 0</p>
-							<p>아이디(별명)</p>
-							<br>
-							<p>작성일자</p>
-							<br>
-							<div class="reviewBox">
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fd2v80xjmx68n4w.cloudfront.net%2Fmembers%2Fportfolios%2FpQTUz1710345877.jpg%3Fw%3D718&type=a340">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA2MjVfMjQ5%2FMDAxNTkzMDQ3MDkxMzA5.vg4HFQ_FqqP_KFWAdH4WxdSlvbJDc8A6Te4yQpobIpkg.rAVNRC5Is6ylpsCO0R9zl9lU0e2DhGp8YhOyoxat3yYg.JPEG.pixta%2Fpixta_58587077_M.jpg&type=sc960_832">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_043E9C8692374A58466EFADCEAA5827D.jpg&type=a340">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTA5MTFfMjU2%2FMDAxNTY4MjEwMTc3MTEy.eZeivn1BoEwOMGotJgdX99C5aWTEZuCjFkjOVZdAMD4g._K139z6KKHNRuN0Yx0-pKFmMDXF5be_jZRP-LJ03rlIg.JPEG%2F84A3A6D5-581F-459E-A7E6-F7EE91469547.jpeg&type=a340">
+								<p>${review.reviewContent}</p>
+								<div class="checkbox-container">
+									<input type="checkbox" name="rpchk"
+										data-review-no="${review.reviewNo}">
 								</div>
 							</div>
-							<p>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-							</p>
-							<div class="checkbox-container">
-								<input type="checkbox" name="rpchk">
-							</div>
-						</div>
+						</c:forEach>
 					</div>
 				</div>
 			</section>
