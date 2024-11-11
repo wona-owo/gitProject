@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>member.jsp</title>
+<title>회원관리 페이지</title>
 </head>
 <body>
-	<h3>깃 플로우 테스트!</h3>
+
 </body>
 </html>
