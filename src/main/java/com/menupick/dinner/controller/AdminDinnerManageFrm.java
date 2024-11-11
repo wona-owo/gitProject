@@ -1,8 +1,8 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,17 +30,22 @@ public class AdminDinnerManageFrm extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		String dinnerNo = request.getParameter("dinnerNo");
 		
 		DinnerService service = new DinnerService();
 		Dinner dinner = service.getDinnerNo(dinnerNo);
 		
-		
 		request.setAttribute("dinner", dinner);
 		request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerDetail.jsp").forward(request, response);
+		
 		
 	}
 
