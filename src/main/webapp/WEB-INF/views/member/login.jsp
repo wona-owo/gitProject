@@ -31,8 +31,17 @@
 	text-decoration: underline;
 }
 
+/* 체크박스와 레이블을 정확히 같은 줄에 배치 */
+.input-wrap.checkbox-container {
+	display: flex;
+	align-items: center; /* 수직 가운데 정렬 */
+	flex-direction: row; /* 가로 배치 */
+	gap: 5px; /* 간격 조정 */
+	padding-top: 10px; /* 위쪽 여백 조정 (필요 시) */
+}
+
 input[type="checkbox"] {
-	margin-right: 5px;
+	margin: 0; /* 체크박스 여백 초기화 */
 }
 </style>
 </head>
@@ -44,6 +53,7 @@ input[type="checkbox"] {
 				<div class="page-title">로그인</div>
 				<form action="/member/login" method="post" autocomplete="off"
 					onsubmit="return loginValidate()">
+
 					<div class="input-wrap">
 						<div class="input-title">
 							<label for="loginId">아이디</label>
@@ -54,6 +64,7 @@ input[type="checkbox"] {
 								value="${cookie.saveId.value}">
 						</div>
 					</div>
+
 					<div class="input-wrap">
 						<div class="input-title">
 							<label for="loginPw">비밀번호</label>
@@ -62,7 +73,8 @@ input[type="checkbox"] {
 							<input type="password" id="loginPw" name="loginPw">
 						</div>
 					</div>
-					<div class="input-wrap">
+
+					<div class="input-wrap checkbox-container">
 						<c:if test="${empty cookie.saveId.value}">
 							<input type="checkbox" name="saveId" id="saveId" value="chk">
 						</c:if>
@@ -76,6 +88,7 @@ input[type="checkbox"] {
 					<div class="login-button-box">
 						<button type="submit" class="btn-primary lg">로그인</button>
 					</div>
+
 					<div class="member-link-box">
 						<a href="/member/joinFrm">회원가입</a> | <a href="javascript:void(0)"
 							onclick="searchInfo('id')">아이디 찾기</a> | <a
@@ -87,5 +100,20 @@ input[type="checkbox"] {
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 	</div>
+
+	<script>
+		//로그인 버튼 클릭 시, 동작 함수(submit 이전에) 
+		function loginValidate() {
+			if ($('#loginId').val().length < 1) {
+				msg("알림", "아이디를 입력하세요.", "warning");
+				$('#loginId').focus();
+				return false;
+			}
+			if ($('#loginPw').val().length < 1) {
+				msg("알림", "비밀번호를 입력하세요.", "warning");
+				return false;
+			}
+		}
+	</script>
 </body>
 </html>
