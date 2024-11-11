@@ -34,26 +34,37 @@ public class AdminMemberServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		MemberService service = new MemberService();
+	    String action = request.getParameter("action");
 
-		int page = 1; // 기본 페이지 설정
-        int pageSize = 15; // 한 페이지당 보여줄 회원 수
+	    if ("search".equals(action)) {
+	        // 검색 처리
+	        String memberNick = request.getParameter("memberNick");
+	        List<Member> members = service.searchMembersByNick(memberNick);
 
-        // 페이지 번호가 전달된 경우, 해당 번호로 설정
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
-        }
+	        request.setAttribute("members", members);
+	        request.setAttribute("currentPage", 1); // 검색 시 페이지 번호 고정
+	        request.setAttribute("totalPages", 1); // 검색 결과는 한 페이지로 처리
 
-        // 데이터 및 총 페이지 수 계산
-        List<Member> members = service.getMembers(page, pageSize);
-        int totalMembers = service.getTotalMemberCount();
-        int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+	        request.getRequestDispatcher("/WEB-INF/views/admin/adminMember.jsp").forward(request, response);
+	    } else {
+	        // 기존 회원 목록 처리
+	        int page = 1;
+	        int pageSize = 15;
 
-        // JSP에 데이터 전달
-        request.setAttribute("members", members);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
+	        if (request.getParameter("page") != null) {
+	            page = Integer.parseInt(request.getParameter("page"));
+	        }
 
-        request.getRequestDispatcher("/WEB-INF/views/admin/adminMember.jsp").forward(request, response);
+	        List<Member> members = service.getMembers(page, pageSize);
+	        int totalMembers = service.getTotalMemberCount();
+	        int totalPages = (int) Math.ceil((double) totalMembers / pageSize);
+
+	        request.setAttribute("members", members);
+	        request.setAttribute("currentPage", page);
+	        request.setAttribute("totalPages", totalPages);
+
+	        request.getRequestDispatcher("/WEB-INF/views/admin/adminMember.jsp").forward(request, response);
+	    }
 		
 	}
 
