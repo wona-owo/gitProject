@@ -33,7 +33,7 @@ public class MemberJoinFrmServlet extends HttpServlet {
 		// 2) 값추출
 		// 3) 비즈니스로직 = 페이지 이동을 위해 만들어진 서블릿이기 때문에 위 두가지는 작성X
 		// 4) 결과처리 - 페이지 이동
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/joinFrm.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/join.jsp");
 		view.forward(request, response);
 	}
 

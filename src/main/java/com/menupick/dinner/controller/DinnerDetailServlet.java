@@ -1,7 +1,6 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
+<<<<<<< HEAD
 import com.menupick.dinner.vo.Food;
 import com.menupick.member.model.service.MemberService;
 import com.menupick.member.model.vo.Member;
+=======
+>>>>>>> dev
 
 /**
  * Servlet implementation class DinnerDetailServlet
@@ -33,11 +35,18 @@ public class DinnerDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinner_no");
+
 		String foodNo = request.getParameter("food_no");
 		String memberNo = request.getParameter("member_no");
 		
+
+
+		
+
+
 		DinnerService service = new DinnerService();
 		MemberService mservice = new MemberService();
 		Dinner dinner = service.dinnerDetail(dinnerNo);

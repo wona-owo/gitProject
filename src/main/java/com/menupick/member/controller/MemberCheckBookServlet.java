@@ -3,27 +3,31 @@ package com.menupick.member.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Book;
 import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 
 /**
- * Servlet implementation class MemberLikeServlet
+ * Servlet implementation class MemberCheckBookFrmServlet
  */
-@WebServlet("/member/like")
-public class MemberLikeServlet extends HttpServlet {
+@WebServlet("/member/ckBook")
+public class MemberCheckBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberLikeServlet() {
+	public MemberCheckBookServlet() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -32,19 +36,19 @@ public class MemberLikeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 1. 인코딩
+		// 값 추출 - 회원 번호를 받아와서 쿼리에 전달
+		HttpSession session = request.getSession(false);
+		Member member = (Member) session.getAttribute("loginMember");
+		String memberNo = member.getMemberNo();
 
-		// 2. 값 추출 - 회원 번호를 받아와서 쿼리에 전달.
-		String memberNo = request.getParameter("memberNo");
-
-		System.out.println(memberNo);
-		// 3. 비즈니스 로직 - 회원 번호와 일치하는 식당 정보 list 추출
+		// 비즈니스 로직 - 회원 번호와 일치하는 리뷰 list 추출
 		MemberService service = new MemberService();
-		ArrayList<Dinner> likeList = service.memberLikeList(memberNo);
+		ArrayList<Book> bookList = service.memberBookList(memberNo);
 
-		// 4. 결과처리
-		request.setAttribute("likeList", likeList);
-		request.getRequestDispatcher("/WEB-INF/views/checkLike.jsp").forward(request, response);
+		// 결과처리
+		request.setAttribute("bookList", bookList);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/checkBook.jsp");
+		view.forward(request, response);
 	}
 
 	/**
@@ -53,6 +57,7 @@ public class MemberLikeServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

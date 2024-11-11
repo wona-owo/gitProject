@@ -35,7 +35,7 @@ section {
 	align-items: center;
 	margin: auto;
 	padding: 10px;
-	background-color: #4CAF50;
+	background-color: #ff4400;
 	color: #fff;
 	padding: 10px;
 }
@@ -64,12 +64,19 @@ section {
 	text-align: center;
 }
 
-.days span:hover {
-	background-color: #d3e2d3;
+.days span.has-number:hover {
+	background-color: rgba(255, 68, 0, 0.3);
+	cursor: pointer;
 }
 
 .days .today {
-	background-color: #4CAF50;
+	background-color: #ff4400;
+	color: #fff;
+	font-weight: bold;
+}
+
+.days .today:hover {
+	background-color: #ff4400;
 	color: #fff;
 	font-weight: bold;
 }
@@ -89,12 +96,42 @@ section {
 
 /* 예약 숫자 색 지정*/
 #days>a>span>div:last-child {
-	color: red;
+	color: #4CAF50;
 }
 
 .today {
 	background-color: #f0f8ff;
 	border-radius: 50%;
+}
+
+#prev-month, #next-month, #check-today {
+	border: none;
+	width: 50px;
+	height: 50px;
+	border-radius: 8px;
+}
+
+#prev-month:hover, #next-month:hover, #check-today:hover {
+	background-color: #b6b6b6;
+	cursor: pointer;
+}
+
+#prev-month {
+	
+}
+
+#next-month {
+	
+}
+
+#check-today-div {
+	display: flex;
+	justify-content: flex-end;
+}
+
+#check-today {
+	margin-right: 20px;
+	width: 75px;
 }
 </style>
 
@@ -122,7 +159,7 @@ section {
 
 				<div class="days" id="days"></div>
 
-				<div>
+				<div id="check-today-div">
 					<button id="check-today">오늘</button>
 				</div>
 			</section>
@@ -180,6 +217,10 @@ section {
 									const bookCntEl = $("<div></div>").html(
 											bookCnt || "&nbsp;");
 									dayEl.append(dayNumEl, bookCntEl);
+
+								    if (bookCnt) {
+								        dayEl.addClass("has-number");
+								    }
 
 									const today = new Date();
 									if (day === today.getDate()

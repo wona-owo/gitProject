@@ -82,11 +82,18 @@ public class DinnerService {
 	}
 
 
-	public ArrayList<Book> getReservationData(String dinnerNo, String year, String month, String day) {
+	public ArrayList<Book> getReservationData(String dinnerNo, String date) {
 		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<Book> book = dao.getReservationData(conn, dinnerNo, year, month, day);
+		ArrayList<Book> book = dao.getReservationData(conn, dinnerNo, date);
 		JDBCTemplate.close(conn);
 		return book;
+	}
+
+	public ArrayList<Dinner> selectAllAdminDinner() {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Dinner> list = dao.selectAllAdminDinner(conn);
+		JDBCTemplate.close(conn);
+		return list;
 	}
 
 

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +43,7 @@
 						<td>${member.memberGender}</td>
 						<td>${member.memberEmail}</td>
 						<td>${member.enrollDate}</td>
-						<td>${member.adultValid}</td>
+						<td>${member.adultConfirm}</td>
 						<td>${member.memberLevel}</td>
 					</tr>
 				</table>
@@ -52,13 +54,19 @@
 					<p>총 신고당한 횟수 : 9999+</p>
 					<div class="action-bar">
 						<div class="sort-dropdown">
-							<select id="sort-options">
-								<option value="latest">최신순</option>
-								<option value="oldest">오래된순</option>
-								<option value="report">신고순</option>
-							</select>
+							<form action="/admin/memberDetail" method="get">
+								<input type="hidden" name="memberNo" value="${member.memberNo}">
+								<select name="sortOption" onchange="this.form.submit()">
+									<option value="latest"
+										${param.sortOption == 'latest' ? 'selected' : ''}>최신순</option>
+									<option value="oldest"
+										${param.sortOption == 'oldest' ? 'selected' : ''}>오래된순</option>
+									<option value="report"
+										${param.sortOption == 'report' ? 'selected' : ''}>신고순</option>
+								</select>
+							</form>
 						</div>
-						<button class="delete-button">선택삭제</button>
+						<button class="delete-button" onclick="removeAllMembers()">선택삭제</button>
 					</div>
 				</div>
 
@@ -67,79 +75,40 @@
 				<p>회원이 쓴 리뷰</p>
 				<div class="my-info-wrap">
 					<div class="rvMainBox">
-						<div>
-							<p>식당명</p>
-							<p>신고당한 횟수 : 999+</p>
-							<p>아이디(별명)</p>
-							<br>
-							<p>작성일자</p>
-							<br>
-							<div class="reviewBox">
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fd2v80xjmx68n4w.cloudfront.net%2Fmembers%2Fportfolios%2FpQTUz1710345877.jpg%3Fw%3D718&type=a340">
+						<!-- 리뷰 공간 건드릴려면 이거 ㅇㅇ -->
+						<c:forEach var="review" items="${reviews}">
+							<div>
+								<p>식당명: ${review.dinnerName}</p>
+								<p>신고당한 횟수: 0</p>
+								<!-- 신고 횟수는 필요 시 추가 -->
+								<p>아이디(별명): ${member.memberId} (${member.memberNick})</p>
+								<br>
+								<p>작성일자: ${review.reviewDate}</p>
+								<br>
+								<div class="reviewBox">
+									<!-- 리뷰 이미지 -->
+									<c:choose>
+										<c:when test="${review.reviewImage != null}">
+											<div class="reviewPhoto">
+												<img
+													src="data:image/jpeg;base64,${fn:escapeXml(review.reviewImage)}"
+													alt="리뷰 이미지">
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div class="reviewPhoto">
+												<img src="/resources/images/default_review.png" alt="기본 이미지">
+											</div>
+										</c:otherwise>
+									</c:choose>
 								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA2MjVfMjQ5%2FMDAxNTkzMDQ3MDkxMzA5.vg4HFQ_FqqP_KFWAdH4WxdSlvbJDc8A6Te4yQpobIpkg.rAVNRC5Is6ylpsCO0R9zl9lU0e2DhGp8YhOyoxat3yYg.JPEG.pixta%2Fpixta_58587077_M.jpg&type=sc960_832">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_043E9C8692374A58466EFADCEAA5827D.jpg&type=a340">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTA5MTFfMjU2%2FMDAxNTY4MjEwMTc3MTEy.eZeivn1BoEwOMGotJgdX99C5aWTEZuCjFkjOVZdAMD4g._K139z6KKHNRuN0Yx0-pKFmMDXF5be_jZRP-LJ03rlIg.JPEG%2F84A3A6D5-581F-459E-A7E6-F7EE91469547.jpeg&type=a340">
-								</div>
-							</div>
-							<p>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-							</p>
-							<div class="checkbox-container">
-								<input type="checkbox" name="rpchk">
-							</div>
-						</div>
-
-						<div>
-							<p>식당명</p>
-							<p>신고당한 횟수 : 0</p>
-							<p>아이디(별명)</p>
-							<br>
-							<p>작성일자</p>
-							<br>
-							<div class="reviewBox">
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fd2v80xjmx68n4w.cloudfront.net%2Fmembers%2Fportfolios%2FpQTUz1710345877.jpg%3Fw%3D718&type=a340">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA2MjVfMjQ5%2FMDAxNTkzMDQ3MDkxMzA5.vg4HFQ_FqqP_KFWAdH4WxdSlvbJDc8A6Te4yQpobIpkg.rAVNRC5Is6ylpsCO0R9zl9lU0e2DhGp8YhOyoxat3yYg.JPEG.pixta%2Fpixta_58587077_M.jpg&type=sc960_832">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_043E9C8692374A58466EFADCEAA5827D.jpg&type=a340">
-								</div>
-								<div class="reviewPhoto">
-									<img
-										src="https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTA5MTFfMjU2%2FMDAxNTY4MjEwMTc3MTEy.eZeivn1BoEwOMGotJgdX99C5aWTEZuCjFkjOVZdAMD4g._K139z6KKHNRuN0Yx0-pKFmMDXF5be_jZRP-LJ03rlIg.JPEG%2F84A3A6D5-581F-459E-A7E6-F7EE91469547.jpeg&type=a340">
+								<p>${review.reviewContent}</p>
+								<div class="checkbox-container">
+									<input type="checkbox" name="rpchk"
+										data-review-no="${review.reviewNo}">
 								</div>
 							</div>
-							<p>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-								리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용<br>
-							</p>
-							<div class="checkbox-container">
-								<input type="checkbox" name="rpchk">
-							</div>
-						</div>
+						</c:forEach>
 					</div>
 				</div>
 			</section>
@@ -147,4 +116,58 @@
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
+
+<script>
+	//선택된 회원 탈퇴
+	function removeAllMembers() {
+		let checkBoxes = $("input[name='rpchk']:checked");
+		if (checkBoxes.length < 1) {
+			swal({
+				title : "알림",
+				text : "선택한 리뷰가 없습니다",
+				icon : "warning"
+			});
+			return;
+		}
+
+		let reviewNoArr = [];
+		$.each(checkBoxes, function(index, item) {
+			let reviewNo = $(item).data("review-no"); // 체크박스의 data 속성에서 reviewNo 읽기
+			if (reviewNo) {
+				reviewNoArr.push(reviewNo);
+			}
+		});
+
+		swal({
+			title : "리뷰 삭제",
+			text : "선택된 리뷰를 삭제하시겠습니까?",
+			icon : "warning",
+			buttons : {
+				cancel : "취소",
+				confirm : "삭제"
+			}
+		}).then(
+				function(confirm) {
+					if (confirm) {
+						$.ajax({
+							url : "/reviewRemoveAll", // 리뷰 삭제에 맞는 URL로 변경
+							type : "POST",
+							data : {
+								reviewNoArr : reviewNoArr.join("/")
+							}, // 문자열로 조합하여 전송
+							success : function(response) {
+								swal("알림", "선택된 리뷰가 삭제되었습니다", "success").then(
+										function() {
+											location.reload(); // 페이지 새로고침
+										});
+							},
+							error : function() {
+								swal("오류", "리뷰 삭제 중 오류가 발생하였습니다", "error");
+							}
+						});
+					}
+				});
+	}
+</script>
+
 </html>

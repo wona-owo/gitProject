@@ -42,10 +42,7 @@ public class MemberJoinServlet extends HttpServlet {
 		String memberEmail = request.getParameter("member_email");
 		String adultConfirm = request.getParameter("adult_confirm");
 
-		MemberService service = new MemberService();
 		Member member = new Member();
-		int result = service.insertMember(member);
-
 		member.setMemberId(memberId);
 		member.setMemberPw(memberPw);
 		member.setMemberName(memberName);
@@ -55,6 +52,10 @@ public class MemberJoinServlet extends HttpServlet {
 		member.setMemberGender(memberGender);
 		member.setMemberEmail(memberEmail);
 		member.setAdultConfirm(adultConfirm);
+		
+		MemberService service = new MemberService();
+		int result = service.insertMember(member);
+
 
 		if (result > 0) {
 			request.setAttribute("title", "성공");
