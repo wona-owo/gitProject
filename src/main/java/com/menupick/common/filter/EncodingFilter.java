@@ -41,6 +41,7 @@ public class EncodingFilter extends HttpFilter implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
+
 	}
 
 }
