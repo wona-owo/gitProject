@@ -170,20 +170,18 @@ public class DinnerDao {
 		return addressList;
 	}
 
-
 	public Dinner dinnerDetail(Connection conn, String dinnerNo, String foodNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner d = null;
 		String query = "select dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
-		
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, dinnerNo);
 			rset = pstmt.executeQuery();
-			
-			if(rset.next()) {
+
+			if (rset.next()) {
 				d = new Dinner();
 				d.setDinnerName(rset.getString("DINNER_NAME"));
 				d.setDinnerAddr(rset.getString("DINNER_ADDR"));
@@ -191,19 +189,18 @@ public class DinnerDao {
 				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
 				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
-				
+
 			}
-			
+
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
 		return d;
-		}
-		
+	}
 
 	public Dinner memberLogin(Connection conn, String loginId, String loginPw) {
 		PreparedStatement pstmt = null;
@@ -241,7 +238,39 @@ public class DinnerDao {
 			JDBCTemplate.close(pstmt);
 		}
 
-
 		return d;
+	}
+
+	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String year, String month, String day) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		ArrayList<Book> book = new ArrayList<Book>();
+		String query = "select * from tbl_book where dinner_no = ? and extract(date from book_date) = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			pt.setString(2, day);
+			pt.setString(3, month);
+			pt.setString(4, year);
+			rt = pt.executeQuery();
+
+			while (rt.next()) {
+				Book b = new Book();
+				b.setBookNo(rt.getString("dinner_no"));
+				b.setDinnerNo(rt.getString("dinner_no"));
+				b.setMemberNo(rt.getString("dinner_no"));
+				b.setBookDate(rt.getString("dinner_no"));
+				b.setBookTime(rt.getString("dinner_no"));
+				b.setBookCnt(rt.getString("dinner_no"));
+				book.add(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return book;
 	}
 }

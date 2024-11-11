@@ -1,6 +1,7 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,19 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
-import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Book;
 
 /**
- * Servlet implementation class DinnerDetailServlet
+ * Servlet implementation class DinnerCheckReservationServlet
  */
-@WebServlet("/dinner/detail")
-public class DinnerDetailServlet extends HttpServlet {
+@WebServlet("/dinner/checkReservation")
+public class DinnerCheckReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DinnerDetailServlet() {
+	public DinnerCheckReservationServlet() {
 		super();
 	}
 
@@ -31,16 +32,18 @@ public class DinnerDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String dinnerNo = request.getParameter("dinner_no");
 
-		String foodNo = request.getParameter("food_no");
+		String dinnerNo = request.getParameter("dinnerNo");
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+		String day = request.getParameter("day");
 
 		DinnerService service = new DinnerService();
-		Dinner dinner = service.dinnerDetail(dinnerNo, foodNo);
+		ArrayList<Book> bookInfo = service.getReservationData(dinnerNo, year, month, day);
+		
+		request.setAttribute("bookInfo", bookInfo);
 
-		request.setAttribute("dinner", dinner);
-		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
-
+		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 	}
 
 	/**

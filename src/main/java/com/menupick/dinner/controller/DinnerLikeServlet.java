@@ -19,45 +19,48 @@ import com.menupick.dinner.vo.Food;
 @WebServlet("/dinner/likeFrm")
 public class DinnerLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DinnerLikeServlet() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public DinnerLikeServlet() {
+		super();
+	}
 
-		//2. 값 추출
-		//dinner 값
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// 2. 값 추출
+		// dinner 값
 		String dinnerNo = request.getParameter("dinner_no");
 		String dinnerName = request.getParameter("dinner_name");
-		String dinnerAddr = request.getParameter("dinner_addr");
-		
-		//food 값
+
+		// food 값
 		String foodNo = request.getParameter("food_no");
 
-		//3. 로직
+		// 3. 로직
 		DinnerService service = new DinnerService();
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 		ArrayList<Food> foodList = new ArrayList<Food>();
-		dinnerList =  service.likeDinner(dinnerNo, dinnerName);
+		dinnerList = service.likeDinner(dinnerNo, dinnerName);
 		foodList = service.filterNation(foodNo);
-		
-		//4. 값 추출
+
+		// 4. 값 추출
 		request.setAttribute("dinnerList", dinnerList);
 		request.setAttribute("foodList", foodList);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

@@ -1,27 +1,25 @@
-package com.menupick.dinner.controller;
+package com.menupick.member.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.menupick.dinner.service.DinnerService;
-import com.menupick.dinner.vo.Dinner;
-
 /**
- * Servlet implementation class DinnerDetailServlet
+ * Servlet implementation class ReviewWriteServlet
  */
-@WebServlet("/dinner/detail")
-public class DinnerDetailServlet extends HttpServlet {
+@WebServlet("/reviewWrite")
+public class ReviewWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DinnerDetailServlet() {
+	public ReviewWriteServlet() {
 		super();
 	}
 
@@ -31,15 +29,8 @@ public class DinnerDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String dinnerNo = request.getParameter("dinner_no");
-
-		String foodNo = request.getParameter("food_no");
-
-		DinnerService service = new DinnerService();
-		Dinner dinner = service.dinnerDetail(dinnerNo, foodNo);
-
-		request.setAttribute("dinner", dinner);
-		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/writeReview.jsp");
+		view.forward(request, response);
 
 	}
 

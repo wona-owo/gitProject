@@ -1,4 +1,4 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 
@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MemberChgLevelServlet
+ * Servlet implementation class dinnerDetailFrmServlet
  */
-@WebServlet("/member/chgLevel")
-public class MemberChgLevelServlet extends HttpServlet {
+@WebServlet("/dinner/dinnerDetailFrm")
+public class DinnerDetailFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberChgLevelServlet() {
+	public DinnerDetailFrmServlet() {
 		super();
 	}
 
@@ -28,15 +28,7 @@ public class MemberChgLevelServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 회원 등급 변경!!
-
-		// 1. 인코딩 -> 필터
-
-		// 2. 값 추출
-
-		// 3. 로직
-
-		// 4. 결과처리
+		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
 	}
 
 	/**

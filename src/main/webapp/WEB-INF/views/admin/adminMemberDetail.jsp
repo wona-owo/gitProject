@@ -6,10 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 상세 페이지</title>
-<link rel="stylesheet" href="/resources/css/diner_admin_memberdetail.css">
+<link rel="stylesheet"
+	href="/resources/css/dinner_admin_memberdetail.css">
 </head>
 <body>
-
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<div class="wrap">
@@ -30,22 +30,22 @@
 						<th>성인인증</th>
 						<th>등급</th>
 					</tr>
-					
+
 					<tr>
 						<td>${member.memberNo}</td>
-	                    <td>${member.memberId}</td>
-	                    <td>${member.memberName}</td>
-	                    <td>${member.memberNick}</td>
-	                    <td>${member.memberPhone}</td>
-	                    <td>${member.memberAddr}</td>
-	                    <td>${member.memberGender}</td>
-	                    <td>${member.memberEmail}</td>
-	                    <td>${member.enrollDate}</td>					
-	                    <td>${member.adultValid}</td>
-	                    <td>${member.memberLevel}</td>
+						<td>${member.memberId}</td>
+						<td>${member.memberName}</td>
+						<td>${member.memberNick}</td>
+						<td>${member.memberPhone}</td>
+						<td>${member.memberAddr}</td>
+						<td>${member.memberGender}</td>
+						<td>${member.memberEmail}</td>
+						<td>${member.enrollDate}</td>
+						<td>${member.adultValid}</td>
+						<td>${member.memberLevel}</td>
 					</tr>
 				</table>
-				
+
 				<br>
 
 				<div class="my-info-box">
@@ -145,8 +145,6 @@
 			</section>
 		</main>
 	</div>
-
-
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

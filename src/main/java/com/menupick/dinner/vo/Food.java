@@ -14,7 +14,7 @@ public class Food {
 	private String foodName;
 	private String foodNation;
 	private String foodCat;
-	
+
 	private ArrayList<Food> foodList;
-	
+
 }
