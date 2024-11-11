@@ -40,7 +40,9 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 
 		DinnerService service = new DinnerService();
 		ArrayList<Book> bookInfo = service.getReservationData(dinnerNo, year, month, day);
-		
+
+		System.out.println("from servlet : " + bookInfo);
+
 		request.setAttribute("bookInfo", bookInfo);
 
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
