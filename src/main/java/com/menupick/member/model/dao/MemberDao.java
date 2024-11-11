@@ -287,11 +287,10 @@ public class MemberDao {
 		}
 		return cnt;
 	}
-	
-	
-	//마이페이지 즐겨찾기 관련 메소드
-	
-	//DB list 불러오기
+
+	// 마이페이지 즐겨찾기 관련 메소드
+
+	// DB list 불러오기
 	public ArrayList<Dinner> memberLikeList(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		ArrayList<Dinner> likeList = new ArrayList<>();
@@ -333,69 +332,66 @@ public class MemberDao {
 		return likeList;
 	}
 
-	//즐겨찾기 삭제
+	// 즐겨찾기 삭제
 	public int memberDelLike(Connection conn, String dinnerNo, String memberNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		
+
 		String query = "delete from tbl_like where member_no = ? and dinner_no = ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
 			pstmt.setString(2, dinnerNo);
-			
+
 			result = pstmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return result;
 	}
-	
-	
 
 	// admin(경래) - 회원 별명 검색
 	public List<Member> searchMembersByNick(Connection conn, String memberNick) {
 		PreparedStatement pstmt = null;
-	    ResultSet rset = null;
-	    List<Member> members = new ArrayList<>();
+		ResultSet rset = null;
+		List<Member> members = new ArrayList<>();
 
-	    String query = "SELECT * FROM tbl_member WHERE member_nick LIKE ? ORDER BY member_no";
+		String query = "SELECT * FROM tbl_member WHERE member_nick LIKE ? ORDER BY member_no";
 
-	    try {
-	        pstmt = conn.prepareStatement(query);
-	        pstmt.setString(1, "%" + memberNick + "%");
-	        rset = pstmt.executeQuery();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%" + memberNick + "%");
+			rset = pstmt.executeQuery();
 
-	        while (rset.next()) {
-	            Member m = new Member();
-	            m.setMemberNo(rset.getString("member_no"));
-	            m.setMemberId(rset.getString("member_id"));
-	            m.setMemberPw(rset.getString("member_pw"));
-	            m.setMemberName(rset.getString("member_name"));
-	            m.setMemberNick(rset.getString("member_nick"));
-	            m.setMemberPhone(rset.getString("member_phone"));
-	            m.setMemberAddr(rset.getString("member_addr"));
-	            m.setMemberGender(rset.getString("member_gender"));
-	            m.setMemberEmail(rset.getString("member_email"));
-	            m.setEnrollDate(rset.getString("enroll_date"));
-	            m.setAdultConfirm(rset.getString("adult_confirm"));
-	            m.setMemberLevel(rset.getInt("member_level"));
-	            members.add(m);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        JDBCTemplate.close(rset);
-	        JDBCTemplate.close(pstmt);
-	    }
-	    return members;
+			while (rset.next()) {
+				Member m = new Member();
+				m.setMemberNo(rset.getString("member_no"));
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberPw(rset.getString("member_pw"));
+				m.setMemberName(rset.getString("member_name"));
+				m.setMemberNick(rset.getString("member_nick"));
+				m.setMemberPhone(rset.getString("member_phone"));
+				m.setMemberAddr(rset.getString("member_addr"));
+				m.setMemberGender(rset.getString("member_gender"));
+				m.setMemberEmail(rset.getString("member_email"));
+				m.setEnrollDate(rset.getString("enroll_date"));
+				m.setAdultConfirm(rset.getString("adult_confirm"));
+				m.setMemberLevel(rset.getInt("member_level"));
+				members.add(m);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return members;
 	}
-
 
 }
