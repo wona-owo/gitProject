@@ -13,37 +13,25 @@
 
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${noticeCdNm}</div>
-
-				<c:if test="${not empty loginMember}">
-					<div class="list-header">
-						<a class="btn-point" id="write-btn"
-							href='/notice/writeFrm?noticeCd=${noticeCd}&noticeCdNm=${noticeCdNm}'>${noticeCdNm}
-							작성</a> <a class="btn-point" id="write-btn"
-							href='/notice/editorWriteFrm?noticeCd=${noticeCd}&noticeCdNm=${noticeCdNm}'>${noticeCdNm}
-							작성(Editor)</a>
-					</div>
-				</c:if>
-
+				<div class="page-title">여기다가 날짜</div>
 				<div class="list-content">
 
 					<table class="tbl hover">
-
 						<tr>
-							<th style="width: 10%">번호</th>
-							<th style="width: 45%">제목</th>
-							<th style="width: 15%">작성자</th>
-							<th style="width: 20%">작성일</th>
-							<th style="width: 10%">조회수</th>
+							<th style="width: 20%">예약 시간</th>
+							<th style="width: 20%">예약자 이름</th>
+							<th style="width: 20%">전화번호</th>
+							<th style="width: 20%">인원수</th>
+							<th style="width: 20%">예약 취소</th>
 						</tr>
 
 						<c:forEach var="book" items="${bookInfo}">
 							<tr>
-								<td>${book.bookNo}</td>
-								<td><a href='/notice/view?noticeNo=${notice.noticeNo}'>${notice.noticeTitle}</a></td>
-								<td>${book.bookDate}</td>
 								<td>${book.bookTime}</td>
+								<td>이름</td>
+								<td>전화번호</td>
 								<td>${book.bookCnt}</td>
+								<td><button onClick="cancelBook()">취소</button></td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -53,5 +41,15 @@
 
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
+	<script>
+	function cancelBook(){
+		console.log("poop");
+	}
+	// 예약이 있는 이전 이후 날짜로 이동하는 코드
+	$.ajax({
+		url : ,
+		data : ,
+	})
+	</script>
 </body>
 </html>
