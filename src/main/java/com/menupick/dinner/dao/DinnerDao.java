@@ -1,9 +1,11 @@
 package com.menupick.dinner.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import com.menupick.common.JDBCTemplate;
@@ -103,7 +105,7 @@ public class DinnerDao {
 				b.setMemberNo(rt.getString("member_no"));
 				b.setBookDate(rt.getString("book_date"));
 				b.setBookTime(rt.getString("book_time"));
-				b.setBookCnt(rt.getString("book_cnt"));
+				b.setBookCnt(rt.getInt("book_cnt"));
 				bookList.add(b);
 			}
 		} catch (SQLException e) {
@@ -241,11 +243,23 @@ public class DinnerDao {
 		return d;
 	}
 
+	public String convertDateToString(Date date) {
+		if (date == null) {
+			return null;
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
+		return formatter.format(date);
+	}
+
 	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String year, String month, String day) {
+		System.out.println(dinnerNo);
+		System.out.println(year);
+		System.out.println(month);
+		System.out.println(day);
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<Book> book = new ArrayList<Book>();
-		String query = "select * from tbl_book where dinner_no = ? and extract(date from book_date) = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+		String query = "select * from tbl_book where dinner_no = ? and extract(day from book_date) = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
 
 		try {
 			pt = conn.prepareStatement(query);
@@ -257,14 +271,19 @@ public class DinnerDao {
 
 			while (rt.next()) {
 				Book b = new Book();
-				b.setBookNo(rt.getString("dinner_no"));
+				b.setBookNo(rt.getString("book_no"));
 				b.setDinnerNo(rt.getString("dinner_no"));
-				b.setMemberNo(rt.getString("dinner_no"));
-				b.setBookDate(rt.getString("dinner_no"));
-				b.setBookTime(rt.getString("dinner_no"));
-				b.setBookCnt(rt.getString("dinner_no"));
+				b.setMemberNo(rt.getString("member_no"));
+
+				// Fetch `DATE` and convert to `String`
+				Date bookDate = rt.getDate("book_date");
+				b.setBookDate(convertDateToString(bookDate)); // Format the date to string
+
+				b.setBookTime(rt.getString("book_time"));
+				b.setBookCnt(rt.getInt("book_cnt"));
 				book.add(b);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

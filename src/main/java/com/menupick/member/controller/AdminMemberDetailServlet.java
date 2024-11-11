@@ -1,6 +1,7 @@
 package com.menupick.member.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.member.model.service.MemberService;
 import com.menupick.member.model.vo.Member;
+import com.menupick.review.model.service.ReviewService;
+import com.menupick.review.model.vo.Review;
 
 /**
  * Servlet implementation class AdminMemberDetailServlet
@@ -37,10 +40,18 @@ public class AdminMemberDetailServlet extends HttpServlet {
 		String memberNo = request.getParameter("memberNo");
 
 		// 3. 로직
+		//회원 정보 가져오기
 		MemberService service = new MemberService();
 		Member member = service.getMemberNo(memberNo);
 
+		//리뷰 정보 가져오기
+		ReviewService rvservice = new ReviewService();
+		List<Review> reviews = rvservice.getReviewsByMemberNo(memberNo);
+		
+		
+		//4. 결과 처리
 		request.setAttribute("member", member);
+		request.setAttribute("reviews", reviews);
 		request.getRequestDispatcher("/WEB-INF/views/admin/adminMemberDetail.jsp").forward(request, response);
 
 	}
