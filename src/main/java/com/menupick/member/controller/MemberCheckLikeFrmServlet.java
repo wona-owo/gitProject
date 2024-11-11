@@ -9,9 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 
 /**
  * Servlet implementation class MemberCheckLikeFrmServlet
@@ -33,8 +35,11 @@ public class MemberCheckLikeFrmServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		// 2. 값 추출 - 회원 번호를 받아와서 쿼리에 전달.
-		String memberNo = request.getParameter("memberNo");
+		HttpSession session = request.getSession(false);
+		Member member = (Member) session.getAttribute("loginMember");
+		String memberNo = member.getMemberNo();
 		System.out.println("from MemberCheckLikeFrmServlet : " + memberNo);
 
 		// 3. 비즈니스 로직 - 회원 번호와 일치하는 식당 정보 list 추출
