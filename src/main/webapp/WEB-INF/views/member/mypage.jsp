@@ -79,6 +79,8 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<div class="wrap">
 		<div class="content">
+			<input type="hidden" id="memberNo" name="memberNo"
+				value="${loginMember.memberNo}">
 
 			<%-- 타이틀 --%>
 			<div class="my-page-title">마이페이지</div>
@@ -94,7 +96,7 @@
 					</a> <a href="/member/ckReview" class="circle-button"> <span>리뷰
 							보기</span>
 
-					</a> <a href="/member/like" class="circle-button"> <span>즐겨찾기
+					</a> <a href="/member/ckLike" class="circle-button"> <span>즐겨찾기
 							보기</span>
 					</a>
 				</div>
@@ -105,6 +107,8 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
+	
+	console.log($("#memberNo").val());
         function openTab(tabId, element) {
             // 모든 탭에서 active 클래스 제거
             document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));

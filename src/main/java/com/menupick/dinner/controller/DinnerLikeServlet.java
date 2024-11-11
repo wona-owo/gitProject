@@ -38,7 +38,6 @@ public class DinnerLikeServlet extends HttpServlet {
 		// dinner 값
 		String dinnerNo = request.getParameter("dinner_no");
 		String dinnerName = request.getParameter("dinner_name");
-		String dinnerAddr = request.getParameter("dinner_addr");
 
 		// food 값
 		String foodNo = request.getParameter("food_no");

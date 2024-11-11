@@ -256,16 +256,45 @@ public class DinnerDao {
 			rt = pt.executeQuery();
 
 			while (rt.next()) {
-				// TODO
+				Book b = new Book();
+				b.setBookNo(rt.getString("dinner_no"));
+				b.setDinnerNo(rt.getString("dinner_no"));
+				b.setMemberNo(rt.getString("dinner_no"));
+				b.setBookDate(rt.getString("dinner_no"));
+				b.setBookTime(rt.getString("dinner_no"));
+				b.setBookCnt(rt.getString("dinner_no"));
+				book.add(b);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rt);
 			JDBCTemplate.close(pt);
 		}
-
 		return book;
 	}
+
+	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Dinner> list = new ArrayList<>();
+		String query = "SELECT * FROM tbl_dinner";
+		
+		try {
+			pstmt=conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()){
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
 }
