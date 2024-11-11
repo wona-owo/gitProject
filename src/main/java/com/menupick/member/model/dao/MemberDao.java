@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.menupick.common.JDBCTemplate;
+import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.vo.Member;
+import com.menupick.review.model.vo.Review; 
 
 public class MemberDao {
 
@@ -288,11 +290,14 @@ public class MemberDao {
 		return cnt;
 	}
 
+	// 마이페이지 즐겨찾기 관련 메소드
+
+	// 즐겨찾기
+	// DB list 불러오기
 	public ArrayList<Dinner> memberLikeList(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		ArrayList<Dinner> likeList = new ArrayList<>();
 		ResultSet rset = null;
-		System.out.println(memberNo);
 
 		String query = "Select * From tbl_dinner D left join tbl_like L on (d.dinner_no= l.dinner_no) where l.member_no =?";
 
@@ -330,42 +335,148 @@ public class MemberDao {
 		return likeList;
 	}
 
+	// 즐겨찾기 삭제
+	public int memberDelLike(Connection conn, String dinnerNo, String memberNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = "delete from tbl_like where member_no = ? and dinner_no = ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			pstmt.setString(2, dinnerNo);
+
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
+
+	// 리뷰 조회
+	public ArrayList<Review> memberRevList(Connection conn, String memberNo) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Review> revList = new ArrayList<Review>();
+
+		String query = "select * from tbl_review R join tbl_dinner D on (R.dinner_no = D.dinner_no) where member_no=?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				Review r = new Review();
+				r.setReviewNo(rset.getString("review_no"));
+				r.setDinnerNo(rset.getString("dinner_no"));
+				r.setMemberNo(rset.getString("member_no"));
+				r.setReviewContent(rset.getString("review_con"));
+				r.setReviewImage(rset.getBytes("review_img"));
+				r.setReviewDate(rset.getDate("review_date"));
+				r.setDinnerName(rset.getString("dinner_name"));
+
+				revList.add(r);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return revList;
+	}
+
+	// 리뷰 삭제
+	
+	
+	//예약 확인
+	public ArrayList<Book> memberBookList(Connection conn, String memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Book> bookList = new ArrayList<Book>();
+
+		String query = "select * from tbl_book R join tbl_dinner D on (R.dinner_no = D.dinner_no) where member_no=?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				Book b = new Book();
+				
+				b.setBookNo(rset.getString("book_no"));
+				b.setDinnerNo(rset.getString("dinner_no"));
+				b.setMemberNo(rset.getString("member_no"));
+				b.setBookDate(rset.getString("book_date"));
+				b.setBookTime(rset.getString("book_time"));
+				b.setBookCnt(rset.getInt("book_cnt"));
+				b.setDinnerName(rset.getString("dinner_name"));
+				
+				bookList.add(b);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return bookList;
+	}
+	
+	
 	// admin(경래) - 회원 별명 검색
 	public List<Member> searchMembersByNick(Connection conn, String memberNick) {
 		PreparedStatement pstmt = null;
-	    ResultSet rset = null;
-	    List<Member> members = new ArrayList<>();
+		ResultSet rset = null;
+		List<Member> members = new ArrayList<>();
 
-	    String query = "SELECT * FROM tbl_member WHERE member_nick LIKE ? ORDER BY member_no";
+		String query = "SELECT * FROM tbl_member WHERE member_nick LIKE ? ORDER BY member_no";
 
-	    try {
-	        pstmt = conn.prepareStatement(query);
-	        pstmt.setString(1, "%" + memberNick + "%");
-	        rset = pstmt.executeQuery();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%" + memberNick + "%");
+			rset = pstmt.executeQuery();
 
-	        while (rset.next()) {
-	            Member m = new Member();
-	            m.setMemberNo(rset.getString("member_no"));
-	            m.setMemberId(rset.getString("member_id"));
-	            m.setMemberPw(rset.getString("member_pw"));
-	            m.setMemberName(rset.getString("member_name"));
-	            m.setMemberNick(rset.getString("member_nick"));
-	            m.setMemberPhone(rset.getString("member_phone"));
-	            m.setMemberAddr(rset.getString("member_addr"));
-	            m.setMemberGender(rset.getString("member_gender"));
-	            m.setMemberEmail(rset.getString("member_email"));
-	            m.setEnrollDate(rset.getString("enroll_date"));
-	            m.setAdultConfirm(rset.getString("adult_confirm"));
-	            m.setMemberLevel(rset.getInt("member_level"));
-	            members.add(m);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        JDBCTemplate.close(rset);
-	        JDBCTemplate.close(pstmt);
-	    }
-	    return members;
+			while (rset.next()) {
+				Member m = new Member();
+				m.setMemberNo(rset.getString("member_no"));
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberPw(rset.getString("member_pw"));
+				m.setMemberName(rset.getString("member_name"));
+				m.setMemberNick(rset.getString("member_nick"));
+				m.setMemberPhone(rset.getString("member_phone"));
+				m.setMemberAddr(rset.getString("member_addr"));
+				m.setMemberGender(rset.getString("member_gender"));
+				m.setMemberEmail(rset.getString("member_email"));
+				m.setEnrollDate(rset.getString("enroll_date"));
+				m.setAdultConfirm(rset.getString("adult_confirm"));
+				m.setMemberLevel(rset.getInt("member_level"));
+				members.add(m);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return members;
 	}
+
+
 
 }
