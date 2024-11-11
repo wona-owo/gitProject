@@ -5,11 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
+
+			
+		
+
 </body>
 </html>

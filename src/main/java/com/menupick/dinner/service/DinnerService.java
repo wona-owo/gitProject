@@ -9,6 +9,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
+import com.menupick.member.model.vo.Member;
 
 public class DinnerService {
 	DinnerDao dao;
@@ -62,8 +63,6 @@ public class DinnerService {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = new Dinner();
 		dinner = dao.dinnerDetail(conn, dinnerNo);
-		JDBCTemplate.close(conn);
-		System.out.println(dinner);
 		return dinner;
 	}
 
@@ -77,7 +76,6 @@ public class DinnerService {
 	public Food foodDetail(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		Food food = new Food();
-		System.out.println(food);
 		food = dao.foodDetail(conn, foodNo);
 		JDBCTemplate.close(conn);
 		return food;
@@ -90,5 +88,6 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return book;
 	}
+
 
 }

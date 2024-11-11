@@ -186,7 +186,7 @@
 				</c:forEach>
 				</div>
 			
-			</div>
+			
 
 
 			<!-- 예시 카드 -->
@@ -222,47 +222,58 @@
 		</main>
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	
 	<script>
-const filters = {
-        cuisine: [],
-        type: []
-    };
+	const filters = {
+            cuisine: [],
+            type: []
+        };
 
-    function toggleFilter(event, filterType) {
-        const button = event.target;
-        const value = button.getAttribute('data-value');
-        const isActive = button.classList.toggle('active');
+        function toggleFilter(event, filterType) {
+            const button = event.target;
+            const value = button.getAttribute('data-value');
+            const isActive = button.classList.toggle('active');
 
-        if (isActive) {
-            filters[filterType].push(value);
-        } else {
-            filters[filterType] = filters[filterType].filter(item => item !== value);
+            if (isActive) {
+                filters[filterType].push(value);
+            } else {
+                filters[filterType] = filters[filterType].filter(item => item !== value);
+            }
+
+            filterCards();
         }
 
-        filterCards();
-    }
+        function filterCards() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardCuisine = card.getAttribute('data-cuisine');
+                const cardType = card.getAttribute('data-type');
+                
+                const cuisineMatch = filters.cuisine.length === 0 || filters.cuisine.includes(cardCuisine);
+                const typeMatch = filters.type.length === 0 || filters.type.includes(cardType);
 
-    function filterCards() {
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            const cardCuisine = card.getAttribute('data-cuisine');
-            const cardType = card.getAttribute('data-type');
-            
-            const cuisineMatch = filters.cuisine.length === 0 || filters.cuisine.includes(cardCuisine);
-            const typeMatch = filters.type.length === 0 || filters.type.includes(cardType);
-
-            card.style.display = cuisineMatch && typeMatch ? 'flex' : 'none';
-        });
-    }
-
-    function search() {
-        const searchKeyword = document.getElementById("searchInput").value.toLowerCase();
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            const cardTitle = card.querySelector('h3').innerText.toLowerCase();
-            card.style.display = cardTitle.includes(searchKeyword) ? 'flex' : 'none';
-        });
-    }
+                card.style.display = cuisineMatch && typeMatch ? 'flex' : 'none';
+            });
+        }
+        function search() {
+            const searchKeyword = document.getElementById("searchInput").value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardTitle = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = cardTitle.includes(searchKeyword) ? 'flex' : 'none';
+            });
+        }
+        
+        // 필터 컨테이너 토글 기능
+        function toggleFilterContainer() {
+            const filterContainer = document.querySelector('.filter-container');
+            const arrow = document.querySelector('.arrow');
+            const isOpen = filterContainer.style.display === 'block';
+            filterContainer.style.display = isOpen ? 'none' : 'block';
+            arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+        
+    
 
  // 즐겨찾기 기능 토글
     function toggleFavorite(element) {
@@ -276,6 +287,8 @@ const filters = {
             favoriteRestaurants.delete(restaurantId);
             alert("즐겨찾기에서 해제되었습니다.");
         }
+	 }
+        
         
     //즐겨찾기 로딩
         function loadFavorites() {
@@ -298,19 +311,12 @@ const filters = {
                     `).join('');
                 });
         }
-    // 필터 컨테이너 토글 기능
-    function toggleFilterContainer() {
-        const filterContainer = document.querySelector('.filter-container');
-        const arrow = document.querySelector('.arrow');
-        const isOpen = filterContainer.style.display === 'block';
-        filterContainer.style.display = isOpen ? 'none' : 'block';
-        arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-    }
-    
+ 
 	// 처음에도 동작할 수 있도록 페이지 로드 되면 실행
 	$(function() {
 		loadFavorites();
 	});
+	
 </script>
 </body>
 </html>

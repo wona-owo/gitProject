@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
+import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 
 /**
  * Servlet implementation class DinnerDetailServlet
@@ -33,14 +35,18 @@ public class DinnerDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinner_no");
-		
+		String foodNo = request.getParameter("food_no");
+		String memberNo = request.getParameter("member_no");
 		
 		DinnerService service = new DinnerService();
+		MemberService mservice = new MemberService();
 		Dinner dinner = service.dinnerDetail(dinnerNo);
-		
+		Food food = service.foodDetail(foodNo);
+		Member member = mservice.getMemberNo(memberNo);
 		
 		request.setAttribute("dinner", dinner);
-		
+		request.setAttribute("food", food);
+		request.setAttribute("member", member);
 		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
 		
 
