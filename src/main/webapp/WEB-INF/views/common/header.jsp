@@ -30,6 +30,7 @@
 							<li><a href="/admin/member">회원 관리페이지</a></li>
 							<li><a href="/admin/adminDinnerManage">매장 관리페이지</a></li>
 							<li><a href="/admin/adminDinnerManageFrm">매장 관리</a></li>
+							<li><a href="/dinnerRegister">매장 등록(테스트)</a></li>		<!-- 매장등록 테스트할려고 잠깐 만들어놓음 -경래- -->
 						</c:when>
 						<c:when test="${sessionScope.memberLevel == 2}">
 							<li><a href="/dinner/likeFrm">인기식당</a></li>
