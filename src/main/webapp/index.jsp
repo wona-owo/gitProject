@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,49 +8,87 @@
 <title>오늘 메뉴 픽해볼까? Menu Pick!</title>
 <link rel="stylesheet" href="/resources/css/default.css" />
 <script
-	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1ca3b7a5df74e4b03123d97229e9ebde&libraries=services"></script>
+    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1ca3b7a5df74e4b03123d97229e9ebde&libraries=services"></script>
 </head>
 <body>
-	<div>
-		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-		<div class="wrap">
-			<main>
-				<div class="search-box">
-					<input type="text" class="search-input"
-						placeholder="식당 이름, 지역 등을 입력하세요" />
-					<button type="submit" class="search-button">검색</button>
-				</div>
-				<section class="map-focus-section">
-					<div class="map-container">
-						<div id="map" style="width: 100%; height: 400px;"></div>
-					</div>
-					<div class="focus-info" id="info">
-						<h2 class="focus-title" id="info-title">식당 이름</h2>
-						<p class="focus-description" id="info-description">식당 정보나 사진이
-							여기 뜰 예정이에용</p>
-					</div>
-				</section>
-			</main>
-		</div>
-		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-	</div>
+    <div>
+        <jsp:include page="/WEB-INF/views/common/header.jsp" />
+        <div class="wrap">
+            <main>
+                <div class="search-box">
+                    <input type="text" class="search-input"
+                        placeholder="식당 이름, 지역 등을 입력하세요" />
+                    <button type="submit" class="search-button">검색</button>
+                </div>
+                <section class="map-focus-section">
+                    <div class="map-container">
+                        <div id="map" style="width: 100%; height: 400px;"></div>
+                    </div>
+                    <div class="focus-info" id="info">
+                        <h2 class="focus-title" id="info-title">식당 이름</h2>
+                        <p class="focus-description" id="info-description">식당 정보나 사진이
+                            여기 뜰 예정이에용</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    </div>
 
-	<script>
+    <%
+        // loginMember 객체와 memberAddr 속성의 존재 여부를 확인하고 기본값 설정
+        String memberAddress = "";
+        if (session.getAttribute("loginMember") != null) {
+            Object loginMember = session.getAttribute("loginMember");
+            // loginMember 객체가 null이 아니고, memberAddr 속성이 있다면 가져오기
+            try {
+                memberAddress = (String) loginMember.getClass().getMethod("getMemberAddr").invoke(loginMember);
+            } catch (Exception e) {
+                // memberAddr 속성이 없거나 가져오는 과정에서 예외 발생 시 빈 문자열 유지
+                memberAddress = "";
+            }
+        }
+    %>
+
+    <script>
     document.addEventListener("DOMContentLoaded", function () {
         const mapContainer = document.getElementById("map");
+        const defaultCenter = new kakao.maps.LatLng(37.5105, 127.1194); 
         const mapOptions = {
-        		center: new kakao.maps.LatLng(37.5105, 127.1194),// 초기 지도 중심 좌표 (송파나루역-방이역)
-            	level: 4, // 초기 지도 확대 레벨
+            center: defaultCenter,
+            level: 4, // 초기 지도 확대 레벨
         };
         const map = new kakao.maps.Map(mapContainer, mapOptions);
+        
+        const geocoder = new kakao.maps.services.Geocoder();
+
+        // JSP에서 세션을 통해 memberAddr 가져오기
+        const memberAddr = "<%= memberAddress %>";
+
+        // memberAddr을 지오코딩하여 지도의 중심 좌표로 설정
+        if (memberAddr) {
+            geocoder.addressSearch(memberAddr, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    // 지오코딩 성공: 변환된 좌표로 지도 중심 설정
+                    const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    map.setCenter(coords);
+                } else {
+                    // 지오코딩 실패 시 기본 좌표 사용
+                    console.error("주소 지오코딩 실패:", memberAddr, "상태:", status);
+                    map.setCenter(defaultCenter);
+                }
+            });
+        } else {
+            // memberAddr이 없으면 기본 좌표 사용
+            map.setCenter(defaultCenter);
+        }
 
         // 마커 이미지 설정
-        const imageSrc = '<%= request.getContextPath() %>/resources/images/pin.png';
+        const imageSrc = '<%=request.getContextPath()%>/resources/images/pin.png';
         const imageSize = new kakao.maps.Size(64, 64);
         const imageOption = { offset: new kakao.maps.Point(32, 64) };
         const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-        const geocoder = new kakao.maps.services.Geocoder();
         let markers = []; // 지도에 표시된 마커 배열
 
         // 마커 제거 함수
@@ -132,6 +171,6 @@
             requestAnimationFrame(dropAnimationStep);
         }
     });
-	</script>
+    </script>
 </body>
 </html>

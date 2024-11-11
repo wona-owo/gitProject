@@ -18,11 +18,12 @@ section {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	width: 60%;
+	width: 50%;
 }
 
 .calendar {
-	width: 300px;
+	width: 100%;
+	max-width: 600px;
 	background-color: #fff;
 	border-radius: 8px;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -31,13 +32,16 @@ section {
 
 .calendar-header {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
-	margin: auto;
 	padding: 10px;
 	background-color: #ff4400;
 	color: #fff;
-	padding: 10px;
+}
+
+.calendar-title {
+	font-size: 1.5em;
+	margin-left: 10px;
 }
 
 .month-year {
@@ -48,6 +52,8 @@ section {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	padding: 10px;
+	border-bottom: 1px solid #dcdcdc;
+	gap: 0;
 }
 
 .weekdays span {
@@ -57,51 +63,55 @@ section {
 }
 
 .days span {
-	text-align: center;
-	padding: 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
 	cursor: pointer;
-	border-radius: 4px;
+	border: 1px solid #dcdcdc;
 	text-align: center;
+	box-sizing: border-box;
+	background-color: #fff;
+	height: 80px;
+}
+
+.days span.has-number div:first-child {
+	background-color: #ff4400;
+	color: #fff;
+	border-radius: 50%;
+	padding: 5px;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	margin-bottom: 5px;
 }
 
 .days span.has-number:hover {
-	background-color: rgba(255, 68, 0, 0.3);
-	cursor: pointer;
+	background-color: rgba(255, 68, 0, 0.1);
 }
 
 .days .today {
-	background-color: #ff4400;
-	color: #fff;
+	border: 2px solid #ff4400;
+	border-radius: 0;
+	color: #ff4400;
 	font-weight: bold;
 }
 
 .days .today:hover {
-	background-color: #ff4400;
-	color: #fff;
+	border: 2px solid #ff4400;
+	border-radius: 0;
+	color: #ff4400;
 	font-weight: bold;
 }
 
-/* After adding reservaion elements */
-.days {
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
-}
-
-.days span {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 5px;
-}
-
-/* 예약 숫자 색 지정*/
-#days>a>span>div:last-child {
+/* Reservation count style */
+.days span div:last-child {
 	color: #4CAF50;
-}
-
-.today {
-	background-color: #f0f8ff;
-	border-radius: 50%;
+	font-size: 0.9em;
 }
 
 #prev-month, #next-month, #check-today {
@@ -109,6 +119,8 @@ section {
 	width: 50px;
 	height: 50px;
 	border-radius: 8px;
+	background-color: #f0f0f0;
+	transition: background-color 0.3s;
 }
 
 #prev-month:hover, #next-month:hover, #check-today:hover {
@@ -116,22 +128,26 @@ section {
 	cursor: pointer;
 }
 
-#prev-month {
-	
-}
-
-#next-month {
-	
-}
-
 #check-today-div {
 	display: flex;
 	justify-content: flex-end;
+	margin-bottom: 30px;
 }
 
 #check-today {
 	margin-right: 20px;
+	margin-top: 10px;
 	width: 75px;
+	height: 40px;
+	background-color: #ff4400;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	transition: background-color 0.3s;
+}
+
+#check-today:hover {
+	background-color: #e03e00;
 }
 </style>
 
@@ -145,7 +161,7 @@ section {
 			</div>
 			<section class="section">
 				<div class="calendar-header">
-
+					<div class="calendar-title">예약 현황</div>
 					<div class="month-year">
 						<span id="month"></span> <span id="year"></span> <input
 							type="hidden" name="dinnerNo" id="dinnerNo"
@@ -153,8 +169,9 @@ section {
 					</div>
 				</div>
 				<div class="weekdays">
-					<span>Sun</span> <span>Mon</span> <span>Tue</span> <span>Wed</span>
-					<span>Thu</span> <span>Fri</span> <span>Sat</span>
+					<span style="color: red;">Sun</span> <span>Mon</span> <span>Tue</span>
+					<span>Wed</span> <span>Thu</span> <span>Fri</span> <span
+						style="color: skyblue;">Sat</span>
 				</div>
 
 				<div class="days" id="days"></div>
@@ -215,12 +232,12 @@ section {
 									const bookCnt = getBookCnt(day, res);
 
 									const bookCntEl = $("<div></div>").html(
-											bookCnt || "&nbsp;");
+											bookCnt ? bookCnt + "팀" : "&nbsp;");
 									dayEl.append(dayNumEl, bookCntEl);
 
-								    if (bookCnt) {
-								        dayEl.addClass("has-number");
-								    }
+									if (bookCnt) {
+										dayEl.addClass("has-number");
+									}
 
 									const today = new Date();
 									if (day === today.getDate()
