@@ -30,6 +30,7 @@ public class MemberMyPageServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+	
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/mypage.jsp");
 		view.forward(request, response);
 	}

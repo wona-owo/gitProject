@@ -34,7 +34,7 @@
 						</c:when>
 						<c:when test="${sessionScope.memberLevel == 2}">
 							<li><a href="/dinner/likeFrm">인기식당</a></li>
-							<li><a href="/member/mypage">
+							<li><a href="/member/mypage?memberNo=${loginMember.memberNo}">
 									${sessionScope.loginMember.memberName}님 </a></li>
 						</c:when>
 					</c:choose>
