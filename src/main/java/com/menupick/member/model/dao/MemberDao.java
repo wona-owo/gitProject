@@ -282,12 +282,15 @@ public class MemberDao {
 		}
 		return cnt;
 	}
-
+	
+	
+	//마이페이지 즐겨찾기 관련 메소드
+	
+	//DB list 불러오기
 	public ArrayList<Dinner> memberLikeList(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		ArrayList<Dinner> likeList = new ArrayList<>();
 		ResultSet rset = null;
-		System.out.println(memberNo);
 
 		String query = "Select * From tbl_dinner D left join tbl_like L on (d.dinner_no= l.dinner_no) where l.member_no =?";
 
@@ -324,5 +327,30 @@ public class MemberDao {
 
 		return likeList;
 	}
+
+	public int memberDelLike(Connection conn, String dinnerNo, String memberNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "delete from tbl_like where member_no = ? and dinner_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			pstmt.setString(2, dinnerNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	//즐겨찾기 삭제
 
 }

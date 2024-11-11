@@ -19,13 +19,13 @@ import com.menupick.member.model.vo.Member;
  * Servlet implementation class MemberCheckLikeFrmServlet
  */
 @WebServlet("/member/ckLike")
-public class MemberCheckLikeFrmServlet extends HttpServlet {
+public class MemberCheckLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberCheckLikeFrmServlet() {
+	public MemberCheckLikeServlet() {
 		super();
 	}
 
@@ -40,7 +40,6 @@ public class MemberCheckLikeFrmServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		Member member = (Member) session.getAttribute("loginMember");
 		String memberNo = member.getMemberNo();
-		System.out.println("from MemberCheckLikeFrmServlet : " + memberNo);
 
 		// 3. 비즈니스 로직 - 회원 번호와 일치하는 식당 정보 list 추출
 		MemberService service = new MemberService();
