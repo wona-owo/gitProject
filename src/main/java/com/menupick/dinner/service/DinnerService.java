@@ -72,4 +72,12 @@ public class DinnerService {
 		return dinner;
 	}
 
+	public ArrayList<Dinner> selectAllAdminDinner() {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Dinner> list = dao.selectAllAdminDinner(conn);
+		JDBCTemplate.close(conn);
+		
+		return list;
+	}
+
 }

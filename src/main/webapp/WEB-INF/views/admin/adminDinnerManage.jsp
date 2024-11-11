@@ -93,7 +93,7 @@
 						<th style="width: 5%">승인여부</th>
 					</tr>
 					<c:forEach var="d" items="${dinnerList}">
-						<tr onclick="location.href='/adminDinnerDetail?dinnerNo=${d.dinnerNo}'" style="cursor: pointer;">
+						<tr onclick="location.href='/adminDinnerPage?dinnero=${d.dinnerNo}'" style="cursor: pointer;">
 							<td class="dinnerNo">${d.dinnerNo}</td>
 							<td class="dinnerName">${d.dinnerName}</td>
 							<td>${d.dinnerAddr}</td>
