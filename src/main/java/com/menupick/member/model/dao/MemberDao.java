@@ -113,7 +113,10 @@ public class MemberDao {
 	public int insertMember(Connection conn, Member member) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into tbl_member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, N, 2)";
+		
+		String query = "insert into tbl_member (member_no, member_id, member_pw, member_name, member_nick, member_phone, member_addr, member_gender, member_email, enroll_date, adult_confirm, member_level) " +
+	               "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'N', 2)";
+		/*String query = "insert into tbl_member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, N, 2)";*/
 
 		try {
 			pstmt = conn.prepareStatement(query);
