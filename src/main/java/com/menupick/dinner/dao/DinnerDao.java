@@ -251,26 +251,23 @@ public class DinnerDao {
 		return formatter.format(date);
 	}
 
-	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String year, String month, String day) {
-		System.out.println(dinnerNo);
-		System.out.println(year);
-		System.out.println(month);
-		System.out.println(day);
+	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String date) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<Book> book = new ArrayList<Book>();
-		String query = "select * from tbl_book where dinner_no = ? and extract(day from book_date) = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+		Book b = null;
+		String query = "select * from tbl_book where dinner_no = ? and book_date = ?";
 
 		try {
+			System.out.println(dinnerNo);
+			System.out.println(date);
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
-			pt.setString(2, day);
-			pt.setString(3, month);
-			pt.setString(4, year);
+			pt.setString(2, date);
 			rt = pt.executeQuery();
 
 			while (rt.next()) {
-				Book b = new Book();
+				b = new Book();
 				b.setBookNo(rt.getString("book_no"));
 				b.setDinnerNo(rt.getString("dinner_no"));
 				b.setMemberNo(rt.getString("member_no"));
@@ -294,25 +291,24 @@ public class DinnerDao {
 	}
 
 	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
-		
+
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
 		String query = "SELECT * FROM tbl_dinner";
-		
+
 		try {
-			pstmt=conn.prepareStatement(query);
+			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
-			
-			while(rset.next()){
-				
+
+			while (rset.next()) {
+
 			}
-			
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
 

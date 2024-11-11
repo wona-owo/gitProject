@@ -35,11 +35,20 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 
 		String dinnerNo = request.getParameter("dinnerNo");
 		String year = request.getParameter("year");
-		String month = request.getParameter("month");
-		String day = request.getParameter("day");
+		String justYear = year.substring(2);
+
+		// Parse the month as an integer, add 1, and format it as a 2-digit string
+		int month = Integer.parseInt(request.getParameter("month")) + 1;
+		String monthPadded = String.format("%02d", month);
+
+		// Parse the day as an integer and format it as a 2-digit string
+		int day = Integer.parseInt(request.getParameter("day"));
+		String dayPadded = String.format("%02d", day);
+
+		String date = (justYear + "/" + monthPadded + "/" + dayPadded);
 
 		DinnerService service = new DinnerService();
-		ArrayList<Book> bookInfo = service.getReservationData(dinnerNo, year, month, day);
+		ArrayList<Book> bookInfo = service.getReservationData(dinnerNo, date);
 
 		System.out.println("from servlet : " + bookInfo);
 
