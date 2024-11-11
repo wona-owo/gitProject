@@ -35,8 +35,6 @@ public class AdminMemberChgLevelServlet extends HttpServlet {
 		String memberNoArr = request.getParameter("memberNoArr");
 		String memberLevelArr = request.getParameter("memberLevelArr");
 		
-		System.out.println("memberNoArr :" +memberNoArr);
-		System.out.println("memberLevelArr : " +memberLevelArr);
 		
 		MemberService service = new MemberService();
 		int result = service.updChgLevel(memberNoArr, memberLevelArr);

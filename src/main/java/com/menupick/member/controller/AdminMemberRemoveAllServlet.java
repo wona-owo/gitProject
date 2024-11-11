@@ -30,7 +30,6 @@ public class AdminMemberRemoveAllServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String memberNoArr = request.getParameter("memberNoArr");
 		
-		System.out.println("memberNoArr : " + memberNoArr);
 		
 		MemberService service = new MemberService();
 		int result = service.memberRemoveAll(memberNoArr);
