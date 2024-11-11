@@ -21,7 +21,6 @@ public class MemberMyPageServlet extends HttpServlet {
 	 */
 	public MemberMyPageServlet() {
 		super();
-
 	}
 
 	/**
