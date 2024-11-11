@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import com.menupick.common.JDBCTemplate;
+import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.dao.MemberDao;
 import com.menupick.member.model.vo.Member;
+import com.menupick.review.model.vo.Review;
 
 public class MemberService {
 	MemberDao dao;
@@ -48,7 +50,6 @@ public class MemberService {
 		return member;
 	}
 
-	
 	public int insertMember(Member member) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.insertMember(conn, member);
@@ -63,7 +64,6 @@ public class MemberService {
 		return result;
 	}
 
-	
 	public int idDuplChk(String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.idDuplChk(conn, memberId);
@@ -71,7 +71,6 @@ public class MemberService {
 		return result;
 	}
 
-	
 	public int nickDuplChk(String memberNick) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.nickDuplChk(conn, memberNick);
@@ -165,20 +164,20 @@ public class MemberService {
 		return totalMembers;
 	}
 
-	//마이페이지 즐겨찾기 관련 메소드
-	
-	//DB list 불러오기
+	// 마이페이지 즐겨찾기 관련 메소드
+
+	// 즐겨찾기 DB list 불러오기
 	public ArrayList<Dinner> memberLikeList(String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> likeList = dao.memberLikeList(conn, memberNo);
 		JDBCTemplate.close(conn);
 		return likeList;
 	}
-	
-	//즐겨찾기 삭제
+
+	// 즐겨찾기 삭제
 	public int memberDelLike(String dinnerNo, String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.memberDelLike(conn, dinnerNo,memberNo);
+		int result = dao.memberDelLike(conn, dinnerNo, memberNo);
 
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
@@ -189,15 +188,29 @@ public class MemberService {
 
 		return result;
 	}
-	
-	
+
+	// 리뷰 DB 불러오기
+	public ArrayList<Review> memberRevList(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Review> reviewList = dao.memberRevList(conn, memberNo);
+		JDBCTemplate.close(conn);
+		return reviewList;
+	}
+
+	// 예약 DB 불러오기
+	public ArrayList<Book> memberBookList(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Book> bookList = dao.memberBookList(conn, memberNo);
+		JDBCTemplate.close(conn);
+		return bookList;
+	}
 
 	// admin(경래) - 회원 별명 검색
 	public List<Member> searchMembersByNick(String memberNick) {
 		Connection conn = JDBCTemplate.getConnection();
-	    List<Member> members = dao.searchMembersByNick(conn, memberNick);
-	    JDBCTemplate.close(conn);
-	    return members;
+		List<Member> members = dao.searchMembersByNick(conn, memberNick);
+		JDBCTemplate.close(conn);
+		return members;
 	}
 
 }
