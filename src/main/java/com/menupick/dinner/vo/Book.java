@@ -14,4 +14,5 @@ public class Book {
 	private String bookDate;
 	private String bookTime;
 	private int bookCnt;
+	private String dinnerName; //(조인)
 }
