@@ -1,7 +1,7 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,17 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
 
+
 /**
- * Servlet implementation class AdminDinnerManageServlet
+ * Servlet implementation class AdminMemberDetailServlet
  */
-@WebServlet("/admin/adminDinnerManage")
-public class AdminDinnerManageServlet extends HttpServlet {
+@WebServlet("/admin/dinnerDetail")
+public class AdminDinnerDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AdminDinnerManageServlet() {
+	public AdminDinnerDetailServlet() {
 		super();
 	}
 
@@ -32,13 +33,22 @@ public class AdminDinnerManageServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// 1. 인코딩
 
+		// 2. 값 추출
+		String dinnerNo = request.getParameter("dinnerNo");
+
+		// 3. 로직
+		//회원 정보 가져오기
 		DinnerService service = new DinnerService();
-		ArrayList<Dinner> list = service.selectAllDinner();
+		Dinner dinner = service.getDinnerNo(dinnerNo);
 
-		// 4. Process results
-		request.setAttribute("dinnerList", list);
-		request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerManage.jsp").forward(request, response);
+		
+		
+		//4. 결과 처리
+		request.setAttribute("dinner", dinner);
+		request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerDetail.jsp").forward(request, response);
+
 	}
 
 	/**

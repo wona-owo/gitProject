@@ -28,7 +28,7 @@
 					<c:choose>
 						<c:when test="${sessionScope.memberLevel == 1}">
 							<li><a href="/admin/member">회원 관리페이지</a></li>
-							<li><a href="/admin/adminDinnerManage">매장 관리페이지</a></li>
+							<li><a href="/admin/dinner">매장 관리페이지</a></li>
 						</c:when>
 						<c:when test="${sessionScope.memberLevel == 2}">
 							<li><a href="/dinner/likeFrm">인기식당</a></li>

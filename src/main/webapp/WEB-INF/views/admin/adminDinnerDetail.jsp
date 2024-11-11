@@ -60,80 +60,87 @@
 }
 /* 버튼 감싸는 div 스타일 */
 .mypage-btn {
-    text-align: center; /* 버튼 가운데 정렬 */
-    margin-top: 20px;
+	text-align: center; /* 버튼 가운데 정렬 */
+	margin-top: 20px;
 }
 
 /* 버튼 스타일 */
 .btn-primary {
-    padding: 10px 20px;
-    background-color: #3a5fcd;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
+	padding: 10px 20px;
+	background-color: #3a5fcd;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	font-size: 1em;
+	cursor: pointer;
 }
 
 .btn-primary:hover {
-    background-color: #2f4fa8; /* 버튼 호버 시 조금 어두운 색 */
+	background-color: #2f4fa8; /* 버튼 호버 시 조금 어두운 색 */
 }
 </style>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<div class="container">
-		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content mypage-container">
 			<section class="section mypage-wrap">
 				<div class="page-title">매장 정보페이지</div>
-				<div class="my-info-wrap">
-					<input type="hidden" name="memberNo" value="${dinnerNo}">
 					<table class="tbl">
 						<tr>
 							<th width="30%">식당 코드</th>
-							<td width="70%" class="left">${d.dinnerNo}</td>
+							<td width="70%" class="left">${dinner.dinnerNo}</td>
 						</tr>
 						<tr>
 							<th><label for="dinnerName"> 식당이름</label></th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<td width="70%" class="left">${dinner.dinnerName}</td>
 						</tr>
 						<tr>
-							<th width="30%">식당 ID</th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<th width="30%">식당 주소</th>
+							<td width="70%" class="left">${dinner.dinnerAddr}</td>
 						</tr>
 						<tr>
 							<th width="30%">오픈 시간</th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<td width="70%" class="left">${dinner.dinnerOpen}</td>
 						</tr>
 						<tr>
-							<th width="30%">식당전화</th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<th width="30%">마감 시간</th>
+							<td width="70%" class="left">${dinner.dinnerClose}</td>
+						</tr>
+						<tr>
+							<th width="30%">식당 번호</th>
+							<td width="70%" class="left">${dinner.dinnerPhone}</td>
 						</tr>
 						<tr>
 							<th width="30%">식당 이메일</th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<td width="70%" class="left">${dinner.dinnerEmail}</td>
 						</tr>
 						<tr>
 							<th width="30%">주차여부</th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<td width="70%" class="left">${dinner.dinnerParking}</td>
 						</tr>
 						<tr>
 							<th width="30%">수용인원</th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<td width="70%" class="left">${dinner.dinnerMaxPerson}</td>
 						</tr>
 						<tr>
-							<th width="30%">수용인원</th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<th width="30%">사업자 등록번호</th>
+							<td width="70%" class="left">${dinner.busiNo}</td>
+						</tr>
+						<tr>
+							<th width="30%">매장 ID</th>
+							<td width="70%" class="left">${dinner.dinnerId}</td>
 						</tr>
 						<tr>
 							<th width="30%">승인 여부</th>
-							<td width="70%" class="left">${loginMember.memberId}</td>
+							<td width="70%" class="left">${dinner.dinnerConfirm}</td>
 						</tr>
 
 					</table>
+
 					<div class="mypage-btn">
-						<button type="button" onclick="#" class="btn-primary lg">매장
-							상세페이지 이동</button>
+						<button type="button" onclick="#" class="btn-primary lg">
+							매장 상세페이지 이동</button>
 					</div>
 				</div>
 			</section>

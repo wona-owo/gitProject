@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
+import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
 
@@ -275,26 +277,251 @@ public class DinnerDao {
 	}
 
 	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
-		
+
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
 		String query = "SELECT * FROM tbl_dinner";
-		
+
 		try {
-			pstmt=conn.prepareStatement(query);
+			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
-			
-			while(rset.next()){
-				
+
+			while (rset.next()) {
+
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
 
+	public List<Dinner> searchDinnerByName(Connection conn, String dinnerName) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Dinner> dinners = new ArrayList<>();
+
+		String query = "SELECT * FROM tbl_dinner WHERE dinner_name LIKE ? ORDER BY dinner_no";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%" + dinnerName + "%");
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				Dinner d = new Dinner();
+				d.setDinnerNo(rset.getString("dinner_no"));
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setDinnerOpen(rset.getString("dinner_open"));
+				d.setDinnerClose(rset.getString("dinner_close"));
+				d.setDinnerPhone(rset.getString("dinner_phone"));
+				d.setDinnerEmail(rset.getString("dinner_email"));
+				d.setDinnerParking(rset.getString("dinner_parking"));
+				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+				d.setBusiNo(rset.getString("busi_no"));
+				d.setDinnerId(rset.getString("dinner_id"));
+				d.setDinnerPw(rset.getString("dinner_pw"));
+				d.setDinnerConfirm(rset.getString("dinner_confirm"));
+
+				dinners.add(d);
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return dinners;
+	}
+
+	public List<Dinner> getDinners(Connection conn, int page, int pageSize) {
+
+		PreparedStatement pstmt = null;
+		List<Dinner> dinners = new ArrayList<>();
+		ResultSet rset = null;
+
+		// Oracle에서의 페이징 쿼리
+		String query = "SELECT * FROM ( SELECT a.*, ROW_NUMBER() OVER (ORDER BY dinner_no) AS rnum FROM tbl_dinner a ) WHERE rnum > ? AND rnum <= ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+
+			// 페이지 시작과 끝 설정
+			int startRow = (page - 1) * pageSize; // 페이지의 시작 레코드 위치
+			int endRow = page * pageSize; // 페이지의 마지막 레코드 위치
+
+			pstmt.setInt(1, startRow); // 마지막 레코드 위치
+			pstmt.setInt(2, endRow); // 시작 레코드 위치
+
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				Dinner d = new Dinner();
+				d.setDinnerNo(rset.getString("dinner_no"));
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setDinnerOpen(rset.getString("dinner_open"));
+				d.setDinnerClose(rset.getString("dinner_close"));
+				d.setDinnerPhone(rset.getString("dinner_phone"));
+				d.setDinnerEmail(rset.getString("dinner_email"));
+				d.setDinnerParking(rset.getString("dinner_parking"));
+				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+				d.setBusiNo(rset.getString("busi_no"));
+				d.setDinnerId(rset.getString("dinner_id"));
+				d.setDinnerPw(rset.getString("dinner_pw"));
+				d.setDinnerConfirm(rset.getString("dinner_confirm"));
+				dinners.add(d);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return dinners;
+	}
+
+	public int getTotalDinnerCount(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		String query = "select count(*) from tbl_dinner";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			if (rset.next()) {
+				return rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return 0;
+	}
+
+	public Dinner getDinnerNo(Connection conn, String dinnerNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Dinner d = null;
+		String query = "select * from tbl_dinner where dinner_no =?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				d = new Dinner();
+				d.setDinnerNo(rset.getString("dinner_no"));
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setDinnerOpen(rset.getString("dinner_open"));
+				d.setDinnerClose(rset.getString("dinner_close"));
+				d.setDinnerPhone(rset.getString("dinner_phone"));
+				d.setDinnerEmail(rset.getString("dinner_email"));
+				d.setDinnerParking(rset.getString("dinner_parking"));
+				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+				d.setBusiNo(rset.getString("busi_no"));
+				d.setDinnerId(rset.getString("dinner_id"));
+				d.setDinnerPw(rset.getString("dinner_pw"));
+				d.setDinnerConfirm(rset.getString("dinner_confirm"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return d;
+	}
+
+	public List<Dinner> getDinnersSortedByName(Connection conn, String order) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		 List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
+
+		// order 변수가 'asc' 또는 'desc'인지 확인하여 SQL 구문 작성
+		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name"
+				+ ("desc".equalsIgnoreCase(order) ? "DESC" : "ASC");
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				Dinner d = new Dinner();
+				d.setDinnerNo(rset.getString("dinner_no"));
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setDinnerOpen(rset.getString("dinner_open"));
+				d.setDinnerClose(rset.getString("dinner_close"));
+				d.setDinnerPhone(rset.getString("dinner_phone"));
+				d.setDinnerEmail(rset.getString("dinner_email"));
+				d.setDinnerParking(rset.getString("dinner_parking"));
+				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+				d.setBusiNo(rset.getString("busi_no"));
+				d.setDinnerId(rset.getString("dinner_id"));
+				d.setDinnerPw(rset.getString("dinner_pw"));
+				d.setDinnerConfirm(rset.getString("dinner_confirm"));
+				dinners.add(d);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				JDBCTemplate.close(rset);
+				JDBCTemplate.close(pstmt);
+		}
+		return dinners;
+	}
+
+	public List<Dinner> getDinnersByApproval(Connection conn, String approved) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		 List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
+
+		// order 변수가 'asc' 또는 'desc'인지 확인하여 SQL 구문 작성
+		String query = "SELECT * FROM tbl_dinner WHERE dinner_confirm = ?"
+				+ ("desc".equalsIgnoreCase(approved) ? "DESC" : "ASC");
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				Dinner d = new Dinner();
+				d.setDinnerNo(rset.getString("dinner_no"));
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setDinnerOpen(rset.getString("dinner_open"));
+				d.setDinnerClose(rset.getString("dinner_close"));
+				d.setDinnerPhone(rset.getString("dinner_phone"));
+				d.setDinnerEmail(rset.getString("dinner_email"));
+				d.setDinnerParking(rset.getString("dinner_parking"));
+				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+				d.setBusiNo(rset.getString("busi_no"));
+				d.setDinnerId(rset.getString("dinner_id"));
+				d.setDinnerPw(rset.getString("dinner_pw"));
+				d.setDinnerConfirm(rset.getString("dinner_confirm"));
+				dinners.add(d);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				JDBCTemplate.close(rset);
+				JDBCTemplate.close(pstmt);
+		}
+		return dinners;
+	}
 }

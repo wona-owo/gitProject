@@ -1,24 +1,28 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.Dinner;
+
 /**
- * Servlet implementation class AdminDinnerManageDetail
+ * Servlet implementation class AdminDinnerManageFrm
  */
-@WebServlet("/AdminDinnerManageDetail")
-public class AdminDinnerManageDetail extends HttpServlet {
+@WebServlet("/admin/adminDinnerManageFrm")
+public class AdminDinnerManageFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AdminDinnerManageDetail() {
+	public AdminDinnerManageFrm() {
 		super();
 	}
 
@@ -28,7 +32,16 @@ public class AdminDinnerManageDetail extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		String dinnerNo = request.getParameter("dinnerNo");
+		
+		DinnerService service = new DinnerService();
+		Dinner dinner = service.getDinnerNo(dinnerNo);
+		
+		
+		request.setAttribute("dinner", dinner);
+		request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerDetail.jsp").forward(request, response);
+		
 	}
 
 	/**
