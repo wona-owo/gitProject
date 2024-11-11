@@ -24,6 +24,7 @@ public class MemberService {
 		return member;
 	}
 
+	// admin(경래) - 회원 탈퇴
 	public int selectRemove(String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.selectRemove(conn, memberNo);
@@ -38,6 +39,7 @@ public class MemberService {
 		return result;
 	}
 
+	// admin(경래) - 회원 조회
 	public Member getMemberNo(String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		Member member = dao.getMemberNo(conn, memberNo);
@@ -46,6 +48,7 @@ public class MemberService {
 		return member;
 	}
 
+	
 	public int insertMember(Member member) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.insertMember(conn, member);
@@ -60,6 +63,7 @@ public class MemberService {
 		return result;
 	}
 
+	
 	public int idDuplChk(String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.idDuplChk(conn, memberId);
@@ -67,6 +71,7 @@ public class MemberService {
 		return result;
 	}
 
+	
 	public int nickDuplChk(String memberNick) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.nickDuplChk(conn, memberNick);
@@ -74,6 +79,7 @@ public class MemberService {
 		return result;
 	}
 
+	// admin(경래) - 선택한 회원 등급 변경
 	public int updChgLevel(String memberNoArr, String memberLevelArr) {
 		Connection conn = JDBCTemplate.getConnection();
 
@@ -108,6 +114,7 @@ public class MemberService {
 		}
 	}
 
+	// admin(경래) - 선택한 회원 전체 삭제
 	public int memberRemoveAll(String memberNoArr) {
 		Connection conn = JDBCTemplate.getConnection();
 
@@ -140,6 +147,7 @@ public class MemberService {
 		}
 	}
 
+	// admin(경래) - 회원 조회 + 페이징 넘버
 	public List<Member> getMembers(int page, int pageSize) {
 		Connection conn = JDBCTemplate.getConnection();
 		List<Member> members = dao.getMembers(conn, page, pageSize);
@@ -148,6 +156,7 @@ public class MemberService {
 		return members;
 	}
 
+	// admin(경래) - 페이징 넘버
 	public int getTotalMemberCount() {
 		Connection conn = JDBCTemplate.getConnection();
 		int totalMembers = dao.getTotalMemberCount(conn);
@@ -182,5 +191,13 @@ public class MemberService {
 	}
 	
 	
+
+	// admin(경래) - 회원 별명 검색
+	public List<Member> searchMembersByNick(String memberNick) {
+		Connection conn = JDBCTemplate.getConnection();
+	    List<Member> members = dao.searchMembersByNick(conn, memberNick);
+	    JDBCTemplate.close(conn);
+	    return members;
+	}
 
 }
