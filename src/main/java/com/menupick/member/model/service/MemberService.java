@@ -165,14 +165,32 @@ public class MemberService {
 		return totalMembers;
 	}
 
-	// 즐겨찾기 관련 메소드
+	//마이페이지 즐겨찾기 관련 메소드
+	
+	//DB list 불러오기
 	public ArrayList<Dinner> memberLikeList(String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> likeList = dao.memberLikeList(conn, memberNo);
-		System.out.println("LikeList" + likeList);
 		JDBCTemplate.close(conn);
 		return likeList;
 	}
+	
+	//즐겨찾기 삭제
+	public int memberDelLike(String dinnerNo, String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.memberDelLike(conn, dinnerNo,memberNo);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+	
+	
 
 	// admin(경래) - 회원 별명 검색
 	public List<Member> searchMembersByNick(String memberNick) {
