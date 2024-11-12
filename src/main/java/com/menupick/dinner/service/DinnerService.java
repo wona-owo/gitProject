@@ -28,10 +28,10 @@ public class DinnerService {
 		return dinnerList;
 	}
 
+	// daniel
 	public ArrayList<Book> checkReservation(String dinnerNo, String justMonth, String displayYear) {
 		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<Book> bookList = null;
-		bookList = dao.checkReservation(conn, dinnerNo, justMonth, displayYear);
+		ArrayList<Book> bookList = dao.checkReservation(conn, dinnerNo, justMonth, displayYear);
 		JDBCTemplate.close(conn);
 		return bookList;
 	}

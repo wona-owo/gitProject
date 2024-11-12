@@ -86,6 +86,7 @@ public class DinnerDao {
 		return dinnerList;
 	}
 
+	// daniel
 	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
@@ -103,7 +104,7 @@ public class DinnerDao {
 			while (rt.next()) {
 				Book b = new Book();
 				b.setBookNo(rt.getString("book_no"));
-				b.setDinnerNo(rt.getString("dinnnerNo"));
+				b.setDinnerNo(rt.getString("dinner_no"));
 				b.setMemberNo(rt.getString("member_no"));
 				b.setBookDate(rt.getString("book_date"));
 				b.setBookTime(rt.getString("book_time"));
@@ -132,7 +133,7 @@ public class DinnerDao {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<BookInfo> book = new ArrayList<>();
-		String query = "select * from tbl_book where dinner_no = ? and book_date = ?";
+		String query = "select b.book_no, b.book_date, b.book_cnt, b.book_time, b.member_no, m.member_name, m.member_phone, m.member_email from tbl_book b join tbl_member m on b.member_no = m.member_no where b.dinner_no = ? and b.book_date = ?";
 
 		try {
 			pt = conn.prepareStatement(query);
@@ -240,7 +241,6 @@ public class DinnerDao {
 				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
 				System.out.println(d);
-
 			}
 
 		} catch (SQLException e) {
