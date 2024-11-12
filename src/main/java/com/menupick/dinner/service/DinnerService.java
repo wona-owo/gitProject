@@ -97,8 +97,8 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return list;
 	}
+	
 
-<<<<<<< HEAD
 	public List<Dinner> searchDinnerByName(String dinnerName) {
 		Connection conn = JDBCTemplate.getConnection();
 	    List<Dinner> dinners = dao.searchDinnerByName(conn, dinnerName);
@@ -151,8 +151,5 @@ Connection conn = JDBCTemplate.getConnection();
 	}
 
 
-
-=======
->>>>>>> dev
 
 }
