@@ -73,17 +73,18 @@
 							<i class="fa-solid fa-car"></i> <span id="parking"> ${dinner.dinnerParking}</span><br />
 						</div>
 						
-						<button type="button" id="reserveBtn" class="btn-primary" name="">예약</button>
+						<button type="button" id="reserveBtn" class="btn-primary" >예약</button>
+						<%--
 						<div id="resDetail" style="margin-top: 20px;"></div>
 						<div class=resBtn id="resOption" style="display : none;">
 							<label for="resDate">날짜 선택:</label>
-    						<input type="date" id="resDate" required>
+    						<input type="date" id="resDate" name="bookDate" required>
 							<button type="button" class="btn-primary" id="mBookCnt">-</button>
 							<span id="bookCnt">0</span>
 							<button type="button" class="btn-primary" id="pBookCnt">+</button>
 							<ul id="resTime" class="time-list"></ul>
 						</div>
-						
+						 --%>
 						
 					</div>
 
@@ -232,20 +233,22 @@
         // 인원수 값 전달
         const bookCountInput = document.createElement('input');
         bookCountInput.type = 'hidden';
-        bookCountInput.name = 'bookCount';
+        bookCountInput.name = 'bookCnt';
         bookCountInput.value = bookCount;
         form.appendChild(bookCountInput);
 
         // 선택된 시간 값 전달
         const timeInput = document.createElement('input');
         timeInput.type = 'hidden';
-        timeInput.name = 'selectedTime';
+        timeInput.name = 'bookTime';
         timeInput.value = selectedTime.innerText;
         form.appendChild(timeInput);
-
+		console.log(timeInput);
         // 폼을 문서에 추가하고 전송
         document.body.appendChild(form);
         form.submit();
+        
+        let resDate = new Date();
     
 	    
 

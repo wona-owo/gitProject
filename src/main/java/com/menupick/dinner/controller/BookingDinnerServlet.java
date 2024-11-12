@@ -28,6 +28,9 @@ public class BookingDinnerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String memberNo = request.getParameter("member_no");
 		String dinnerNo = request.getParameter("dinner_no");
+		String bookDate = request.getParameter("book_date");
+		String bookTime = request.getParameter("book_time");
+		String bookCnt = request.getParameter("book_cnt");
 		
 		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
 	}
