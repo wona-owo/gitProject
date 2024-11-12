@@ -200,4 +200,17 @@ public class MemberService {
 	    return members;
 	}
 
-}
+		public int updateMember(Member updMember) {
+			Connection conn = JDBCTemplate.getConnection();
+			int result = dao.updateMember(conn, updMember);
+			if(result>0) {
+				JDBCTemplate.commit(conn);
+			}else {
+				JDBCTemplate.rollback(conn);
+			}
+			JDBCTemplate.close(conn);
+			return result;
+		}
+	}
+
+
