@@ -259,8 +259,6 @@ public class DinnerDao {
 		String query = "select * from tbl_book where dinner_no = ? and book_date = ?";
 
 		try {
-			System.out.println(dinnerNo);
-			System.out.println(date);
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
 			pt.setString(2, date);

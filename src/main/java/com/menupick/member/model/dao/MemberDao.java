@@ -11,7 +11,7 @@ import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.vo.Member;
-import com.menupick.review.model.vo.Review; 
+import com.menupick.review.model.vo.Review;
 
 public class MemberDao {
 
@@ -401,9 +401,8 @@ public class MemberDao {
 	}
 
 	// 리뷰 삭제
-	
-	
-	//예약 확인
+
+	// 예약 확인
 	public ArrayList<Book> memberBookList(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -418,7 +417,7 @@ public class MemberDao {
 
 			while (rset.next()) {
 				Book b = new Book();
-				
+
 				b.setBookNo(rset.getString("book_no"));
 				b.setDinnerNo(rset.getString("dinner_no"));
 				b.setMemberNo(rset.getString("member_no"));
@@ -426,12 +425,11 @@ public class MemberDao {
 				b.setBookTime(rset.getString("book_time"));
 				b.setBookCnt(rset.getInt("book_cnt"));
 				b.setDinnerName(rset.getString("dinner_name"));
-				
+
 				bookList.add(b);
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -440,8 +438,7 @@ public class MemberDao {
 
 		return bookList;
 	}
-	
-	
+
 	// admin(경래) - 회원 별명 검색
 	public List<Member> searchMembersByNick(Connection conn, String memberNick) {
 		PreparedStatement pstmt = null;
@@ -479,7 +476,5 @@ public class MemberDao {
 		}
 		return members;
 	}
-
-
 
 }

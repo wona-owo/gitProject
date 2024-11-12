@@ -196,8 +196,8 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return reviewList;
 	}
-	
-	//예약 DB 불러오기
+
+	// 예약 DB 불러오기
 	public ArrayList<Book> memberBookList(String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Book> bookList = dao.memberBookList(conn, memberNo);
@@ -212,7 +212,5 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return members;
 	}
-
-	
 
 }

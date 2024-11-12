@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html>
@@ -74,7 +74,8 @@
 
 				<p>회원이 쓴 리뷰</p>
 				<div class="my-info-wrap">
-					<div class="rvMainBox">   						<!-- 리뷰 공간 건드릴려면 이거 ㅇㅇ -->
+					<div class="rvMainBox">
+						<!-- 리뷰 공간 건드릴려면 이거 ㅇㅇ -->
 						<c:forEach var="review" items="${reviews}">
 							<div>
 								<p>식당명: ${review.dinnerName}</p>
@@ -117,46 +118,56 @@
 </body>
 
 <script>
-//선택된 회원 탈퇴
-function removeAllMembers() {
-    let checkBoxes = $("input[name='rpchk']:checked");
-    if (checkBoxes.length < 1) {
-        swal({ title: "알림", text: "선택한 리뷰가 없습니다", icon: "warning" });
-        return;
-    }
+	//선택된 회원 탈퇴
+	function removeAllMembers() {
+		let checkBoxes = $("input[name='rpchk']:checked");
+		if (checkBoxes.length < 1) {
+			swal({
+				title : "알림",
+				text : "선택한 리뷰가 없습니다",
+				icon : "warning"
+			});
+			return;
+		}
 
-    let reviewNoArr = [];
-    $.each(checkBoxes, function(index, item) {
-        let reviewNo = $(item).data("review-no"); // 체크박스의 data 속성에서 reviewNo 읽기
-        if (reviewNo) {
-            reviewNoArr.push(reviewNo);
-        }
-    });
+		let reviewNoArr = [];
+		$.each(checkBoxes, function(index, item) {
+			let reviewNo = $(item).data("review-no"); // 체크박스의 data 속성에서 reviewNo 읽기
+			if (reviewNo) {
+				reviewNoArr.push(reviewNo);
+			}
+		});
 
-    swal({
-        title: "리뷰 삭제",
-        text: "선택된 리뷰를 삭제하시겠습니까?",
-        icon: "warning",
-        buttons: { cancel: "취소", confirm: "삭제" }
-    }).then(function(confirm) {
-        if (confirm) {
-            $.ajax({
-                url: "/reviewRemoveAll", // 리뷰 삭제에 맞는 URL로 변경
-                type: "POST",
-                data: { reviewNoArr: reviewNoArr.join("/") }, // 문자열로 조합하여 전송
-                success: function(response) {
-                    swal("알림", "선택된 리뷰가 삭제되었습니다", "success").then(function() {
-                        location.reload(); // 페이지 새로고침
-                    });
-                },
-                error: function() {
-                    swal("오류", "리뷰 삭제 중 오류가 발생하였습니다", "error");
-                }
-            });
-        }
-    });
-}
-
+		swal({
+			title : "리뷰 삭제",
+			text : "선택된 리뷰를 삭제하시겠습니까?",
+			icon : "warning",
+			buttons : {
+				cancel : "취소",
+				confirm : "삭제"
+			}
+		}).then(
+				function(confirm) {
+					if (confirm) {
+						$.ajax({
+							url : "/reviewRemoveAll", // 리뷰 삭제에 맞는 URL로 변경
+							type : "POST",
+							data : {
+								reviewNoArr : reviewNoArr.join("/")
+							}, // 문자열로 조합하여 전송
+							success : function(response) {
+								swal("알림", "선택된 리뷰가 삭제되었습니다", "success").then(
+										function() {
+											location.reload(); // 페이지 새로고침
+										});
+							},
+							error : function() {
+								swal("오류", "리뷰 삭제 중 오류가 발생하였습니다", "error");
+							}
+						});
+					}
+				});
+	}
 </script>
 
 </html>
