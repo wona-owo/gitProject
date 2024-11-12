@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
-import com.menupick.dinner.vo.Book;
+import com.menupick.dinner.vo.BookInfo;
 
 /**
  * Servlet implementation class DinnerCheckReservationServlet
@@ -32,7 +32,6 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String dinnerNo = request.getParameter("dinnerNo");
 		String year = request.getParameter("year");
 		String justYear = year.substring(2);
@@ -48,9 +47,9 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 		String date = (justYear + "/" + monthPadded + "/" + dayPadded);
 
 		DinnerService service = new DinnerService();
-		ArrayList<Book> bookInfo = service.getReservationData(dinnerNo, date);
-
-		request.setAttribute("bookInfo", bookInfo);
+		ArrayList<BookInfo> bookInfoList = service.getReservationData(dinnerNo, date);
+		
+		request.setAttribute("bookInfo", bookInfoList);
 
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 	}

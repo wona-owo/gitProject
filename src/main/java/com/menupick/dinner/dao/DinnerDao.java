@@ -12,9 +12,9 @@ import java.util.List;
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
+import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
-import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
 
@@ -86,11 +86,11 @@ public class DinnerDao {
 		return dinnerList;
 	}
 
-	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
+	public ArrayList<BookInfo> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
-		ArrayList<Book> bookList = new ArrayList<>();
-		String query = "select * from tbl_book where dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+		ArrayList<BookInfo> list = new ArrayList<>();
+		String query = "select b.book_no, b.book_date, b.book_cnt, b.book_time, b.member_no, m.member_name, m.member_phone, m.member_email from tbl_book b join tbl_member m on b.member_no = m.member_no where b.dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
 
 		try {
 			pt = conn.prepareStatement(query);
@@ -101,14 +101,13 @@ public class DinnerDao {
 			rt = pt.executeQuery();
 
 			while (rt.next()) {
-				Book b = new Book();
-				b.setBookNo(rt.getString("book_no"));
-				b.setDinnerNo(rt.getString("dinner_no"));
+				BookInfo b = new BookInfo();
+				b.setBookNo(rt.getString("b.book_no"));
 				b.setMemberNo(rt.getString("member_no"));
 				b.setBookDate(rt.getString("book_date"));
 				b.setBookTime(rt.getString("book_time"));
 				b.setBookCnt(rt.getInt("book_cnt"));
-				bookList.add(b);
+				list.add(b);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,7 +115,7 @@ public class DinnerDao {
 			JDBCTemplate.close(rt);
 			JDBCTemplate.close(pt);
 		}
-		return bookList;
+		return list;
 	}
 
 	public ArrayList<Food> filterNation(Connection conn, String foodNo) {
@@ -174,8 +173,6 @@ public class DinnerDao {
 		return addressList;
 	}
 
-
-
 	public Dinner dinnerDetail(Connection conn, String dinnerNo) {
 
 		PreparedStatement pstmt = null;
@@ -183,16 +180,10 @@ public class DinnerDao {
 		Dinner d = new Dinner();
 		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
 
-		
-		
-		
-
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, dinnerNo);
 			rset = pstmt.executeQuery();
-
-
 
 			if (rset.next()) {
 				d = new Dinner();
@@ -256,10 +247,6 @@ public class DinnerDao {
 		return d;
 	}
 
-
-
-	
-
 	public String convertDateToString(Date date) {
 		if (date == null) {
 			return null;
@@ -307,33 +294,31 @@ public class DinnerDao {
 
 	}
 
-
 	public Food foodDetail(Connection conn, String foodNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Food food = new Food();
 		String query = "select * from tbl_food";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
-			if(rset.next()) {
+			if (rset.next()) {
 				food.setFoodNo(rset.getString("food_no"));
 				food.setFoodName(rset.getString("food_name"));
 				food.setFoodCat(rset.getString("food_cat"));
 				food.setFoodNation(rset.getString("food_nation"));
-			}else {
-				
+			} else {
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-		
-		
+
 		return food;
 	}
 
@@ -509,7 +494,7 @@ public class DinnerDao {
 	public List<Dinner> getDinnersSortedByName(Connection conn, String order) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		 List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
+		List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
 
 		// order 변수가 'asc' 또는 'desc'인지 확인하여 SQL 구문 작성
 		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name"
@@ -540,8 +525,8 @@ public class DinnerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-				JDBCTemplate.close(rset);
-				JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
 		}
 		return dinners;
 	}
@@ -549,7 +534,7 @@ public class DinnerDao {
 	public List<Dinner> getDinnersByApproval(Connection conn, String approved) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		 List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
+		List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
 
 		// order 변수가 'asc' 또는 'desc'인지 확인하여 SQL 구문 작성
 		String query = "SELECT * FROM tbl_dinner WHERE dinner_confirm = ?"
@@ -580,8 +565,8 @@ public class DinnerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-				JDBCTemplate.close(rset);
-				JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
 		}
 		return dinners;
 	}

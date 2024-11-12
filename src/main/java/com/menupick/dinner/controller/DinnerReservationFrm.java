@@ -14,15 +14,14 @@ import com.menupick.dinner.vo.Dinner;
  * Servlet implementation class dinnerReservationFrm
  */
 @WebServlet("/dinner/dinnerReservation/")
-public class dinnerReservationFrm extends HttpServlet {
+public class DinnerReservationFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public dinnerReservationFrm() {
+    public DinnerReservationFrm() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -36,16 +35,13 @@ public class dinnerReservationFrm extends HttpServlet {
 		dinner = service.dinnerDetail(dinnerNo);
 		
 		request.setAttribute("dinner", dinner);
-		
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
-		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

@@ -47,8 +47,9 @@
 	function cancelBook(){
 		console.log("poop");
 	}
-	// 예약이 있는 이전 이후 날짜로 이동하는 코드
+
 	$.ajax({
+
 	})
 	</script>
 
