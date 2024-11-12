@@ -10,7 +10,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
-import com.menupick.dinner.vo.Food;
+
 
 public class DinnerService {
 	DinnerDao dao;
@@ -44,9 +44,9 @@ public class DinnerService {
 		return bookInfoList;
 	}
 
-	public ArrayList<Food> filterNation(String foodNo) {
+	public ArrayList<Dinner> filterNation(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<Food> foodList = dao.filterNation(conn, foodNo);
+		ArrayList<Dinner> foodList = dao.filterNation(conn, foodNo);
 		JDBCTemplate.close(conn);
 		return foodList;
 	}
@@ -70,6 +70,7 @@ public class DinnerService {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = dao.dinnerDetail(conn, dinnerNo);
 		JDBCTemplate.close(conn);
+		System.out.println(dinnerNo);
 		return dinner;
 	}
 
@@ -81,9 +82,9 @@ public class DinnerService {
 	}
 
 	// 음식 상세페이지 출력
-	public Food foodDetail(String foodNo) {
+	public Dinner foodDetail(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		Food food = dao.foodDetail(conn, foodNo);
+		Dinner food = dao.foodDetail(conn, foodNo);
 		JDBCTemplate.close(conn);
 		return food;
 	}
@@ -139,5 +140,7 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return dinners;
 	}
+
+
 
 }

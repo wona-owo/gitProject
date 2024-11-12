@@ -14,7 +14,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
-import com.menupick.dinner.vo.Food;
+
 
 public class DinnerDao {
 
@@ -52,7 +52,7 @@ public class DinnerDao {
 	public ArrayList<Dinner> likeDinner(Connection conn, String dinnerNo, String dinnerName) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select * from TBL_DINNER";
+		String query = "select * from tbl_menu, tbl_dinner, tbl_food";
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 
 		try {
@@ -75,6 +75,11 @@ public class DinnerDao {
 				d.setDinnerId(rset.getString("DINNER_ID"));
 				d.setDinnerPw(rset.getString("DINNER_PW"));
 				d.setDinnerConfirm(rset.getString("DINNER_CONFIRM"));
+				d.setFoodNo(rset.getString("FOOD_NO"));
+				d.setFoodName(rset.getString("FOOD_NAME"));
+				d.setFoodNation(rset.getString("FOOD_NATION"));
+				d.setFoodCat(rset.getString("FOOD_CAT"));
+
 				dinnerList.add(d);
 			}
 		} catch (SQLException e) {
@@ -165,12 +170,12 @@ public class DinnerDao {
 		return book;
 	}
 
-	public ArrayList<Food> filterNation(Connection conn, String foodNo) {
+	public ArrayList<Dinner> filterNation(Connection conn, String foodNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String query = "select * from TBL_FOOD";
-		ArrayList<Food> foodList = new ArrayList<Food>();
-		Food food = new Food();
+		ArrayList<Dinner> foodList = new ArrayList<Dinner>();
+		Dinner food = new Dinner();
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -224,7 +229,7 @@ public class DinnerDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner d = new Dinner();
-		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
+		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking, food_no, food_name, food_nation, food_cat from tbl_dinner, tbl_food where dinner_no = ?";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -240,7 +245,11 @@ public class DinnerDao {
 				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
 				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
-				System.out.println(d);
+				d.setFoodNo(rset.getString("FOOD_NO"));
+				d.setFoodName(rset.getString("FOOD_NAME"));
+				d.setFoodNation(rset.getString("FOOD_NATION"));
+				d.setFoodCat(rset.getString("FOOD_CAT"));
+				System.out.println(dinnerNo);
 			}
 
 		} catch (SQLException e) {
@@ -292,10 +301,10 @@ public class DinnerDao {
 		return d;
 	}
 
-	public Food foodDetail(Connection conn, String foodNo) {
+	public Dinner foodDetail(Connection conn, String foodNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		Food food = new Food();
+		Dinner food = new Dinner();
 		String query = "select * from tbl_food";
 
 		try {
@@ -559,4 +568,6 @@ public class DinnerDao {
 		}
 		return dinners;
 	}
+
+
 }
