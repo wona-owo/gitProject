@@ -9,6 +9,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
+import com.menupick.member.model.vo.Member;
 
 public class DinnerService {
 	DinnerDao dao;
@@ -16,7 +17,7 @@ public class DinnerService {
 	public DinnerService() {
 		dao = new DinnerDao();
 	}
-
+	//인기식당 페이지
 	public ArrayList<Dinner> likeDinner(String dinnerNo, String dinnerName) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> dinnerList = null;
@@ -55,10 +56,13 @@ public class DinnerService {
 		return list;
 	}
 
-	public Dinner dinnerDetail(String dinnerNo, String foodNo) {
+
+	//식당 상세페이지
+	public Dinner dinnerDetail(String dinnerNo) {
+
 		Connection conn = JDBCTemplate.getConnection();
-		Dinner dinner = dao.dinnerDetail(conn, dinnerNo, foodNo);
-		JDBCTemplate.close(conn);
+		Dinner dinner = new Dinner();
+		dinner = dao.dinnerDetail(conn, dinnerNo);
 		return dinner;
 	}
 
@@ -68,6 +72,15 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return dinner;
 	}
+	//음식 상세페이지 출력
+	public Food foodDetail(String foodNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Food food = new Food();
+		food = dao.foodDetail(conn, foodNo);
+		JDBCTemplate.close(conn);
+		return food;
+	}
+
 
 	public ArrayList<Book> getReservationData(String dinnerNo, String date) {
 		Connection conn = JDBCTemplate.getConnection();
@@ -82,5 +95,6 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return list;
 	}
+
 
 }

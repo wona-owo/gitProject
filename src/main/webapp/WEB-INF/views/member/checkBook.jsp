@@ -33,7 +33,7 @@
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	padding: 15px;
-	width: 600px; /* 카드 폭 조정 */
+	width: 300px; /* 카드 폭 조정 */
 	height: 200px; /* 카드 높이 조정 */
 	display: flex;
 	flex-direction: column;
@@ -97,20 +97,21 @@
 	<div class="page-title">예약 확인</div>
 	<div class="card-container">
 		<c:choose>
-			<c:when test="${not empty reviewList}">
-				<c:forEach var="review" items="${reviewList}">
+			<c:when test="${not empty bookList}">
+				<c:forEach var="book" items="${bookList}">
 					<div class="card"
-						onclick="location.href='dinnerDetail.jsp?name=${review.dinnerName}'">
-						<div class="card-info">
-							<h3>${review.dinnerName}</h3>
-							<p>${review.reviewDate}</p>
+						onclick="location.href='dinnerDetail.jsp?name=${book.dinnerName}'">
+						<div class="dinner-date">
+							<h3>${book.dinnerName}</h3>
+							<p>${book.bookDate}</p>
 						</div>
-						<img src="${review.reviewImg}" alt="식당 이미지"> <span
+						<%-- 식당 이미지 넣는가..? --%> <span
 							class="del-icon active" data-review-no="${review.reviewNo}">
 							<i class="fa-solid fa-x"></i>
 						</span>
-						<div class="contents">
-							<h5>${review.reviewContent}</h5>
+						<div class="time-ctn">
+							<h3>${book.bookTime}</h3>
+							<h3>총 ${book.bookCtn}명</h3>
 						</div>
 					</div>
 				</c:forEach>
@@ -121,41 +122,40 @@
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$(document).ready(
-				function() {
-					// 삭제 아이콘 클릭 이벤트 설정
-					$(".del-icon").click(
-							function(event) {
-								event.stopPropagation(); // 상위 카드로 클릭 이벤트 전파 방지
-								const iconElement = $(this); // 클릭된 아이콘 요소 참조						
-								const reviewNo = iconElement
-										.attr("data-review-no"); // 데이터 속성 사용
+    $(document).ready(function() {
+        // 삭제 아이콘 클릭 이벤트 설정
+        $(".del-icon").click(function(event) {
+            event.stopPropagation(); // 상위 카드로 클릭 이벤트 전파 방지
+            const iconElement = $(this); // 클릭된 아이콘 요소 참조						
+            const bookNo = iconElement.attr("data-book-no"); // 데이터 속성 사용
 
-								// AJAX 요청 보내기
-								$.ajax({
-									url : "/member/delReview", // 요청할 서버 URL
-									type : "POST",
-									data : {
-										"reviewNo" : reviewNo
-									},
-									dataType : "json",
-									success : function(res) { // 요청 성공 시
-										iconElement.addClass("inactive")
-												.removeClass("active"); // x 클릭하면 삭제
-										console.log("리뷰 삭제 성공:", res);
+            // 예약 취소 확인 메시지
+            if (confirm("예약을 취소하시겠습니까?")) { // 확인 버튼을 누르면 AJAX 요청 실행
+                // AJAX 요청 보내기
+                $.ajax({
+                    url: "/member/delBook", // 요청할 서버 URL
+                    type: "POST",
+                    data: {
+                        "bookNo": bookNo // 변수명 일치
+                    },
+                    dataType: "json",
+                    success: function(res) { // 요청 성공 시
+                        iconElement.addClass("inactive").removeClass("active"); // x 클릭하면 삭제
+                        console.log("예약 삭제 성공:", res);
 
-										// 새로고침
-										window.location.reload();
-									},
-									error : function(request, status, error) {
-										alert("code:" + request.status + "\n"
-												+ "message:"
-												+ request.responseText + "\n"
-												+ "error:" + error);
-									}
-								});
-							});
-				});
-	</script>
+                        // 새로고침
+                        window.location.reload();
+                    },
+                    error: function(request, status, error) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                });
+            } else {
+                // 취소 버튼을 누르면 아무 작업도 하지 않음
+                console.log("예약 취소가 중단되었습니다.");
+            }
+        });
+    });
+</script>
 </body>
 </html>

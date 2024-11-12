@@ -13,6 +13,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
+import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
 
@@ -172,25 +173,36 @@ public class DinnerDao {
 		return addressList;
 	}
 
-	public Dinner dinnerDetail(Connection conn, String dinnerNo, String foodNo) {
+
+
+	public Dinner dinnerDetail(Connection conn, String dinnerNo) {
+
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		Dinner d = null;
-		String query = "select dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
+		Dinner d = new Dinner();
+		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
+
+		
+		
+		
 
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, dinnerNo);
 			rset = pstmt.executeQuery();
 
+
+
 			if (rset.next()) {
 				d = new Dinner();
+				d.setDinnerNo(rset.getString("dinner_no"));
 				d.setDinnerName(rset.getString("DINNER_NAME"));
 				d.setDinnerAddr(rset.getString("DINNER_ADDR"));
 				d.setDinnerOpen(rset.getString("DINNER_OPEN"));
 				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
 				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
+				System.out.println(d);
 
 			}
 
@@ -243,6 +255,10 @@ public class DinnerDao {
 		return d;
 	}
 
+
+
+	
+
 	public String convertDateToString(Date date) {
 		if (date == null) {
 			return null;
@@ -252,6 +268,7 @@ public class DinnerDao {
 	}
 
 	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String date) {
+
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<Book> book = new ArrayList<Book>();
@@ -286,6 +303,37 @@ public class DinnerDao {
 			JDBCTemplate.close(pt);
 		}
 		return book;
+
+	}
+
+
+	public Food foodDetail(Connection conn, String foodNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Food food = new Food();
+		String query = "select * from tbl_food";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				food.setFoodNo(rset.getString("food_no"));
+				food.setFoodName(rset.getString("food_name"));
+				food.setFoodCat(rset.getString("food_cat"));
+				food.setFoodNation(rset.getString("food_nation"));
+			}else {
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		
+		return food;
 	}
 
 	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
@@ -308,6 +356,7 @@ public class DinnerDao {
 		}
 
 		return list;
+
 	}
 
 }
