@@ -10,12 +10,10 @@
 <body>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-
 		<main class="content">
 			<section class="section notice-list-wrap">
 				<div class="page-title">${bookDate}</div>
 				<div class="list-content">
-
 					<table class="tbl hover">
 						<tr>
 							<th style="width: 20%">예약 시간</th>
@@ -40,13 +38,11 @@
 				</div>
 			</section>
 		</main>
-
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-
 	<script>
 		function cancelBook() {
-			console.log("poop");
+			window.location.href = "/dinner/writeCancelReason";
 		}
 	</script>
 
