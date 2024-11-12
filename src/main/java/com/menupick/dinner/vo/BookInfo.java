@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class BookInfo {
 	private String bookNo;
 	private String bookDate;
-	private int bookCnt;
 	private String bookTime;
+	private int bookCnt;
 
 	private String memberNo;
 	private String memberName;

@@ -128,6 +128,7 @@ public class DinnerDao {
 		return formatter.format(date);
 	}
 
+	// daniel
 	public ArrayList<BookInfo> getReservationData(Connection conn, String dinnerNo, String date) {
 
 		PreparedStatement pt = null;
@@ -145,16 +146,16 @@ public class DinnerDao {
 				BookInfo b = new BookInfo();
 				b.setBookNo(rt.getString("book_no"));
 				b.setMemberNo(rt.getString("member_no"));
-
 				// Fetch `DATE` and convert to `String`
 				Date bookDate = rt.getDate("book_date");
 				b.setBookDate(convertDateToString(bookDate)); // Format the date to string
-
 				b.setBookTime(rt.getString("book_time"));
 				b.setBookCnt(rt.getInt("book_cnt"));
+				b.setMemberName(rt.getString("member_name"));
+				b.setMemberPhone(rt.getString("member_phone"));
+				b.setMemberEmail(rt.getString("member_email"));
 				book.add(b);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -220,7 +221,6 @@ public class DinnerDao {
 	}
 
 	public Dinner dinnerDetail(Connection conn, String dinnerNo) {
-
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner d = new Dinner();
@@ -310,18 +310,15 @@ public class DinnerDao {
 
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-
 		return food;
 	}
 
 	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
-
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
@@ -338,9 +335,7 @@ public class DinnerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return list;
-
 	}
 
 	public List<Dinner> searchDinnerByName(Connection conn, String dinnerName) {
@@ -375,7 +370,6 @@ public class DinnerDao {
 
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -480,7 +474,6 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -519,7 +512,6 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
 				dinners.add(d);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -559,7 +551,6 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
 				dinners.add(d);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

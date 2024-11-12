@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -14,7 +13,7 @@
 
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">여기다가 날짜</div>
+				<div class="page-title">${bookDate}</div>
 				<div class="list-content">
 
 					<table class="tbl hover">
@@ -27,10 +26,12 @@
 						</tr>
 
 						<c:forEach var="book" items="${bookInfo}">
+							<input type="hidden" value="${book.memberEmail}"
+								name="memberEmail" id="memberEmail">
 							<tr>
 								<td>${book.bookTime}</td>
-								<td>이름</td>
-								<td>전화번호</td>
+								<td>${book.memberName}</td>
+								<td>${book.memberPhone}</td>
 								<td>${book.bookCnt}</td>
 								<td><button onClick="cancelBook()">취소</button></td>
 							</tr>
@@ -44,13 +45,9 @@
 	</div>
 
 	<script>
-	function cancelBook(){
-		console.log("poop");
-	}
-
-	$.ajax({
-
-	})
+		function cancelBook() {
+			console.log("poop");
+		}
 	</script>
 
 </body>

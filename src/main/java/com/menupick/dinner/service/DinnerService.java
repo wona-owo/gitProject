@@ -36,6 +36,7 @@ public class DinnerService {
 		return bookList;
 	}
 
+	// daniel
 	public ArrayList<BookInfo> getReservationData(String dinnerNo, String date) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<BookInfo> bookInfoList = dao.getReservationData(conn, dinnerNo, date);
@@ -45,8 +46,7 @@ public class DinnerService {
 
 	public ArrayList<Food> filterNation(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<Food> foodList = null;
-		foodList = dao.filterNation(conn, foodNo);
+		ArrayList<Food> foodList = dao.filterNation(conn, foodNo);
 		JDBCTemplate.close(conn);
 		return foodList;
 	}
@@ -67,10 +67,9 @@ public class DinnerService {
 
 	// 식당 상세페이지
 	public Dinner dinnerDetail(String dinnerNo) {
-
 		Connection conn = JDBCTemplate.getConnection();
-		Dinner dinner = new Dinner();
-		dinner = dao.dinnerDetail(conn, dinnerNo);
+		Dinner dinner = dao.dinnerDetail(conn, dinnerNo);
+		JDBCTemplate.close(conn);
 		return dinner;
 	}
 
@@ -84,15 +83,13 @@ public class DinnerService {
 	// 음식 상세페이지 출력
 	public Food foodDetail(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		Food food = new Food();
-		food = dao.foodDetail(conn, foodNo);
+		Food food = dao.foodDetail(conn, foodNo);
 		JDBCTemplate.close(conn);
 		return food;
 	}
 
 	public ArrayList<Dinner> selectAllAdminDinner() {
 		Connection conn = JDBCTemplate.getConnection();
-
 		ArrayList<Dinner> list = dao.selectAllAdminDinner(conn);
 		JDBCTemplate.close(conn);
 		return list;
@@ -109,7 +106,6 @@ public class DinnerService {
 	public List<Dinner> getDinners(int page, int pageSize) {
 		Connection conn = JDBCTemplate.getConnection();
 		List<Dinner> dinners = dao.getDinners(conn, page, pageSize);
-
 		JDBCTemplate.close(conn);
 		return dinners;
 	}
@@ -118,7 +114,6 @@ public class DinnerService {
 	public int getTotalDinnerCount() {
 		Connection conn = JDBCTemplate.getConnection();
 		int totalDinner = dao.getTotalDinnerCount(conn);
-
 		JDBCTemplate.close(conn);
 		return totalDinner;
 	}
@@ -127,26 +122,20 @@ public class DinnerService {
 	public Dinner getDinnerNo(String dinnerNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = dao.getDinnerNo(conn, dinnerNo);
-
 		JDBCTemplate.close(conn);
 		return dinner;
 	}
 
 	public List<Dinner> getDinnersSortedByName(String order) {
 		Connection conn = JDBCTemplate.getConnection();
-
 		List<Dinner> dinners = dao.getDinnersSortedByName(conn, order);
-
 		JDBCTemplate.close(conn);
 		return dinners;
-
 	}
 
 	public List<Dinner> getDinnersByApproval(String approved) {
 		Connection conn = JDBCTemplate.getConnection();
-
 		List<Dinner> dinners = dao.getDinnersByApproval(conn, approved);
-
 		JDBCTemplate.close(conn);
 		return dinners;
 	}

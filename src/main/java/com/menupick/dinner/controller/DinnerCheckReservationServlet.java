@@ -43,14 +43,14 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 		// Parse the day as an integer and format it as a 2-digit string
 		int day = Integer.parseInt(request.getParameter("day"));
 		String dayPadded = String.format("%02d", day);
-
 		String date = (justYear + "/" + monthPadded + "/" + dayPadded);
+		String dateForDisplay = (monthPadded + " 월 " + dayPadded + " 일");
 
 		DinnerService service = new DinnerService();
 		ArrayList<BookInfo> bookInfoList = service.getReservationData(dinnerNo, date);
-		
-		request.setAttribute("bookInfo", bookInfoList);
 
+		request.setAttribute("bookInfo", bookInfoList);
+		request.setAttribute("bookDate", dateForDisplay);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 	}
 
