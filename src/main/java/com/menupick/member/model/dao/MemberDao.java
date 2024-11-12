@@ -353,7 +353,6 @@ public class MemberDao {
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
@@ -390,7 +389,6 @@ public class MemberDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -487,7 +485,6 @@ public class MemberDao {
 			pstmt.setString(1, memberNo);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
