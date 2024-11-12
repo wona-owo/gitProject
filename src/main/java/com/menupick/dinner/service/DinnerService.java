@@ -8,9 +8,9 @@ import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.dao.DinnerDao;
 import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
+import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Food;
-import com.menupick.member.model.vo.Member;
 
 public class DinnerService {
 	DinnerDao dao;
@@ -18,7 +18,8 @@ public class DinnerService {
 	public DinnerService() {
 		dao = new DinnerDao();
 	}
-	//인기식당 페이지
+
+	// 인기식당 페이지
 	public ArrayList<Dinner> likeDinner(String dinnerNo, String dinnerName) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> dinnerList = null;
@@ -33,6 +34,13 @@ public class DinnerService {
 		bookList = dao.checkReservation(conn, dinnerNo, justMonth, displayYear);
 		JDBCTemplate.close(conn);
 		return bookList;
+	}
+
+	public ArrayList<BookInfo> getReservationData(String dinnerNo, String date) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<BookInfo> bookInfoList = dao.getReservationData(conn, dinnerNo, date);
+		JDBCTemplate.close(conn);
+		return bookInfoList;
 	}
 
 	public ArrayList<Food> filterNation(String foodNo) {
@@ -57,8 +65,7 @@ public class DinnerService {
 		return list;
 	}
 
-
-	//식당 상세페이지
+	// 식당 상세페이지
 	public Dinner dinnerDetail(String dinnerNo) {
 
 		Connection conn = JDBCTemplate.getConnection();
@@ -73,21 +80,14 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return dinner;
 	}
-	//음식 상세페이지 출력
+
+	// 음식 상세페이지 출력
 	public Food foodDetail(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		Food food = new Food();
 		food = dao.foodDetail(conn, foodNo);
 		JDBCTemplate.close(conn);
 		return food;
-	}
-
-
-	public ArrayList<Book> getReservationData(String dinnerNo, String date) {
-		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<Book> book = dao.getReservationData(conn, dinnerNo, date);
-		JDBCTemplate.close(conn);
-		return book;
 	}
 
 	public ArrayList<Dinner> selectAllAdminDinner() {
@@ -97,15 +97,15 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return list;
 	}
-	
 
 	public List<Dinner> searchDinnerByName(String dinnerName) {
 		Connection conn = JDBCTemplate.getConnection();
-	    List<Dinner> dinners = dao.searchDinnerByName(conn, dinnerName);
-	    JDBCTemplate.close(conn);
-	    return dinners;
+		List<Dinner> dinners = dao.searchDinnerByName(conn, dinnerName);
+		JDBCTemplate.close(conn);
+		return dinners;
 	}
-	//회원 조회 + 페이징 넘버
+
+	// 회원 조회 + 페이징 넘버
 	public List<Dinner> getDinners(int page, int pageSize) {
 		Connection conn = JDBCTemplate.getConnection();
 		List<Dinner> dinners = dao.getDinners(conn, page, pageSize);
@@ -113,16 +113,17 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 		return dinners;
 	}
-	//페이징 넘버
+
+	// 페이징 넘버
 	public int getTotalDinnerCount() {
 		Connection conn = JDBCTemplate.getConnection();
 		int totalDinner = dao.getTotalDinnerCount(conn);
-		
+
 		JDBCTemplate.close(conn);
 		return totalDinner;
 	}
-	
-	//매장 조회
+
+	// 매장 조회
 	public Dinner getDinnerNo(String dinnerNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = dao.getDinnerNo(conn, dinnerNo);
@@ -133,23 +134,21 @@ public class DinnerService {
 
 	public List<Dinner> getDinnersSortedByName(String order) {
 		Connection conn = JDBCTemplate.getConnection();
-		
-		List<Dinner> dinners = dao.getDinnersSortedByName(conn,order);
-		 
-		 JDBCTemplate.close(conn);
-		 return dinners;
+
+		List<Dinner> dinners = dao.getDinnersSortedByName(conn, order);
+
+		JDBCTemplate.close(conn);
+		return dinners;
 
 	}
 
 	public List<Dinner> getDinnersByApproval(String approved) {
-Connection conn = JDBCTemplate.getConnection();
-		
-		List<Dinner> dinners = dao.getDinnersByApproval(conn,approved);
-		 
-		 JDBCTemplate.close(conn);
-		 return dinners;
+		Connection conn = JDBCTemplate.getConnection();
+
+		List<Dinner> dinners = dao.getDinnersByApproval(conn, approved);
+
+		JDBCTemplate.close(conn);
+		return dinners;
 	}
-
-
 
 }

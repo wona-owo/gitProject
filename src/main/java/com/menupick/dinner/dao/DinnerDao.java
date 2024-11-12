@@ -86,11 +86,11 @@ public class DinnerDao {
 		return dinnerList;
 	}
 
-	public ArrayList<BookInfo> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
+	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
-		ArrayList<BookInfo> list = new ArrayList<>();
-		String query = "select b.book_no, b.book_date, b.book_cnt, b.book_time, b.member_no, m.member_name, m.member_phone, m.member_email from tbl_book b join tbl_member m on b.member_no = m.member_no where b.dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
+		ArrayList<Book> bookList = new ArrayList<>();
+		String query = "select * from tbl_book where dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
 
 		try {
 			pt = conn.prepareStatement(query);
@@ -101,13 +101,14 @@ public class DinnerDao {
 			rt = pt.executeQuery();
 
 			while (rt.next()) {
-				BookInfo b = new BookInfo();
-				b.setBookNo(rt.getString("b.book_no"));
+				Book b = new Book();
+				b.setBookNo(rt.getString("book_no"));
+				b.setDinnerNo(rt.getString("dinnnerNo"));
 				b.setMemberNo(rt.getString("member_no"));
 				b.setBookDate(rt.getString("book_date"));
 				b.setBookTime(rt.getString("book_time"));
 				b.setBookCnt(rt.getInt("book_cnt"));
-				list.add(b);
+				bookList.add(b);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -115,7 +116,51 @@ public class DinnerDao {
 			JDBCTemplate.close(rt);
 			JDBCTemplate.close(pt);
 		}
-		return list;
+		return bookList;
+	}
+
+	public String convertDateToString(Date date) {
+		if (date == null) {
+			return null;
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
+		return formatter.format(date);
+	}
+
+	public ArrayList<BookInfo> getReservationData(Connection conn, String dinnerNo, String date) {
+
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		ArrayList<BookInfo> book = new ArrayList<>();
+		String query = "select * from tbl_book where dinner_no = ? and book_date = ?";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			pt.setString(2, date);
+			rt = pt.executeQuery();
+
+			while (rt.next()) {
+				BookInfo b = new BookInfo();
+				b.setBookNo(rt.getString("book_no"));
+				b.setMemberNo(rt.getString("member_no"));
+
+				// Fetch `DATE` and convert to `String`
+				Date bookDate = rt.getDate("book_date");
+				b.setBookDate(convertDateToString(bookDate)); // Format the date to string
+
+				b.setBookTime(rt.getString("book_time"));
+				b.setBookCnt(rt.getInt("book_cnt"));
+				book.add(b);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return book;
 	}
 
 	public ArrayList<Food> filterNation(Connection conn, String foodNo) {
@@ -245,53 +290,6 @@ public class DinnerDao {
 		}
 
 		return d;
-	}
-
-	public String convertDateToString(Date date) {
-		if (date == null) {
-			return null;
-		}
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
-		return formatter.format(date);
-	}
-
-	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String date) {
-
-		PreparedStatement pt = null;
-		ResultSet rt = null;
-		ArrayList<Book> book = new ArrayList<Book>();
-		Book b = null;
-		String query = "select * from tbl_book where dinner_no = ? and book_date = ?";
-
-		try {
-			pt = conn.prepareStatement(query);
-			pt.setString(1, dinnerNo);
-			pt.setString(2, date);
-			rt = pt.executeQuery();
-
-			while (rt.next()) {
-				b = new Book();
-				b.setBookNo(rt.getString("book_no"));
-				b.setDinnerNo(rt.getString("dinner_no"));
-				b.setMemberNo(rt.getString("member_no"));
-
-				// Fetch `DATE` and convert to `String`
-				Date bookDate = rt.getDate("book_date");
-				b.setBookDate(convertDateToString(bookDate)); // Format the date to string
-
-				b.setBookTime(rt.getString("book_time"));
-				b.setBookCnt(rt.getInt("book_cnt"));
-				book.add(b);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rt);
-			JDBCTemplate.close(pt);
-		}
-		return book;
-
 	}
 
 	public Food foodDetail(Connection conn, String foodNo) {
