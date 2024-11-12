@@ -83,7 +83,7 @@ label {
 							<label for="memberId">아이디</label>
 						</div>
 						<div class="input-item">
-							<input type="text" id="memberId" name="memberId" placeholder="영어 대소문자, 숫자 포함 4~10글자" maxlength="10"/>
+							<input type="text" id="memberId" name="memberId" placeholder="영어 + 숫자 6~12글자" maxlength="12"/>
 							<button type="button" id="idDuplChkBtn" class="btn-primary">중복체크</button>
 						</div>
 						<p id="idMessage" class="input-msg"></p>
@@ -93,7 +93,7 @@ label {
 							<label for="memberPw">비밀번호</label>
 						</div>
 						<div class="input-item">
-							<input type="password" id="memberPw" name="memberPw" placeholder="영어 대소문자, 숫자, 특수문자 포함 8~20글자" maxlength="20"/>
+							<input type="password" id="memberPw" name="memberPw" placeholder="영어 + 숫자 + 특수문자 8~20글자" maxlength="20"/>
 						</div>
 					</div>
 					<div class="input-wrap">
@@ -190,14 +190,14 @@ label {
         idMessage.removeClass('valid');
         idMessage.removeClass('invalid');
         
-        const regExp = /^[a-zA-Z0-9]{4,10}$/;
+        const regExp = /(?=.*[0-9])(?=.*[a-zA-z])[a-zA-Z0-9]{6,12}$/;
         
         if(regExp.test($(this).val())){ 
             idMessage.html("");
             idMessage.addClass("valid");
             checkObj.memberId = true;
         }else{
-            idMessage.html("영어, 숫자 4~10글자 사이로 입력하세요");
+            idMessage.html("영어 + 숫자 6~12글자 사이로 입력하세요");
             idMessage.addClass("invalid");
             checkObj.memberId = false;
         }
@@ -285,7 +285,8 @@ label {
         pwMessage.removeClass('valid');
         pwMessage.removeClass('invalid');
         
-        const regExp = /^[a-zA-Z0-9!@#$%^&*()-_=+]{8,20}$/;
+        const regExp = /(?=.*[0-9])(?=.*[!@#$%^&*()-_=+])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*()-_=+]{8,20}$/;
+
         
         if(regExp.test($(this).val())){
             checkObj.memberPw = true;
