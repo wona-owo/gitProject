@@ -113,7 +113,7 @@ public class MemberDao {
 		int result = 0;
 		
 		String query = "insert into tbl_member (member_no, member_id, member_pw, member_name, member_nick, member_phone, member_addr, member_gender, member_email, enroll_date, adult_confirm, member_level) " +
-	               "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'N', 2)";
+	               "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'n', 2)";
 		/*String query = "insert into tbl_member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, N, 2)";*/
 
 		try {
@@ -398,6 +398,30 @@ public class MemberDao {
 	        JDBCTemplate.close(pstmt);
 	    }
 	    return members;
+	}
+
+	public int updateMember(Connection conn, Member updMember) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "update tbl_member set member_id = ? , member_name = ? , member_nick = ? , member_phone = ? , member_addr = ? , member_email = ? where member_no = ? ";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, updMember.getMemberId());
+			pstmt.setString(2, updMember.getMemberName());
+			pstmt.setString(3, updMember.getMemberNick());
+			pstmt.setString(4, updMember.getMemberPhone());
+			pstmt.setString(5, updMember.getMemberAddr());
+			pstmt.setString(6, updMember.getMemberEmail());
+			pstmt.setString(7, updMember.getMemberNo());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 
 

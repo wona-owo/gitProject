@@ -32,15 +32,15 @@ public class MemberJoinServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String memberId = request.getParameter("member_id");
-		String memberPw = request.getParameter("member_pw");
-		String memberName = request.getParameter("member_name");
-		String memberNick = request.getParameter("member_nick");
+		String memberId = request.getParameter("memberId");
+		String memberPw = request.getParameter("memberPw");
+		String memberName = request.getParameter("memberName");
+		String memberNick = request.getParameter("memberNick");
 		String memberPhone = request.getParameter("memberPhone");
 		String memberAddr = request.getParameter("memberAddr");
-		String memberGender = request.getParameter("member_gender");
-		String memberEmail = request.getParameter("member_email");
-		String adultConfirm = request.getParameter("adult_confirm");
+		String memberGender = request.getParameter("memberGender");
+		String memberEmail = request.getParameter("memberEmail");
+		String adultConfirm = request.getParameter("adultConfirm");
 
 		Member member = new Member();
 		member.setMemberId(memberId);

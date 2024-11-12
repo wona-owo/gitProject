@@ -21,6 +21,45 @@
 	justify-content: center;
 	align-items: center;
 }
+[type="radio"] {
+  vertical-align: middle;
+  appearance: none;
+  border: max(2px, 0.1em) solid gray;
+  border-radius: 50%;
+  width: 1.25em;
+  height: 1.25em;
+}
+[type="radio"]:checked {
+  border: 0.4em solid tomato;
+}
+[type="radio"]:focus-visible {
+  outline: max(2px, 0.1em) dotted tomato;
+  outline-offset: max(2px, 0.1em);
+}
+[type="radio"]:hover {
+  box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+  cursor: pointer;
+}
+
+[type="radio"]:hover + span {
+  cursor: pointer;
+}
+[type="radio"] {
+  vertical-align: middle;
+  appearance: none;
+  border: max(2px, 0.1em) solid gray;
+  border-radius: 50%;
+  width: 1.25em;
+  height: 1.25em;
+  transition: border 0.5s ease-in-out;
+}
+.radio-item{
+  padding-bottom : 20px;
+}
+.col-sm-10{
+
+	
+}
 </style>
 <body>
 <div class="wrap">
@@ -34,7 +73,7 @@
 							<label for="memberId">아이디</label>
 						</div>
 						<div class="input-item">
-							<input type="text" id="memberId" name="memberId" placeholder="영어 대소문자, 숫자 포함 4~10글자" maxlength="10"/>
+							<input type="text" id="memberId" name="memberId" placeholder="영어 + 숫자 6~12글자" maxlength="12"/>
 							<button type="button" id="idDuplChkBtn" class="btn-primary">중복체크</button>
 						</div>
 						<p id="idMessage" class="input-msg"></p>
@@ -44,7 +83,7 @@
 							<label for="memberPw">비밀번호</label>
 						</div>
 						<div class="input-item">
-							<input type="password" id="memberPw" name="memberPw" placeholder="영어 대소문자, 숫자, 특수문자 포함 8~20글자" maxlength="20"/>
+							<input type="password" id="memberPw" name="memberPw" placeholder="영어 + 숫자 + 특수문자 8~20글자" maxlength="20"/>
 						</div>
 					</div>
 					<div class="input-wrap">
@@ -85,19 +124,22 @@
 						<p id="phoneMessage" class="input-msg"></p>
 					</div>
 					<div class="input-wrap">
-						<div class="input-title">
-							<label for="memberAddr">주소</label>
-						</div>
-						<div class="input-item">
-							<input type="text" id="memberAddr" name="memberAddr" maxlength="200">
-						</div>
+					<div class="col-sm-10">
+					    <label for="zipp_btn" class="form-label">■ 주소 *</label><br/>
+					    <input type="text" class="form-control mb-2" id="zipp_code_id" name="zipp_code" maxlength="10" placeholder="우편번호" style="width: 50%; display: inline;">
+					    <input type="button" id="zipp_btn" class="btn btn-primary" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+					    <input type="text" class="form-control mb-2" name="user_add1" id="UserAdd1" maxlength="40" placeholder="기본 주소를 입력하세요" required>
+					    <div class="invalid-feedback">주소를 입력해주시기 바랍니다!</div>
+					    <input type="text" class="form-control" name="user_add2" id="UserAdd2" maxlength="40" placeholder="상세 주소를 입력하세요">
+					</div>
 					</div>
 					<div class="input-wrap">
 						<div class="input-title">
 							<label for="memberGender">성별</label>
 						</div>
-						<div class="input-item">
-							<input type="text" id="memberGender" name="memberGender" placeholder="M,F">
+						<div class="radio-item">
+							<input type="radio" id="memberGender" name="memberGender" value="m"/>남성
+							<input type="radio" id="memberGender" name="memberGender" value="f"/>여성
 						</div>						
 					</div>										
 					<div class="input-wrap">
@@ -108,16 +150,7 @@
 							<input type="email" id="memberEmail" name="memberEmail">
 						</div>
 						<p id="emailMessage" class="input-msg"></p>
-					</div>
-					<!--<div class="input-wrap">
-						<div class="input-title">
-							  <label for="adultConfirm">성인인증</label>
-						</div>
-						<div class="input-item">
-							<input type="text" id="adultConfirm" name="adultConfirm">
-						</div>
-						<p id="adultMessage" class="input-msg"></p>
-					</div>	-->																											
+					</div>																				
 					<div class="join-button-box">
 						<button type="submit" class="btn-primary lg">회원가입</button>
 					</div>
@@ -147,14 +180,15 @@
         idMessage.removeClass('valid');
         idMessage.removeClass('invalid');
         
-        const regExp = /^[a-zA-Z0-9]{4,10}$/;
+        const regExp = /(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{6,12}$/;
         
+       
         if(regExp.test($(this).val())){ 
             idMessage.html("");
             idMessage.addClass("valid");
             checkObj.memberId = true;
         }else{
-            idMessage.html("영어, 숫자 4~10글자 사이로 입력하세요");
+            idMessage.html("영어, 숫자 6~12글자 사이로 입력하세요");
             idMessage.addClass("invalid");
             checkObj.memberId = false;
         }
@@ -242,7 +276,7 @@
         pwMessage.removeClass('valid');
         pwMessage.removeClass('invalid');
         
-        const regExp = /^[a-zA-Z0-9!@#$%^&*()-_=+]{8,20}$/;
+        const regExp = /(?=.*[0-9])(?=.*[!@#$%^&*()-_=+])[a-zA-Z0-9!@#$]{8,30}$/;
         
         if(regExp.test($(this).val())){
             checkObj.memberPw = true;
@@ -338,8 +372,48 @@
             title : title,
             text : text,
             icon : icon
-        });     
+        });   
     }
+	</script>
+	 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <!-- CDN 방식 사용 -->
+    <script>
+	    function execDaumPostcode() {
+	        new daum.Postcode({
+	            oncomplete: function(data) {
+	                // 팝업을 통한 검색 결과 항목 클릭 시 실행
+	                var addr = ''; // 주소_결과값이 없을 경우 공백 
+	                var extraAddr = ''; // 참고항목
+	
+	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	                if (data.userSelectedType === 'R') { // 도로명 주소를 선택
+	                    addr = data.roadAddress;
+	                } else { // 지번 주소를 선택
+	                    addr = data.jibunAddress;
+	                }
+	
+	                if(data.userSelectedType === 'R'){
+	                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                        extraAddr += data.bname;
+	                    }
+	                    if(data.buildingName !== '' && data.apartment === 'Y'){
+	                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                    }
+	                    if(extraAddr !== ''){
+	                        extraAddr = ' (' + extraAddr + ')';
+	                    }
+	                } else {
+	                    document.getElementById("UserAdd1").value = '';
+	                }
+	
+	                // 선택된 우편번호와 주소 정보를 input 박스에 넣는다.
+	                document.getElementById('zipp_code_id').value = data.zonecode;
+	                document.getElementById("UserAdd1").value = addr;
+	                document.getElementById("UserAdd1").value += extraAddr;
+	                document.getElementById("UserAdd2").focus(); // 우편번호 + 주소 입력이 완료되었음으로 상세주소로 포커스 이동
+	            }
+	        }).open();
+	    }
 	</script>
 </body>
 </html>
