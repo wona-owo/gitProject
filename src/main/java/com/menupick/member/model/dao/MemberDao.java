@@ -477,4 +477,22 @@ public class MemberDao {
 		return members;
 	}
 
+	public int deleteMember(Connection conn, String memberNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "delete from tbl_member where member_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 }

@@ -56,7 +56,7 @@
 	<div class="join">회원가입</div>
 	<br>
 
-	<form action="/member/join" method="post" class="form">
+	<form action="/member/joinFrm" method="post" class="form">
 
 		<div class="input-wrap">
 			<div class="input-title">
