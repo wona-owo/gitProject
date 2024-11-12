@@ -257,7 +257,7 @@ public class DinnerDao {
 
 
 
-	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String year, String month, String day) {
+	
 
 	public String convertDateToString(Date date) {
 		if (date == null) {
@@ -334,6 +334,7 @@ public class DinnerDao {
 		
 		
 		return food;
+	}
 
 	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
 
