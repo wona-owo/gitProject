@@ -1,8 +1,6 @@
 package com.menupick.review.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +22,6 @@ public class ReviewRomoveAllServlet extends HttpServlet {
      */
     public ReviewRomoveAllServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -46,7 +43,6 @@ public class ReviewRomoveAllServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
