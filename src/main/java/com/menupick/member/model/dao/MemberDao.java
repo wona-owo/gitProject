@@ -114,9 +114,9 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "insert into tbl_member (member_no, member_id, member_pw, member_name, member_nick, member_phone, member_addr, member_gender, member_email, enroll_date, adult_confirm, member_level) " +
-	               "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'N', 2)";
-		/*String query = "insert into tbl_member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, N, 2)";*/
+		String query ="insert into tbl_member (member_no, member_id, member_pw, member_name, member_nick, member_phone, member_addr, member_gender, member_email, enroll_date, adult_confirm, member_level) " +
+	               "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'n', 2)";
+		//String query = "insert into tbl_member values (to_char(seq_member.nextval), ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'N', 2)";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -475,6 +475,24 @@ public class MemberDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return members;
+	}
+
+	public int deleteMember(Connection conn, String memberNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "delete from tbl_member where member_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 
 }

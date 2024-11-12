@@ -27,6 +27,7 @@
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<main class="content">
 			<section class="section join-wrap">
+					<!-- <input type="hidden" id="adultConfirm" name="adultConfirm" value="N"> -->					
 				<div class="page-title">회원가입</div>
 				<form action="/member/join" method="post" autocomplete="off" onsubmit="return joinValidate()">
 					<div class="input-wrap">
@@ -97,7 +98,7 @@
 							<label for="memberGender">성별</label>
 						</div>
 						<div class="input-item">
-							<input type="text" id="memberGender" name="memberGender" placeholder="M,F">
+							<input type="text" id="memberGender" name="memberGender" placeholder="m,f">
 						</div>						
 					</div>										
 					<div class="input-wrap">
@@ -109,15 +110,7 @@
 						</div>
 						<p id="emailMessage" class="input-msg"></p>
 					</div>
-					<!--<div class="input-wrap">
-						<div class="input-title">
-							  <label for="adultConfirm">성인인증</label>
-						</div>
-						<div class="input-item">
-							<input type="text" id="adultConfirm" name="adultConfirm">
-						</div>
-						<p id="adultMessage" class="input-msg"></p>
-					</div>	-->																											
+																													
 					<div class="join-button-box">
 						<button type="submit" class="btn-primary lg">회원가입</button>
 					</div>
@@ -340,6 +333,8 @@
             icon : icon
         });     
     }
+    
+    
 	</script>
 </body>
 </html>

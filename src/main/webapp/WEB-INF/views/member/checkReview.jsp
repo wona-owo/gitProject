@@ -88,6 +88,16 @@
 	cursor: pointer;
 	transition: color 0.3s;
 }
+
+.modi-icon {
+	position: absolute;
+	top: 10px;
+	right: 40px;
+	font-size: 1.5em;
+	color: gray;
+	cursor: pointer;
+	transition: color 0.3s;
+}
 </style>
 </head>
 <body>
@@ -106,9 +116,9 @@
 						<img src="${review.reviewImg}" alt="식당 이미지"> <span
 							class="del-icon active" data-review-no="${review.reviewNo}">
 							<i class="fa-solid fa-x"></i>
-						</span> <span class="del-icon active"
-							onclick="location.href='reviewUpdate.jsp?no=${review.reviewNo}">
-							<i class="fa-regular fa-pen"></i>
+						</span> <span class="modi-icon active"
+							data-review-no="${review.reviewNo}"> <i
+							class="fa-solid fa-pen-to-square"></i>
 						</span>
 						<div class="contents">
 							<h5>${review.reviewContent}</h5>
@@ -122,33 +132,47 @@
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$(document).ready(function() {
-			// 삭제 아이콘 클릭 이벤트 설정
-			$(".del-icon").click(function(event) {
-				event.stopPropagation(); // 상위 카드로 클릭 이벤트 전파 방지
-				const iconElement = $(this); // 클릭된 아이콘 요소 참조						
-				const reviewNo = iconElement.attr("data-review-no"); // 데이터 속성 사용
+		$(document).ready(
+				function() {
+					// 삭제 아이콘 클릭 이벤트 설정
+					$(".del-icon").click(
+							function(event) {
+								event.stopPropagation(); // 상위 카드로 클릭 이벤트 전파 방지
+								const iconElement = $(this); // 클릭된 아이콘 요소 참조						
+								const reviewNo = iconElement
+										.attr("data-review-no"); // 데이터 속성 사용
 
-				// AJAX 요청 보내기
-				$.ajax({
-					url : "/member/delReview", // 요청할 서버 URL
-					type : "POST",
-					data : {						
-						"reviewNo" : reviewNo
-					},
-					dataType : "json",
-					success : function(res) { // 요청 성공 시
-						iconElement.addClass("inactive").removeClass("active"); // x 클릭하면 삭제
-						console.log("리뷰 삭제 성공:", res);
+								// AJAX 요청 보내기
+								$.ajax({
+									url : "/member/delReview", // 요청할 서버 URL
+									type : "POST",
+									data : {
+										"reviewNo" : reviewNo
+									},
+									dataType : "json",
+									success : function(res) { // 요청 성공 시
+										iconElement.addClass("inactive")
+												.removeClass("active"); // x 클릭하면 삭제
+										console.log("리뷰 삭제 성공:", res);
 
-						// 새로고침
-						window.location.reload();
-					},
-					error: function(request, status, error) {
-						alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-					}
+										// 새로고침
+										window.location.reload();
+									},
+									error : function(request, status, error) {
+										alert("code:" + request.status + "\n"
+												+ "message:"
+												+ request.responseText + "\n"
+												+ "error:" + error);
+									}
+								});
+							});
 				});
-			});
+
+		// 수정 아이콘 클릭 이벤트 설정 - 리뷰 수정 페이지로 이동
+		$(".modi-icon").click(function(event) {
+			event.stopPropagation(); // 카드의 클릭 이벤트 전파 방지
+			const reviewNo = $(this).attr("data-review-no");
+			location.href = `reviewUpdate.jsp?no=${reviewNo}`;
 		});
 	</script>
 </body>

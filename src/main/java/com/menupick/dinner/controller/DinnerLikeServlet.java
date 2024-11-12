@@ -48,8 +48,10 @@ public class DinnerLikeServlet extends HttpServlet {
 		ArrayList<Food> foodList = new ArrayList<Food>();
 		dinnerList = service.likeDinner(dinnerNo, dinnerName);
 		foodList = service.filterNation(foodNo);
-
-		// 4. 값 추출
+		
+		
+		//4. 값 추출
+		
 		request.setAttribute("dinnerList", dinnerList);
 		request.setAttribute("foodList", foodList);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);

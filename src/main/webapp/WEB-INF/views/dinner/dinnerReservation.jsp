@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -41,15 +42,15 @@
 
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
+
 	<script>
 	function cancelBook(){
 		console.log("poop");
 	}
 	// 예약이 있는 이전 이후 날짜로 이동하는 코드
 	$.ajax({
-		url : ,
-		data : ,
 	})
 	</script>
+
 </body>
 </html>
