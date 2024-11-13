@@ -47,14 +47,12 @@ public class DinnerLikeServlet extends HttpServlet {
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 		
 		dinnerList = service.likeDinner(dinnerNo, dinnerName);
-		
-		
-		
 		//4. 값 추출
 		
 		request.setAttribute("dinnerList", dinnerList);
 		
-		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
+		
+		request.getRequestDispatcher("/WEB-INF/views/dinner/search.jsp").forward(request, response);
 	}
 
 	/**

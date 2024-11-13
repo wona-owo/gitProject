@@ -52,7 +52,7 @@ public class DinnerDao {
 	public ArrayList<Dinner> likeDinner(Connection conn, String dinnerNo, String dinnerName) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select * from tbl_menu, tbl_dinner, tbl_food";
+		String query = "select * from tbl_menu, tbl_dinner, tbl_food" ;
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 
 		try {
@@ -79,6 +79,7 @@ public class DinnerDao {
 				d.setFoodName(rset.getString("FOOD_NAME"));
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
+
 
 				dinnerList.add(d);
 			}
