@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
-import com.menupick.dinner.vo.Food;
+
 
 /**
  * Servlet implementation class DinnerLike
@@ -38,22 +38,22 @@ public class DinnerLikeServlet extends HttpServlet {
 		// dinner 값
 		String dinnerNo = request.getParameter("dinner_no");
 		String dinnerName = request.getParameter("dinner_name");
-
 		// food 값
 		String foodNo = request.getParameter("food_no");
-
+		
+		
 		// 3. 로직
 		DinnerService service = new DinnerService();
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
-		ArrayList<Food> foodList = new ArrayList<Food>();
+		
 		dinnerList = service.likeDinner(dinnerNo, dinnerName);
-		foodList = service.filterNation(foodNo);
+		
 		
 		
 		//4. 값 추출
 		
 		request.setAttribute("dinnerList", dinnerList);
-		request.setAttribute("foodList", foodList);
+		
 		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
 	}
 
