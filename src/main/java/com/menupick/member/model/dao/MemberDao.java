@@ -505,7 +505,6 @@ public class MemberDao {
 			pstmt.setString(4, "book_time");
 			pstmt.setString(5, "book_cnt");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			JDBCTemplate.close(pstmt);
