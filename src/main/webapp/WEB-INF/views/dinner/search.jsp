@@ -171,51 +171,44 @@
 
 			<!-- 콤팩트 필터 컨테이너 -->
 			<c:forEach var="dinner" items='${dinnerList}'>
-			<div class="filter-container">
-				<div class="filter-title">국가별 필터</div>
+				<div class="filter-container">
+					<div class="filter-title">국가별 필터</div>
 					<div class="filter-section">
 						<span class="filter-button" data-value="${dinner.foodNation}"
 							onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
 					</div>
-				
-				<div class="filter-title">음식 유형 필터</div>
-				<div class="filter-section">
+
+					<div class="filter-title">음식 유형 필터</div>
+					<div class="filter-section">
 						<span class="filter-button" data-value="${dinner.foodCat}"
 							onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
+					</div>
 				</div>
-				</div>
-				</c:forEach>
-			
-			
-
+			</c:forEach>
 
 			<!-- 예시 카드 -->
 			<div class="card-container">
-			
+
 				<c:forEach var="dinner" items="${dinnerList}">
-					
-						<div class="card" data-cuisine="${dinner.foodNation}"
-							data-type="${dinner.foodCat}">
-							<img src="img/jungsik.jpg" alt="음식 이미지">
-							<div class="card-info">
-								<h3>
-									<a href="/dinner/dinnerDetail?dinner_no=${dinner.dinnerNo}&food_no=${dinner.foodNo}">${dinner.dinnerName}</a>
-								</h3>
-								<p>${dinner.dinnerAddr}</p>
-								<p class="cuisine-type">${dinner.foodNation}</p>
-							</div>
+
+					<div class="card" data-cuisine="${dinner.foodNation}"
+						data-type="${dinner.foodCat}">
+						<img src="img/jungsik.jpg" alt="음식 이미지">
+						<div class="card-info">
+							<h3>
+								<a
+									href="/dinner/dinnerDetail?dinner_no=${dinner.dinnerNo}&food_no=${dinner.foodNo}">${dinner.dinnerName}</a>
+							</h3>
+							<p>${dinner.dinnerAddr}</p>
+							<p class="cuisine-type">${dinner.foodNation}</p>
 						</div>
-					</c:forEach>
-				
-
-
-				</div>
-				
+					</div>
+				</c:forEach>
 			</div>
 		</main>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-	
+
 	<script>
 	const filters = {
             cuisine: [],
@@ -309,7 +302,6 @@
 	$(function() {
 		loadFavorites();
 	});
-	
 </script>
 </body>
 </html>
