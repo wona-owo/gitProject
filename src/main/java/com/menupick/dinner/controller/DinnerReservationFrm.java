@@ -7,17 +7,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.Dinner;
+
 /**
- * Servlet implementation class DinnerCheckReservationListServlet
+ * Servlet implementation class dinnerReservationFrm
  */
-@WebServlet("/dinner/checkReservationList")
-public class DinnerCheckReservationListServlet extends HttpServlet {
+@WebServlet("/dinner/dinnerReservation/")
+public class DinnerReservationFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DinnerCheckReservationListServlet() {
+    public DinnerReservationFrm() {
         super();
     }
 
@@ -25,7 +28,14 @@ public class DinnerCheckReservationListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String dinnerNo = request.getParameter("dinner_no");
+		
+		DinnerService service = new DinnerService();
+		Dinner dinner = new Dinner();
+		dinner = service.dinnerDetail(dinnerNo);
+		
+		request.setAttribute("dinner", dinner);
+		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 	}
 
 	/**

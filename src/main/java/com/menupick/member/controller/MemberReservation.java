@@ -1,4 +1,4 @@
-package com.menupick.dinner.controller;
+package com.menupick.member.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -6,23 +6,27 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 
 /**
- * Servlet implementation class dinnerReservationFrm
+ * Servlet implementation class MemberReservation
  */
-@WebServlet("/dinner/dinnerReservation/")
-public class dinnerReservationFrm extends HttpServlet {
+@WebServlet("/member/reservation")
+public class MemberReservation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public dinnerReservationFrm() {
+    public MemberReservation() {
         super();
-        // TODO Auto-generated constructor stub
+
     }
 
 	/**
@@ -30,14 +34,20 @@ public class dinnerReservationFrm extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinner_no");
+		HttpSession session = request.getSession(false);
+		Member member = (Member) session.getAttribute("loginMember");
+		String memberNo = member.getMemberNo();
+		String bookDate = request.getParameter("book_date");
+		String bookTime = request.getParameter("book_time");
+		String bookCnt = request.getParameter("book_cnt");
+		MemberService service = new MemberService();
+		Book book = service.bookingMember(dinnerNo, memberNo);
 		
-		DinnerService service = new DinnerService();
-		Dinner dinner = new Dinner();
-		dinner = service.dinnerDetail(dinnerNo);
+		//request.setAttribute("dinner", dinner);
+		request.setAttribute("memberNo", memberNo);
 		
-		request.setAttribute("dinner", dinner);
+		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
 		
-		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 		
 	}
 
@@ -45,7 +55,7 @@ public class dinnerReservationFrm extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		doGet(request, response);
 	}
 

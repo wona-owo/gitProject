@@ -172,16 +172,16 @@
 			<!-- 콤팩트 필터 컨테이너 -->
 			<div class="filter-container">
 				<div class="filter-title">국가별 필터</div>
-				<c:forEach var="food" items="${foodList}">
+				<c:forEach var="dinner" items="${dinnerList}">
 					<div class="filter-section">
-						<span class="filter-button" data-value="${food.foodNation}"
-							onclick="toggleFilter(event, 'cuisine')">${food.foodNation}</span>
+						<span class="filter-button" data-value="${dinner.foodNation}"
+							onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
 					</div>
 				
 				<div class="filter-title">음식 유형 필터</div>
 				<div class="filter-section">
-						<span class="filter-button" data-value="${food.foodCat}"
-							onclick="toggleFilter(event, 'type')">${food.foodCat}</span>
+						<span class="filter-button" data-value="${dinner.foodCat}"
+							onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
 				</div>
 				</c:forEach>
 				</div>
@@ -193,20 +193,20 @@
 			<div class="card-container">
 			
 				<c:forEach var="dinner" items="${dinnerList}">
-					<c:forEach var="food" items="${foodList}">
-						<div class="card" data-cuisine="${food.foodNation}"
-							data-type="${food.foodCat}">
+					
+						<div class="card" data-cuisine="${dinner.foodNation}"
+							data-type="${dinner.foodCat}">
 							<img src="img/jungsik.jpg" alt="음식 이미지">
 							<div class="card-info">
 								<h3>
-									<a href="/dinner/dinnerDetail?dinner_no=${dinner.dinnerNo}&food_no=${food.foodNo}">${dinner.dinnerName}</a>
+									<a href="/dinner/dinnerDetail?dinner_no=${dinner.dinnerNo}&food_no=${dinner.foodNo}">${dinner.dinnerName}</a>
 								</h3>
 								<p>${dinner.dinnerAddr}</p>
-								<p class="cuisine-type">${food.foodNation}</p>
+								<p class="cuisine-type">${dinner.foodNation}</p>
 							</div>
 						</div>
 					</c:forEach>
-				</c:forEach>
+				
 
 				<div class="card" data-cuisine="양식" data-type="피자"
 					onclick="window.location.href='detail2.html'">

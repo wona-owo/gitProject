@@ -12,9 +12,9 @@ import java.util.List;
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
+import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
-import com.menupick.dinner.vo.Food;
-import com.menupick.member.model.vo.Member;
+
 
 public class DinnerDao {
 
@@ -52,7 +52,7 @@ public class DinnerDao {
 	public ArrayList<Dinner> likeDinner(Connection conn, String dinnerNo, String dinnerName) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select * from TBL_DINNER";
+		String query = "select * from tbl_menu, tbl_dinner, tbl_food";
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 
 		try {
@@ -75,6 +75,11 @@ public class DinnerDao {
 				d.setDinnerId(rset.getString("DINNER_ID"));
 				d.setDinnerPw(rset.getString("DINNER_PW"));
 				d.setDinnerConfirm(rset.getString("DINNER_CONFIRM"));
+				d.setFoodNo(rset.getString("FOOD_NO"));
+				d.setFoodName(rset.getString("FOOD_NAME"));
+				d.setFoodNation(rset.getString("FOOD_NATION"));
+				d.setFoodCat(rset.getString("FOOD_CAT"));
+
 				dinnerList.add(d);
 			}
 		} catch (SQLException e) {
@@ -86,6 +91,7 @@ public class DinnerDao {
 		return dinnerList;
 	}
 
+	// daniel
 	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
@@ -119,12 +125,57 @@ public class DinnerDao {
 		return bookList;
 	}
 
-	public ArrayList<Food> filterNation(Connection conn, String foodNo) {
+	public String convertDateToString(Date date) {
+		if (date == null) {
+			return null;
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
+		return formatter.format(date);
+	}
+
+	// daniel
+	public ArrayList<BookInfo> getReservationData(Connection conn, String dinnerNo, String date) {
+
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		ArrayList<BookInfo> book = new ArrayList<>();
+		String query = "select b.book_no, b.book_date, b.book_cnt, b.book_time, b.member_no, m.member_name, m.member_phone, m.member_email from tbl_book b join tbl_member m on b.member_no = m.member_no where b.dinner_no = ? and b.book_date = ?";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			pt.setString(2, date);
+			rt = pt.executeQuery();
+
+			while (rt.next()) {
+				BookInfo b = new BookInfo();
+				b.setBookNo(rt.getString("book_no"));
+				b.setMemberNo(rt.getString("member_no"));
+				// Fetch `DATE` and convert to `String`
+				Date bookDate = rt.getDate("book_date");
+				b.setBookDate(convertDateToString(bookDate)); // Format the date to string
+				b.setBookTime(rt.getString("book_time"));
+				b.setBookCnt(rt.getInt("book_cnt"));
+				b.setMemberName(rt.getString("member_name"));
+				b.setMemberPhone(rt.getString("member_phone"));
+				b.setMemberEmail(rt.getString("member_email"));
+				book.add(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return book;
+	}
+
+	public ArrayList<Dinner> filterNation(Connection conn, String foodNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String query = "select * from TBL_FOOD";
-		ArrayList<Food> foodList = new ArrayList<Food>();
-		Food food = new Food();
+		ArrayList<Dinner> foodList = new ArrayList<Dinner>();
+		Dinner food = new Dinner();
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -174,25 +225,16 @@ public class DinnerDao {
 		return addressList;
 	}
 
-
-
 	public Dinner dinnerDetail(Connection conn, String dinnerNo) {
-
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner d = new Dinner();
-		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking from tbl_dinner where dinner_no = ?";
-
-		
-		
-		
+		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking, food_no, food_name, food_nation, food_cat from tbl_dinner, tbl_food where dinner_no = ?";
 
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, dinnerNo);
 			rset = pstmt.executeQuery();
-
-
 
 			if (rset.next()) {
 				d = new Dinner();
@@ -203,8 +245,11 @@ public class DinnerDao {
 				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
 				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
-				System.out.println(d);
-
+				d.setFoodNo(rset.getString("FOOD_NO"));
+				d.setFoodName(rset.getString("FOOD_NAME"));
+				d.setFoodNation(rset.getString("FOOD_NATION"));
+				d.setFoodCat(rset.getString("FOOD_CAT"));
+				System.out.println(dinnerNo);
 			}
 
 		} catch (SQLException e) {
@@ -256,89 +301,33 @@ public class DinnerDao {
 		return d;
 	}
 
-
-
-	
-
-	public String convertDateToString(Date date) {
-		if (date == null) {
-			return null;
-		}
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
-		return formatter.format(date);
-	}
-
-	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String date) {
-
-		PreparedStatement pt = null;
-		ResultSet rt = null;
-		ArrayList<Book> book = new ArrayList<Book>();
-		Book b = null;
-		String query = "select * from tbl_book where dinner_no = ? and book_date = ?";
-
-		try {
-			pt = conn.prepareStatement(query);
-			pt.setString(1, dinnerNo);
-			pt.setString(2, date);
-			rt = pt.executeQuery();
-
-			while (rt.next()) {
-				b = new Book();
-				b.setBookNo(rt.getString("book_no"));
-				b.setDinnerNo(rt.getString("dinner_no"));
-				b.setMemberNo(rt.getString("member_no"));
-
-				// Fetch `DATE` and convert to `String`
-				Date bookDate = rt.getDate("book_date");
-				b.setBookDate(convertDateToString(bookDate)); // Format the date to string
-
-				b.setBookTime(rt.getString("book_time"));
-				b.setBookCnt(rt.getInt("book_cnt"));
-				book.add(b);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rt);
-			JDBCTemplate.close(pt);
-		}
-		return book;
-
-	}
-
-
-	public Food foodDetail(Connection conn, String foodNo) {
+	public Dinner foodDetail(Connection conn, String foodNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		Food food = new Food();
+		Dinner food = new Dinner();
 		String query = "select * from tbl_food";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
-			if(rset.next()) {
+			if (rset.next()) {
 				food.setFoodNo(rset.getString("food_no"));
 				food.setFoodName(rset.getString("food_name"));
 				food.setFoodCat(rset.getString("food_cat"));
 				food.setFoodNation(rset.getString("food_nation"));
-			}else {
-				
+			} else {
+
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-		
-		
 		return food;
 	}
 
 	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
-
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
@@ -355,9 +344,7 @@ public class DinnerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return list;
-
 	}
 
 	public List<Dinner> searchDinnerByName(Connection conn, String dinnerName) {
@@ -392,7 +379,6 @@ public class DinnerDao {
 
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -497,7 +483,6 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -509,7 +494,7 @@ public class DinnerDao {
 	public List<Dinner> getDinnersSortedByName(Connection conn, String order) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		 List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
+		List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
 
 		// order 변수가 'asc' 또는 'desc'인지 확인하여 SQL 구문 작성
 		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name"
@@ -536,12 +521,11 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
 				dinners.add(d);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-				JDBCTemplate.close(rset);
-				JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
 		}
 		return dinners;
 	}
@@ -549,7 +533,7 @@ public class DinnerDao {
 	public List<Dinner> getDinnersByApproval(Connection conn, String approved) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		 List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
+		List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
 
 		// order 변수가 'asc' 또는 'desc'인지 확인하여 SQL 구문 작성
 		String query = "SELECT * FROM tbl_dinner WHERE dinner_confirm = ?"
@@ -576,13 +560,14 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
 				dinners.add(d);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-				JDBCTemplate.close(rset);
-				JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
 		}
 		return dinners;
 	}
+
+
 }

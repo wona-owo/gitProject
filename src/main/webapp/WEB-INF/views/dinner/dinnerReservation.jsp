@@ -6,17 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">여기다가 날짜</div>
+				<div class="page-title">${bookDate}</div>
 				<div class="list-content">
-
 					<table class="tbl hover">
 						<tr>
 							<th style="width: 20%">예약 시간</th>
@@ -27,10 +24,12 @@
 						</tr>
 
 						<c:forEach var="book" items="${bookInfo}">
+							<input type="hidden" value="${book.memberEmail}"
+								name="memberEmail" id="memberEmail">
 							<tr>
 								<td>${book.bookTime}</td>
-								<td>이름</td>
-								<td>전화번호</td>
+								<td>${book.memberName}</td>
+								<td>${book.memberPhone}</td>
 								<td>${book.bookCnt}</td>
 								<td><button onClick="cancelBook()">취소</button></td>
 							</tr>
@@ -39,17 +38,12 @@
 				</div>
 			</section>
 		</main>
-
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-
 	<script>
-	function cancelBook(){
-		console.log("poop");
-	}
-	// 예약이 있는 이전 이후 날짜로 이동하는 코드
-	$.ajax({
-	})
+		function cancelBook() {
+			window.location.href = "/dinner/writeCancelReason";
+		}
 	</script>
 
 </body>
