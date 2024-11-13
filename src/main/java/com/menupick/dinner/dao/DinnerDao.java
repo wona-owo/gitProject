@@ -14,7 +14,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
-
+import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
 
@@ -22,7 +22,7 @@ public class DinnerDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
-		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name ASC";
+		String query = "select * from tbl_dinner order by dinner_name asc";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -52,7 +52,7 @@ public class DinnerDao {
 	public ArrayList<Dinner> likeDinner(Connection conn, String dinnerNo, String dinnerName) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select * from tbl_menu, tbl_dinner, tbl_food" ;
+		String query = "select * from tbl_menu, tbl_dinner, tbl_food";
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 
 		try {
@@ -80,7 +80,6 @@ public class DinnerDao {
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
 
-
 				dinnerList.add(d);
 			}
 		} catch (SQLException e) {
@@ -98,15 +97,12 @@ public class DinnerDao {
 		ResultSet rt = null;
 		ArrayList<Book> bookList = new ArrayList<>();
 		String query = "select * from tbl_book where dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
-
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
 			pt.setInt(2, Integer.parseInt(justMonth));
 			pt.setInt(3, Integer.parseInt(displayYear));
-
 			rt = pt.executeQuery();
-
 			while (rt.next()) {
 				Book b = new Book();
 				b.setBookNo(rt.getString("book_no"));
@@ -136,18 +132,15 @@ public class DinnerDao {
 
 	// daniel
 	public ArrayList<BookInfo> getReservationData(Connection conn, String dinnerNo, String date) {
-
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<BookInfo> book = new ArrayList<>();
 		String query = "select b.book_no, b.book_date, b.book_cnt, b.book_time, b.member_no, m.member_name, m.member_phone, m.member_email from tbl_book b join tbl_member m on b.member_no = m.member_no where b.dinner_no = ? and b.book_date = ?";
-
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
 			pt.setString(2, date);
 			rt = pt.executeQuery();
-
 			while (rt.next()) {
 				BookInfo b = new BookInfo();
 				b.setBookNo(rt.getString("book_no"));
@@ -570,5 +563,28 @@ public class DinnerDao {
 		return dinners;
 	}
 
+	// daniel
+	public Member getMemberDataForCancelingReservation(Connection conn, String memberNo) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		Member m = new Member();
+		String query = "select member_name, member_phone, member_email from tbl_member where member_no = ?";
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, memberNo);
+			rt = pt.executeQuery();
+			if (rt.next()) {
+				m.setMemberName(rt.getString("member_name"));
+				m.setMemberPhone(rt.getString("member_phone"));
+				m.setMemberEmail(rt.getString("member_email"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return m;
+	}
 
 }
