@@ -49,7 +49,6 @@ public class DinnerDetailServlet extends HttpServlet {
 		DinnerService service = new DinnerService();
 		MemberService mservice = new MemberService();
 		Dinner dinner = service.dinnerDetail(dinnerNo);
-		
 		Member member = mservice.getMemberNo(memberNo);
 		
 		request.setAttribute("dinner", dinner);
