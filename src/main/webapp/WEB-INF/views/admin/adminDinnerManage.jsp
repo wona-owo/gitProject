@@ -60,7 +60,8 @@
 						<th style="width: 15%">주소</th>
 						<th style="width: 10%">이메일</th>
 						<th style="width: 10%">매장 번호</th>
-						<th style="width: 5%">승인여부</th>
+						<th style="width: 8%">승인여부</th>
+						<th style="width: 8%">수정 여부</th>
 					</tr>
 				
 					<c:forEach var="d" items="${dinners}">
@@ -71,6 +72,7 @@
 							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerEmail}</a></td>
 							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerPhone}</a></td>
 							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerConfirm}</a></td>
+							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">X</a></td>
 						</tr>
 					</c:forEach>
 				</table>
