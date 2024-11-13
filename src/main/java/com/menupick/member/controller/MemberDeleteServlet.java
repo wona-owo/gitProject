@@ -30,7 +30,7 @@ public class MemberDeleteServlet extends HttpServlet {
 		//로직 -회원탈퇴
 		MemberService service = new MemberService();
 		int result = service.deleteMember(memberNo);
-		
+
 		//결과처리
 		if(result>0) {
 			HttpSession session = request.getSession(false);
@@ -53,6 +53,11 @@ public class MemberDeleteServlet extends HttpServlet {
 		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		view.forward(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }
