@@ -170,9 +170,9 @@
 			</div>
 
 			<!-- 콤팩트 필터 컨테이너 -->
+			<c:forEach var="dinner" items='${dinnerList}'>
 			<div class="filter-container">
 				<div class="filter-title">국가별 필터</div>
-				<c:forEach var="dinner" items="${dinnerList}">
 					<div class="filter-section">
 						<span class="filter-button" data-value="${dinner.foodNation}"
 							onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
@@ -183,8 +183,8 @@
 						<span class="filter-button" data-value="${dinner.foodCat}"
 							onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
 				</div>
-				</c:forEach>
 				</div>
+				</c:forEach>
 			
 			
 

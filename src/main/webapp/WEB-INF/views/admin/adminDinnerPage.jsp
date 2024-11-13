@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,35 +47,34 @@
 <body>
 	<div>
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-			<%-- 탭 메뉴와 콘텐츠 섹션 --%>
-				<div class="restaurant-detail-content">
-					<div class="tab-content active" id="information-content">정보
-						콘텐츠</div>
-					<div class="tab-content" id="menu-content">메뉴 콘텐츠</div>
-					<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
-					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
-					<div class="tab-content" id="around-content">주변 콘텐츠</div>
-				</div>
-			<section class="restaurant-detail-info">
-				<div class="restaurant-detail-menu">
-					<input id="information" type="radio" name="tab-item" checked /> <label
-						class="tab-item" for="information"
-						onclick="showContent('information-content')">정보</label> <input
-						id="menu" type="radio" name="tab-item" /> <label class="tab-item"
-						for="menu" onclick="showContent('menu-content')">메뉴</label> <input
-						id="review" type="radio" name="tab-item" /> <label
-						class="tab-item" for="review"
-						onclick="showContent('review-content')">리뷰</label> <input
-						id="picture" type="radio" name="tab-item" /> <label
-						class="tab-item" for="picture"
-						onclick="showContent('picture-content')">사진</label> <input
-						id="around" type="radio" name="tab-item" /> <label
-						class="tab-item" for="around"
-						onclick="showContent('around-content')">주변</label>
-				</div>
-				<%-- 탭 콘텐츠 --%>
+		<%-- 탭 메뉴와 콘텐츠 섹션 --%>
+		<div class="restaurant-detail-content">
+			<div class="tab-content active" id="information-content">정보 콘텐츠</div>
+			<div class="tab-content" id="menu-content">메뉴 콘텐츠</div>
+			<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
+			<div class="tab-content" id="picture-content">사진 콘텐츠</div>
+			<div class="tab-content" id="around-content">주변 콘텐츠</div>
+		</div>
+		<section class="restaurant-detail-info">
+			<div class="restaurant-detail-menu">
+				<input id="information" type="radio" name="tab-item" checked /> <label
+					class="tab-item" for="information"
+					onclick="showContent('information-content')">정보</label> <input
+					id="menu" type="radio" name="tab-item" /> <label class="tab-item"
+					for="menu" onclick="showContent('menu-content')">메뉴</label> <input
+					id="review" type="radio" name="tab-item" /> <label
+					class="tab-item" for="review"
+					onclick="showContent('review-content')">리뷰</label> <input
+					id="picture" type="radio" name="tab-item" /> <label
+					class="tab-item" for="picture"
+					onclick="showContent('picture-content')">사진</label> <input
+					id="around" type="radio" name="tab-item" /> <label
+					class="tab-item" for="around"
+					onclick="showContent('around-content')">주변</label>
+			</div>
+			<%-- 탭 콘텐츠 --%>
 
-			</section>
+		</section>
 
 		<%-- 레스토랑 상세 정보 섹션 --%>
 		<main>
@@ -92,9 +91,8 @@
 						<div class="restaurant-name">${dinnerDetail.dinnerName}</div>
 					</div>
 					<div class="restaurant-info">
-						<i class="fa-solid fa-location-dot"></i>
-						<span id="location">주소: ${dinnerDetail.dinnerAddr}</span><br /> 
-						<i class="fa-solid fa-clock"></i><span
+						<i class="fa-solid fa-location-dot"></i> <span id="location">주소:
+							${dinnerDetail.dinnerAddr}</span><br /> <i class="fa-solid fa-clock"></i><span
 							id="time"> 영업시간 : ${dinnerDetail.dinnerOpen} ~
 							${dinnerDetail.dinnerClose}</span><br /> <i class="fa-solid fa-phone"></i>
 						<span id="phone">전화번호 : ${dinnerDetail.dinnerPhone}</span><br />
@@ -102,15 +100,9 @@
 							${dinnerDetail.dinnerParking}</span><br />
 					</div>
 				</div>
-
 			</section>
-
-
 		</main>
-
-
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-
 </body>
 </html>

@@ -227,7 +227,7 @@ public class MemberService {
 		return result;
 	}
 
-	public Book bookingMember(String dinnerNo, String memberNo) {
+	public int bookingMember(String dinnerNo, String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.bookingMember(conn, dinnerNo, memberNo);
 		
@@ -250,7 +250,5 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
-
-
 
 }
