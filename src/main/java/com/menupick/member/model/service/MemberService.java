@@ -226,4 +226,19 @@ public class MemberService {
 		
 		return result;
 	}
+
+	public Book bookingMember(String dinnerNo, String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.bookingMember(conn, dinnerNo, memberNo);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		return result;
+	}
+
+
+
 }

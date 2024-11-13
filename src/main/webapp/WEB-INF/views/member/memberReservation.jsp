@@ -48,7 +48,7 @@
 <body>
 	<form action="/member/reservation" method="get">
 	<div>${dinner.dinnerNo}</div>
-	<div>${sessionScope.memberNo}</div>
+	<div>${member.memberNo}</div>
 	<div id="resDetail" style="margin-top: 20px;"></div>
 	<div class=resBtn id="resOption">
 		<label for="resDate">날짜 선택:</label> <input type="date" id="resDate"
