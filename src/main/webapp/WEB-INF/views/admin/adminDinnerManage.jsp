@@ -8,26 +8,27 @@
 <title>매장관리 페이지</title>
 <link rel="stylesheet" href="/resources/css/dinner_admin_member.css" />
 <style>
-.pagination {
-	display: flex;
-	justify-content: center; /* 중앙 정렬 */
-	margin: 20px 0;
-}
+        .pagination {
+            display: flex;
+            justify-content: center; /* 중앙 정렬 */
+            margin: 20px 0;
+        }
 
-.pagination a {
-	padding: 8px 12px;
-	margin: 0 4px;
-	border: 1px solid #ddd;
-	color: #333;
-	text-decoration: none;
-	border-radius: 5px;
-}
+        .pagination a {
+            padding: 8px 12px;
+            margin: 0 4px;
+            border: 1px solid #ddd;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+        }
 
-.pagination a.active {
-	background-color: #f40;
-	color: #fff;
-	border-color: #f40;
-}
+        .pagination a.active {
+            background-color: #f40;
+            color: #fff;
+            border-color: #f40;
+        }
+        
 </style>
 
 </head>
@@ -46,68 +47,61 @@
 						</form>
 
 						<!-- 매장 이름 순 정렬 버튼 -->
-						<button type="button" id="firstname" class="btn-primary"
-							onclick="toggleSortByName()">매장이름순 정렬</button>
-						<!-- 승인 여부 필터링 버튼 -->
-						<button type="button" id="firstCon" class="btn-primary"
-							onclick="filterByApproval()">승인여부 순 정렬</button>
+                        <button type="button" id="firstname" class="btn-primary" onclick="toggleSortByName()">매장이름순 정렬</button>
+                        <!-- 승인 여부 필터링 버튼 -->
+                        <button type="button" id="firstCon" class="btn-primary" onclick="filterByApproval()">승인여부 순 정렬</button>
+                        
+				</div>
 
-					</div>
-
-					<table class="tbl tbl_hover">
+				<table class="tbl tbl_hover">
+					<tr>
+						<th style="width: 5%">식당코드</th>
+						<th style="width: 10%">식당이름</th>
+						<th style="width: 15%">주소</th>
+						<th style="width: 10%">이메일</th>
+						<th style="width: 10%">매장 번호</th>
+						<th style="width: 5%">승인여부</th>
+					</tr>
+				
+					<c:forEach var="d" items="${dinners}">
 						<tr>
-							<th style="width: 5%">식당코드</th>
-							<th style="width: 10%">식당이름</th>
-							<th style="width: 15%">주소</th>
-							<th style="width: 10%">이메일</th>
-							<th style="width: 10%">매장 번호</th>
-							<th style="width: 5%">승인여부</th>
+							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerNo}</a></td>
+							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerName}</a></td>
+							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerAddr}</a></td>
+							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerEmail}</a></td>
+							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerPhone}</a></td>
+							<td><a href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerConfirm}</a></td>
 						</tr>
-
-						<c:forEach var="d" items="${dinners}">
-							<tr>
-								<td><a
-									href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerNo}</a></td>
-								<td><a
-									href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerName}</a></td>
-								<td><a
-									href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerAddr}</a></td>
-								<td><a
-									href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerEmail}</a></td>
-								<td><a
-									href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerPhone}</a></td>
-								<td><a
-									href="/admin/adminDinnerManageFrm?dinnerNo=${d.dinnerNo}">${d.dinnerConfirm}</a></td>
-							</tr>
-						</c:forEach>
-					</table>
-
-					<!-- 페이지 번호 -->
-					<div class="pagination">
-						<c:forEach var="i" begin="1" end="${totalPages}">
-							<a href="?page=${i}&action=${param.action}&order=${param.order}"
-								class="${i == currentPage ? 'active' : ''}">${i}</a>
-						</c:forEach>
-					</div>
-					<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+					</c:forEach>
+				</table>
+				
+				<!-- 페이지 번호 -->
+				<div class="pagination">
+					<c:forEach var="i" begin="1" end="${totalPages}">
+						<a href="?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+					</c:forEach>
+				</div>
+				<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 			</section>
 		</main>
 
 	</div>
 
 	<script>
-		// 매장이름순 정렬 토글 함수
-		function toggleSortByName() {
-			sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-			const url = `/AdminDinnerOrderServlet?action=sortByName&order=${sortOrder}`;
-			window.location.href = url;
-		}
+	 let sortOrder = 'asc'; // 초기 정렬 순서
 
-		// 승인 여부 필터링 함수
-		function filterByApproval() {
-			const url = `/AdminDinnerOrderServlet?action=filterByApproval&approved=y`;
-			window.location.href = url;
-		}
+     // 매장이름순 정렬 토글 함수
+     function toggleSortByName() {
+         sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; // 정렬 순서 변경
+         const url = `/admin/dinner?action=sortByName&order=${sortOrder}`;
+         window.location.href = url;
+     }
+
+     // 승인 여부 필터링 함수
+     function filterByApproval() {
+         const url = `/admin/dinner?action=filterByApproval&approved=y`;
+         window.location.href = url;
+     }
 	</script>
 </body>
 </html>

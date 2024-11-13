@@ -35,7 +35,22 @@ public class AdminDinnerOrderServlet extends HttpServlet {
 		
 		List<Dinner> dinners = null;
 		
-		   
+		    if ("sortByName".equals(action)) {
+		        String order = request.getParameter("order");
+		        dinners = service.getDinnersSortedByName(order);
+		    } else if ("filterByApproval".equals(action)) {
+		        String approved = request.getParameter("approved");
+		        dinners = service.getDinnersByApproval(approved);
+		    } else {
+		        // 기본 처리
+		        int page = 1;
+		        int pageSize = 8;
+		        if (request.getParameter("page") != null) {
+		            page = Integer.parseInt(request.getParameter("page"));
+		        }
+		        dinners = service.getDinners(page, pageSize);
+		    }
+
 		    request.setAttribute("dinners", dinners);
 		    request.setAttribute("currentPage", 1); // 현재 페이지 설정
 		    request.setAttribute("totalPages", 1); // 총 페이지 설정
