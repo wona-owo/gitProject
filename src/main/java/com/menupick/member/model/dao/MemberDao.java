@@ -492,4 +492,26 @@ public class MemberDao {
 		return result;
 	}
 
+	public int bookingMember(Connection conn, String dinnerNo, String memberNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date(?, 'yy/mm/dd'), ?, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "dinner_no");
+			pstmt.setString(2, "member_no");
+			pstmt.setString(3, "book_date");
+			pstmt.setString(4, "book_time");
+			pstmt.setString(5, "book_cnt");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
 }

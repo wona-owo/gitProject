@@ -37,6 +37,9 @@ public class MemberReservation extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		Member member = (Member) session.getAttribute("loginMember");
 		String memberNo = member.getMemberNo();
+		String bookDate = request.getParameter("book_date");
+		String bookTime = request.getParameter("book_time");
+		String bookCnt = request.getParameter("book_cnt");
 		MemberService service = new MemberService();
 		Book book = service.bookingMember(dinnerNo, memberNo);
 		
