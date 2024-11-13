@@ -31,12 +31,13 @@ public class MemberReservation extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinner_no");
-		String memberNo = request.getParameter("member_no");
+		
+		
 		
 		DinnerService service = new DinnerService();
-		Dinner dinner = service.bookMember(dinnerNo);
+		//Dinner dinner = service.bookMember(dinnerNo);
 		
-		request.setAttribute("dinner", dinner);
+		//request.setAttribute("dinner", dinner);
 		
 		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
 		

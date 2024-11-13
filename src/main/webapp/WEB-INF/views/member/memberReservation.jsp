@@ -48,6 +48,7 @@
 <body>
 	<form action="/member/reservation" method="get">
 	<div>${dinner.dinnerNo}</div>
+	<div>${sessionScope.memberNo}</div>
 	<div id="resDetail" style="margin-top: 20px;"></div>
 	<div class=resBtn id="resOption">
 		<label for="resDate">날짜 선택:</label> <input type="date" id="resDate"
@@ -55,7 +56,9 @@
 		<button type="button" class="btn-primary" id="mBookCnt">-</button>
 		<span id="bookCnt">0</span>
 		<button type="button" class="btn-primary" id="pBookCnt">+</button>
-		<ul id="resTime" class="time-list"></ul>
+		<ul id="resTime" class="time-list">
+		<li>${dinner.dinnerOpen}</li>
+		</ul>
 		<button type="submit">확인</button>
 	</div>
 	</form>
