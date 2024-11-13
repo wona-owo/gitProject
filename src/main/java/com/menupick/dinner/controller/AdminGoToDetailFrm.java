@@ -8,40 +8,47 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
-import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.DinnerFoodDetail;
+
 
 /**
- * Servlet implementation class dinnerReservationFrm
+ * Servlet implementation class AdminGoToDetailFrm
  */
-@WebServlet("/dinner/dinnerReservation/")
-public class DinnerReservationFrm extends HttpServlet {
+@WebServlet("/admin/goToDetailFrm")
+public class AdminGoToDetailFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DinnerReservationFrm() {
+    public AdminGoToDetailFrm() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String dinnerNo = request.getParameter("dinner_no");
+
 		
-		DinnerService service = new DinnerService();
-		Dinner dinner = new Dinner();
-		dinner = service.dinnerDetail(dinnerNo);
-		
-		request.setAttribute("dinner", dinner);
-		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
+
+		String dinnerNo = request.getParameter("dinnerNo");
+
+        DinnerService dinnerService = new DinnerService();
+        DinnerFoodDetail dinnerDetail = dinnerService.getDinnerDetailByNo(dinnerNo);
+
+        // DinnerDetail 객체를 JSP에 전달
+        request.setAttribute("dinnerDetail", dinnerDetail);
+        request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerPage.jsp").forward(request, response);
+	
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

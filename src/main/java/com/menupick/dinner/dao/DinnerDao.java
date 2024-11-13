@@ -12,9 +12,14 @@ import java.util.List;
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
-import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
+<<<<<<< HEAD
 
+=======
+import com.menupick.dinner.vo.DinnerFoodDetail;
+import com.menupick.dinner.vo.Food;
+import com.menupick.member.model.vo.Member;
+>>>>>>> 0d0d4f418ce2c2b05e83697f801818c28af3ac4d
 
 public class DinnerDao {
 
@@ -91,7 +96,6 @@ public class DinnerDao {
 		return dinnerList;
 	}
 
-	// daniel
 	public ArrayList<Book> checkReservation(Connection conn, String dinnerNo, String justMonth, String displayYear) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
@@ -125,6 +129,7 @@ public class DinnerDao {
 		return bookList;
 	}
 
+<<<<<<< HEAD
 	public String convertDateToString(Date date) {
 		if (date == null) {
 			return null;
@@ -171,6 +176,9 @@ public class DinnerDao {
 	}
 
 	public ArrayList<Dinner> filterNation(Connection conn, String foodNo) {
+=======
+	public ArrayList<Food> filterNation(Connection conn, String foodNo) {
+>>>>>>> 0d0d4f418ce2c2b05e83697f801818c28af3ac4d
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String query = "select * from TBL_FOOD";
@@ -225,16 +233,25 @@ public class DinnerDao {
 		return addressList;
 	}
 
+
+
 	public Dinner dinnerDetail(Connection conn, String dinnerNo) {
+
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner d = new Dinner();
 		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking, food_no, food_name, food_nation, food_cat from tbl_dinner, tbl_food where dinner_no = ?";
 
+		
+		
+		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, dinnerNo);
 			rset = pstmt.executeQuery();
+
+
 
 			if (rset.next()) {
 				d = new Dinner();
@@ -245,11 +262,16 @@ public class DinnerDao {
 				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
 				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
+<<<<<<< HEAD
 				d.setFoodNo(rset.getString("FOOD_NO"));
 				d.setFoodName(rset.getString("FOOD_NAME"));
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
 				System.out.println(dinnerNo);
+=======
+				System.out.println(d);
+
+>>>>>>> 0d0d4f418ce2c2b05e83697f801818c28af3ac4d
 			}
 
 		} catch (SQLException e) {
@@ -301,33 +323,93 @@ public class DinnerDao {
 		return d;
 	}
 
+<<<<<<< HEAD
 	public Dinner foodDetail(Connection conn, String foodNo) {
+=======
+
+
+	
+
+	public String convertDateToString(Date date) {
+		if (date == null) {
+			return null;
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
+		return formatter.format(date);
+	}
+
+	public ArrayList<Book> getReservationData(Connection conn, String dinnerNo, String date) {
+
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		ArrayList<Book> book = new ArrayList<Book>();
+		Book b = null;
+		String query = "select * from tbl_book where dinner_no = ? and book_date = ?";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			pt.setString(2, date);
+			rt = pt.executeQuery();
+
+			while (rt.next()) {
+				b = new Book();
+				b.setBookNo(rt.getString("book_no"));
+				b.setDinnerNo(rt.getString("dinner_no"));
+				b.setMemberNo(rt.getString("member_no"));
+
+				// Fetch `DATE` and convert to `String`
+				Date bookDate = rt.getDate("book_date");
+				b.setBookDate(convertDateToString(bookDate)); // Format the date to string
+
+				b.setBookTime(rt.getString("book_time"));
+				b.setBookCnt(rt.getInt("book_cnt"));
+				book.add(b);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return book;
+
+	}
+
+
+	public Food foodDetail(Connection conn, String foodNo) {
+>>>>>>> 0d0d4f418ce2c2b05e83697f801818c28af3ac4d
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner food = new Dinner();
 		String query = "select * from tbl_food";
-
+		
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
-			if (rset.next()) {
+			if(rset.next()) {
 				food.setFoodNo(rset.getString("food_no"));
 				food.setFoodName(rset.getString("food_name"));
 				food.setFoodCat(rset.getString("food_cat"));
 				food.setFoodNation(rset.getString("food_nation"));
-			} else {
-
+			}else {
+				
 			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
+		}finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
+		
+		
 		return food;
 	}
 
 	public ArrayList<Dinner> selectAllAdminDinner(Connection conn) {
+
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
@@ -344,7 +426,9 @@ public class DinnerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		return list;
+
 	}
 
 	public List<Dinner> searchDinnerByName(Connection conn, String dinnerName) {
@@ -379,6 +463,7 @@ public class DinnerDao {
 
 			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -483,6 +568,7 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
 			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -494,7 +580,7 @@ public class DinnerDao {
 	public List<Dinner> getDinnersSortedByName(Connection conn, String order) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
+		 List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
 
 		// order 변수가 'asc' 또는 'desc'인지 확인하여 SQL 구문 작성
 		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name"
@@ -521,53 +607,121 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm"));
 				dinners.add(d);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
+				JDBCTemplate.close(rset);
+				JDBCTemplate.close(pstmt);
 		}
 		return dinners;
 	}
 
 	public List<Dinner> getDinnersByApproval(Connection conn, String approved) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
+	    PreparedStatement pstmt = null;
+	    ResultSet rset = null;
+	    List<Dinner> dinners = new ArrayList<>(); // 리스트 초기화
 
-		// order 변수가 'asc' 또는 'desc'인지 확인하여 SQL 구문 작성
-		String query = "SELECT * FROM tbl_dinner WHERE dinner_confirm = ?"
-				+ ("desc".equalsIgnoreCase(approved) ? "DESC" : "ASC");
+	    // 승인 여부를 필터링하는 쿼리
+	    String query = "SELECT * FROM tbl_dinner WHERE dinner_confirm = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			rset = pstmt.executeQuery();
+	    try {
+	        pstmt = conn.prepareStatement(query);
+	        
+	        // 매개변수 바인딩
+	        pstmt.setString(1, approved); // approved 값을 첫 번째 ?에 바인딩
 
-			while (rset.next()) {
-				Dinner d = new Dinner();
-				d.setDinnerNo(rset.getString("dinner_no"));
-				d.setDinnerName(rset.getString("dinner_name"));
-				d.setDinnerAddr(rset.getString("dinner_addr"));
-				d.setDinnerOpen(rset.getString("dinner_open"));
-				d.setDinnerClose(rset.getString("dinner_close"));
-				d.setDinnerPhone(rset.getString("dinner_phone"));
-				d.setDinnerEmail(rset.getString("dinner_email"));
-				d.setDinnerParking(rset.getString("dinner_parking"));
-				d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
-				d.setBusiNo(rset.getString("busi_no"));
-				d.setDinnerId(rset.getString("dinner_id"));
-				d.setDinnerPw(rset.getString("dinner_pw"));
-				d.setDinnerConfirm(rset.getString("dinner_confirm"));
-				dinners.add(d);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
-		}
-		return dinners;
+	        // 쿼리 실행
+	        rset = pstmt.executeQuery();
+
+	        // 결과 처리
+	        while (rset.next()) {
+	            Dinner d = new Dinner();
+	            d.setDinnerNo(rset.getString("dinner_no"));
+	            d.setDinnerName(rset.getString("dinner_name"));
+	            d.setDinnerAddr(rset.getString("dinner_addr"));
+	            d.setDinnerOpen(rset.getString("dinner_open"));
+	            d.setDinnerClose(rset.getString("dinner_close"));
+	            d.setDinnerPhone(rset.getString("dinner_phone"));
+	            d.setDinnerEmail(rset.getString("dinner_email"));
+	            d.setDinnerParking(rset.getString("dinner_parking"));
+	            d.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+	            d.setBusiNo(rset.getString("busi_no"));
+	            d.setDinnerId(rset.getString("dinner_id"));
+	            d.setDinnerPw(rset.getString("dinner_pw"));
+	            d.setDinnerConfirm(rset.getString("dinner_confirm"));
+	            dinners.add(d);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(rset);
+	        JDBCTemplate.close(pstmt);
+	    }
+	    return dinners;
 	}
+<<<<<<< HEAD
 
 
+=======
+	
+	//tbl_dinner과 tbl_food를 동시에 가지고 오려고 만든 메소드
+
+	    public DinnerFoodDetail getDinnerDetailByNo(Connection conn, String dinnerNo) throws SQLException {
+	        String query = "SELECT d.dinner_no, d.dinner_name, d.dinner_addr, d.dinner_open, d.dinner_close, "
+	                     + "d.dinner_phone, d.dinner_email, d.dinner_parking, d.dinner_max_person, "
+	                     + "d.busi_no, d.dinner_id, d.dinner_pw, d.dinner_confirm, "
+	                     + "f.food_no, f.food_name, f.food_nation, f.food_cat "
+	                     + "FROM tbl_dinner d "
+	                     + "JOIN tbl_food f ON d.food_no = f.food_no "
+	                     + "WHERE d.dinner_no = ?";
+	        PreparedStatement pstmt = null;
+	        ResultSet rset = null;
+	        DinnerFoodDetail dinnerDetail = null;
+
+	        try {
+	            pstmt = conn.prepareStatement(query);
+	            pstmt.setString(1, dinnerNo);
+
+	            rset = pstmt.executeQuery();
+
+	            if (rset.next()) {
+	                // Dinner 객체 생성 및 데이터 설정
+	                Dinner dinner = new Dinner();
+	                dinner.setDinnerNo(rset.getString("dinner_no"));
+	                dinner.setDinnerName(rset.getString("dinner_name"));
+	                dinner.setDinnerAddr(rset.getString("dinner_addr"));
+	                dinner.setDinnerOpen(rset.getString("dinner_open"));
+	                dinner.setDinnerClose(rset.getString("dinner_close"));
+	                dinner.setDinnerPhone(rset.getString("dinner_phone"));
+	                dinner.setDinnerEmail(rset.getString("dinner_email"));
+	                dinner.setDinnerParking(rset.getString("dinner_parking"));
+	                dinner.setDinnerMaxPerson(rset.getString("dinner_max_person"));
+	                dinner.setBusiNo(rset.getString("busi_no"));
+	                dinner.setDinnerId(rset.getString("dinner_id"));
+	                dinner.setDinnerPw(rset.getString("dinner_pw"));
+	                dinner.setDinnerConfirm(rset.getString("dinner_confirm"));
+
+	                // Food 객체 생성 및 데이터 설정
+	                Food food = new Food();
+	                food.setFoodNo(rset.getString("food_no"));
+	                food.setFoodName(rset.getString("food_name"));
+	                food.setFoodNation(rset.getString("food_nation"));
+	                food.setFoodCat(rset.getString("food_cat"));
+
+	             // Dinner와 Food 객체를 포함하는 DinnerFoodDetail 생성
+	                dinnerDetail = new DinnerFoodDetail(dinner, food);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();  // SQL 예외 발생 시 오류 출력
+	        } finally {
+	            JDBCTemplate.close(rset);
+	            JDBCTemplate.close(pstmt);
+	        }
+	        return dinnerDetail;
+	    }
+>>>>>>> 0d0d4f418ce2c2b05e83697f801818c28af3ac4d
 }
+
+	
