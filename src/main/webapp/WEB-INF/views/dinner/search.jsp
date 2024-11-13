@@ -208,14 +208,7 @@
 					</c:forEach>
 				
 
-				<div class="card" data-cuisine="양식" data-type="피자"
-					onclick="window.location.href='detail2.html'">
-					<img src="img/yangsik.png" alt="음식 이미지">
-					<div class="card-info">
-						<h3>예시 식당 2</h3>
-						<p>서울특별시 종로구</p>
-						<p class="cuisine-type">양식</p>
-					</div>
+
 				</div>
 				
 			</div>
