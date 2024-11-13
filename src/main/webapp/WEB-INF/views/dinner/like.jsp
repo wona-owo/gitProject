@@ -220,8 +220,9 @@
 				
 			</div>
 		</main>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	
 	
 	<script>
 	const filters = {

@@ -1,8 +1,6 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,40 +11,41 @@ import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
 
 /**
- * Servlet implementation class AdminDinnerOrderServlet
+ * Servlet implementation class dinnerReservationFrm
  */
-@WebServlet("/AdminDinnerOrderServlet")
-public class AdminDinnerOrderServlet extends HttpServlet {
+@WebServlet("/dinner/dinnerReservation/")
+public class dinnerReservationFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminDinnerOrderServlet() {
+    public dinnerReservationFrm() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String dinnerNo = request.getParameter("dinner_no");
+		
 		DinnerService service = new DinnerService();
-		String action = request.getParameter("action");
+		Dinner dinner = new Dinner();
+		dinner = service.dinnerDetail(dinnerNo);
 		
-		List<Dinner> dinners = null;
+		request.setAttribute("dinner", dinner);
 		
-		   
-		    request.setAttribute("dinners", dinners);
-		    request.setAttribute("currentPage", 1); // 현재 페이지 설정
-		    request.setAttribute("totalPages", 1); // 총 페이지 설정
-		    
-		    request.getRequestDispatcher("/WEB-INF/views/admin/adminDinnerManage.jsp").forward(request, response);
-		}
+		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
+		
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
