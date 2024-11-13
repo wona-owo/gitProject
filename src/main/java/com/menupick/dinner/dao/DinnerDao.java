@@ -52,7 +52,7 @@ public class DinnerDao {
 	public ArrayList<Dinner> likeDinner(Connection conn, String dinnerNo, String dinnerName) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select * from tbl_menu, tbl_dinner, tbl_food" ;
+		String query = "select dinner.dinner_no, dinner.dinner_name, dinner.dinner_addr, food.food_no, food.food_nation, food.food_cat from tbl_dinner dinner, tbl_menu menu, tbl_food food where dinner.dinner_no = menu.dinner_no and food.food_no = menu.food_no order by 1";
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 
 		try {
@@ -62,23 +62,11 @@ public class DinnerDao {
 
 			while (rset.next()) {
 				Dinner d = new Dinner();
-				d.setDinnerNo(rset.getString("DINNER_NO"));
-				d.setDinnerName(rset.getString("DINNER_NAME"));
-				d.setDinnerAddr(rset.getString("DINNER_ADDR"));
-				d.setDinnerOpen(rset.getString("DINNER_OPEN"));
-				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
-				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
-				d.setDinnerEmail(rset.getString("DINNER_EMAIL"));
-				d.setDinnerParking(rset.getString("DINNER_PARKING"));
-				d.setDinnerMaxPerson(rset.getString("DINNER_MAX_PERSON"));
-				d.setBusiNo(rset.getString("BUSI_NO"));
-				d.setDinnerId(rset.getString("DINNER_ID"));
-				d.setDinnerPw(rset.getString("DINNER_PW"));
-				d.setDinnerConfirm(rset.getString("DINNER_CONFIRM"));
-				d.setFoodNo(rset.getString("FOOD_NO"));
-				d.setFoodName(rset.getString("FOOD_NAME"));
-				d.setFoodNation(rset.getString("FOOD_NATION"));
-				d.setFoodCat(rset.getString("FOOD_CAT"));
+				d.setDinnerNo(rset.getString("dinner_no"));
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));				
+				d.setFoodNation(rset.getString("food_nation"));
+				d.setFoodCat(rset.getString("food_cat"));
 
 
 				dinnerList.add(d);
