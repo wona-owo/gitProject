@@ -26,4 +26,11 @@ public class Dinner {
 
 	// 종속 데이터 변수 추가
 	private ArrayList<Dinner> dinnerList;
+	//food
+	private String foodNo;
+	private String foodName;
+	private String foodNation;
+	private String foodCat;
+
+	
 }

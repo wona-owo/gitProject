@@ -86,75 +86,68 @@
 		<main class="content mypage-container">
 			<section class="section mypage-wrap">
 				<div class="page-title">매장 정보페이지</div>
-				<table class="tbl">
-					<tr>
-						<th width="30%">식당 코드</th>
-						<td width="70%" class="left">${dinner.dinnerNo}</td>
-					</tr>
-					<tr>
-						<th><label for="dinnerName"> 식당이름</label></th>
-						<td width="70%" class="left">${dinner.dinnerName}</td>
-					</tr>
-					<tr>
-						<th width="30%">식당 주소</th>
-						<td width="70%" class="left">${dinner.dinnerAddr}</td>
-					</tr>
-					<tr>
-						<th width="30%">오픈 시간</th>
-						<td width="70%" class="left">${dinner.dinnerOpen}</td>
-					</tr>
-					<tr>
-						<th width="30%">마감 시간</th>
-						<td width="70%" class="left">${dinner.dinnerClose}</td>
-					</tr>
-					<tr>
-						<th width="30%">식당 번호</th>
-						<td width="70%" class="left">${dinner.dinnerPhone}</td>
-					</tr>
-					<tr>
-						<th width="30%">식당 이메일</th>
-						<td width="70%" class="left">${dinner.dinnerEmail}</td>
-					</tr>
-					<tr>
-						<th width="30%">주차여부</th>
-						<td width="70%" class="left">${dinner.dinnerParking}</td>
-					</tr>
-					<tr>
-						<th width="30%">수용인원</th>
-						<td width="70%" class="left">${dinner.dinnerMaxPerson}</td>
-					</tr>
-					<tr>
-						<th width="30%">사업자 등록번호</th>
-						<td width="70%" class="left">${dinner.busiNo}</td>
-					</tr>
-					<tr>
-						<th width="30%">매장 ID</th>
-						<td width="70%" class="left">${dinner.dinnerId}</td>
-					</tr>
-					<tr>
-						<th width="30%">승인 여부</th>
-						<td width="70%" class="left">${dinner.dinnerConfirm}</td>
-					</tr>
+					<table class="tbl">
+						<tr>
+							<th width="30%">식당 코드</th>
+							<td width="70%" class="left">${dinner.dinnerNo}</td>
+						</tr>
+						<tr>
+							<th><label for="dinnerName"> 식당이름</label></th>
+							<td width="70%" class="left">${dinner.dinnerName}</td>
+						</tr>
+						<tr>
+							<th width="30%">식당 주소</th>
+							<td width="70%" class="left">${dinner.dinnerAddr}</td>
+						</tr>
+						<tr>
+							<th width="30%">오픈 시간</th>
+							<td width="70%" class="left">${dinner.dinnerOpen}</td>
+						</tr>
+						<tr>
+							<th width="30%">마감 시간</th>
+							<td width="70%" class="left">${dinner.dinnerClose}</td>
+						</tr>
+						<tr>
+							<th width="30%">식당 번호</th>
+							<td width="70%" class="left">${dinner.dinnerPhone}</td>
+						</tr>
+						<tr>
+							<th width="30%">식당 이메일</th>
+							<td width="70%" class="left">${dinner.dinnerEmail}</td>
+						</tr>
+						<tr>
+							<th width="30%">주차여부</th>
+							<td width="70%" class="left">${dinner.dinnerParking}</td>
+						</tr>
+						<tr>
+							<th width="30%">수용인원</th>
+							<td width="70%" class="left">${dinner.dinnerMaxPerson}</td>
+						</tr>
+						<tr>
+							<th width="30%">사업자 등록번호</th>
+							<td width="70%" class="left">${dinner.busiNo}</td>
+						</tr>
+						<tr>
+							<th width="30%">매장 ID</th>
+							<td width="70%" class="left">${dinner.dinnerId}</td>
+						</tr>
+						<tr>
+							<th width="30%">승인 여부</th>
+							<td width="70%" class="left">${dinner.dinnerConfirm}</td>
+						</tr>
 
-				</table>
+					</table>
 
-				<div class="mypage-btn">
-					<!-- onclick에서 JavaScript 함수 호출 -->
-					<button type="button"
-						onclick="goToDetailPage('${dinner.dinnerNo}')"
-						class="btn-primary lg">매장 상세페이지 이동</button>
+					<div class="mypage-btn">
+						<button type="button" onclick="#" class="btn-primary lg">
+							매장 상세페이지 이동</button>
+					</div>
 				</div>
 			</section>
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<script>
-    function goToDetailPage(dinnerNo) {
-        // 매장 상세 페이지로 이동하는 URL을 구성합니다.
-        const url = `/admin/goToDetailFrm?dinnerNo=${dinnerNo}`;
-        window.location.href = url;
-    }
-</script>
+
 
 </body>
 </html>
