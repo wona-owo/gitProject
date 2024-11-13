@@ -37,11 +37,18 @@ public class MemberJoinServlet extends HttpServlet {
 		String memberName = request.getParameter("memberName");
 		String memberNick = request.getParameter("memberNick");
 		String memberPhone = request.getParameter("memberPhone");
-		String memberAddr = request.getParameter("memberAddr");
+		//String memberAddr = request.getParameter("memberAddr");
 		String memberGender = request.getParameter("memberGender");
 		String memberEmail = request.getParameter("memberEmail");
 		String adultConfirm = request.getParameter("adultConfirm");
 
+		String zipp_code = request.getParameter("zipp_code"); // 우편번호
+		String userAdd1 = request.getParameter("user_add1");   // 기본 주소
+		String userAdd2 = request.getParameter("user_add2");   // 상세 주소
+		
+		String memberAddr = zipp_code + " " + userAdd1 + " " + userAdd2;
+		
+		
 		Member member = new Member();
 		member.setMemberId(memberId);
 		member.setMemberPw(memberPw);
