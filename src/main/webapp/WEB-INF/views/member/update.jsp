@@ -1,170 +1,137 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page import="com.menupick.member.model.vo.Member"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    Member member = (Member) request.getAttribute("member");
+%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>회원 정보 수정</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
-body {
-	font-family: Arial, sans-serif;
-	background-color: #f0f0f0;
-	margin: 0;
-	padding: 0;
-}
-
-.wrap {
-	width: 100%;
-	max-width: 800px;
-	margin: 0 auto;
-	background-color: #fff;
-	padding: 20px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	border-radius: 10px;
-}
-
-.input-wrap {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 15px;
-}
-
-.input-title {
-	margin-bottom: 5px;
-}
-
-.input-item {
-	width: 100%;
-}
-
-input[type="text"], input[type="password"], input[type="email"] {
-	width: calc(100% - 20px);
-	padding: 10px;
-	margin: 5px 0;
-	border: 1px solid #b0b0b0;
-	border-radius: 8px;
-	transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus
-	{
-	border-color: #808080;
-	box-shadow: 0 0 5px rgba(128, 128, 128, 0.5);
-	outline: none;
-}
-
-button {
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	background-color: #007bff;
-	color: #fff;
-	font-size: 16px;
-	cursor: pointer;
-	transition: background-color 0.3s;
-}
-
-button:hover {
-	background-color: #0056b3;
-}
-
-.join-button-box {
+.submit-button{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding-top: 30px;
+	padding-top : 30px;
 }
-
-.btn-primary {
-	background-color: #007bff;
-	border: none;
-	border-radius: 5px;
-	padding: 10px 20px;
-	color: #fff;
-	font-size: 16px;
-	cursor: pointer;
-	transition: background-color 0.3s;
+.input-item{
+	width:700px;
 }
-
-.btn-primary:hover {
-	background-color: #0056b3;
+.input-wrap{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.sub{
+	width:150px;
+	height:50px;
+	color: white;
+	background-color : #f40;
+	border-style:none;
+	font-size:15px;
+	border-radius:30px;
+}
+.delete-button{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top : 30px;
+	color: white;
+}
+.delete{
+	width:150px;
+	height:50px;
+	color: white;
+	background-color : #f40;
+	border-style:none;
+	font-size:15px;
+	border-radius:30px;
+}
+.delete>p{
+	padding-left: 45px;
+	padding-top: 15px;
+	font-size: 15px;
+}
+.submit-button:hover{
+	cursor:pointer;
 }
 </style>
 <body>
-	<div class="wrap">
-		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-		<main class="content">
-			<section class="section join-wrap">
-				<div class="page-title">회원가입</div>
-				<form action="/member/join" method="post" autocomplete="off"
-					onsubmit="return joinValidate()">
-					<div class="input-wrap">
-						<div class="input-title">
-							<label for="memberId">아이디</label>
-						</div>
-						<div class="input-item">
-							<input type="text" id="memberId" name="memberId"
-								placeholder="영어 + 숫자 6~12글자" maxlength="12" />
-							<button type="button" id="idDuplChkBtn" class="btn-primary">중복체크</button>
-						</div>
-						<p id="idMessage" class="input-msg"></p>
-					</div>
-					<div class="input-wrap">
-						<div class="input-title">
-							<label for="memberPw">비밀번호</label>
-						</div>
-						<div class="input-item">
-							<input type="password" id="memberPw" name="memberPw"
-								placeholder="영어 + 숫자 + 특수문자 8~20글자" maxlength="20" />
-						</div>
-					</div>
-					<div class="input-wrap">
-						<div class="input-title">
-							<label for="memberPwConfirm">비밀번호 확인</label>
-						</div>
-						<div class="input-item">
-							<input type="password" id="memberPwConfirm" maxlength="20" />
-						</div>
-						<p id="pwMessage" class="input-msg"></p>
-					</div>
-					<div class="input-wrap">
-						<div class="input-title">
-							<label for="memberName">이름</label>
-						</div>
-						<div class="input-item">
-							<input type="text" id="memberName" name="memberName"
-								placeholder="한글 2~10글자" maxlength="10">
-						</div>
-						<p id="nameMessage" class="input-msg"></p>
-					</div>
-					<div class="input-wrap">
-						<div class="input-title">
-							<label for="memberNick">닉네임</label>
-						</div>
-						<div class="input-item">
-							<input type="text" id="memberNick" name="memberNick"
-								placeholder="한글,영어,숫자,특수문자 포함 2~10글자" maxlength="10">
-							<button type="button" id="nickDuplChkBtn" class="btn-primary">중복체크</button>
-						</div>
-						<p id="nickMessage" class="input-msg"></p>
-					</div>
-					<div class="input-wrap">
-						<div class="input-title">
-							<label for="memberPhone">전화번호</label>
-						</div>
-						<div class="input-item">
-							<input type="text" id="memberPhone" name="memberPhone"
-								placeholder="전화번호(010-0000-0000)" maxlength="13">
-						</div>
-						<p id="phoneMessage" class="input-msg"></p>
-					</div>
-					<div class="input-wrap">
-						<label for="memberAddr" class="input-title">주소 *</label>
-						<div class="input-item">
-					
-						 	<input type="text" id="zipp_code_id" name="zipp_code"
-								maxlength="10" placeholder="우편번호"
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
+
+<section class="section update-wrap">
+    <div class="page-title">회원정보 수정</div>
+    
+    <form method="post" action="/member/update" onsubmit="return joinValidate()">
+        <!-- hidden inputs for memberNo and memberId -->
+        <input type="hidden" name="memberNo" value="${loginMember.memberNo}">
+        
+            <div class="input-wrap">
+            	<div class="input-title">
+                	<label for="memberId">아이디</label>
+                </div>
+                <div class="input-item">
+                	<input type="text" id="memberId" name="memberId" value="${loginMember.memberId}">
+                	<button type="button" id="idDuplChkBtn" class="btn-primary">중복체크</button>
+            	</div>
+            	<p id="idMessage" class="input-msg"></p>
+            </div>
+            <div class="input-wrap">
+            	<div class="input-title">
+                	<label for="memberPw">비밀번호</label>
+                </div>
+                <div class="input-item">
+                	<input type="password" id="memberPw" name="memberPw" value="${loginMember.memberPw}">
+            	</div>
+            </div>
+            <div class="input-wrap">
+				<div class="input-title">
+					<label for="memberPwConfirm">비밀번호 확인</label>
+				</div>
+				<div class="input-item">
+					<input type="password" id="memberPwConfirm" name="memberPwConfirm" maxlength="20"/>
+				</div>
+					<p id="pwMessage" class="input-msg"></p>
+				</div>
+            <div class="input-wrap">
+            	<div class="input-title">
+                	<label for="memberName">이름</label>
+                </div>
+                <div class="input-item">
+                	<input type="text" id="memberName" name="memberName" value="${loginMember.memberName}">
+            	</div>
+            	<p id="nameMessage" class="input-msg"></p>
+            </div>
+            <div class="input-wrap">
+            	<div class="input-title">
+                	<label for="memberNick">닉네임</label>
+                </div>
+                <div class="input-item">
+                	<input type="text" id="memberNick" name="memberNick" value="${loginMember.memberNick}">
+                	<button type="button" id="nickDuplChkBtn" class="btn-primary">중복체크</button>
+            	</div>
+            	<p id="nickMessage" class="input-msg"></p>
+            </div>
+            <div class="input-wrap">
+            	<div class="input-title">
+                	<label for="memberPhone">전화번호</label>
+                </div>
+                <div class="input-item">
+                	<input type="text" id="memberPhone" name="memberPhone" value="${loginMember.memberPhone}">
+            	</div>
+            	<p id="phoneMessage" class="input-msg"></p>
+            </div>
+            <div class="input-wrap">
+            	<div class="input-title">
+                	<label for="memberAddr">주소</label>
+                </div>
+                <div class="input-item">
+               			    <input type="text" id="zipp_code_id" name="zipp_code"
+								maxlength="10" placeholder="우편번호" value="${loginMember.memberAddr}"
 								style="width: 50%; display: inline;">
 								
 							<button type="button" id="zipp_btn" class="btn btn-primary"
@@ -174,34 +141,27 @@ button:hover {
 								placeholder="기본 주소를 입력하세요" required>
 							 <input type="text"	name="user_add2" id="UserAdd2" maxlength="40"
 								placeholder="상세 주소를 입력하세요"> 
-						</div>
-					</div>
-					<div class="input-wrap">
-						<label for="memberGender">성별</label>
-						<div class="input-title">
-							<input type="radio" id="memberGender" name="memberGender"
-								value="m">남자 <input type="radio" id="memberGender"
-								name="memberGender" value="f">여자
-						</div>
-					</div>
-					<div class="input-wrap">
-						<div class="input-title">
-							<label for="memberEmail">이메일</label>
-						</div>
-						<div class="input-item">
-							<input type="email" id="memberEmail" name="memberEmail">
-						</div>
-						<p id="emailMessage" class="input-msg"></p>
-					</div>
-					<div class="join-button-box">
-						<button type="submit" class="btn-primary lg">회원가입</button>
-					</div>
-				</form>
-			</section>
-		</main>
-		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-	</div>
-	<script>
+            	</div>
+            </div>
+            <div class="input-wrap">
+            	<div class="input-title">
+                	<label for="memberEmail">이메일</label>
+                </div>
+                <div class="input-item">
+                	<input type="text" id="memberEmail" name="memberEmail" value="${loginMember.memberEmail}">
+            	</div>
+            </div>
+            	<div class="submit-button">
+                    <input type="submit" value="회원 정보 수정" class="sub">            
+            	</div>
+              	<div class="delete-button">
+                    <a href="/member/delete" class="delete" ><p>회원 탈퇴<p></a>         
+            	</div>
+            
+    	</form>
+    </section>
+    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+ 	<script>
 	const checkObj = {
 		"memberId" : false,
 		"idDuplChk" : false,
@@ -210,7 +170,12 @@ button:hover {
 		"memberPwConfirm" : false,
 		"memberName" : false,
 		"memberNick" : false,
-		"memberPhone" : false		
+		"memberPhone" : false,	
+		"memberIdChanged": false,
+	    "memberPwChanged": false,
+	    "memberNameChanged": false,
+	    "memberNickChanged": false,
+	    "memberPhoneChanged": false
 	}
 	
 	const memberId = $('#memberId'); 
@@ -350,6 +315,7 @@ button:hover {
 	const phoneMessage = $('#phoneMessage');
 	
 	memberPhone.on('input', function(){
+		checkObj.memberPhoneChanged = true;
 		phoneMessage.removeClass('valid');
 		phoneMessage.removeClass('invalid');
 		
@@ -370,6 +336,7 @@ button:hover {
 	const nameMessage = $('#nameMessage');
 	
 	memberName.on('input', function(){
+		checkObj.memberNameChanged = true;
 		nameMessage.removeClass('valid');
 		nameMessage.removeClass('invalid');
 		
@@ -387,30 +354,41 @@ button:hover {
 	});
 	
 	function joinValidate(){
-		
-		let str = "";
-		
-		for(let key in checkObj){
+	    let str = "";
 
-			if(!checkObj[key]){
-				switch(key){ 
-				case "memberId" : str = "아이디 형식이 유효하지 않습니다"; break;
-				case "idDuplChk" : str = "아이디 중복체크를 진행하세요"; break;
-				case "nickDuplChk" : str = "닉네임 중복체크를 진행하세요"; break;
-				case "memberPw" : str = "비밀번호 형식이 유효하지 않습니다"; break;
-				case "memberPwConfirm" : str = "비밀번호 확인 형식이 유효하지 않습니다"; break;
-				case "memberName" : str = "이름 형식이 유효하지 않습니다"; break;
-				case "memberPhone" : str = "전화번호 형식이 유효하지 않습니다"; break;
-				}
-				 
-				 str += "";
-		         msg("회원가입 실패", str, "error");  // 오류 메시지를 출력하는 함수 호출
-		         return false;  // 유효하지 않으면 false 반환하여 폼 제출 중지
-			}
-		}
-		return true;
+	    // 중복 체크가 필요한 항목 확인
+	    if(!checkObj.idDuplChk && checkObj.memberIdChanged){
+	        str = "아이디 중복체크를 진행하세요";
+	        msg("회원가입 실패", str, "error");
+	        return false;
+	    }
+
+	    if(!checkObj.nickDuplChk && checkObj.memberNickChanged){
+	        str = "닉네임 중복체크를 진행하세요";
+	        msg("회원가입 실패", str, "error");
+	        return false;
+	    }
+
+	    // 형식 검증이 필요한 항목만 확인
+	    for(let key in checkObj){
+	        // 중복 체크와 관련 없는 항목이며, 변경된 항목만 확인
+	        if(checkObj[key + "Changed"] && !checkObj[key]){  
+	            switch(key){
+	                case "memberId": str = "아이디 형식이 유효하지 않습니다"; break;
+	                case "memberPw": str = "비밀번호 형식이 유효하지 않습니다"; break;
+	                case "memberPwConfirm": str = "비밀번호 확인 형식이 유효하지 않습니다"; break;
+	                case "memberName": str = "이름 형식이 유효하지 않습니다"; break;
+	                case "memberPhone": str = "전화번호 형식이 유효하지 않습니다"; break;
+	            }
+	            str += "";
+	            msg("회원가입 실패", str, "error");
+	            return false;
+	        }
+	    }
+	    return true;
+	
 	}
-
+	
     function msg(title, text, icon){
         swal({
             title : title,

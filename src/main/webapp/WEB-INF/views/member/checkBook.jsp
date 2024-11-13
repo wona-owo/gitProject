@@ -112,7 +112,7 @@
 						</span>
 						<div class="time-ctn">
 							<h3>${book.bookTime}</h3>
-							<h3>총 ${book.bookCtn}명</h3>
+							<h3>총 ${book.bookCnt}명</h3>
 						</div>
 					</div>
 				</c:forEach>
