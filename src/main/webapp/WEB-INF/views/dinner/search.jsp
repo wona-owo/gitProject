@@ -170,27 +170,21 @@
 			</div>
 
 			<!-- 콤팩트 필터 컨테이너 -->
-			<<<<<<< HEAD
-			<div class="filter-container">
-				<div class="filter-title">국가별 필터</div>
-				<c:forEach var="dinner" items="${dinnerList}">
-=======
 			<c:forEach var="dinner" items='${dinnerList}'>
-						<div class="filter-container">
-							<div class="filter-title">국가별 필터</div>
-							>>>>>>> feature
-							<div class="filter-section">
-								<span class="filter-button" data-value="${dinner.foodNation}"
-									onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
-							</div>
+				<div class="filter-container">
+					<div class="filter-title">국가별 필터</div>
+					<div class="filter-section">
+						<span class="filter-button" data-value="${dinner.foodNation}"
+							onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
+					</div>
 
-							<div class="filter-title">음식 유형 필터</div>
-							<div class="filter-section">
-								<span class="filter-button" data-value="${dinner.foodCat}"
-									onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
-							</div>
-					</c:forEach>
-			</div>
+					<div class="filter-title">음식 유형 필터</div>
+					<div class="filter-section">
+						<span class="filter-button" data-value="${dinner.foodCat}"
+							onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
+					</div>
+				</div>
+			</c:forEach>
 			<!-- 예시 카드 -->
 			<div class="card-container">
 
