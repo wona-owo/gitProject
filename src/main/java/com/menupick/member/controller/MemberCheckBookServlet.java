@@ -27,7 +27,6 @@ public class MemberCheckBookServlet extends HttpServlet {
 	 */
 	public MemberCheckBookServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -57,7 +56,6 @@ public class MemberCheckBookServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
