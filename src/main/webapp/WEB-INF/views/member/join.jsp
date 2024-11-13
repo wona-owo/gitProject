@@ -38,9 +38,7 @@ body {
 	width: 100%;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"] {
+input[type="text"], input[type="password"], input[type="email"] {
 	width: calc(100% - 20px);
 	padding: 10px;
 	margin: 5px 0;
@@ -49,9 +47,8 @@ input[type="email"] {
 	transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus
+	{
 	border-color: #808080;
 	box-shadow: 0 0 5px rgba(128, 128, 128, 0.5);
 	outline: none;
@@ -166,17 +163,22 @@ button:hover {
 						<label for="zipp_btn" class="input-title">주소 *</label>
 						<div class="input-item">
 							<input type="text" id="zipp_code_id" name="zipp_code"
-								maxlength="10" placeholder="우편번호" style="width: 50%; display: inline;">
-							<button type="button" id="zipp_btn" class="btn-primary" onclick="execDaumPostcode()">우편번호 찾기</button>
-							<input type="text" name="user_add1" id="UserAdd1" maxlength="40" placeholder="기본 주소를 입력하세요" required>
-							<input type="text" name="user_add2" id="UserAdd2" maxlength="40" placeholder="상세 주소를 입력하세요">
+								maxlength="10" placeholder="우편번호"
+								style="width: 50%; display: inline;">
+							<button type="button" id="zipp_btn" class="btn-primary"
+								onclick="execDaumPostcode()">우편번호 찾기</button>
+							<input type="text" name="user_add1" id="UserAdd1" maxlength="40"
+								placeholder="기본 주소를 입력하세요" required> <input type="text"
+								name="user_add2" id="UserAdd2" maxlength="40"
+								placeholder="상세 주소를 입력하세요">
 						</div>
 					</div>
 					<div class="input-wrap">
 						<label for="memberGender">성별</label>
 						<div class="input-title">
-							<input type="radio" id="memberGender" name="memberGender" value="m">남자
-							<input type="radio" id="memberGender" name="memberGender" value="f">여자
+							<input type="radio" id="memberGender" name="memberGender"
+								value="m">남자 <input type="radio" id="memberGender"
+								name="memberGender" value="f">여자
 						</div>
 					</div>
 					<div class="input-wrap">
