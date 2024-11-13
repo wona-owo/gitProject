@@ -1,119 +1,200 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>Insert title here</title>
+</head>
 <style>
-.login-container {
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f0f0f0;
+	margin: 0;
+	padding: 0;
+}
+
+.wrap {
+	width: 100%;
+	max-width: 800px;
+	margin: 0 auto;
+	background-color: #fff;
+	padding: 20px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+}
+
+.input-wrap {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 15px;
+}
+
+.input-title {
+	margin-bottom: 5px;
+}
+
+.input-item {
+	width: 100%;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+	width: calc(100% - 20px);
+	padding: 10px;
+	margin: 5px 0;
+	border: 1px solid #b0b0b0;
+	border-radius: 8px;
+	transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+	border-color: #808080;
+	box-shadow: 0 0 5px rgba(128, 128, 128, 0.5);
+	outline: none;
+}
+
+button {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	background-color: #007bff;
+	color: #fff;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
+
+.join-button-box {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding-top: 30px;
 }
 
-.login-wrap {
-	width: 500px;
+.btn-primary {
+	background-color: #007bff;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	color: #fff;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
-.login-wrap .input-wrap {
-	padding: 15px 30px;
-}
-
-.member-link-box {
-	display: flex;
-	justify-content: center;
-	gap: 20px;
-}
-
-.member-link-box>a:hover {
-	text-decoration: underline;
-}
-
-/* 체크박스와 레이블을 정확히 같은 줄에 배치 */
-.input-wrap.checkbox-container {
-	display: flex;
-	align-items: center; /* 수직 가운데 정렬 */
-	flex-direction: row; /* 가로 배치 */
-	gap: 5px; /* 간격 조정 */
-	padding-top: 10px; /* 위쪽 여백 조정 (필요 시) */
-}
-
-input[type="checkbox"] {
-	margin: 0; /* 체크박스 여백 초기화 */
+.btn-primary:hover {
+	background-color: #0056b3;
 }
 </style>
-</head>
 <body>
 	<div class="wrap">
-		<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-		<main class="content login-container">
-			<section class="section login-wrap">
-				<div class="page-title">로그인</div>
-				<form action="/member/login" method="post" autocomplete="off"
-					onsubmit="return loginValidate()">
-
+		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+		<main class="content">
+			<section class="section join-wrap">
+				<div class="page-title">회원가입</div>
+				<form action="/member/join" method="post" autocomplete="off"
+					onsubmit="return joinValidate()">
 					<div class="input-wrap">
 						<div class="input-title">
-							<label for="loginId">아이디</label>
+							<label for="memberId">아이디</label>
 						</div>
 						<div class="input-item">
-							<%-- MemberLoginServlet에서 저장한 쿠키 값을 기본값으로 설정 --%>
-							<input type="text" id="loginId" name="loginId"
-								value="${cookie.saveId.value}">
+							<input type="text" id="memberId" name="memberId"
+								placeholder="영어 + 숫자 6~12글자" maxlength="12" />
+							<button type="button" id="idDuplChkBtn" class="btn-primary">중복체크</button>
 						</div>
+						<p id="idMessage" class="input-msg"></p>
 					</div>
-
 					<div class="input-wrap">
 						<div class="input-title">
-							<label for="loginPw">비밀번호</label>
+							<label for="memberPw">비밀번호</label>
 						</div>
 						<div class="input-item">
-							<input type="password" id="loginPw" name="loginPw">
+							<input type="password" id="memberPw" name="memberPw"
+								placeholder="영어 + 숫자 + 특수문자 8~20글자" maxlength="20" />
 						</div>
 					</div>
-
-					<div class="input-wrap checkbox-container">
-						<c:if test="${empty cookie.saveId.value}">
-							<input type="checkbox" name="saveId" id="saveId" value="chk">
-						</c:if>
-						<c:if test="${!empty cookie.saveId.value}">
-							<input type="checkbox" name="saveId" id="saveId" value="chk"
-								checked>
-						</c:if>
-						<label for="saveId">아이디 저장</label>
+					<div class="input-wrap">
+						<div class="input-title">
+							<label for="memberPwConfirm">비밀번호 확인</label>
+						</div>
+						<div class="input-item">
+							<input type="password" id="memberPwConfirm" maxlength="20" />
+						</div>
+						<p id="pwMessage" class="input-msg"></p>
 					</div>
-
-					<div class="login-button-box">
-						<button type="submit" class="btn-primary lg">로그인</button>
+					<div class="input-wrap">
+						<div class="input-title">
+							<label for="memberName">이름</label>
+						</div>
+						<div class="input-item">
+							<input type="text" id="memberName" name="memberName"
+								placeholder="한글 2~10글자" maxlength="10">
+						</div>
+						<p id="nameMessage" class="input-msg"></p>
 					</div>
-
-					<div class="member-link-box">
-						<a href="/member/joinFrm">회원가입</a> | <a href="javascript:void(0)"
-							onclick="searchInfo('id')">아이디 찾기</a> | <a
-							href="javascript:void(0)" onclick="searchInfo('pw')">비밀번호 찾기</a>
+					<div class="input-wrap">
+						<div class="input-title">
+							<label for="memberNick">닉네임</label>
+						</div>
+						<div class="input-item">
+							<input type="text" id="memberNick" name="memberNick"
+								placeholder="한글,영어,숫자,특수문자 포함 2~10글자" maxlength="10">
+							<button type="button" id="nickDuplChkBtn" class="btn-primary">중복체크</button>
+						</div>
+						<p id="nickMessage" class="input-msg"></p>
 					</div>
-
+					<div class="input-wrap">
+						<div class="input-title">
+							<label for="memberPhone">전화번호</label>
+						</div>
+						<div class="input-item">
+							<input type="text" id="memberPhone" name="memberPhone"
+								placeholder="전화번호(010-0000-0000)" maxlength="13">
+						</div>
+						<p id="phoneMessage" class="input-msg"></p>
+					</div>
+					<div class="input-wrap">
+						<label for="zipp_btn" class="input-title">주소 *</label>
+						<div class="input-item">
+							<input type="text" id="zipp_code_id" name="zipp_code"
+								maxlength="10" placeholder="우편번호" style="width: 50%; display: inline;">
+							<button type="button" id="zipp_btn" class="btn-primary" onclick="execDaumPostcode()">우편번호 찾기</button>
+							<input type="text" name="user_add1" id="UserAdd1" maxlength="40" placeholder="기본 주소를 입력하세요" required>
+							<input type="text" name="user_add2" id="UserAdd2" maxlength="40" placeholder="상세 주소를 입력하세요">
+						</div>
+					</div>
+					<div class="input-wrap">
+						<label for="memberGender">성별</label>
+						<div class="input-title">
+							<input type="radio" id="memberGender" name="memberGender" value="m">남자
+							<input type="radio" id="memberGender" name="memberGender" value="f">여자
+						</div>
+					</div>
+					<div class="input-wrap">
+						<div class="input-title">
+							<label for="memberEmail">이메일</label>
+						</div>
+						<div class="input-item">
+							<input type="email" id="memberEmail" name="memberEmail">
+						</div>
+						<p id="emailMessage" class="input-msg"></p>
+					</div>
+					<div class="join-button-box">
+						<button type="submit" class="btn-primary lg">회원가입</button>
+					</div>
 				</form>
 			</section>
 		</main>
-		<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-
-	<script>
-		//로그인 버튼 클릭 시, 동작 함수(submit 이전에) 
-		function loginValidate() {
-			if ($('#loginId').val().length < 1) {
-				msg("알림", "아이디를 입력하세요.", "warning");
-				$('#loginId').focus();
-				return false;
-			}
-			if ($('#loginPw').val().length < 1) {
-				msg("알림", "비밀번호를 입력하세요.", "warning");
-				return false;
-			}
-		}
-	</script>
 </body>
 </html>
