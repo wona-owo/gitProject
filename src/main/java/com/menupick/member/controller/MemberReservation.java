@@ -41,14 +41,14 @@ public class MemberReservation extends HttpServlet {
 		String bookTime = request.getParameter("book_time");
 		String bookCnt = request.getParameter("book_cnt");
 		MemberService service = new MemberService();
-		Book book = service.bookingMember(dinnerNo, memberNo);
+//		Book book = service.bookingMember(dinnerNo, memberNo);
 		
-		//request.setAttribute("dinner", dinner);
+
+//		request.setAttribute("dinner", dinner);
+
 		request.setAttribute("memberNo", memberNo);
 		
 		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
-		
-		
 	}
 
 	/**
