@@ -353,7 +353,6 @@ public class MemberDao {
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
@@ -390,7 +389,6 @@ public class MemberDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -487,7 +485,6 @@ public class MemberDao {
 			pstmt.setString(1, memberNo);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
@@ -495,29 +492,25 @@ public class MemberDao {
 		return result;
 	}
 
-	public int updateMember(Connection conn, Member updMember) {
+	public int bookingMember(Connection conn, String dinnerNo, String memberNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "update tbl_member set member_id = ? , member_pw = ? , member_name = ? , member_nick = ? , member_phone = ? , member_addr = ? , member_email = ? where member_no = ? ";
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date(?, 'yy/mm/dd'), ?, ?)";
+		
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, updMember.getMemberId());
-			pstmt.setString(2, updMember.getMemberPw());
-			pstmt.setString(3, updMember.getMemberName());
-			pstmt.setString(4, updMember.getMemberNick());
-			pstmt.setString(5, updMember.getMemberPhone());
-			pstmt.setString(6, updMember.getMemberAddr());
-			pstmt.setString(7, updMember.getMemberEmail());
-			pstmt.setString(8, updMember.getMemberNo());
-			
-			result = pstmt.executeUpdate();
+			pstmt.setString(1, "dinner_no");
+			pstmt.setString(2, "member_no");
+			pstmt.setString(3, "book_date");
+			pstmt.setString(4, "book_time");
+			pstmt.setString(5, "book_cnt");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
+		}finally {
 			JDBCTemplate.close(pstmt);
-			JDBCTemplate.close(conn);
 		}
+		
 		return result;
 	}
 

@@ -227,15 +227,18 @@ public class MemberService {
 		return result;
 	}
 
-	public int updateMember(Member updMember) {
+	public Book bookingMember(String dinnerNo, String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.updateMember(conn, updMember);
-		if(result>0) {
+		int result = dao.bookingMember(conn, dinnerNo, memberNo);
+		
+		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
 			JDBCTemplate.rollback(conn);
 		}
-		JDBCTemplate.close(conn);
 		return result;
 	}
+
+
+
 }
