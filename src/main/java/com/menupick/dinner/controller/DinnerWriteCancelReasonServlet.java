@@ -1,4 +1,4 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 
@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class InsertDinnerServlet
+ * Servlet implementation class DinnerWriteCancelReasonServlet
  */
-@WebServlet("/dinnerRegister")
-public class dinnerRegister extends HttpServlet {
+@WebServlet("/dinner/writeCancelReason")
+public class DinnerWriteCancelReasonServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public dinnerRegister() {
+	public DinnerWriteCancelReasonServlet() {
 		super();
 	}
 
@@ -28,7 +28,7 @@ public class dinnerRegister extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/admin/dinnerRegister.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/dinner/writeCancelReason.jsp").forward(request, response);
 	}
 
 	/**
