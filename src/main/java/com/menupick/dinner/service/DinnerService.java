@@ -149,4 +149,21 @@ public class DinnerService {
 		return member;
 	}
 
+	// 식당등록 (경래)
+	public boolean insertDinner(Dinner dinner) {
+		Connection conn = JDBCTemplate.getConnection();
+		boolean result = false;
+
+		result = dao.insertDinner(conn, dinner);
+
+		if (result) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+
 }

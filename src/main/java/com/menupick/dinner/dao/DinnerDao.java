@@ -575,4 +575,40 @@ public class DinnerDao {
 		return m;
 	}
 
+	// 식당등록 (경래)
+	public boolean insertDinner(Connection conn, Dinner dinner) {
+		PreparedStatement pstmt = null;
+		String query = "INSERT INTO tbl_dinner (dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, "
+				   	+ "dinner_phone, dinner_email, dinner_parking, dinner_max_person, busi_no, dinner_id, dinner_pw, dinner_confirm) "
+					+ "VALUES (seq_dinner.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        boolean result = false;
+        
+        try {
+			pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, dinner.getDinnerName());
+            pstmt.setString(2, dinner.getDinnerAddr());
+            pstmt.setString(3, dinner.getDinnerOpen());
+            pstmt.setString(4, dinner.getDinnerClose());
+            pstmt.setString(5, dinner.getDinnerPhone());
+            pstmt.setString(6, dinner.getDinnerEmail());
+            pstmt.setString(7, dinner.getDinnerParking());
+            pstmt.setString(8, dinner.getDinnerMaxPerson());
+            pstmt.setString(9, dinner.getBusiNo());
+            pstmt.setString(10, dinner.getDinnerId());
+            pstmt.setString(11, dinner.getDinnerPw());
+            pstmt.setString(12, dinner.getDinnerConfirm());
+            
+            int rowsAffected = pstmt.executeUpdate();
+            result = rowsAffected > 0;
+            
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+        
+		return result;
+	}
+
 }
