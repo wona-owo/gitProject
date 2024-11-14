@@ -6,6 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
+<style>
+.tbl{
+	margin: 0 auto;
+}
+
+.tbl-row {
+	text-align: center;
+}
+</style>
 </head>
 <body>
 	<div class="wrap">
@@ -14,7 +23,7 @@
 			<section class="section notice-list-wrap">
 				<div class="page-title">${bookDate}</div>
 				<div class="list-content">
-					<table class="tbl hover">
+					<table border="1" class="tbl hover">
 						<tr>
 							<th style="width: 20%">예약 시간</th>
 							<th style="width: 20%">예약자 이름</th>
@@ -24,14 +33,12 @@
 						</tr>
 
 						<c:forEach var="book" items="${bookInfo}">
-							<input type="hidden" value="${book.memberEmail}"
-								name="memberEmail" id="memberEmail">
-							<tr>
+							<tr class="tbl-row">
 								<td>${book.bookTime}</td>
 								<td>${book.memberName}</td>
 								<td>${book.memberPhone}</td>
 								<td>${book.bookCnt}</td>
-								<td><button onClick="cancelBook()">취소</button></td>
+								<td><button onClick='cancelBook("${book.memberNo}")'>취소</button></td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -41,10 +48,9 @@
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
 	<script>
-		function cancelBook() {
-			window.location.href = "/dinner/writeCancelReason";
+		function cancelBook(memberNo) {
+			console.log(memberNo);
 		}
 	</script>
-
 </body>
 </html>

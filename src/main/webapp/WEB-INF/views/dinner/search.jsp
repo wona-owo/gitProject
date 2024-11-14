@@ -170,9 +170,9 @@
 			</div>
 
 			<!-- 콤팩트 필터 컨테이너 -->
-			<div class="filter-container">
-				<div class="filter-title">국가별 필터</div>
-				<c:forEach var="dinner" items="${dinnerList}">
+			<c:forEach var="dinner" items='${dinnerList}'>
+				<div class="filter-container">
+					<div class="filter-title">국가별 필터</div>
 					<div class="filter-section">
 						<span class="filter-button" data-value="${dinner.foodNation}"
 							onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
@@ -183,17 +183,12 @@
 						<span class="filter-button" data-value="${dinner.foodCat}"
 							onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
 					</div>
-				</c:forEach>
-			</div>
-
-
-
-
+				</div>
+			</c:forEach>
 			<!-- 예시 카드 -->
 			<div class="card-container">
 
 				<c:forEach var="dinner" items="${dinnerList}">
-
 
 					<div class="card" data-cuisine="${dinner.foodNation}"
 						data-type="${dinner.foodCat}">
@@ -208,12 +203,10 @@
 						</div>
 					</div>
 				</c:forEach>
-
-
 			</div>
 		</main>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
 	const filters = {
@@ -265,8 +258,47 @@
             arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
         }
         
-    
-	
+ // 즐겨찾기 기능 토글
+    function toggleFavorite(element) {
+        const restaurantId = element.getAttribute('data-id');
+        const isFavorited = element.classList.toggle('active');
+
+        if (isFavorited) {
+            favoriteRestaurants.add(restaurantId);
+            alert("즐겨찾기에 추가되었습니다.");
+        } else {
+            favoriteRestaurants.delete(restaurantId);
+            alert("즐겨찾기에서 해제되었습니다.");
+        }
+	 }
+        
+        
+    //즐겨찾기 로딩
+        function loadFavorites() {
+            const memberNo = '1'; // 예시로 회원 번호 설정
+            fetch(`/member/like?member_no=${memberNo}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById("card-container");
+                    container.innerHTML = data.map(restaurant => `
+                        <div class="card" onclick="location.href='restaurantDetail.jsp?name=${restaurant.name}'">
+                            <img src="${restaurant.image}" alt="${restaurant.name} 이미지">
+                            <div class="card-info">
+                                <h3>${restaurant.name}</h3>
+                                <p class="cuisine-type">${restaurant.cuisine}</p>
+                            </div>
+                            <span class="favorite-icon active" data-id="${restaurant.id}" onclick="toggleFavorite(this, '${memberNo}'); event.stopPropagation();">
+                                <i class="fa-solid fa-map-pin"></i>
+                            </span>
+                        </div>
+                    `).join('');
+                });
+        }
+ 
+	// 처음에도 동작할 수 있도록 페이지 로드 되면 실행
+	$(function() {
+		loadFavorites();
+	});
 </script>
 </body>
 </html>

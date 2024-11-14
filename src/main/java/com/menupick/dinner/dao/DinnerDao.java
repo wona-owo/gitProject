@@ -14,7 +14,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
-
+import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
 
@@ -22,7 +22,7 @@ public class DinnerDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> list = new ArrayList<>();
-		String query = "SELECT * FROM tbl_dinner ORDER BY dinner_name ASC";
+		String query = "select * from tbl_dinner order by dinner_name asc";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -68,7 +68,6 @@ public class DinnerDao {
 				d.setFoodNation(rset.getString("food_nation"));
 				d.setFoodCat(rset.getString("food_cat"));
 
-
 				dinnerList.add(d);
 			}
 		} catch (SQLException e) {
@@ -86,15 +85,12 @@ public class DinnerDao {
 		ResultSet rt = null;
 		ArrayList<Book> bookList = new ArrayList<>();
 		String query = "select * from tbl_book where dinner_no = ? and extract(month from book_date) = ? and extract(year from book_date) = ?";
-
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
 			pt.setInt(2, Integer.parseInt(justMonth));
 			pt.setInt(3, Integer.parseInt(displayYear));
-
 			rt = pt.executeQuery();
-
 			while (rt.next()) {
 				Book b = new Book();
 				b.setBookNo(rt.getString("book_no"));
@@ -124,18 +120,15 @@ public class DinnerDao {
 
 	// daniel
 	public ArrayList<BookInfo> getReservationData(Connection conn, String dinnerNo, String date) {
-
 		PreparedStatement pt = null;
 		ResultSet rt = null;
 		ArrayList<BookInfo> book = new ArrayList<>();
 		String query = "select b.book_no, b.book_date, b.book_cnt, b.book_time, b.member_no, m.member_name, m.member_phone, m.member_email from tbl_book b join tbl_member m on b.member_no = m.member_no where b.dinner_no = ? and b.book_date = ?";
-
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, dinnerNo);
 			pt.setString(2, date);
 			rt = pt.executeQuery();
-
 			while (rt.next()) {
 				BookInfo b = new BookInfo();
 				b.setBookNo(rt.getString("book_no"));
@@ -558,5 +551,64 @@ public class DinnerDao {
 		return dinners;
 	}
 
+	// daniel
+	public Member getMemberDataForCancelingReservation(Connection conn, String memberNo) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		Member m = new Member();
+		String query = "select member_name, member_phone, member_email from tbl_member where member_no = ?";
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, memberNo);
+			rt = pt.executeQuery();
+			if (rt.next()) {
+				m.setMemberName(rt.getString("member_name"));
+				m.setMemberPhone(rt.getString("member_phone"));
+				m.setMemberEmail(rt.getString("member_email"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return m;
+	}
+
+	// 식당등록 (경래)
+	public boolean insertDinner(Connection conn, Dinner dinner) {
+		PreparedStatement pstmt = null;
+		String query = "INSERT INTO tbl_dinner (dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, "
+				   	+ "dinner_phone, dinner_email, dinner_parking, dinner_max_person, busi_no, dinner_id, dinner_pw, dinner_confirm) "
+					+ "VALUES (seq_dinner.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        boolean result = false;
+        
+        try {
+			pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, dinner.getDinnerName());
+            pstmt.setString(2, dinner.getDinnerAddr());
+            pstmt.setString(3, dinner.getDinnerOpen());
+            pstmt.setString(4, dinner.getDinnerClose());
+            pstmt.setString(5, dinner.getDinnerPhone());
+            pstmt.setString(6, dinner.getDinnerEmail());
+            pstmt.setString(7, dinner.getDinnerParking());
+            pstmt.setString(8, dinner.getDinnerMaxPerson());
+            pstmt.setString(9, dinner.getBusiNo());
+            pstmt.setString(10, dinner.getDinnerId());
+            pstmt.setString(11, dinner.getDinnerPw());
+            pstmt.setString(12, dinner.getDinnerConfirm());
+            
+            int rowsAffected = pstmt.executeUpdate();
+            result = rowsAffected > 0;
+            
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+        
+		return result;
+	}
 
 }

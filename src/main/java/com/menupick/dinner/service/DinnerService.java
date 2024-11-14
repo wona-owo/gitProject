@@ -10,7 +10,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
-
+import com.menupick.member.model.vo.Member;
 
 public class DinnerService {
 	DinnerDao dao;
@@ -141,7 +141,29 @@ public class DinnerService {
 		return dinners;
 	}
 
+	// daniel
+	public Member getMemberDataForCancelingReservation(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Member member = dao.getMemberDataForCancelingReservation(conn, memberNo);
+		JDBCTemplate.close(conn);
+		return member;
+	}
 
+	// 식당등록 (경래)
+	public boolean insertDinner(Dinner dinner) {
+		Connection conn = JDBCTemplate.getConnection();
+		boolean result = false;
 
+		result = dao.insertDinner(conn, dinner);
+
+		if (result) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
 
 }
