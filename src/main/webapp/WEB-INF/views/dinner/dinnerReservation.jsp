@@ -7,10 +7,6 @@
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
-* {
-	border: 1px solid black;
-}
-
 .tbl {
 	margin: 0 auto;
 }
@@ -34,6 +30,14 @@ div {
 	content: "";
 	clear: both;
 	display: table;
+}
+
+/*
+border 가 없으면 취소 버튼을 눌렀을때 margin 이 이상한곳에 생겨서
+transparent 한 border 를 만들어줌
+*/
+ul {
+	border: 1px solid transparent;
 }
 
 .group-menu {
