@@ -1,7 +1,6 @@
 package com.menupick.member.controller;
-import com.menupick.member.model.vo.*;
-
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 /**
  * Servlet implementation class MemberUpdateServlet
  */

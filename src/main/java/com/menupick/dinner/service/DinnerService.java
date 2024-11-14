@@ -166,7 +166,7 @@ public class DinnerService {
 		return result;
 	}
 
-	//식당등록 아이디 중복체크 (경래)
+	// 식당등록 아이디 중복체크 (경래)
 	public int idDuplChk(String dinnerId) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.idDuplChk(conn, dinnerId);
