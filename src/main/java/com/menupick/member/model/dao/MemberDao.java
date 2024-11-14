@@ -539,4 +539,21 @@ public class MemberDao {
 		return result;
 	}
 
+	public boolean checkPassword(Connection conn, String memberNo, String memberPw) {
+        boolean isMatch = false;
+        String sql = "select member_pw from tbl_member where member_no = ?";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, memberNo);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String dbPassword = rs.getString("member_pw");
+                isMatch = dbPassword.equals(memberPw);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isMatch;
+    }
+
 }

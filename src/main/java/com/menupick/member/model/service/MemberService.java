@@ -251,4 +251,11 @@ public class MemberService {
 		return result;
 	}
 
+	public boolean checkPassword(String memberNo, String memberPw) {
+		Connection conn = JDBCTemplate.getConnection();
+	    boolean result = dao.checkPassword(conn, memberNo, memberPw);
+	    JDBCTemplate.close(conn);
+	    return result;
+	    }
+
 }
