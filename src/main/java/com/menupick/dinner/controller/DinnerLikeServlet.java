@@ -33,7 +33,6 @@ public class DinnerLikeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		// 2. 값 추출
 		// dinner 값
 		String dinnerNo = request.getParameter("dinner_no");
@@ -41,17 +40,17 @@ public class DinnerLikeServlet extends HttpServlet {
 		// food 값
 		String foodNo = request.getParameter("food_no");
 		
+		System.out.println(dinnerNo);
+		System.out.println(dinnerName);
+		System.out.println(foodNo);
 		
 		// 3. 로직
-		DinnerService service = new DinnerService();
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
-		
+		DinnerService service = new DinnerService();
 		dinnerList = service.likeDinner(dinnerNo, dinnerName);
-		//4. 값 추출
 		
+		// 4. 결과 처리
 		request.setAttribute("dinnerList", dinnerList);
-		
-		
 		request.getRequestDispatcher("/WEB-INF/views/dinner/search.jsp").forward(request, response);
 	}
 
