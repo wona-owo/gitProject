@@ -611,4 +611,28 @@ public class DinnerDao {
 		return result;
 	}
 
+	//식당등록 아이디 중복체크 (경래)
+	public int idDuplChk(Connection conn, String dinnerId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select count(*) as cnt from tbl_dinner where dinner_id = ?";
+		int cnt = 0;
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerId);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				cnt = rset.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return cnt;
+	}
+
 }
