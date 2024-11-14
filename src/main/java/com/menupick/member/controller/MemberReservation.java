@@ -34,19 +34,26 @@ public class MemberReservation extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinner_no");
+		
+		System.out.println(dinnerNo);
+
 		HttpSession session = request.getSession(false);
 		Member member = (Member) session.getAttribute("loginMember");
+
 		String memberNo = member.getMemberNo();
 		String bookDate = request.getParameter("book_date");
 		String bookTime = request.getParameter("book_time");
 		String bookCnt = request.getParameter("book_cnt");
-		MemberService service = new MemberService();
+		
+		System.out.println(bookDate);
+		System.out.println(bookTime);
+		System.out.println(bookCnt);
+
+//		MemberService service = new MemberService();
 //		Book book = service.bookingMember(dinnerNo, memberNo);
 
 //		request.setAttribute("dinner", dinner);
-
 		request.setAttribute("memberNo", memberNo);
-
 		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
 	}
 
