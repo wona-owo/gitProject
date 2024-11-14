@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
+.tbl{
+	margin: 0 auto;
+}
+
 .tbl-row {
 	text-align: center;
 }
@@ -45,9 +49,8 @@
 	</div>
 	<script>
 		function cancelBook(memberNo) {
-
+			console.log(memberNo);
 		}
 	</script>
-
 </body>
 </html>
