@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.menupick.member.model.service.MemberService;
 import com.menupick.member.model.vo.Member;
 
 /**
@@ -34,7 +33,7 @@ public class MemberReservation extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinner_no");
-		
+
 		System.out.println(dinnerNo);
 
 		HttpSession session = request.getSession(false);
@@ -44,7 +43,7 @@ public class MemberReservation extends HttpServlet {
 		String bookDate = request.getParameter("book_date");
 		String bookTime = request.getParameter("book_time");
 		String bookCnt = request.getParameter("book_cnt");
-		
+
 		System.out.println(bookDate);
 		System.out.println(bookTime);
 		System.out.println(bookCnt);
