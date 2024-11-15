@@ -556,13 +556,12 @@ public class MemberDao {
         return isMatch;
     }
 	
+	/* TODO 해당 부분 확인 부탁!
 	public String searchMemberId(Connection conn, String memberName, String memberPhone) throws SQLException {
         String sql = "SELECT member_Id FROM tbl_member WHERE member_name = ? AND member_phone = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, memberName);
             pstmt.setString(2, memberPhone);
-
-	
 
 			}	
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -573,6 +572,7 @@ public class MemberDao {
         return null; // 일치하는 결과가 없을 경우
 		
         }
+        */
 
 	//식당 검색
 	public ArrayList<Dinner> searchDinner(Connection conn, String srchQuery) {
