@@ -562,13 +562,53 @@ public class MemberDao {
             pstmt.setString(1, memberName);
             pstmt.setString(2, memberPhone);
 
+	
+
+			}	
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("member_id"); // 아이디 반환
                 }
             }
-        }
         return null; // 일치하는 결과가 없을 경우
+		
+        }
+
+	//식당 검색
+	public ArrayList<Dinner> searchDinner(Connection conn, String srchQuery) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Dinner> srchList = new ArrayList<Dinner>();
+		
+		String sql = "select d.dinner_name, d.dinner_addr, f.food_nation, f.food_cat from (tbl_dinner d join tbl_menu m on (d.dinner_no = m.dinner_no)) join tbl_food f on (m.food_no = f.food_no) where d.dinner_name Like ?";
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+ srchQuery + "%");
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Dinner d = new Dinner();
+				d.setDinnerName(rset.getString("dinner_name"));
+				d.setDinnerAddr(rset.getString("dinner_addr"));
+				d.setFoodNation(rset.getString("food_nation"));
+				d.setFoodCat(rset.getString("food_cat"));
+				srchList.add(d);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		
+		return srchList;
+	}
     }
 
-}
+
