@@ -555,8 +555,25 @@ public class MemberDao {
         }
         return isMatch;
     }
+	
+	public String searchMemberId(Connection conn, String memberName, String memberPhone) throws SQLException {
+        String sql = "SELECT member_Id FROM tbl_member WHERE member_name = ? AND member_phone = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, memberName);
+            pstmt.setString(2, memberPhone);
 
 	
+
+			}	
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("member_id"); // 아이디 반환
+                }
+            }
+        return null; // 일치하는 결과가 없을 경우
+		
+        }
+
 	//식당 검색
 	public ArrayList<Dinner> searchDinner(Connection conn, String srchQuery) {
 		PreparedStatement pstmt = null;
@@ -592,5 +609,6 @@ public class MemberDao {
 		
 		return srchList;
 	}
+    }
 
-}
+
