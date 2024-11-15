@@ -57,6 +57,7 @@
             alert("이름과 전화번호를 입력해 주세요.");
             return;
         }
+       
 
         $.ajax({
             url: '/member/searchId', // 서블릿 URL
@@ -67,7 +68,8 @@
             },
             success: function(response) {
                 if (response) {
-                    alert("아이디: " + response);
+                	var maskedId = response.substring(0, 4) + "*".repeat(response.length - 4);
+                    alert("아이디: " + maskedId);
                     closePopup(); // 팝업 닫기
                 } else {
                     alert("일치하는 회원이 없습니다.");
