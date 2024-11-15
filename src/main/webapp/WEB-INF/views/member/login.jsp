@@ -43,6 +43,7 @@
 input[type="checkbox"] {
 	margin: 0; /* 체크박스 여백 초기화 */
 }
+
 </style>
 </head>
 <body>
@@ -90,11 +91,9 @@ input[type="checkbox"] {
 					</div>
 
 					<div class="member-link-box">
-						<a href="/member/joinFrm">회원가입</a> | <a href="javascript:void(0)"
-							onclick="searchInfo('id')">아이디 찾기</a> | <a
+						<a href="/member/joinFrm">회원가입</a> | <button type="button" onclick="showIdSearchPopup()">아이디 찾기</button> | <a
 							href="javascript:void(0)" onclick="searchInfo('pw')">비밀번호 찾기</a>
 					</div>
-
 				</form>
 			</section>
 		</main>
@@ -114,6 +113,14 @@ input[type="checkbox"] {
 				return false;
 			}
 		}
+		function showIdSearchPopup() {
+			 
+			  var popupURL = "/member/searchIdFrm";
+			  var popupProperties = "width=600,height=500,scrollbars=yes";
+			  
+			  window.open(popupURL, "Popup", popupProperties);
+			}
+			
 	</script>
 </body>
 </html>
