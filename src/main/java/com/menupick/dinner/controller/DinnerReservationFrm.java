@@ -14,7 +14,7 @@ import com.menupick.dinner.vo.Dinner;
 /**
  * Servlet implementation class dinnerReservationFrm
  */
-@WebServlet("/dinner/dinnerReservation/")
+@WebServlet("/dinner/dinnerReservation")
 public class DinnerReservationFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
