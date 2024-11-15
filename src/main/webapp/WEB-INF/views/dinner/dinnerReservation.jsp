@@ -112,7 +112,8 @@ ul {
 											<option value="1">불판에 불남</option>
 									</select></li>
 									<li>
-										<button type="submit" onclick="confirmCancel('${b.memberNo}', '${b.bookNo}')">확인</button>
+										<button type="submit"
+											onclick="confirmCancel('${b.memberNo}', '${b.bookNo}')">확인</button>
 									</li>
 								</ul></li>
 						</ul>
@@ -122,6 +123,21 @@ ul {
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
+	<%-- 					
+let form = document.createElement('form');
+form.method = "get";
+form.action = "/dinner/cancelReservation";
+
+// Adding form data
+let input = document.createElement('input');
+input.type = 'hidden';
+input.name = 'bookNo';
+input.value = bookNo;
+form.appendChild(input);
+
+document.body.appendChild(form);
+form.submit();
+--%>
 	<script>
 		$(function() {
 			$('.menu-item .cancel-btn').click(
@@ -163,12 +179,6 @@ ul {
 
 			let selectElement = subMenu.find('select');
 
-			if (selectElement.length === 0) {
-				console.error("Select element not found for memberNo :",
-						memberNo);
-				return;
-			}
-
 			let selectedValue = selectElement.val();
 
 			// 확인 버튼을 눌렀을때 sub-menu 를 닫고 포함 되어있는 div 태그의 margin 을 지움
@@ -178,8 +188,6 @@ ul {
 			// 확인 버튼을 눌렀을때 sub-menu 를 다른 div 태그의 margin 을 지움
 			$('.sub-menu').hide();
 			$('.group-menu').css('margin-bottom', '0px');
-
-			console.log('Member Number :', memberNo);
 
 			if (selectedValue === "placeholder") {
 				return;

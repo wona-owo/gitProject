@@ -40,7 +40,7 @@ public class DinnerCancelReservationServlet extends HttpServlet {
 			request.setAttribute("title", "알림");
 			request.setAttribute("msg", "예약이 정상적으로 취소되었습니다");
 			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/WEB-INF/views/dinner/dinnerReservation.jsp");
+			request.setAttribute("loc", "/dinner/checkReservation");
 
 			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 		} else {
@@ -51,11 +51,6 @@ public class DinnerCancelReservationServlet extends HttpServlet {
 
 			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 		}
-
-		/*
-		 * 취소할건지 말건지 메세지를 보여주고 새로고침
-		 */
-
 	}
 
 	/**
