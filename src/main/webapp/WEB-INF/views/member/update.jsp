@@ -12,6 +12,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f0f0f0;
+	margin: 0;
+	padding: 0;
+}
 .submit-button{
 	display: flex;
 	justify-content: center;
@@ -56,8 +62,20 @@
 	padding-top: 15px;
 	font-size: 15px;
 }
-.submit-button:hover{
-	cursor:pointer;
+input[type="text"], input[type="password"], input[type="email"] {
+	width: calc(100% - 20px);
+	padding: 10px;
+	margin: 5px 0;
+	border: 1px solid #b0b0b0;
+	border-radius: 8px;
+	transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus
+	{
+	border-color: #808080;
+	box-shadow: 0 0 5px rgba(128, 128, 128, 0.5);
+	outline: none;
 }
 </style>
 <body>
@@ -67,7 +85,7 @@
     <div class="page-title">회원정보 수정</div>
     
     <form method="post" action="/member/update" onsubmit="return joinValidate()">
-        <!-- hidden inputs for memberNo and memberId -->
+        <!-- hidden inputs for memberNo-->
         <input type="hidden" name="memberNo" value="${loginMember.memberNo}">
         
             <div class="input-wrap">
@@ -125,7 +143,12 @@
             	</div>
             	<p id="phoneMessage" class="input-msg"></p>
             </div>
-            <div class="input-wrap">
+				           
+				 <div class="input-wrap">
+				    <div class="input-title">
+				        <label for="zipp_code_id">우편번호</label>
+				    </div>
+                <div class="input-wrap">
             	<div class="input-title">
                 	<label for="memberAddr">주소</label>
                 </div>
@@ -136,12 +159,13 @@
 								
 							<button type="button" id="zipp_btn" class="btn btn-primary"
 								onclick="execDaumPostcode()">우편번호 찾기</button>
-								
+						
 							<input type="text" name="user_add1" id="UserAdd1" maxlength="40"
 								placeholder="기본 주소를 입력하세요" required>
 							 <input type="text"	name="user_add2" id="UserAdd2" maxlength="40"
 								placeholder="상세 주소를 입력하세요"> 
             	</div>
+            </div>
             </div>
             <div class="input-wrap">
             	<div class="input-title">
@@ -155,7 +179,7 @@
                     <input type="submit" value="회원 정보 수정" class="sub">            
             	</div>
               	<div class="delete-button">
-                    <a href="/member/delete" class="delete" ><p>회원 탈퇴<p></a>         
+                    <a href="/member/delete" class="delete" ><p>회원 탈퇴</p></a>         
             	</div>
             
     	</form>
