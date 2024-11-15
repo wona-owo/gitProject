@@ -25,8 +25,8 @@
                         <div id="map" style="width: 100%; height: 400px;"></div>
                     </div>
                     <div class="focus-info" id="info">
-                        <h2 class="focus-title" id="info-title">식당 이름</h2>
-                        <p class="focus-description" id="info-description">식당 정보나 사진이 여기 뜰 예정이에요</p>
+                        <h2 class="focus-title" id="info-title">오늘의 맛집은?</h2>
+                        <p class="focus-description" id="info-description">핀을 클릭하세요!</p>
                     </div>
                 </section>
             </main>
