@@ -257,5 +257,13 @@ public class MemberService {
 	    JDBCTemplate.close(conn);
 	    return result;
 	    }
+	
+	//식당 검색
+	public ArrayList<Dinner> searchDinner(String srchQuery) {
+		Connection conn = JDBCTemplate.getConnection();
+	    ArrayList<Dinner> dinnerList= dao.searchDinner(conn, srchQuery);
+	    JDBCTemplate.close(conn);
+	    return dinnerList;
+	}
 
 }
