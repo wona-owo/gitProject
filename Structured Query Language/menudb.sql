@@ -76,12 +76,12 @@ create table
   );
 
 -- tbl_menu 데이터
-insert into tbl_menu values ('d2411140004', 'f2411140001', 18000);
-insert into tbl_menu values ('d2411140003', 'f2411140002', 12000);
-insert into tbl_menu values ('d2411140003', 'f2411140003', 20000);
-insert into tbl_menu values ('d2411140004', 'f2411140004', 15000);
-insert into tbl_menu values ('d2411140005', 'f2411140005', 13000);
-insert into tbl_menu values ('d2411140005', 'f2411140001', 7000);
+insert into tbl_menu values ('d2411150004', 'f2411150001', 18000);
+insert into tbl_menu values ('d2411150003', 'f2411150002', 12000);
+insert into tbl_menu values ('d2411150003', 'f2411150003', 20000);
+insert into tbl_menu values ('d2411150004', 'f2411150004', 15000);
+insert into tbl_menu values ('d2411150005', 'f2411150005', 13000);
+insert into tbl_menu values ('d2411150005', 'f2411150001', 7000);
 
 create table
   tbl_member (
@@ -115,9 +115,9 @@ create table
   );
 
 -- 즐겨찾기
-insert into tbl_like values ('d2411140001', 'm2411140002');
-insert into tbl_like values ('d2411140002', 'm2411140002');
-insert into tbl_like values ('d2411140003', 'm2411140003');
+insert into tbl_like values ('d2411150001', 'm2411150002');
+insert into tbl_like values ('d2411150002', 'm2411150002');
+insert into tbl_like values ('d2411150003', 'm2411150003');
 
 create table
   tbl_review (
@@ -146,9 +146,13 @@ create table
 create sequence seq_book maxvalue 9999 cycle;
 
 -- Insert into tbl_book
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411140001', 'm2411140001', to_date ('24/11/15', 'yy/mm/dd'), '1230', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411140001', 'm2411140002', to_date ('24/11/06', 'yy/mm/dd'), '1230', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411140001', 'm2411140003', to_date ('24/11/15', 'yy/mm/dd'), '1800', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411150001', 'm2411150002', to_date ('24/11/06', 'yy/mm/dd'), '1230', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411150001', 'm2411150001', to_date ('24/11/15', 'yy/mm/dd'), '1230', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411150001', 'm2411150002', to_date ('24/11/15', 'yy/mm/dd'), '1245', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411150001', 'm2411150003', to_date ('24/11/15', 'yy/mm/dd'), '1800', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411150001', 'm2411150003', to_date ('24/12/25', 'yy/mm/dd'), '1800', 4);
+
+select * from tbl_book;
 
 create table
   tbl_recommend (
