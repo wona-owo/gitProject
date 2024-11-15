@@ -160,12 +160,12 @@ ul {
 		});
 
 		function refresh(bookNo) {
-			// 새로고침하는데 year 값이 null 이라고 떠서 DinnerCheckReservationServlet 에서 값을 추출 할 수 있도록
 			let year = bookNo.substring(1, 3);
+			let month = bookNo.substring(3, 5);
+			let day = bookNo.substring(5, 7);
 
-			console.log(year);
-
-			window.location.href = "/dinner/checkReservation";
+			window.location.href = "/dinner/checkReservation?year=" + year
+					+ "&month=" + month + "&day=" + day;
 		}
 
 		function confirmCancel(memberNo, bookNo) {
