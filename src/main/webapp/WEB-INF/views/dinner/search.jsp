@@ -67,9 +67,9 @@
 
 .card img {
     width: 100%;
-    height: auto;
+    height: 100%;
     max-height: 150px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 5px;
     margin-bottom: 8px;
 }
@@ -113,7 +113,7 @@
                 <c:forEach var="dinner" items="${dinnerList}">
                     <div class="card" data-name="${dinner.dinnerName}" data-addr="${dinner.dinnerAddr}"
                          data-cuisine="${dinner.foodNation}" data-type="${dinner.foodCat}">
-                        <img src="img/jungsik.jpg" alt="음식 이미지">
+                        <img src="${pageContext.request.contextPath}/resources/images/${dinner.dinnerNo != null && !dinner.dinnerNo.isEmpty() ? dinner.dinnerNo : 'default'}.jpg" onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/resources/images/default.jpg';" alt="${dinner.dinnerName} 이미지">
                         <div class="card-info">
                             <h3>${dinner.dinnerName}</h3>
                             <p>${dinner.dinnerAddr}</p>

@@ -57,7 +57,7 @@
 			
 				<section class="restaurant-detail-header">
 					<div class="dinner-main-img">
-						<img src="/resources/images/jungsik.jpg" id="main-img"
+						<img src="/resources/images/${dinner.dinnerNo}.jpg" id="main-img"
 							alt="Restaurant Image" />
 					</div>
 					<div class="restaurant-detail">
