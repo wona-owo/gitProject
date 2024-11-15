@@ -152,6 +152,23 @@ public class DinnerDao {
 		return book;
 	}
 
+	// daniel
+	public int dinnerCancelReservaion(Connection conn, String bookNo) {
+		PreparedStatement pt = null;
+		int result = -1;
+		String qeury = "delete from tbl_book where book_no = ?";
+		try {
+			pt = conn.prepareStatement(qeury);
+			pt.setString(1, bookNo);
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		return result;
+	}
+
 	public ArrayList<Dinner> filterNation(Connection conn, String foodNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -602,7 +619,6 @@ public class DinnerDao {
 			result = rowsAffected > 0;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
