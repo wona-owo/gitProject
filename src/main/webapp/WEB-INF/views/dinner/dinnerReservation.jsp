@@ -10,9 +10,8 @@
 <title>dinnerReservation.jsp</title>
 <style>
 * {
-	border: 1px solid black;
+	border: 1px solid transparent;
 }
-
 /*
 clear
 -- float 속성이 있는거 다음에 올때 float 속성을 없애줌
@@ -30,7 +29,6 @@ div {
 	clear: both;
 	display: table;
 }
-
 /*
 border 가 없으면 취소 버튼을 눌렀을때 margin 이 이상한곳에 생겨서
 transparent 한 border 를 만들어줌
@@ -91,38 +89,34 @@ ul {
 
 					<%-- 현재 값이 전값과 다른지 비교 (가장 처음에 보여줄때는 이전과 배교할 수 없으니 그냥 보여줌)--%>
 					<c:if test="${empty previousHour or previousHour != currentHour}">
-						<div class="new-book-hour">${currentHour} 시</div>
+						<div class="new-book-hour">${currentHour}시</div>
 					</c:if>
 
 					<%-- 다음 값이랑 비교하기 위해 현재 값을 최신화 --%>
 					<c:set var="previousHour" value="${currentHour}" scope="page" />
 
-					<form action="/dinner/cancelReservation" method="get">
-						<div>
-							<ul class="group-menu" id="group-menu-${b.memberNo}">
-								<li>${b.bookTime}</li>
-								<li>${b.memberName}</li>
-								<li>${b.memberPhone}</li>
-								<li>${b.bookCnt}</li>
-								<li class="menu-item">
-									<%-- form 태그 안에 button 태그가 있으면 바로 action 값으로 이동해서 input 의 type 을 button 으로 --%>
-									<input type="button" class="cancel-btn" value="취소"> <%-- memberNo 에 따라서 id 와 class 를 다르게 준다 --%>
-									<ul class="sub-menu" id="sub-menu-${b.memberNo}">
-										<li><select id="select-input-${b.memberNo}">
-												<option value="placeholder" class="select-placeholder"
-													selected>취소 사유 선택</option>
-												<option value="0">숯에 불남</option>
-												<option value="1">불판에 불남</option>
-										</select></li>
-										<li><input type="hidden" value="${b.bookNo}"
-											name="bookNo" id="bookNo">
-											<button type="submit"
-												onclick="confirmCancel('${b.memberNo}')">확인</button></li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-					</form>
+					<div>
+						<ul class="group-menu" id="group-menu-${b.memberNo}">
+							<li>${b.bookTime}</li>
+							<li>${b.memberName}</li>
+							<li>${b.memberPhone}</li>
+							<li>${b.bookCnt}</li>
+							<li class="menu-item"><input type="button"
+								class="cancel-btn" value="취소">
+								<ul class="sub-menu" id="sub-menu-${b.memberNo}">
+									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
+									<li><select id="select-input-${b.memberNo}">
+											<option value="placeholder" class="select-placeholder"
+												selected>취소 사유 선택</option>
+											<option value="0">숯에 불남</option>
+											<option value="1">불판에 불남</option>
+									</select></li>
+									<li>
+										<button type="submit" onclick="confirmCancel('${b.memberNo}', '${b.bookNo}')">확인</button>
+									</li>
+								</ul></li>
+						</ul>
+					</div>
 				</c:forEach>
 			</section>
 		</main>
@@ -130,12 +124,10 @@ ul {
 	</div>
 	<script>
 		$(function() {
-			// Handle menu item click
 			$('.menu-item .cancel-btn').click(
 					function(event) {
 						event.stopPropagation();
 
-						// Toggle the clicked sub-menu
 						let subMenu = $(this).siblings('.sub-menu');
 
 						// Hide other sub-menus and reset their parent margins
@@ -146,7 +138,6 @@ ul {
 											'margin-bottom', '0px');
 								});
 
-						// Toggle the visibility of the clicked sub-menu
 						subMenu.toggle();
 
 						// Adjust the margin of the parent .group-menu
@@ -166,39 +157,71 @@ ul {
 					});
 		});
 
-		function confirmCancel(memberNo) {
-			// Select the groupMenu and subMenu using the memberNo
+		function confirmCancel(memberNo, bookNo) {
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
-			// Find the select element within the sub-menu
 			let selectElement = subMenu.find('select');
 
 			if (selectElement.length === 0) {
-				console.error("Select element not found for memberNo:",
+				console.error("Select element not found for memberNo :",
 						memberNo);
 				return;
 			}
 
-			// Get the selected value
 			let selectedValue = selectElement.val();
 
-			// Hide the sub-menu and reset the margin for this group
+			// 확인 버튼을 눌렀을때 sub-menu 를 닫고 포함 되어있는 div 태그의 margin 을 지움
 			subMenu.hide();
 			groupMenu.css('margin-bottom', '0px');
 
-			// Hide all sub-menus and reset margins globally
+			// 확인 버튼을 눌렀을때 sub-menu 를 다른 div 태그의 margin 을 지움
 			$('.sub-menu').hide();
 			$('.group-menu').css('margin-bottom', '0px');
 
-			console.log('Member Number:', memberNo);
+			console.log('Member Number :', memberNo);
 
 			if (selectedValue === "placeholder") {
 				return;
+			} else {
+				swal({
+					title : "알림",
+					text : "예약을 취소 하시겠습니까?",
+					icon : "warning",
+					buttons : {
+						cancel : {
+							text : "취소",
+							value : false,
+							visible : true,
+							closeModal : true
+						},
+						confirm : {
+							text : "확인",
+							value : true,
+							visible : true,
+							closeModal : true
+						}
+					}
+				}).then(function(isConfirm) {
+					if (isConfirm) {
+						let form = document.createElement('form');
+						form.method = "get";
+						form.action = "/dinner/cancelReservation";
+
+						// Adding form data
+						let input = document.createElement('input');
+						input.type = 'hidden';
+						input.name = 'bookNo';
+						input.value = bookNo;
+						form.appendChild(input);
+
+						document.body.appendChild(form);
+						form.submit();
+					}
+				});
 			}
 
-			// Proceed with your logic when a valid option is selected
-			console.log("Selected value:", selectedValue);
+			console.log("Selected value :", selectedValue);
 		}
 	</script>
 </body>
