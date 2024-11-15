@@ -123,21 +123,7 @@ ul {
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<%-- 					
-let form = document.createElement('form');
-form.method = "get";
-form.action = "/dinner/cancelReservation";
 
-// Adding form data
-let input = document.createElement('input');
-input.type = 'hidden';
-input.name = 'bookNo';
-input.value = bookNo;
-form.appendChild(input);
-
-document.body.appendChild(form);
-form.submit();
---%>
 	<script>
 		$(function() {
 			$('.menu-item .cancel-btn').click(
@@ -172,6 +158,15 @@ form.submit();
 						}
 					});
 		});
+
+		function refresh(bookNo) {
+			// 새로고침하는데 year 값이 null 이라고 떠서 DinnerCheckReservationServlet 에서 값을 추출 할 수 있도록
+			let year = bookNo.substring(1, 3);
+
+			console.log(year);
+
+			window.location.href = "/dinner/checkReservation";
+		}
 
 		function confirmCancel(memberNo, bookNo) {
 			let groupMenu = $('#group-menu-' + memberNo);
@@ -212,19 +207,41 @@ form.submit();
 					}
 				}).then(function(isConfirm) {
 					if (isConfirm) {
-						let form = document.createElement('form');
-						form.method = "get";
-						form.action = "/dinner/cancelReservation";
+						$.ajax({
+							url : "/dinner/cancelReservation",
+							type : "GET",
+							data : {
+								"bookNo" : bookNo
+							},
+							success : function(res) {
+								let title = "알림";
+								let text = "";
+								let icon = "";
 
-						// Adding form data
-						let input = document.createElement('input');
-						input.type = 'hidden';
-						input.name = 'bookNo';
-						input.value = bookNo;
-						form.appendChild(input);
+								if (res > 0) {
+									text = "예약이 취소 되었습니다";
+									icon = "success";
+								} else {
+									text = "예약 취소 중 오류가 발생하였습니다";
+									icon = "error";
+								}
 
-						document.body.appendChild(form);
-						form.submit();
+								swal({
+									title : title,
+									text : text,
+									icon : icon,
+								});
+
+								if (icon === "success") {
+									console.log("done");
+									refresh(bookNo);
+								}
+
+							},
+							error : function() {
+								console.log("foobar");
+							}
+						});
 					}
 				});
 			}

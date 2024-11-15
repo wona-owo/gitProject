@@ -34,7 +34,9 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String dinnerNo = request.getParameter("dinnerNo");
-		String year = request.getParameter("year");
+		String year = (request.getParameter("year") == null ? "0000" : request.getParameter("year"));
+		
+		
 		String justYear = year.substring(2);
 
 		// Parse the month as an integer, add 1, and format it as a 2-digit string
