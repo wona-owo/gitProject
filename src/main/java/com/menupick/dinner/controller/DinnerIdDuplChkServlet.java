@@ -1,4 +1,4 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 
@@ -8,39 +8,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.menupick.member.model.service.MemberService;
+import com.menupick.dinner.service.DinnerService;
 
 /**
- * Servlet implementation class MemberNickDuplChkServlet
+ * Servlet implementation class DinnerIdDuplChkServlet
  */
-@WebServlet("/member/nickDuplChk")
-public class MemberNickDuplChkServlet extends HttpServlet {
+@WebServlet("/dinner/idDuplChk")
+public class DinnerIdDuplChkServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberNickDuplChkServlet() {
+    public DinnerIdDuplChkServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String memberNick = request.getParameter("memberNick");
-		
-		MemberService service = new MemberService();
-		int result = service.nickDuplChk(memberNick);
-		
+		String dinnerId = request.getParameter("dinnerId");
+
+		DinnerService service = new DinnerService();
+		int result = service.idDuplChk(dinnerId);
+
 		response.getWriter().print(result);
-		}
-	
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

@@ -1,65 +1,66 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>회원 관리 페이지</title>
-    <jsp:include page="/WEB-INF/views/common/header.jsp" />
-    <link rel="stylesheet" href="/resources/css/dinner_admin_member.css">
+<meta charset="UTF-8">
+<title>회원 관리 페이지</title>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
+<link rel="stylesheet" href="/resources/css/dinner_admin_member.css">
 </head>
 <style>
-        .pagination {
-            display: flex;
-            justify-content: center; /* 중앙 정렬 */
-            margin: 20px 0;
-        }
+.pagination {
+	display: flex;
+	justify-content: center; /* 중앙 정렬 */
+	margin: 20px 0;
+}
 
-        .pagination a {
-            padding: 8px 12px;
-            margin: 0 4px;
-            border: 1px solid #ddd;
-            color: #333;
-            text-decoration: none;
-            border-radius: 5px;
-        }
+.pagination a {
+	padding: 8px 12px;
+	margin: 0 4px;
+	border: 1px solid #ddd;
+	color: #333;
+	text-decoration: none;
+	border-radius: 5px;
+}
 
-        .pagination a.active {
-            background-color: #f40;
-            color: #fff;
-            border-color: #f40;
-        }
+.pagination a.active {
+	background-color: #f40;
+	color: #fff;
+	border-color: #f40;
+}
 
-        .btn-container {
-            display: flex;
-            justify-content: center; /* 중앙 정렬 */
-            gap: 10px;
-            margin-top: 20px;
-        }
+.btn-container {
+	display: flex;
+	justify-content: center; /* 중앙 정렬 */
+	gap: 10px;
+	margin-top: 20px;
+}
 
-        .btn-selectlv, .btn-selectrm {
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.btn-selectlv, .btn-selectrm {
+	padding: 10px 20px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
 
-        .btn-selectlv:hover, .btn-selectrm:hover {
-            background-color: white;
-        }
-    </style>
+.btn-selectlv:hover, .btn-selectrm:hover {
+	background-color: white;
+}
+</style>
 <body>
 
-    <div class="wrap">
-        <main class="content">
-            <section class="section admin-wrap">
-                <div class="page-title">회원 관리 페이지</div>
-                <div class="table-container">
-                    <div class="search-box">
+	<div class="wrap">
+		<main class="content">
+			<section class="section admin-wrap">
+				<div class="page-title">회원 관리 페이지</div>
+				<div class="table-container">
+					<div class="search-box">
 						<form action="/admin/member" method="get">
 							<input type="hidden" name="action" value="search"> <input
 								type="text" name="memberNick" placeholder="회원 별명 검색">
@@ -67,68 +68,72 @@
 						</form>
 					</div>
 
-                    <table class="tbl tbl_hover">
-                        <tr>
-                            <th style="width: 7%;">선택</th>
-                            <th style="width: 5%">번호</th>
-                            <th style="width: 10%">아이디</th>
-                            <th style="width: 10%">회원별명</th>
-                            <th style="width: 10%">이메일</th>
-                            <th style="width: 15%">전화번호</th>
-                            <th style="width: 15%">주소</th>
-                            <th style="width: 10%">등급변경</th>
-                            <th style="width: 10%">강제탈퇴</th>
-                        </tr>
+					<table class="tbl tbl_hover">
+						<tr>
+							<th style="width: 7%;">선택</th>
+							<th style="width: 5%">번호</th>
+							<th style="width: 10%">아이디</th>
+							<th style="width: 10%">회원별명</th>
+							<th style="width: 10%">이메일</th>
+							<th style="width: 15%">전화번호</th>
+							<th style="width: 15%">주소</th>
+							<th style="width: 10%">등급변경</th>
+							<th style="width: 10%">강제탈퇴</th>
+						</tr>
 
-                        <c:forEach var="m" items="${members}">
-                            <tr>
-                                <td>
-                                    <!-- 선택 -->
-                                    <div>
-                                        <input type="checkbox" class="chk"> <label onclick="chkLabel(this)"></label>
-                                    </div>
-                                </td>
-                                <td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberNo}</a></td>
-                                <td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberId}</a></td>
-                                <td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberNick}</a></td>
-                                <td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberEmail}</a></td>
-                                <td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberPhone}</a></td>
-                                <td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberAddr}</a></td>
-                                <td>
-                                    <!-- 등급변경 -->
-                                    <div class="select">
-                                        <select onchange="memberLevelChange(this)">
-                                            <option value="2" ${m.memberLevel == 2 ? 'selected' : ''}>회원</option>
-                                            <option value="3" ${m.memberLevel == 3 ? 'selected' : ''}>가맹점</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <!-- 탈퇴 -->
-                                    <button class="btn-primary sm" onclick="selectRemove('${m.memberNo}')">탈퇴</button>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
+						<c:forEach var="m" items="${members}">
+							<tr>
+								<td>
+									<!-- 선택 -->
+									<div>
+										<input type="checkbox" class="chk"> <label
+											onclick="chkLabel(this)"></label>
+									</div>
+								</td>
+								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberNo}</a></td>
+								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberId}</a></td>
+								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberNick}</a></td>
+								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberEmail}</a></td>
+								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberPhone}</a></td>
+								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberAddr}</a></td>
+								<td>
+									<!-- 등급변경 -->
+									<div class="select">
+										<select onchange="memberLevelChange(this)">
+											<option value="2" ${m.memberLevel == 2 ? 'selected' : ''}>회원</option>
+											<option value="3" ${m.memberLevel == 3 ? 'selected' : ''}>가맹점</option>
+										</select>
+									</div>
+								</td>
+								<td>
+									<!-- 탈퇴 -->
+									<button class="btn-primary sm"
+										onclick="selectRemove('${m.memberNo}')">탈퇴</button>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
 
-                    <!-- 페이지 번호 -->
-                    <div class="pagination">
-                        <c:forEach var="i" begin="1" end="${totalPages}">
-                            <a href="?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
-                        </c:forEach>
-                    </div>
+					<!-- 페이지 번호 -->
+					<div class="pagination">
+						<c:forEach var="i" begin="1" end="${totalPages}">
+							<a href="?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+						</c:forEach>
+					</div>
 
-                    <!-- 선택 등급 변경 및 회원 탈퇴 버튼 -->
-                    <div class="btn-container">
-                        <button class="btn-selectlv lg" onclick="chgLevel(this)">선택 등급 변경</button>
-                        <button class="btn-selectrm lg" onclick="removeAllMembers()">선택 회원 탈퇴</button>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+					<!-- 선택 등급 변경 및 회원 탈퇴 버튼 -->
+					<div class="btn-container">
+						<button class="btn-selectlv lg" onclick="chgLevel(this)">선택
+							등급 변경</button>
+						<button class="btn-selectrm lg" onclick="removeAllMembers()">선택
+							회원 탈퇴</button>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
 
-    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 
