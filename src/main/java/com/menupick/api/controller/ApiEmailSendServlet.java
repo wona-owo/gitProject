@@ -52,7 +52,7 @@ public class ApiEmailSendServlet extends HttpServlet {
 		// 2. 세션 설정 및 인증 정보 설정
 		Session session = Session.getDefaultInstance(prop, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("unemotioned@naver.com", "Blackdwarf9");
+				return new PasswordAuthentication("unemotioned@naver.com", "비밀번호");
 			}
 		});
 
