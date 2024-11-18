@@ -149,4 +149,18 @@ public class DinnerService {
 		return member;
 	}
 
+	public int updateDinner(Dinner updDinner) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateDinner(conn, updDinner);
+		
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+
 }
