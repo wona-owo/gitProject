@@ -1,6 +1,7 @@
 package com.menupick.member.model.service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -272,33 +273,29 @@ public class MemberService {
 	    return dinnerList;
 	}
 
-	public String searchMemberPw(String memberId, String memberPhone) {
-		Connection conn = JDBCTemplate.getConnection();
-        String memberPw = dao.searchMemberPw(conn, memberId, memberPhone);
-        JDBCTemplate.close(conn);
-
-        if (memberPw != null) {
-            sendPwByEmail(memberId, memberPw);
-        }
-
-        return memberPw;
+	// 회원 정보 조회 (회원 아이디, 전화번호로 비밀번호 찾기)
+    public Member searchMemberPw(String memberId, String memberPhone) {
+        return dao.searchMemberPw(memberId, memberPhone);
     }
-	private void sendPwByEmail(String memberId, String memberPw) {
-        String recipientEmail = dao.getEmailByMemberId(memberId); // 회원 이메일 조회
-        String subject = "비밀번호 찾기 결과";
-        String message = "회원님의 비밀번호는 다음과 같습니다 : " + memberPw;
 
-        // 이메일 전송 구현 (JavaMail 사용)
+    // 비밀번호 업데이트
+    public boolean updateMemberPassword(String memberId, String tempPassword) {
+        return dao.updateMemberPassword(memberId, tempPassword);
+    }
+
+    // 임시 비밀번호를 이메일로 전송
+    public boolean sendPwByEmail(String recipientEmail, String tempPassword) {
         try {
+            // 이메일 전송
+            String subject = "비밀번호 찾기 결과";
+            String message = "회원님의 비밀번호는 다음과 같습니다: " + tempPassword;
             EmailUtil.sendEmail(recipientEmail, subject, message);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+
     }
-
-	public String searchMemberId(String memberName, String memberPhone) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
+ 
