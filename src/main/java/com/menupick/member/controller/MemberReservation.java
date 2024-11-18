@@ -10,15 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-<<<<<<< HEAD
-import com.menupick.member.model.vo.Member;
-=======
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.service.MemberService;
 
->>>>>>> feature
 
 /**
  * Servlet implementation class MemberReservation
@@ -41,29 +37,6 @@ public class MemberReservation extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-<<<<<<< HEAD
-		String dinnerNo = request.getParameter("dinner_no");
-
-		System.out.println(dinnerNo);
-
-		HttpSession session = request.getSession(false);
-		Member member = (Member) session.getAttribute("loginMember");
-
-		String memberNo = member.getMemberNo();
-		String bookDate = request.getParameter("book_date");
-		String bookTime = request.getParameter("book_time");
-		String bookCnt = request.getParameter("book_cnt");
-
-		System.out.println(bookDate);
-		System.out.println(bookTime);
-		System.out.println(bookCnt);
-
-//		MemberService service = new MemberService();
-//		Book book = service.bookingMember(dinnerNo, memberNo);
-
-//		request.setAttribute("dinner", dinner);
-		request.setAttribute("memberNo", memberNo);
-=======
 		//book 등록값
 		String dinnerNo = request.getParameter("dinnerNo");
 		String memberNo = request.getParameter("memberId");
@@ -76,7 +49,7 @@ public class MemberReservation extends HttpServlet {
 		Dinner dinner = dservice.getDinnerNo(dinnerNo);
 		
 		int result = mservice.bookingMember(book);
-		
+		 
 		
 		request.setAttribute("dinner", dinner);
 
@@ -87,7 +60,6 @@ public class MemberReservation extends HttpServlet {
         System.out.println("bookTime: " + bookTime);
 
         
->>>>>>> feature
 		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
 	}
 
