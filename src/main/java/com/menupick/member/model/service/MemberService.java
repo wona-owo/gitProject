@@ -1,6 +1,7 @@
 package com.menupick.member.model.service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -257,5 +258,33 @@ public class MemberService {
 	    JDBCTemplate.close(conn);
 	    return result;
 	    }
+	
+	//식당 검색
+	public ArrayList<Dinner> searchDinner(String srchQuery) {
+		Connection conn = JDBCTemplate.getConnection();
+	    ArrayList<Dinner> dinnerList= dao.searchDinner(conn, srchQuery);
+	    JDBCTemplate.close(conn);
+	    return dinnerList;
+	}
 
-}
+	public String searchMemberId(String memberName, String memberPhone) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    String result = null;
+	    try {
+	        result = dao.searchMemberId(conn, memberName, memberPhone);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (conn != null && !conn.isClosed()) {
+	                conn.close(); // Connection 자원 반환
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return result; // 조회된 결과를 반환
+	}
+    }
+
+

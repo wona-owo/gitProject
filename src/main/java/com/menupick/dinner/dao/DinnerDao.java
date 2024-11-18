@@ -64,7 +64,7 @@ public class DinnerDao {
 				Dinner d = new Dinner();
 				d.setDinnerNo(rset.getString("dinner_no"));
 				d.setDinnerName(rset.getString("dinner_name"));
-				d.setDinnerAddr(rset.getString("dinner_addr"));				
+				d.setDinnerAddr(rset.getString("dinner_addr"));
 				d.setFoodNation(rset.getString("food_nation"));
 				d.setFoodCat(rset.getString("food_cat"));
 
@@ -150,6 +150,23 @@ public class DinnerDao {
 			JDBCTemplate.close(pt);
 		}
 		return book;
+	}
+
+	// daniel
+	public int dinnerCancelReservaion(Connection conn, String bookNo) {
+		PreparedStatement pt = null;
+		int result = -1;
+		String qeury = "delete from tbl_book where book_no = ?";
+		try {
+			pt = conn.prepareStatement(qeury);
+			pt.setString(1, bookNo);
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		return result;
 	}
 
 	public ArrayList<Dinner> filterNation(Connection conn, String foodNo) {
@@ -579,39 +596,38 @@ public class DinnerDao {
 	public boolean insertDinner(Connection conn, Dinner dinner) {
 		PreparedStatement pstmt = null;
 		String query = "INSERT INTO tbl_dinner (dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, "
-				   	+ "dinner_phone, dinner_email, dinner_parking, dinner_max_person, busi_no, dinner_id, dinner_pw, dinner_confirm) "
-					+ "VALUES (seq_dinner.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        boolean result = false;
-        
-        try {
+				+ "dinner_phone, dinner_email, dinner_parking, dinner_max_person, busi_no, dinner_id, dinner_pw, dinner_confirm) "
+				+ "VALUES (seq_dinner.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		boolean result = false;
+
+		try {
 			pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, dinner.getDinnerName());
-            pstmt.setString(2, dinner.getDinnerAddr());
-            pstmt.setString(3, dinner.getDinnerOpen());
-            pstmt.setString(4, dinner.getDinnerClose());
-            pstmt.setString(5, dinner.getDinnerPhone());
-            pstmt.setString(6, dinner.getDinnerEmail());
-            pstmt.setString(7, dinner.getDinnerParking());
-            pstmt.setString(8, dinner.getDinnerMaxPerson());
-            pstmt.setString(9, dinner.getBusiNo());
-            pstmt.setString(10, dinner.getDinnerId());
-            pstmt.setString(11, dinner.getDinnerPw());
-            pstmt.setString(12, dinner.getDinnerConfirm());
-            
-            int rowsAffected = pstmt.executeUpdate();
-            result = rowsAffected > 0;
-            
+			pstmt.setString(1, dinner.getDinnerName());
+			pstmt.setString(2, dinner.getDinnerAddr());
+			pstmt.setString(3, dinner.getDinnerOpen());
+			pstmt.setString(4, dinner.getDinnerClose());
+			pstmt.setString(5, dinner.getDinnerPhone());
+			pstmt.setString(6, dinner.getDinnerEmail());
+			pstmt.setString(7, dinner.getDinnerParking());
+			pstmt.setString(8, dinner.getDinnerMaxPerson());
+			pstmt.setString(9, dinner.getBusiNo());
+			pstmt.setString(10, dinner.getDinnerId());
+			pstmt.setString(11, dinner.getDinnerPw());
+			pstmt.setString(12, dinner.getDinnerConfirm());
+
+			int rowsAffected = pstmt.executeUpdate();
+			result = rowsAffected > 0;
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
 		}
-        
+
 		return result;
 	}
 
-	//식당등록 아이디 중복체크 (경래)
+	// 식당등록 아이디 중복체크 (경래)
 	public int idDuplChk(Connection conn, String dinnerId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -633,6 +649,39 @@ public class DinnerDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return cnt;
+	}
+
+
+	public int updateDinner(Connection conn, Dinner updDinner) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "UPDATE TBL_DINNER SET DINNER_NAME = ?, DINNER_ADDR  = ?, DINNER_OPEN  = ?,DINNER_CLOSE  = ?, DINNER_PHONE  = ?,DINNER_EMAIL  = ?, BUSI_NO  = ?,DINNER_MAX_PERSON  = ?,DINNER_CONFIRM  = ?,DINNER_NO  = ?";
+		
+		try {
+			pstmt=conn.prepareStatement(query);
+			
+			pstmt.setString(1,updDinner.getDinnerName());
+			pstmt.setString(2,updDinner.getDinnerAddr());
+			pstmt.setString(3,updDinner.getDinnerOpen());
+			pstmt.setString(4,updDinner.getDinnerClose());
+			pstmt.setString(5,updDinner.getDinnerPhone());
+			pstmt.setString(6,updDinner.getDinnerEmail());
+			pstmt.setString(7,updDinner.getDinnerParking());
+			pstmt.setString(8,updDinner.getBusiNo());
+			pstmt.setString(9,updDinner.getDinnerMaxPerson());
+			pstmt.setString(10,updDinner.getDinnerConfirm());
+			pstmt.setString(11,updDinner.getDinnerNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
 	}
 
 }

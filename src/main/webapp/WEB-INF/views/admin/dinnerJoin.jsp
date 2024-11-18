@@ -29,6 +29,15 @@ body {
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* 오른쪽 위 이미지 스타일 */
+.header-img {
+    position: absolute;
+    top:10px;
+    right: 0px;
+    width: 50px;
+    height: auto;
+}
+
 .page-title {
 	font-size: 24px;
 	font-weight: bold;
@@ -234,6 +243,9 @@ body {
 </head>
 <body>
 	<div class="wrap">
+		<a href="/">
+			<img src="/resources/images/logo.png" alt="Logo" class="header-img">
+		</a>
 		<h1 class="page-title">식당 정보 등록</h1>
 		<form action="${pageContext.request.contextPath}/dinnerJoin"
 			method="post">

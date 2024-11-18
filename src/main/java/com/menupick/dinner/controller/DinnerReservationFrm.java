@@ -1,6 +1,7 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +14,7 @@ import com.menupick.dinner.vo.Dinner;
 /**
  * Servlet implementation class dinnerReservationFrm
  */
-@WebServlet("/dinner/dinnerReservation/")
+@WebServlet("/dinner/dinnerReservation")
 public class DinnerReservationFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

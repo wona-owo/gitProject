@@ -9,23 +9,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
-import com.menupick.dinner.vo.Dinner;
-import com.menupick.member.model.service.MemberService;
-import com.menupick.member.model.vo.Member;
-
-
 
 /**
- * Servlet implementation class DinnerDetailServlet
+ * Servlet implementation class DinnerCancelReservationServlet
  */
-@WebServlet("/dinner/dinnerDetail")
-public class DinnerDetailServlet extends HttpServlet {
+@WebServlet("/dinner/cancelReservation")
+public class DinnerCancelReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DinnerDetailServlet() {
+	public DinnerCancelReservationServlet() {
 		super();
 	}
 
@@ -35,24 +30,11 @@ public class DinnerDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String dinnerNo = request.getParameter("dinner_no");
-		String foodNo = request.getParameter("food_no");
-		String memberNo = request.getParameter("member_no");
-		
-		System.out.println(dinnerNo);
-		System.out.println(foodNo);
-		System.out.println(memberNo);
+		String bookNo = request.getParameter("bookNo");
 
 		DinnerService service = new DinnerService();
-		MemberService mservice = new MemberService();
-		Dinner dinner = service.dinnerDetail(dinnerNo);
-		Member member = mservice.getMemberNo(memberNo);
-		
-		request.setAttribute("dinner", dinner);
-		request.setAttribute("member", member);
-		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
-		
 
+		response.getWriter().print(service.dinnerCancelReservaion(bookNo));
 	}
 
 	/**
