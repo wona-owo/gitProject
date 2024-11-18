@@ -1,6 +1,7 @@
 package com.menupick.member.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.menupick.member.model.vo.Member;
+import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.Book;
+import com.menupick.dinner.vo.Dinner;
+import com.menupick.member.model.service.MemberService;
+
 
 /**
  * Servlet implementation class MemberReservation
@@ -32,27 +37,29 @@ public class MemberReservation extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String dinnerNo = request.getParameter("dinner_no");
+		//book 등록값
+		String dinnerNo = request.getParameter("dinnerNo");
+		String memberNo = request.getParameter("memberId");
+		String bookDate = request.getParameter("bookDate");
+		String bookTime = request.getParameter("bookTime");
+		String bookCnt = request.getParameter("bookCnt");
+		MemberService mservice = new MemberService();
+		DinnerService dservice = new DinnerService();
+		Book book = new Book();
+		Dinner dinner = dservice.getDinnerNo(dinnerNo);
+		
+		int result = mservice.bookingMember(book);
+		 
+		
+		request.setAttribute("dinner", dinner);
 
-		System.out.println(dinnerNo);
+		System.out.println("dinnerNo: " + dinnerNo);
+        System.out.println("memberNo: " + memberNo);
+        System.out.println("bookDate: " + bookDate);
+        System.out.println("bookCnt: " + bookCnt);
+        System.out.println("bookTime: " + bookTime);
 
-		HttpSession session = request.getSession(false);
-		Member member = (Member) session.getAttribute("loginMember");
-
-		String memberNo = member.getMemberNo();
-		String bookDate = request.getParameter("book_date");
-		String bookTime = request.getParameter("book_time");
-		String bookCnt = request.getParameter("book_cnt");
-
-		System.out.println(bookDate);
-		System.out.println(bookTime);
-		System.out.println(bookCnt);
-
-//		MemberService service = new MemberService();
-//		Book book = service.bookingMember(dinnerNo, memberNo);
-
-//		request.setAttribute("dinner", dinner);
-		request.setAttribute("memberNo", memberNo);
+        
 		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
 	}
 
