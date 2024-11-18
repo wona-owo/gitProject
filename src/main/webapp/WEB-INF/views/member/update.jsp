@@ -77,6 +77,34 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 	box-shadow: 0 0 5px rgba(128, 128, 128, 0.5);
 	outline: none;
 }
+button {
+	background-color: #007bff;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	color: #fff;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
+.delete-button {
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	color: #fff;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.delete:hover {
+	background-color: #0056b3;
+	transition: background-color 0.3s;
+}
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
@@ -176,7 +204,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
             	</div>
             </div>
             	<div class="submit-button">
-                    <input type="submit" value="회원 정보 수정" class="sub">            
+                    <button type="submit" class="sub">회원 정보 수정</button>            
             	</div>
               	<div class="delete-button">
                     <a href="/member/delete" class="delete" ><p>회원 탈퇴</p></a>         
