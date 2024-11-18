@@ -46,6 +46,10 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 
 		String year = request.getParameter("year");
 		String justYear = year.substring(2);
+		
+		String ajaxRequest =  request.getParameter("check");
+		
+		System.out.println(ajaxRequest);
 
 		// Parse the month as an integer, add 1, and format it as a 2-digit string
 		int month = Integer.parseInt(request.getParameter("month")) + 1;
@@ -55,14 +59,15 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 		int day = Integer.parseInt(request.getParameter("day"));
 		String dayPadded = String.format("%02d", day);
 		String date = (justYear + "/" + monthPadded + "/" + dayPadded);
-		String dateForDisplay = (monthPadded + " 월 " + dayPadded + " 일");
 
 		DinnerService service = new DinnerService();
 		ArrayList<BookInfo> bookInfoList = service.getReservationData(dinnerNo, date);
 
 		request.setAttribute("bookInfo", bookInfoList);
-		request.setAttribute("bookDate", dateForDisplay);
-		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
+		request.setAttribute("bookYear", year);
+		request.setAttribute("bookMonth", month);
+		request.setAttribute("bookDay", day);
+ 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 	}
 
 	/**

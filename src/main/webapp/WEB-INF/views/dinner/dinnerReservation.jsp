@@ -87,7 +87,10 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookDate}</div>
+				<div class="page-title">${bookMonth} 월 ${bookDay} 일</div>
+				<input type="hidden" value="${bookYear}" id="bookYear">
+				<input type="hidden" value="${bookMonth}" id="bookMonth">
+				<input type="hidden" value="${bookDay}" id="bookDay">
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
 					<span>취소를 해주는 버튼</span>
@@ -170,16 +173,20 @@ ul {
 					});
 		});
 
-		function refresh(bookNo) {
-			let year = bookNo.substring(1, 3);
-			let month = bookNo.substring(3, 5);
-			let day = bookNo.substring(5, 7);
-
+		function refresh(bookYear, bookMonth, bookDay) {
+			let year = bookYear;
+			let month = bookMonth;
+			let day = bookDay;
+			
 			window.location.href = "/dinner/checkReservation?year=" + year
-					+ "&month=" + month + "&day=" + day;
+					+ "&month=" + month + "&day=" + day + "&check=1";
 		}
 
 		function confirmCancel(memberNo, bookNo) {
+			let bookYear = $("#bookYear").val(); 
+			let bookMonth = $("#bookMonth").val(); 
+			let bookDay = $("#bookDay").val(); 
+			
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
@@ -244,10 +251,8 @@ ul {
 								});
 
 								if (icon === "success") {
-									console.log("done");
-									refresh(bookNo);
+									refresh(bookYear, bookMonth, bookDay);
 								}
-
 							},
 							error : function() {
 								console.log("foobar");
