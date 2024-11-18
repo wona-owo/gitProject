@@ -297,5 +297,10 @@ public class MemberService {
         }
 
     }
+
+	public String searchMemberId(String memberName, String memberPhone) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
  
