@@ -228,15 +228,19 @@ public class MemberService {
 		return result;
 	}
 
-	public int bookingMember(String dinnerNo, String memberNo) {
+	public int bookingMember(Book book) {
 		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.bookingMember(conn, dinnerNo, memberNo);
 		
+		int result = dao.bookingMember(conn, book);
+		System.out.println(book);
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
 			JDBCTemplate.rollback(conn);
 		}
+		
+		
+		JDBCTemplate.close(conn);
 		return result;
 	}
 
@@ -251,6 +255,7 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
+
 
 	public boolean checkPassword(String memberNo, String memberPw) {
 		Connection conn = JDBCTemplate.getConnection();
@@ -286,5 +291,10 @@ public class MemberService {
 	    return result; // 조회된 결과를 반환
 	}
     }
+
+
+
+
+
 
 

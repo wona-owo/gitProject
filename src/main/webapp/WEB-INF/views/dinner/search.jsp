@@ -182,6 +182,7 @@
                 <button class="search-button" onclick="search()">검색</button>
             </div>
 
+
             <!-- 콤팩트 필터 컨테이너 -->
             <div class="filter-container">
                 <div class="filter-title">국가별 필터</div>
@@ -199,7 +200,7 @@
                 </div>
             </div>
 
-            <!-- 카드 컨테이너 -->
+             <!-- 카드 컨테이너 -->
             <div class="card-container" id="cardContainer">
                 <c:forEach var="dinner" items="${dinnerList}">
                     <div class="card" data-name="${dinner.dinnerName}" data-addr="${dinner.dinnerAddr}" data-cuisine="${dinner.foodNation}" data-type="${dinner.foodCat}" onclick="openDetailPage('${dinner.dinnerNo}', event)">
