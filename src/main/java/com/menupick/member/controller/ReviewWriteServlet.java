@@ -29,7 +29,7 @@ public class ReviewWriteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/writeReview.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerWriteReview.jsp");
 		view.forward(request, response);
 
 	}
