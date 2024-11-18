@@ -189,4 +189,9 @@ public class DinnerService {
 		return result;
 	}
 
+	public int updateDinner(Dinner updDinner) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
