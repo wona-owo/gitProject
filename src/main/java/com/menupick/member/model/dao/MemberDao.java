@@ -611,25 +611,9 @@ public class MemberDao {
 		}
 		
 		
-		return srchList;
+		return srchList;  
 	}
 	
-	public String searchMemberPw(Connection conn, String memberId, String memberPhone) {
-		String sql = "SELECT member_pw FROM tbl_member WHERE member_id = ? AND member_phone = ?";
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, memberId);
-			pstmt.setString(2, memberPhone);
-			
-			try (ResultSet rs = pstmt.executeQuery()) {
-				if (rs.next()) {
-					return rs.getString("member_pw");
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	public String getEmailByMemberId(String memberId) {
 			Connection conn = JDBCTemplate.getConnection();
 			String sql = "SELECT member_email FROM tbl_member WHERE member_id = ?";
@@ -647,6 +631,58 @@ public class MemberDao {
 	        return null;
 		}
 
+	public Member searchMemberPw(String memberId, String memberPhone) {
+        Connection conn = JDBCTemplate.getConnection();
+        Member member = null;
+        String sql = "SELECT * FROM tbl_member WHERE member_id = ? AND member_phone = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, memberId);
+            pstmt.setString(2, memberPhone);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    member = new Member();
+                    member.setMemberId(rs.getString("member_id"));
+                    member.setMemberPhone(rs.getString("member_phone"));
+                    member.setMemberEmail(rs.getString("member_email"));
+                    member.setMemberPw(rs.getString("member_pw"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(conn);
+        }
+        return member;
+    }
+
+    // 비밀번호 업데이트
+    public boolean updateMemberPassword(String memberId, String tempPassword) {
+        Connection conn = JDBCTemplate.getConnection();
+        String sql = "UPDATE tbl_member SET member_pw = ? WHERE member_id = ?";
+        boolean isUpdated = false;
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, tempPassword);
+            pstmt.setString(2, memberId);
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                isUpdated = true;
+                JDBCTemplate.commit(conn);  // 커밋
+            } else {
+                JDBCTemplate.rollback(conn);  // 롤백
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(conn);
+        }
+        return isUpdated;
+    }
+
+	
     }
 
 
