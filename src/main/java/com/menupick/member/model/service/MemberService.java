@@ -295,11 +295,10 @@ public class MemberService {
             e.printStackTrace();
         }
     }
-    }
 
+	public String searchMemberId(String memberName, String memberPhone) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-
-
-
-
-
+}
