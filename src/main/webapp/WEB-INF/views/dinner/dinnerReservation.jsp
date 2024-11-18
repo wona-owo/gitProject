@@ -1,10 +1,10 @@
 <%--
-From : DinnerCheckReservation.java
-AJAX with : DinnerCancelReservation.java
+From : DinnerCheckReservationServlet.java
+AJAX with DinnerCancelReservationServlet.jav
 
-bookNo 를 이용해서 예약을 취소 할 수 있고
-memberNo 를 이용해서 예약 취소한것을 이메일로 보낸다
-예약 취소를 하면 ajax 를 통해서 한후에 현재 페이지를 새로고침
+예약 상세 정보를 보여주고 예약을 취소 할 수 도 있음
+예약을 취소하면 DB 에서 예약 정보를 삭제 하고 회원에게 email 을 보내줘야함
+그리고 새로고침
 
 @Author : 김찬희
  --%>
@@ -82,10 +82,11 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookMonth}월 ${bookDay} 일</div>
+				<div class="page-title">${bookMonth}월${bookDay} 일</div>
 				<input type="hidden" value="${bookYear}" id="bookYear"> <input
 					type="hidden" value="${bookMonth}" id="bookMonth"> <input
 					type="hidden" value="${bookDay}" id="bookDay">
+					<input type="hidden" value="${dinnerNo}" id="dinnerNo">
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
 					<span>취소를 해주는 버튼</span>
@@ -114,12 +115,14 @@ ul {
 								class="cancel-btn" value="취소">
 								<ul class="sub-menu" id="sub-menu-${b.memberNo}">
 									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
-									<li><select id="select-input-${b.memberNo}">
-											<option value="placeholder" class="select-placeholder"
-												selected>취소 사유 선택</option>
+									<li><select id="select-input-${b.memberNo}"
+										class="cancel-reason-select">
+											<option value="" class="select-placeholder" selected disabled>취소
+												사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
 									</select></li>
+
 									<li>
 										<button type="submit"
 											onclick="confirmCancel('${b.memberNo}', '${b.bookNo}')">확인</button>
@@ -168,25 +171,21 @@ ul {
 					});
 		});
 
-		function refresh(bookYear, bookMonth, bookDay) {
-			let year = bookYear;
-			let month = bookMonth;
-			let day = bookDay;
+		function refresh() {
+			let year = $("#bookYear").val();
+			let month = $("#bookMonth").val();
+			let day = $("#bookDay").val();
+			let dinnerNo = $("#dinnerNo").val();
 
 			window.location.href = "/dinner/checkReservation?year=" + year
-					+ "&month=" + month + "&day=" + day + "&check=1";
+					+ "&month=" + month + "&day=" + day + "&dinnerNo=" + dinnerNo +"&check=" + 1;
 		}
 
 		function confirmCancel(memberNo, bookNo) {
-			let bookYear = $("#bookYear").val();
-			let bookMonth = $("#bookMonth").val();
-			let bookDay = $("#bookDay").val();
-
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
-			let selectElement = subMenu.find('select');
-
+			let selectElement = subMenu.find('#select-input-' + memberNo);
 			let selectedValue = selectElement.val();
 
 			// 확인 버튼을 눌렀을때 sub-menu 를 닫고 포함 되어있는 div 태그의 margin 을 지움
@@ -246,7 +245,7 @@ ul {
 								});
 
 								if (icon === "success") {
-									refresh(bookYear, bookMonth, bookDay);
+									refresh();
 								}
 							},
 							error : function() {
@@ -256,8 +255,6 @@ ul {
 					}
 				});
 			}
-
-			console.log("Selected value :", selectedValue);
 		}
 	</script>
 </body>
