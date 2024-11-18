@@ -210,7 +210,7 @@ public class MemberDao {
 		// Oracle에서의 페이징 쿼리
 		String query = "SELECT * FROM (" + "    SELECT a.*, ROWNUM AS rnum FROM ("
 				+ "        SELECT * FROM tbl_member ORDER BY member_no" + "    ) a " + "    WHERE ROWNUM <= ?" + ") "
-				+ "WHERE rnum > ? and member_level > 1";
+				+ "WHERE rnum > ? and member_level = 2";
 
 		try {
 			pstmt = conn.prepareStatement(query);
