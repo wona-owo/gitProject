@@ -371,7 +371,7 @@ body {
 			<!-- 사업자 등록 번호 -->
 			<div class="form-group">
 				<label for="busiNo">사업자 등록 번호</label> <input type="text" id="busiNo"
-					name="busiNo" required pattern="^\d{3}-\d{2}-\d{5}$" maxlength="12"
+					name="busiNo" required maxlength="12"
 					placeholder="예: 123-45-67890">
 			</div>
 
