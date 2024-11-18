@@ -57,7 +57,7 @@ public class AdminMemberDetailServlet extends HttpServlet {
 		request.setAttribute("member", member);
 		request.setAttribute("reviews", reviews);
 		request.setAttribute("sortOption", sortOption); // 현재 정렬 옵션 전달
-		request.getRequestDispatcher("/WEB-INF/views/admin/adminMemberDetail.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/admin/reviewReportTest.jsp").forward(request, response);
 
 	}
 
