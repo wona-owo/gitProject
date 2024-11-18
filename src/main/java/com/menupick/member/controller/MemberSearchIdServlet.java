@@ -23,6 +23,7 @@ public class MemberSearchIdServlet extends HttpServlet {
 		String memberPhone = request.getParameter("memberPhone");
 
 		// 서비스 호출해서 아이디 조회
+		MemberService service = new MemberService();
 		String memberId = Service.searchMemberId(memberName, memberPhone);
 
 		// 응답 설정
