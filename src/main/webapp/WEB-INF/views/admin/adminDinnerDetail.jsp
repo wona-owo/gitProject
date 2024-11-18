@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -98,9 +100,11 @@
         <main class="content mypage-container">
             <section class="section mypage-wrap">
                 <div class="page-title">매장 정보페이지</div>
+                
                 <form id="updateForm" action="/dinner/update" method="post">
+                
                     <input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}">
-
+                    
                     <table class="tbl">
                         <tr>
                             <th>식당 코드</th>
@@ -159,7 +163,7 @@
                     </table>
 
                     <div class="mypage-btn">
-                        <button type="button" id="updateButton" class="btn-primary" style="margin-right: 100px;">정보수정</button>
+                       <button type="button" id="updateButton" class="btn-primary" style="margin-right: 100px;" onclick="updateDinner()">정보수정</button>
                         <button type="button" onclick="window.location.href='/admin/DinnerPageFrm'" class="btn-primary">매장 상세페이지 이동</button>
                     </div>
                 </form>
@@ -169,61 +173,65 @@
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
     <script>
-        $(document).ready(function() {
-            // updateDinner 함수 정의
-            function updateDinner() {
-                const dinnerOpen = $('#dinnerOpen');
-                const dinnerClose = $('#dinnerClose');
-                const dinnerPhone = $('#dinnerPhone');
+    
+    function updateDinner() {
+        // 입력 필드 선택
+        const dinnerOpen = $('#dinnerOpen'); // 오픈 시간
+        const dinnerClose = $('#dinnerClose'); // 마감 시간
+        const dinnerPhone = $('#dinnerPhone'); // 전화번호
 
-                const timeExp = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
-                const phoneExp = /^010-\d{3,4}-\d{4}$/;
+        // 정규식
+        const timeExp = /^([01][0-9]|2[0-3]):[0-5][0-9]$/; // HH:mm 형식
+        const phoneExp = /^010-\d{3,4}-\d{4}$/; // 전화번호 형식
 
-                // 유효성 검사
-                if (!timeExp.test(dinnerOpen.val())) {
-                    swal("알림", "오픈 시간은 예: 09:00 (HH:mm) 형식으로 적어주세요", "warning");
-                    return;
+        // 유효성 검사
+        if (!timeExp.test(dinnerOpen.val())) {
+            swal("알림", "오픈 시간은 예: 09:00 (HH:mm) 형식으로 적어주세요", "warning");
+            return;
+        }
+
+        if (!timeExp.test(dinnerClose.val())) {
+            swal("알림", "마감 시간은 예: 22:00 (HH:mm) 형식으로 적어주세요", "warning");
+            return;
+        }
+
+        if (!phoneExp.test(dinnerPhone.val())) {
+            swal("알림", "전화번호는 - 포함 13자리로 입력해주세요", "warning");
+            return;
+        }
+        
+     // 값 변환: ":" 제거
+        const formattedDinnerOpen = dinnerOpen.val().replace(':', '');
+        const formattedDinnerClose = dinnerClose.val().replace(':', '');
+        const formattedDinnerPhone = dinnerPhone.val();
+
+
+        // 유효성 검사가 모두 통과한 경우 swal 확인 팝업
+        swal({
+            title: "알림",
+            text: "매장 정보를 수정하시겠습니까?",
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "취소",
+                    value: false,
+                    visible: true,
+                    closeModal: true
+                },
+                confirm: {
+                    text: "수정",
+                    value: true,
+                    visible: true,
+                    closeModal: true
                 }
-
-                if (!timeExp.test(dinnerClose.val())) {
-                    swal("알림", "마감 시간은 예: 22:00 (HH:mm) 형식으로 적어주세요", "warning");
-                    return;
-                }
-
-                if (!phoneExp.test(dinnerPhone.val())) {
-                    swal("알림", "전화번호는 - 포함 13자리로 입력해주세요", "warning");
-                    return;
-                }
-
-                // 유효성 검사 통과 시
-                swal({
-                    title: "알림",
-                    text: "매장 정보를 수정하시겠습니까?",
-                    icon: "warning",
-                    buttons: {
-                        cancel: {
-                            text: "취소",
-                            value: false,
-                            visible: true,
-                            closeModal: true
-                        },
-                        confirm: {
-                            text: "수정",
-                            value: true,
-                            visible: true,
-                            closeModal: true
-                        }
-                    }
-                }).then(function(isConfirm) {
-                    if (isConfirm) {
-                        $('#updateForm').submit();
-                    }
-                });
             }
-
-            // 버튼 클릭 시 updateDinner 함수 호출
-            $('#updateButton').on('click', updateDinner);
+        }).then(function(isConfirm) {
+            // 수정 버튼 클릭 시 form 제출
+            if (isConfirm) {
+                $('#updateForm').submit(); // form 태그 submit
+            }
         });
+    }
     </script>
 </body>
 </html>

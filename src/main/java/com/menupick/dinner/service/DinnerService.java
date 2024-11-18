@@ -190,8 +190,16 @@ public class DinnerService {
 	}
 
 	public int updateDinner(Dinner updDinner) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateDinner(conn, updDinner);
 
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
 }
