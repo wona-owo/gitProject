@@ -85,7 +85,7 @@ public class DinnerService {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = dao.dinnerDetail(conn, dinnerNo);
 		JDBCTemplate.close(conn);
-		System.out.println(dinnerNo);
+		System.out.println("from DinnerService dinnerDetail dinnerNo : "+dinnerNo);
 		return dinner;
 	}
 

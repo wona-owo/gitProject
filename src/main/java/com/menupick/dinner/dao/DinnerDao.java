@@ -67,8 +67,9 @@ public class DinnerDao {
 				d.setDinnerAddr(rset.getString("dinner_addr"));
 				d.setFoodNation(rset.getString("food_nation"));
 				d.setFoodCat(rset.getString("food_cat"));
-
+				
 				dinnerList.add(d);
+				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -248,7 +249,7 @@ public class DinnerDao {
 				d.setFoodName(rset.getString("FOOD_NAME"));
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
-				System.out.println(dinnerNo);
+				System.out.println("from DinnerDao dinnerDetail dinnerNo : " + dinnerNo);
 			}
 
 		} catch (SQLException e) {
@@ -653,8 +654,10 @@ public class DinnerDao {
 
 
 	public int updateDinner(Connection conn, Dinner updDinner) {
+
 	    PreparedStatement pstmt = null;
 	    int result = 0;
+
 
 	    String query = "UPDATE TBL_DINNER " +
 	                   "SET dinner_name = ?, dinner_addr = ?, dinner_open = ?, " +

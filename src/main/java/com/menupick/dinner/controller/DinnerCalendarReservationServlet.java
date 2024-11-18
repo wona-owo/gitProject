@@ -1,3 +1,10 @@
+/**
+ * AJAX with : /WEB-INF/views/dinner/dinnerCalendar.jsp
+ * 
+ * 달력에서 보여지고 있는 날짜를 가져와서 해당 월에 예약이 있는 날짜와 예약 건수를 json 형태로 보내준다
+ * 
+ * @author 김찬희
+ */
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
@@ -52,7 +59,7 @@ public class DinnerCalendarReservationServlet extends HttpServlet {
 
 		Gson gson = new Gson();
 		String jsonStr = gson.toJson(dateCountMap);
-
+		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		response.getWriter().print(jsonStr);

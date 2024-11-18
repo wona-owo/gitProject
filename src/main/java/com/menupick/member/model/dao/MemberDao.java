@@ -209,7 +209,7 @@ public class MemberDao {
 		// Oracle에서의 페이징 쿼리
 		String query = "SELECT * FROM (" + "    SELECT a.*, ROWNUM AS rnum FROM ("
 				+ "        SELECT * FROM tbl_member ORDER BY member_no" + "    ) a " + "    WHERE ROWNUM <= ?" + ") "
-				+ "WHERE rnum > ? and member_level > 1";
+				+ "WHERE rnum > ? and member_level = 2";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -492,18 +492,21 @@ public class MemberDao {
 		return result;
 	}
 
-	public int bookingMember(Connection conn, String dinnerNo, String memberNo) {
+	public int bookingMember(Connection conn, Book book) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date(?, 'yy/mm/dd'), ?, ?)";
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, 'm2411140021', to_date (?, 'yyyy/mm/dd'), ?, ?)";
 		
 		try {
+			
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, "dinner_no");
-			pstmt.setString(2, "member_no");
-			pstmt.setString(3, "book_date");
-			pstmt.setString(4, "book_time");
-			pstmt.setString(5, "book_cnt");
+			//pstmt.setString(2, "member_no");
+			pstmt.setString(2, "book_date");
+			pstmt.setString(3, "book_time");
+			pstmt.setString(4, "book_cnt");
+			pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -609,6 +612,38 @@ public class MemberDao {
 		
 		return srchList;
 	}
+	
+	public String searchMemberPw(Connection conn, String memberId, String memberPhone) {
+		String sql = "SELECT member_pw FROM tbl_member WHERE member_id = ? AND member_phone = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberPhone);
+			
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("member_pw");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public String getEmailByMemberId(String memberId) {
+			Connection conn = JDBCTemplate.getConnection();
+			String sql = "SELECT member_email FROM tbl_member WHERE member_id = ?";
+	        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setString(1, memberId);
+
+	            try (ResultSet rs = pstmt.executeQuery()) {
+	                if (rs.next()) {
+	                    return rs.getString("member_email");
+	                }
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return null;
+		}
+
     }
-
-

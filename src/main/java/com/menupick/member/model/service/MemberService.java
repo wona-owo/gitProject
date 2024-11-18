@@ -1,7 +1,6 @@
 package com.menupick.member.model.service;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -11,6 +10,7 @@ import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.dao.MemberDao;
 import com.menupick.member.model.vo.Member;
+import com.menupick.member.util.EmailUtil;
 import com.menupick.review.model.vo.Review;
 
 public class MemberService {
@@ -228,15 +228,19 @@ public class MemberService {
 		return result;
 	}
 
-	public int bookingMember(String dinnerNo, String memberNo) {
+	public int bookingMember(Book book) {
 		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.bookingMember(conn, dinnerNo, memberNo);
 		
+		int result = dao.bookingMember(conn, book);
+		System.out.println(book);
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
 			JDBCTemplate.rollback(conn);
 		}
+		
+		
+		JDBCTemplate.close(conn);
 		return result;
 	}
 
@@ -251,6 +255,7 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
+
 
 	public boolean checkPassword(String memberNo, String memberPw) {
 		Connection conn = JDBCTemplate.getConnection();
@@ -267,24 +272,33 @@ public class MemberService {
 	    return dinnerList;
 	}
 
-	public String searchMemberId(String memberName, String memberPhone) {
-	    Connection conn = JDBCTemplate.getConnection();
-	    String result = null;
-	    try {
-	        result = dao.searchMemberId(conn, memberName, memberPhone);
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (conn != null && !conn.isClosed()) {
-	                conn.close(); // Connection 자원 반환
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return result; // 조회된 결과를 반환
-	}
+	public String searchMemberPw(String memberId, String memberPhone) {
+		Connection conn = JDBCTemplate.getConnection();
+        String memberPw = dao.searchMemberPw(conn, memberId, memberPhone);
+        JDBCTemplate.close(conn);
+
+        if (memberPw != null) {
+            sendPwByEmail(memberId, memberPw);
+        }
+
+        return memberPw;
+    }
+	private void sendPwByEmail(String memberId, String memberPw) {
+        String recipientEmail = dao.getEmailByMemberId(memberId); // 회원 이메일 조회
+        String subject = "비밀번호 찾기 결과";
+        String message = "회원님의 비밀번호는 다음과 같습니다 : " + memberPw;
+
+        // 이메일 전송 구현 (JavaMail 사용)
+        try {
+            EmailUtil.sendEmail(recipientEmail, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+	public String searchMemberId(String memberName, String memberPhone) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+}

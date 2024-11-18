@@ -1,3 +1,12 @@
+/**
+ * From : dinnerCanlendar.jsp
+ * To : dinnerReservation.jsp
+ * 
+ * 달력에서 예약이 있는 날짜를 클릭하면 보여지고 있는 연, 월, 일 정보를 가지고 
+ * 해당 날에 있는 예약 정보를 가져온다
+ * 
+ * @author 김찬희
+ */
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
@@ -40,19 +49,25 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 
 		// Parse the month as an integer, add 1, and format it as a 2-digit string
 		int month = Integer.parseInt(request.getParameter("month")) + 1;
+		String isRefresh = request.getParameter("check");
+		if (isRefresh != null) {
+			month = month - 1;
+		}
 		String monthPadded = String.format("%02d", month);
 
 		// Parse the day as an integer and format it as a 2-digit string
 		int day = Integer.parseInt(request.getParameter("day"));
 		String dayPadded = String.format("%02d", day);
 		String date = (justYear + "/" + monthPadded + "/" + dayPadded);
-		String dateForDisplay = (monthPadded + " 월 " + dayPadded + " 일");
 
 		DinnerService service = new DinnerService();
 		ArrayList<BookInfo> bookInfoList = service.getReservationData(dinnerNo, date);
 
+		request.setAttribute("dinnerNo", dinnerNo);
 		request.setAttribute("bookInfo", bookInfoList);
-		request.setAttribute("bookDate", dateForDisplay);
+		request.setAttribute("bookYear", year);
+		request.setAttribute("bookMonth", month);
+		request.setAttribute("bookDay", day);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReservation.jsp").forward(request, response);
 	}
 
