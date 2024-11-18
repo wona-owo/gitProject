@@ -11,6 +11,7 @@ import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.dao.MemberDao;
 import com.menupick.member.model.vo.Member;
+import com.menupick.member.util.EmailUtil;
 import com.menupick.review.model.vo.Review;
 
 public class MemberService {
@@ -285,6 +286,30 @@ public class MemberService {
 	    }
 	    return result; // 조회된 결과를 반환
 	}
+	public String searchMemberPw(String memberId, String memberPhone) {
+		Connection conn = JDBCTemplate.getConnection();
+        String memberPw = dao.searchMemberPw(conn, memberId, memberPhone);
+        JDBCTemplate.close(conn);
+
+        if (memberPw != null) {
+            sendPwByEmail(memberId, memberPw);
+        }
+
+        return memberPw;
     }
+	private void sendPwByEmail(String memberId, String memberPw) {
+        String recipientEmail = dao.getEmailByMemberId(memberId); // 회원 이메일 조회
+        String subject = "비밀번호 찾기 결과";
+        String message = "회원님의 비밀번호는 다음과 같습니다: " + memberPw;
+
+        // 이메일 전송 구현 (JavaMail 사용)
+        try {
+            EmailUtil.sendEmail(recipientEmail, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
+ }
 
 
