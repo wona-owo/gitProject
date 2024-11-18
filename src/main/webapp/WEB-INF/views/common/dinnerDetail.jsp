@@ -54,8 +54,10 @@
 		<%-- 레스토랑 상세 정보 섹션 --%>
 		<main>
 			<%-- TODO form tag 가 없었음 action, method 지정 필요 --%>
-			
 				<section class="restaurant-detail-header">
+			<form action="/dinner/dinnerDetailFrm" method="get">
+			<input type="hidden" name="${dinner.dinnerNo}">
+			<input type="hidden" name="memberNo">
 					<div class="dinner-main-img">
 						<img src="/resources/images/jungsik.jpg" id="main-img"
 							alt="Restaurant Image" />
@@ -87,7 +89,7 @@
 						 
 						
 					</div>
-
+				</form>
 				</section>
 
 				<%-- 탭 메뉴와 콘텐츠 섹션 --%>
@@ -146,7 +148,7 @@
       }
       
       function resBtn(){
-    	  window.open("/member/reservation?dinnerNo=${dinner.dinnerNo}&memberNo=${member.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');
+    	  window.open("/member/reservation?dinnerNo=${dinner.dinnerNo}&memberId=${member.memberId}",'a','width=700, height=700, scrollbars=yes, resizable=no');
     			  
       }
 

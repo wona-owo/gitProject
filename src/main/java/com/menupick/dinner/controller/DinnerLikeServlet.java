@@ -38,8 +38,7 @@ public class DinnerLikeServlet extends HttpServlet {
 		// dinner 값
 		String dinnerNo = request.getParameter("dinner_no");
 		String dinnerName = request.getParameter("dinner_name");
-		// food 값
-		String foodNo = request.getParameter("food_no");
+		
 		
 		
 		// 3. 로직

@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
@@ -39,21 +40,20 @@ public class DinnerDetailServlet extends HttpServlet {
 		String dinnerNo = request.getParameter("dinner_no");
 
 		String foodNo = request.getParameter("food_no");
-		String memberNo = request.getParameter("member_no");
+		
 		
 
 
-		
 
 
 		DinnerService service = new DinnerService();
 		MemberService mservice = new MemberService();
 		Dinner dinner = service.dinnerDetail(dinnerNo);
-		Member member = mservice.getMemberNo(memberNo);
+		
 		
 		request.setAttribute("dinner", dinner);
 		
-		request.setAttribute("member", member);
+		
 		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
 		
 

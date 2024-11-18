@@ -170,21 +170,25 @@
 			</div>
 
 			<!-- 콤팩트 필터 컨테이너 -->
-			<c:forEach var="dinner" items='${dinnerList}'>
 				<div class="filter-container">
 					<div class="filter-title">국가별 필터</div>
 					<div class="filter-section">
+			<c:forEach var="dinner" items='${dinnerList}'>
 						<span class="filter-button" data-value="${dinner.foodNation}"
 							onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
+					</c:forEach>
 					</div>
+					
 
 					<div class="filter-title">음식 유형 필터</div>
 					<div class="filter-section">
+					<c:forEach var="dinner" items='${dinnerList}'>
 						<span class="filter-button" data-value="${dinner.foodCat}"
 							onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
+							</c:forEach>
 					</div>
 				</div>
-			</c:forEach>
+			
 			<!-- 예시 카드 -->
 			<div class="card-container">
 
@@ -196,7 +200,7 @@
 						<div class="card-info">
 							<h3>
 								<a
-									href="/dinner/dinnerDetail?dinner_no=${dinner.dinnerNo}&food_no=${dinner.foodNo}">${dinner.dinnerName}</a>
+									href="/dinner/dinnerDetail?dinner_no=${dinner.dinnerNo}">${dinner.dinnerName}</a>
 							</h3>
 							<p>${dinner.dinnerAddr}</p>
 							<p class="cuisine-type">${dinner.foodNation}</p>
@@ -274,6 +278,7 @@
         
         
     //즐겨찾기 로딩
+    
         function loadFavorites() {
             const memberNo = '1'; // 예시로 회원 번호 설정
             fetch(`/member/like?member_no=${memberNo}`)
@@ -294,11 +299,18 @@
                     `).join('');
                 });
         }
+    
  
 	// 처음에도 동작할 수 있도록 페이지 로드 되면 실행
 	$(function() {
 		loadFavorites();
 	});
+	
+	const arr = [${dinner.foodNation}];
+	const uniqueArr = arr.filter((el, index) => arr.indexOf(el) === index);
+	console.log(uniqueArr);
+	
+	
 </script>
 </body>
 </html>
