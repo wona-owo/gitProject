@@ -1,3 +1,14 @@
+<%--
+From : DinnerCheckReservation.java
+AJAX with : DinnerCancelReservation.java
+
+bookNo 를 이용해서 예약을 취소 할 수 있고
+memberNo 를 이용해서 예약 취소한것을 이메일로 보낸다
+
+예약 취소를 하면 ajax 를 통해서 한후에 현재 페이지를 새로고침
+
+@Author : 김찬희
+ --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>

@@ -1,3 +1,12 @@
+/**
+ * From : dinnerCanlendar.jsp
+ * To : dinnerReservation.jsp
+ * 
+ * 달력에서 예약이 있는 날짜를 클릭하면 보여지고 있는 연, 월, 일 정보를 가지고 
+ * 해당 날에 있는 예약 정보를 가져온다
+ * 
+ * @author 김찬희
+ */
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
