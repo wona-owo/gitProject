@@ -40,6 +40,7 @@ public class DinnerLikeServlet extends HttpServlet {
 		// food 값
 		String foodNo = request.getParameter("food_no");
 		
+		System.out.println("from DinnerLikeServlet");
 		System.out.println(dinnerNo);
 		System.out.println(dinnerName);
 		System.out.println(foodNo);

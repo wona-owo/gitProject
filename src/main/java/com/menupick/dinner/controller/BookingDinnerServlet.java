@@ -34,11 +34,11 @@ public class BookingDinnerServlet extends HttpServlet {
 		String bookTime = request.getParameter("book_time");
 		String bookCnt = request.getParameter("book_cnt");
 		
-		System.out.println(memberNo);
-		System.out.println(dinnerNo);
-		System.out.println(bookDate);
-		System.out.println(bookTime);
-		System.out.println(bookCnt);
+		System.out.println("from BookingDinnerServlet memberNo : " + memberNo);
+		System.out.println("from BookingDinnerServlet dinnerNo : " + dinnerNo);
+		System.out.println("from BookingDinnerServlet bookDate : " + bookDate);
+		System.out.println("from BookingDinnerServlet bookTime : " + bookTime);
+		System.out.println("from BookingDinnerServlet bookCnt : " + bookCnt);
 
 		request.getRequestDispatcher("/WEB-INF/views/dinner/like.jsp").forward(request, response);
 	}

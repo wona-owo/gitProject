@@ -39,9 +39,9 @@ public class DinnerDetailServlet extends HttpServlet {
 		String foodNo = request.getParameter("food_no");
 		String memberNo = request.getParameter("member_no");
 		
-		System.out.println(dinnerNo);
-		System.out.println(foodNo);
-		System.out.println(memberNo);
+		System.out.println("from DinnerDetailServlet dinnerNo : " + dinnerNo);
+		System.out.println("from DinnerDetailServlet foodNo : " + foodNo);
+		System.out.println("from DinnerDetailServlet memberNo : " + memberNo);
 
 		DinnerService service = new DinnerService();
 		MemberService mservice = new MemberService();

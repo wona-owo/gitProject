@@ -20,9 +20,6 @@ memberNo 를 이용해서 예약 취소한것을 이메일로 보낸다
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
-* {
-	border: 1px solid transparent;
-}
 /*
 clear
 -- float 속성이 있는거 다음에 올때 float 속성을 없애줌
@@ -45,8 +42,7 @@ border 가 없으면 취소 버튼을 눌렀을때 margin 이 이상한곳에 �
 transparent 한 border 를 만들어줌
 */
 ul {
-	/*	border: 1px solid transparent; */
-	
+	border: 1px solid transparent;
 }
 
 .group-menu {
@@ -87,10 +83,10 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookMonth} 월 ${bookDay} 일</div>
-				<input type="hidden" value="${bookYear}" id="bookYear">
-				<input type="hidden" value="${bookMonth}" id="bookMonth">
-				<input type="hidden" value="${bookDay}" id="bookDay">
+				<div class="page-title">${bookMonth}월 ${bookDay} 일</div>
+				<input type="hidden" value="${bookYear}" id="bookYear"> <input
+					type="hidden" value="${bookMonth}" id="bookMonth"> <input
+					type="hidden" value="${bookDay}" id="bookDay">
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
 					<span>취소를 해주는 버튼</span>
@@ -177,16 +173,16 @@ ul {
 			let year = bookYear;
 			let month = bookMonth;
 			let day = bookDay;
-			
+
 			window.location.href = "/dinner/checkReservation?year=" + year
 					+ "&month=" + month + "&day=" + day + "&check=1";
 		}
 
 		function confirmCancel(memberNo, bookNo) {
-			let bookYear = $("#bookYear").val(); 
-			let bookMonth = $("#bookMonth").val(); 
-			let bookDay = $("#bookDay").val(); 
-			
+			let bookYear = $("#bookYear").val();
+			let bookMonth = $("#bookMonth").val();
+			let bookDay = $("#bookDay").val();
+
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
