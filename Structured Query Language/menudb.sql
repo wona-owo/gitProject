@@ -150,8 +150,8 @@ insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_bo
 insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411180001', 'm2411180001', to_date ('24/11/15', 'yy/mm/dd'), '1230', 4);
 insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411180001', 'm2411180002', to_date ('24/11/15', 'yy/mm/dd'), '1245', 4);
 insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411180001', 'm2411180003', to_date ('24/11/15', 'yy/mm/dd'), '1800', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411180001', 'm2411180004', to_date ('24/11/15', 'yy/mm/dd'), '1830', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411180001', 'm2411180005', to_date ('24/11/15', 'yy/mm/dd'), '1900', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411180001', 'm2411180001', to_date ('24/11/15', 'yy/mm/dd'), '1830', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411180001', 'm2411180002', to_date ('24/11/15', 'yy/mm/dd'), '1900', 4);
 insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411180001', 'm2411180003', to_date ('24/12/25', 'yy/mm/dd'), '1800', 4);
 
 select * from tbl_book;

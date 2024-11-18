@@ -49,7 +49,8 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 		
 		String ajaxRequest =  request.getParameter("check");
 		
-		System.out.println(ajaxRequest);
+		System.out.println("==========");
+		System.out.println("from DinnerCheckReservationServlet ajaxRequest : " + ajaxRequest);
 
 		// Parse the month as an integer, add 1, and format it as a 2-digit string
 		int month = Integer.parseInt(request.getParameter("month")) + 1;
