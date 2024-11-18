@@ -249,7 +249,7 @@ public class DinnerDao {
 				d.setFoodName(rset.getString("FOOD_NAME"));
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
-				System.out.println(dinnerNo);
+				System.out.println("from DinnerDao dinnerDetail dinnerNo : " + dinnerNo);
 			}
 
 		} catch (SQLException e) {
@@ -676,7 +676,6 @@ public class DinnerDao {
 			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			JDBCTemplate.close(pstmt);

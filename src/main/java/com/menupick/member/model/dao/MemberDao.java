@@ -1,7 +1,6 @@
 package com.menupick.member.model.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -613,6 +612,38 @@ public class MemberDao {
 		
 		return srchList;
 	}
+	
+	public String searchMemberPw(Connection conn, String memberId, String memberPhone) {
+		String sql = "SELECT member_pw FROM tbl_member WHERE member_id = ? AND member_phone = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberPhone);
+			
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("member_pw");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public String getEmailByMemberId(String memberId) {
+			Connection conn = JDBCTemplate.getConnection();
+			String sql = "SELECT member_email FROM tbl_member WHERE member_id = ?";
+	        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setString(1, memberId);
+
+	            try (ResultSet rs = pstmt.executeQuery()) {
+	                if (rs.next()) {
+	                    return rs.getString("member_email");
+	                }
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return null;
+		}
+
     }
-
-
