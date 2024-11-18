@@ -7,8 +7,8 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailUtil {
     public static void sendEmail(String to, String subject, String messageText) throws Exception {
-    	 final String from = "audgus4086@naver.com"; // 네이버 이메일
-         final String password = "a115411-'"; // 비밀번호
+    	 final String from = ""; // 네이버 이메일
+         final String password = ""; // 비밀번호
 
          if (!to.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
              throw new IllegalArgumentException("Invalid email address: " + to);
