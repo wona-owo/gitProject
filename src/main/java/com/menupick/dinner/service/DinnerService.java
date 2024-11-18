@@ -44,6 +44,21 @@ public class DinnerService {
 		return bookInfoList;
 	}
 
+	// daniel
+	public int dinnerCancelReservaion(String bookNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.dinnerCancelReservaion(conn, bookNo);
+
+		if (result == 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+
 	public ArrayList<Dinner> filterNation(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> foodList = dao.filterNation(conn, foodNo);
@@ -147,6 +162,31 @@ public class DinnerService {
 		Member member = dao.getMemberDataForCancelingReservation(conn, memberNo);
 		JDBCTemplate.close(conn);
 		return member;
+	}
+
+	// 식당등록 (경래)
+	public boolean insertDinner(Dinner dinner) {
+		Connection conn = JDBCTemplate.getConnection();
+		boolean result = false;
+
+		result = dao.insertDinner(conn, dinner);
+
+		if (result) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+
+	// 식당등록 아이디 중복체크 (경래)
+	public int idDuplChk(String dinnerId) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.idDuplChk(conn, dinnerId);
+		JDBCTemplate.close(conn);
+		return result;
 	}
 
 }

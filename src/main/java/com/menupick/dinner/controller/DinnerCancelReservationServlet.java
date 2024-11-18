@@ -1,4 +1,4 @@
-package com.menupick.member.controller;
+package com.menupick.dinner.controller;
 
 import java.io.IOException;
 
@@ -8,17 +8,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.dinner.service.DinnerService;
+
 /**
- * Servlet implementation class InsertDinnerServlet
+ * Servlet implementation class DinnerCancelReservationServlet
  */
-@WebServlet("/dinnerRegister")
-public class dinnerRegister extends HttpServlet {
+@WebServlet("/dinner/cancelReservation")
+public class DinnerCancelReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public dinnerRegister() {
+	public DinnerCancelReservationServlet() {
 		super();
 	}
 
@@ -28,7 +30,11 @@ public class dinnerRegister extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/admin/dinnerRegister.jsp").forward(request, response);
+		String bookNo = request.getParameter("bookNo");
+
+		DinnerService service = new DinnerService();
+
+		response.getWriter().print(service.dinnerCancelReservaion(bookNo));
 	}
 
 	/**
