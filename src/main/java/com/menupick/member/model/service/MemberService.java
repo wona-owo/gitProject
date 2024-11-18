@@ -1,7 +1,11 @@
 package com.menupick.member.model.service;
 
 import java.sql.Connection;
+<<<<<<< HEAD
 import java.sql.SQLException;
+=======
+import java.sql.Date;
+>>>>>>> feature
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -228,15 +232,19 @@ public class MemberService {
 		return result;
 	}
 
-	public int bookingMember(String dinnerNo, String memberNo) {
+	public int bookingMember(Book book) {
 		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.bookingMember(conn, dinnerNo, memberNo);
 		
+		int result = dao.bookingMember(conn, book);
+		System.out.println(book);
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
 			JDBCTemplate.rollback(conn);
 		}
+		
+		
+		JDBCTemplate.close(conn);
 		return result;
 	}
 
@@ -252,6 +260,7 @@ public class MemberService {
 		return result;
 	}
 
+<<<<<<< HEAD
 	public boolean checkPassword(String memberNo, String memberPw) {
 		Connection conn = JDBCTemplate.getConnection();
 	    boolean result = dao.checkPassword(conn, memberNo, memberPw);
@@ -288,3 +297,8 @@ public class MemberService {
     }
 
 
+=======
+
+
+}
+>>>>>>> feature

@@ -1,6 +1,7 @@
 package com.menupick.member.model.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -492,18 +493,21 @@ public class MemberDao {
 		return result;
 	}
 
-	public int bookingMember(Connection conn, String dinnerNo, String memberNo) {
+	public int bookingMember(Connection conn, Book book) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date(?, 'yy/mm/dd'), ?, ?)";
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, 'm2411140021', to_date (?, 'yyyy/mm/dd'), ?, ?)";
 		
 		try {
+			
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, "dinner_no");
-			pstmt.setString(2, "member_no");
-			pstmt.setString(3, "book_date");
-			pstmt.setString(4, "book_time");
-			pstmt.setString(5, "book_cnt");
+			//pstmt.setString(2, "member_no");
+			pstmt.setString(2, "book_date");
+			pstmt.setString(3, "book_time");
+			pstmt.setString(4, "book_cnt");
+			pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {

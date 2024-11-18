@@ -67,8 +67,9 @@ public class DinnerDao {
 				d.setDinnerAddr(rset.getString("dinner_addr"));
 				d.setFoodNation(rset.getString("food_nation"));
 				d.setFoodCat(rset.getString("food_cat"));
-
+				
 				dinnerList.add(d);
+				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

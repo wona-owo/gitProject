@@ -1,6 +1,7 @@
 package com.menupick.member.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+<<<<<<< HEAD
 import com.menupick.member.model.vo.Member;
+=======
+import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.Book;
+import com.menupick.dinner.vo.Dinner;
+import com.menupick.member.model.service.MemberService;
+
+>>>>>>> feature
 
 /**
  * Servlet implementation class MemberReservation
@@ -32,6 +41,7 @@ public class MemberReservation extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+<<<<<<< HEAD
 		String dinnerNo = request.getParameter("dinner_no");
 
 		System.out.println(dinnerNo);
@@ -53,6 +63,31 @@ public class MemberReservation extends HttpServlet {
 
 //		request.setAttribute("dinner", dinner);
 		request.setAttribute("memberNo", memberNo);
+=======
+		//book 등록값
+		String dinnerNo = request.getParameter("dinnerNo");
+		String memberNo = request.getParameter("memberId");
+		String bookDate = request.getParameter("bookDate");
+		String bookTime = request.getParameter("bookTime");
+		String bookCnt = request.getParameter("bookCnt");
+		MemberService mservice = new MemberService();
+		DinnerService dservice = new DinnerService();
+		Book book = new Book();
+		Dinner dinner = dservice.getDinnerNo(dinnerNo);
+		
+		int result = mservice.bookingMember(book);
+		
+		
+		request.setAttribute("dinner", dinner);
+
+		System.out.println("dinnerNo: " + dinnerNo);
+        System.out.println("memberNo: " + memberNo);
+        System.out.println("bookDate: " + bookDate);
+        System.out.println("bookCnt: " + bookCnt);
+        System.out.println("bookTime: " + bookTime);
+
+        
+>>>>>>> feature
 		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
 	}
 
