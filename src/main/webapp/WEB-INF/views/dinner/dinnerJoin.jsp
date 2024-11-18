@@ -559,6 +559,18 @@ $(document).ready(function() {
             event.preventDefault();
             return false;
         }
+        
+    	// 영업 시작 시간과 종료 시간 값 가져오기
+        const openTime = $('#dinnerOpen').val(); // HH:mm 형식
+        const closeTime = $('#dinnerClose').val(); // HH:mm 형식
+
+        // HH:mm -> HHmm 형식으로 변환
+        const formattedOpenTime = openTime.replace(':', '');
+        const formattedCloseTime = closeTime.replace(':', '');
+
+        // 변환된 값으로 input 값을 업데이트
+        $('#dinnerOpen').val(formattedOpenTime);
+        $('#dinnerClose').val(formattedCloseTime);
     });
 
 });

@@ -1,7 +1,6 @@
 package com.menupick.member.model.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -210,7 +209,7 @@ public class MemberDao {
 		// Oracle에서의 페이징 쿼리
 		String query = "SELECT * FROM (" + "    SELECT a.*, ROWNUM AS rnum FROM ("
 				+ "        SELECT * FROM tbl_member ORDER BY member_no" + "    ) a " + "    WHERE ROWNUM <= ?" + ") "
-				+ "WHERE rnum > ? and member_level > 1";
+				+ "WHERE rnum > ? and member_level = 2";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -684,5 +683,3 @@ public class MemberDao {
 
 	
     }
-
-
