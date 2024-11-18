@@ -152,6 +152,23 @@ public class DinnerDao {
 		return book;
 	}
 
+	// daniel
+	public int dinnerCancelReservaion(Connection conn, String bookNo) {
+		PreparedStatement pt = null;
+		int result = -1;
+		String qeury = "delete from tbl_book where book_no = ?";
+		try {
+			pt = conn.prepareStatement(qeury);
+			pt.setString(1, bookNo);
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		return result;
+	}
+
 	public ArrayList<Dinner> filterNation(Connection conn, String foodNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -602,7 +619,6 @@ public class DinnerDao {
 			result = rowsAffected > 0;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
@@ -633,6 +649,39 @@ public class DinnerDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return cnt;
+	}
+
+
+	public int updateDinner(Connection conn, Dinner updDinner) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "UPDATE TBL_DINNER SET DINNER_NAME = ?, DINNER_ADDR  = ?, DINNER_OPEN  = ?,DINNER_CLOSE  = ?, DINNER_PHONE  = ?,DINNER_EMAIL  = ?, BUSI_NO  = ?,DINNER_MAX_PERSON  = ?,DINNER_CONFIRM  = ?,DINNER_NO  = ?";
+		
+		try {
+			pstmt=conn.prepareStatement(query);
+			
+			pstmt.setString(1,updDinner.getDinnerName());
+			pstmt.setString(2,updDinner.getDinnerAddr());
+			pstmt.setString(3,updDinner.getDinnerOpen());
+			pstmt.setString(4,updDinner.getDinnerClose());
+			pstmt.setString(5,updDinner.getDinnerPhone());
+			pstmt.setString(6,updDinner.getDinnerEmail());
+			pstmt.setString(7,updDinner.getDinnerParking());
+			pstmt.setString(8,updDinner.getBusiNo());
+			pstmt.setString(9,updDinner.getDinnerMaxPerson());
+			pstmt.setString(10,updDinner.getDinnerConfirm());
+			pstmt.setString(11,updDinner.getDinnerNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
 	}
 
 }

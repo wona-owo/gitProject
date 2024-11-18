@@ -44,6 +44,21 @@ public class DinnerService {
 		return bookInfoList;
 	}
 
+	// daniel
+	public int dinnerCancelReservaion(String bookNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.dinnerCancelReservaion(conn, bookNo);
+
+		if (result == 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+
 	public ArrayList<Dinner> filterNation(String foodNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> foodList = dao.filterNation(conn, foodNo);
@@ -172,6 +187,11 @@ public class DinnerService {
 		int result = dao.idDuplChk(conn, dinnerId);
 		JDBCTemplate.close(conn);
 		return result;
+	}
+
+	public int updateDinner(Dinner updDinner) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
