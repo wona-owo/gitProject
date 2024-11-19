@@ -103,6 +103,15 @@ button:hover {
 	background-color: #0056b3;
 	transition: background-color 0.3s;
 }
+.update-wrap{
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	background-color: #ffffff;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />

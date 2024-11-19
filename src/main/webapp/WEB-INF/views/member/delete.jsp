@@ -127,12 +127,22 @@ input[type="password"]:focus
 	box-shadow: 0 0 5px rgba(128, 128, 128, 0.5);
 	outline: none;
 }
+.delete-wrap{
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	background-color: #ffffff;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 </style>
 
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
+<section class="section delete-wrap">
 	<div class="page-title">회원 탈퇴</div>
      <form action="/member/delete" method="post" id="deleteForm">
     	<input type="hidden" id="memberNo" name="memberNo" value="${loginMember.memberNo}">
@@ -162,7 +172,7 @@ input[type="password"]:focus
 		</div>
     	
 	</form>
-    
+   </section>
    	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
     <script>
     
