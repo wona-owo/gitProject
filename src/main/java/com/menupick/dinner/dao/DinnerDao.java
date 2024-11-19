@@ -655,7 +655,7 @@ public class DinnerDao {
 	public int updateDinner(Connection conn, Dinner updDinner) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "UPDATE TBL_DINNER " + "SET dinner_name = ?, dinner_addr = ?, dinner_open = ?, "
+		String query = "UPDATE TBL_DINNER " + "SET dinner_name = ?, dinner_addr = ?, dinner_open = ?, dinner_id = ?"
 				+ "dinner_close = ?, dinner_phone = ?, dinner_email = ?, dinner_parking = ?, "
 				+ "busi_no = ?, dinner_max_person = ?, dinner_confirm = ? " + "WHERE LOWER(dinner_no) = LOWER(?)";
 
@@ -664,9 +664,10 @@ public class DinnerDao {
 			pstmt.setString(1, updDinner.getDinnerName());
 			pstmt.setString(2, updDinner.getDinnerAddr());
 			pstmt.setString(3, updDinner.getDinnerOpen());
-			pstmt.setString(4, updDinner.getDinnerClose());
-			pstmt.setString(5, updDinner.getDinnerPhone());
-			pstmt.setString(6, updDinner.getDinnerEmail());
+			pstmt.setString(4, updDinner.getDinnerId());
+			pstmt.setString(5, updDinner.getDinnerClose());
+			pstmt.setString(6, updDinner.getDinnerPhone());
+			pstmt.setString(7, updDinner.getDinnerEmail());
 
 			// 유효성 검사 추가
 			if (!"y".equalsIgnoreCase(updDinner.getDinnerParking())
@@ -746,5 +747,61 @@ public class DinnerDao {
 			JDBCTemplate.close(pt);
 		}
 		return result;
+	}
+
+	public int updateMemberPw(Connection conn, String dinnerId, String newDinnerPw) {
+		PreparedStatement pt = null;
+		int result = 0;
+		String query = "update tbl_dinner set dinner_pw = ? where dinner_id = ?";
+		
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, newDinnerPw);
+			pt.setString(2, dinnerId);
+
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		
+		return result;
+	}
+
+	public Dinner getDinnerByNo(Connection conn, String dinnerNo) {
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    Dinner dinner = null;
+
+	    String query = "SELECT * FROM TBL_DINNER WHERE LOWER(dinner_no) = LOWER(?)";
+
+	    try {
+	        pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, dinnerNo);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            dinner = new Dinner();
+	            dinner.setDinnerNo(rs.getString("dinner_no"));
+	            dinner.setDinnerName(rs.getString("dinner_name"));
+	            dinner.setDinnerAddr(rs.getString("dinner_addr"));
+	            dinner.setDinnerOpen(rs.getString("dinner_open"));
+	            dinner.setDinnerClose(rs.getString("dinner_close"));
+	            dinner.setDinnerPhone(rs.getString("dinner_phone"));
+	            dinner.setDinnerEmail(rs.getString("dinner_email"));
+	            dinner.setDinnerParking(rs.getString("dinner_parking"));
+	            dinner.setBusiNo(rs.getString("busi_no"));
+	            dinner.setDinnerMaxPerson(rs.getString("dinner_max_person"));
+	            dinner.setDinnerConfirm(rs.getString("dinner_confirm"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(rs);
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return dinner;
 	}
 }

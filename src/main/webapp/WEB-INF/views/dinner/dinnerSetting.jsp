@@ -2,143 +2,262 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>매장 상세페이지 관리</title>
+<title>매장 정보 수정</title>
+<link rel="stylesheet"
+	href="/resources/css/diner_admin_memberdetail.css" />
+<link rel="stylesheet" href="/resources/css/default.css" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
 <style>
-
-/* 시간표 버튼 스타일 */
-.time-list {
-	list-style: none;
-	padding: 0;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-}
-
-.time-list li {
-	display: inline-block;
-	padding: 10px 15px;
-	background-color: #f30;
-	color: #fff;
-	border-radius: 5px;
-	cursor: pointer;
+/* CSS 코드는 이전과 동일 */
+.page-title {
+	font-size: 1.5em;
 	text-align: center;
-	transition: background-color 0.3s;
+	margin-bottom: 20px;
 }
 
-.time-list li.selected {
-	background-color: #f30;
+.tbl {
+	width: 80%;
+	margin: 0 auto;
+	border-collapse: collapse;
+	font-size: 1em;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.time-list li:hover {
-	background-color: #0056b3;
+.tbl th, .tbl td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	text-align: center;
 }
 
-#resBtn:click {
-	display: inline-block;
+.tbl th {
+	background-color: #f40;
+	color: #fff;
+	width: 30%;
+}
+
+.tbl td input[type="text"], .tbl td select, .tbl td input[type="number"]
+	{
+	width: 50%;
+	border: none;
+	border-bottom: 1px solid #ddd;
+	padding: 5px;
+	font-size: 1em;
+	text-align: center;
+}
+
+.tbl td input[readonly] {
+	background-color: #f9f9f9;
+	cursor: not-allowed;
+}
+
+.tbl td input[type="text"]:focus, .tbl td input[type="number"]:focus {
+	outline: none;
+	border-bottom: 1px solid #3a5fcd;
+}
+
+.mypage-container {
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	background-color: #ffffff;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mypage-btn {
+    display: flex;
+    justify-content: center; /* 가로 방향 중앙 정렬 */
+    gap: 20px; /* 버튼 간격 설정 */
+    margin-top: 20px;
 }
 
 .btn-primary {
-	margin: 10px;
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #3a5fcd;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background-color: #2f4fa8;
 }
 </style>
-
 </head>
 <body>
-	<div>
-		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<div class="container">
+		<main class="content mypage-container">
+			<section class="section mypage-wrap">
+				<div class="page-title">매장 정보 수정</div>
+				<form id="updateForm"
+					action="${pageContext.request.contextPath}/dinner/update"
+					method="post" onsubmit="return validateAndConfirmUpdate();">
+					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}" />
 
-		<%-- 레스토랑 상세 정보 섹션 --%>
-		<main>
-			<%-- TODO form tag 가 없었음 action, method 지정 필요 --%>
-			<section class="restaurant-detail-header">
-				<form action="/dinner/dinnerDetailFrm" method="get">
-					<input type="hidden" name="${dinner.dinnerNo}"> <input
-						type="hidden" name="memberNo">
-					<div class="dinner-main-img">
-						<img src="/resources/images/${dinner.dinnerNo}.jpg" id="main-img"
-							alt="Restaurant Image" />
-					</div>
-					<div class="restaurant-detail">
-						<div class="restaurant-detail-container">
-							<div class="restaurant-category">${dinner.foodCat}</div>
-							<div class="restaurant-name">${dinner.dinnerName}</div>
-						</div>
-						<div class="restaurant-info">
-							<i class="fa-solid fa-location-dot"></i><span id="location">주소
-								: ${dinner.dinnerAddr}</span><br /> <i class="fa-solid fa-clock"></i><span
-								id="time"> 영업시간 : ${dinner.dinnerOpen} ~
-								${dinner.dinnerClose}</span><br /> <i class="fa-solid fa-phone"></i> <span
-								id="phone">전화번호 : ${dinner.dinnerPhone}</span><br /> <i
-								class="fa-solid fa-car"></i> <span id="parking">
-								${dinner.dinnerParking}</span><br />
-						</div>
+					<table class="tbl">
+						<tr>
+							<th>식당 코드</th>
+							<td>${dinner.dinnerNo}</td>
+						</tr>
+						<tr>
+							<th>식당 이름</th>
+							<td><input type="text" name="dinnerName"
+								value="${dinner.dinnerName}" required /></td>
+						</tr>
+						<tr>
+							<th>매장 ID</th>
+							<td><input type="text" value="${dinner.dinnerId}" readonly /></td>
+						</tr>
+						<tr>
+							<th>비밀번호</th>
+							<td>
+								<button type="button" onclick="chgPassword()"
+									class="btn-primary">비밀번호 변경</button>
+							</td>
+						</tr>
+						<tr>
+							<th>식당 주소</th>
+							<td><input type="text" name="dinnerAddr"
+								value="${dinner.dinnerAddr}" required /></td>
+						</tr>
+						<tr>
+							<th>오픈 시간</th>
+							<td><input type="text" name="dinnerOpen"
+								value="${dinner.dinnerOpen}" placeholder="HH:mm" required /></td>
+						</tr>
+						<tr>
+							<th>마감 시간</th>
+							<td><input type="text" name="dinnerClose"
+								value="${dinner.dinnerClose}" placeholder="HH:mm" required /></td>
+						</tr>
+						<tr>
+							<th>식당 전화번호</th>
+							<td><input type="text" name="dinnerPhone"
+								value="${dinner.dinnerPhone}" placeholder="010-1234-5678"
+								required /></td>
+						</tr>
+						<tr>
+							<th>식당 이메일</th>
+							<td><input type="email" name="dinnerEmail"
+								value="${dinner.dinnerEmail}" required /></td>
+						</tr>
+						<tr>
+							<th>주차 여부</th>
+							<td><select name="dinnerParking" required>
+									<option value="Y"
+										${dinner.dinnerParking == 'Y' ? 'selected' : ''}>Y</option>
+									<option value="N"
+										${dinner.dinnerParking == 'N' ? 'selected' : ''}>N</option>
+							</select></td>
+						</tr>
+						<tr>
+							<th>수용 인원</th>
+							<td><input type="number" name="dinnerMaxPerson" min="1"
+								value="${dinner.dinnerMaxPerson}" required /></td>
+						</tr>
+						<tr>
+							<th>사업자 등록번호</th>
+							<td><input type="text" name="busiNo"
+								value="${dinner.busiNo}" required /></td>
+						</tr>
+						<tr>
+							<th>승인 여부</th>
+							<td><input type="text"
+								value="${dinner.dinnerConfirm == 'Y' ? '승인' : '미승인'}" readonly /></td>
+						</tr>
+					</table>
+
+					<div class="mypage-btn">
+					<button type="button" onclick="deleteDinner()" class="btn-primary">회원탈퇴</button>
+						<button type="button"
+							onclick="window.location.href='/admin/DinnerPageFrm'"
+							class="btn-primary" style="margin-left: 30px;">매장 상세페이지
+							이동</button>
+						<button type="submit" class="btn-primary">정보 수정</button>
 					</div>
 				</form>
 			</section>
-
-			<%-- 탭 메뉴와 콘텐츠 섹션 --%>
-			<section class="restaurant-detail-info">
-				<div class="restaurant-detail-menu">
-					<input id="information" type="radio" name="tab-item" checked /> <label
-						class="tab-item" for="information"
-						onclick="showContent('information-content')">정보</label> <input
-						id="menu" type="radio" name="tab-item" /> <label class="tab-item"
-						for="menu" onclick="showContent('menu-content')">메뉴</label> <input
-						id="review" type="radio" name="tab-item" /> <label
-						class="tab-item" for="review"
-						onclick="showContent('review-content')">리뷰</label> <input
-						id="picture" type="radio" name="tab-item" /> <label
-						class="tab-item" for="picture"
-						onclick="showContent('picture-content')">사진</label>
-				</div>
-
-				<%-- 탭 콘텐츠 --%>
-				<div class="restaurant-detail-content">
-					<div class="tab-content active" id="information-content">정보
-						콘텐츠</div>
-					<div class="tab-content" id="menu-content">메뉴 콘텐츠</div>
-					<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
-					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
-				</div>
-			</section>
-
 		</main>
-
-
-		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
 	<script>
-      function showContent(contentId) {
-        // 모든 탭 콘텐츠 숨기기
-        const contents = document.querySelectorAll(".tab-content");
-        contents.forEach((content) => content.classList.remove("active"));
-		
-        // 선택된 콘텐츠만 보이도록 설정
-        document.getElementById(contentId).classList.add("active");
-      }
-      
-    	  
-      const parking = document.getElementById('parking');
-      parking.innerHTML = "";
-      if('${dinner.dinnerParking}' === 'y'){
-    	  parking.innerHTML = "주차가능"
-      }else {
-    	  parking.innerHTML = "주차자리없음"
-      }
-      
-      function resBtn(){
-    	  window.open("/member/reservation?dinnerNo=${dinner.dinnerNo}&memberId=${member.memberId}",'a','width=700, height=700, scrollbars=yes, resizable=no');
-    			  
-      }
+		function chgPassword() {
+			let popupWidth = 500;
+			let popupHeight = 400;
+			let top = (window.innerHeight - popupHeight) / 2 + window.screenY;
+			let left = (window.innerWidth - popupWidth) / 2 + window.screenX;
 
-    
-	    
+			window
+					.open("/dinner/chgPw", "chgPw",
+							`width=${popupWidth}, height=${popupHeight}, top=${top}, left=${left}`);
+		}
 
-    </script>
+		function validateAndConfirmUpdate() {
+			const dinnerOpen = document
+					.querySelector("input[name='dinnerOpen']").value;
+			const dinnerClose = document
+					.querySelector("input[name='dinnerClose']").value;
+			const dinnerPhone = document
+					.querySelector("input[name='dinnerPhone']").value;
 
+			const timeExp = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
+			const phoneExp = /^010-\d{3,4}-\d{4}$/;
+
+			if (!timeExp.test(dinnerOpen)) {
+				swal("알림", "오픈 시간 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
+
+			if (!timeExp.test(dinnerClose)) {
+				swal("알림", "마감 시간 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
+
+			if (!phoneExp.test(dinnerPhone)) {
+				swal("알림", "전화번호 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
+
+			return confirm("매장 정보를 수정하시겠습니까?");
+		}
+		function deleteDinner() {
+			swal({
+				title : "매장 회원 삭제",
+				text : "정말 탈퇴 하시겠습니까?",
+				icon : "warning",
+				buttons : {
+					cancel : {
+						text : "취소",
+						value : false,
+						visible : true,
+						closeModal : true
+					},
+					confirm : {
+						text : "탈퇴",
+						value : true,
+						visible : true,
+						closeModal : true
+					}
+				}
+			}).then(function(isConfirm) {
+				if (isConfirm) {
+					$('#updateForm').attr('action', '/dinner/delete');
+					$('#updateForm').submit();
+				}
+			});
+		}
+	</script>
 </body>
 </html>

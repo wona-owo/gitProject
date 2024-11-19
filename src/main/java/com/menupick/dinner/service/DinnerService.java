@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.dao.DinnerDao;
 import com.menupick.dinner.vo.Address;
@@ -223,5 +225,30 @@ public class DinnerService {
 		JDBCTemplate.close(conn);
 
 		return result;
+	}
+
+	public int updateMemberPw(String dinnerId, String newDinnerPw) {
+		Connection conn = JDBCTemplate.getConnection();
+
+		// 새 비밀번호 암호화
+		newDinnerPw = BCrypt.hashpw(dinnerId, BCrypt.gensalt());
+		
+		int result = dao.updateMemberPw(conn, dinnerId, newDinnerPw);
+		
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+
+	public Dinner getDinnerByNo(String dinnerNo) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    Dinner dinner = dao.getDinnerByNo(conn, dinnerNo);
+	    JDBCTemplate.close(conn);
+	    return dinner;
 	}
 }
