@@ -260,7 +260,6 @@ ul {
 		}
 		
 		function sendEmail(bookNo, selectedValue) {
-		    console.log("Sending email");
 		    $.ajax({
 		        url: "/api/emailSend",
 		        type: "GET",
@@ -302,8 +301,6 @@ ul {
 
 		    let selectElement = $('#select-input-' + memberNo);
 		    let selectedValue = selectElement.find(":selected").val();
-
-			console.log("Selected Value:", selectedValue);
 
 			// 확인 버튼을 눌렀을때 sub-menu 를 닫고 포함 되어있는 div 태그의 margin 을 지움
 			subMenu.hide();
@@ -364,11 +361,10 @@ ul {
 									icon : icon,
 								});
 								
-								// 알림 창이 띄어지자 마자 새로고침 되서 1.5초간 대기
 								if (icon === "success") {
 									setTimeout(() => {
 										refresh();
-									}, 1500);
+									});
 								}
 
 							},
@@ -380,6 +376,14 @@ ul {
      			});
 			}
 		}
+
+			// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
+			window.addEventListener('pageshow', function(event) {
+			    if (event.persisted) {
+			        // The page is shown from the back-forward cache
+			        history.back();
+			    }
+			});
 	</script>
 </body>
 </html>

@@ -295,6 +295,15 @@ section {
 
 			// Initial render
 			renderCalendar();
+
+			// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
+			window.addEventListener('pageshow', function(event) {
+			    if (event.persisted) {
+			        // The page is shown from the back-forward cache
+			        renderCalendar();
+			    }
+			});
+
 		});
 	</script>
 </body>
