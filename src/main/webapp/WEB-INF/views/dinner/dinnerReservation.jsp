@@ -20,6 +20,9 @@ AJAX with ApiEmailSend.java
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
+* {
+	border: 1px solid black;
+}
 /*
 clear
 -- float 속성이 있는거 다음에 올때 float 속성을 없애줌
@@ -83,7 +86,7 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookMonth}월${bookDay}일</div>
+				<div class="page-title">${bookMonth}월 ${bookDay}일</div>
 				<input type="hidden" value="${bookYear}" name="bookYear"
 					id="bookYear"> <input type="hidden" value="${bookMonth}"
 					name="bookMonth" id="bookMonth"> <input type="hidden"
@@ -293,7 +296,7 @@ ul {
 								if (icon === "success") {
 									setTimeout(() => {
 										refresh();
-									}, 3000);
+									}, 1500);
 								}
 
 							},
