@@ -5,7 +5,7 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
-<title>아이디 찾기</title>
+<title>비밀번호 찾기</title>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -95,7 +95,7 @@ button:hover {
             },
             success: function(response) {
                 if (response) {
-                    alert("비밀번호가 이메일로 전송되었습니다");
+                    alert("임시 비밀번호가 이메일로 전송되었습니다");
                     closePopup(); // 팝업 닫기
                 } else {
                     alert("일치하는 회원이 없습니다.");
