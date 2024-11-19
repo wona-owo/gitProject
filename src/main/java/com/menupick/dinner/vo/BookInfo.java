@@ -17,4 +17,6 @@ public class BookInfo {
 	private String memberName;
 	private String memberPhone;
 	private String memberEmail;
+	
+	private String dinnerName;
 }

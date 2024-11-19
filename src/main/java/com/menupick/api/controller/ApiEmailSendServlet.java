@@ -18,40 +18,42 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.BookInfo;
+
 /**
  * Servlet implementation class ApiEmailSendServlet
  */
 @WebServlet("/api/emailSend")
 public class ApiEmailSendServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ApiEmailSendServlet() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ApiEmailSendServlet() {
+		super();
+	}
 
-		String dinnerNo = request.getParameter("dinnerNo");
-		String memberNo = request.getParameter("memberNo");
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String bookNo = request.getParameter("bookNo");
 		String selectedValue = request.getParameter("selectedValue");
-		
+
+		DinnerService service = new DinnerService();
+		BookInfo bookInfoForCancelEmail = service.bookInfoForCancelEmail(bookNo);
 
 		System.out.println("===== from ApiEmailSendServlet =====");
-		System.out.println("dinnerNo : " + dinnerNo);
-		System.out.println("memberNo : " + memberNo);
 		System.out.println("selectedValue : " + selectedValue);
+		System.out.println("bookInfoForCancelEmail : " + bookInfoForCancelEmail);
 
-		
-		String receiver = request.getParameter("receiver");
-		String emailContent = request.getParameter("emailContent");
-		
 		String emailTitle = "";
+		String receiver = "";
+		String emailContent = "";
 
 		// 1. 환경설정 정보 세팅
 		Properties prop = new Properties();
@@ -64,7 +66,7 @@ public class ApiEmailSendServlet extends HttpServlet {
 		// 2. 세션 설정 및 인증 정보 설정
 		Session session = Session.getDefaultInstance(prop, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("unemotioned@naver.com", "비밀번호");
+				return new PasswordAuthentication("unemotioned@naver.com", "Blackdwarf9");
 			}
 		});
 
@@ -96,10 +98,12 @@ public class ApiEmailSendServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 	}
 
 }
