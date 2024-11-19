@@ -48,13 +48,9 @@ public class MemberUpdateServlet extends HttpServlet {
         String memberName = request.getParameter("memberName");
         String memberNick = request.getParameter("memberNick");
         String memberPhone = request.getParameter("memberPhone");
+        String memberAddr = request.getParameter("memberAddr");
         String memberEmail = request.getParameter("memberEmail");
 
-        String zipp_code = request.getParameter("zipp_code");
-        String userAdd1 = request.getParameter("user_add1");
-        String userAdd2 = request.getParameter("user_add2");
-
-        String memberAddr = zipp_code + " " + userAdd1 + " " + userAdd2;
 
         Member updMember = new Member();
         updMember.setMemberNo(memberNo);

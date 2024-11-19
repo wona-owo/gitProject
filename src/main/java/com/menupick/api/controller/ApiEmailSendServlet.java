@@ -18,39 +18,57 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.BookInfo;
+
 /**
  * Servlet implementation class ApiEmailSendServlet
  */
 @WebServlet("/api/emailSend")
 public class ApiEmailSendServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ApiEmailSendServlet() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ApiEmailSendServlet() {
+		super();
+	}
 
-		String dinnerNo = request.getParameter("dinnerNo");
-		String memberNo = request.getParameter("memberNo");
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String bookNo = request.getParameter("bookNo");
 		String selectedValue = request.getParameter("selectedValue");
-		
+
+		String emailContent = "";
+
+		switch (selectedValue) {
+		case "0":
+			emailContent = "숯불에 불남";
+			break;
+		case "1":
+			emailContent = "불판에 불남";
+			break;
+		default:
+			break;
+		}
+
+		DinnerService service = new DinnerService();
+		BookInfo info = service.bookInfoForCancelEmail(bookNo);
 
 		System.out.println("===== from ApiEmailSendServlet =====");
-		System.out.println("dinnerNo : " + dinnerNo);
-		System.out.println("memberNo : " + memberNo);
 		System.out.println("selectedValue : " + selectedValue);
+		System.out.println("bookInfoForCancelEmail : " + info);
+		
+		String memberName = info.getDinnerName();
+		
+		String dinnerName = info.getDinnerName();
+		String receiver = info.getMemberEmail();
 
-		
-		String receiver = request.getParameter("receiver");
-		String emailContent = request.getParameter("emailContent");
-		
 		String emailTitle = "";
 
 		// 1. 환경설정 정보 세팅
@@ -64,7 +82,7 @@ public class ApiEmailSendServlet extends HttpServlet {
 		// 2. 세션 설정 및 인증 정보 설정
 		Session session = Session.getDefaultInstance(prop, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("unemotioned@naver.com", "비밀번호");
+				return new PasswordAuthentication("unemotioned@naver.com", "Blackdwarf9");
 			}
 		});
 
@@ -91,15 +109,18 @@ public class ApiEmailSendServlet extends HttpServlet {
 		request.setAttribute("title", "알림");
 		request.setAttribute("msg", "이메일이 정상적으로 발송 되었습니다");
 		request.setAttribute("icon", "success");
+		request.setAttribute("loc", "/WEB-INF/views/dinner/dinnerReservation.jsp");
 
 		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 	}
 
 }

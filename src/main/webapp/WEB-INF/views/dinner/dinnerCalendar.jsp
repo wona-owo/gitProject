@@ -1,7 +1,7 @@
 <%--
 From : DinnerCalendarFrmServlet.java
 AJAX with : DinnerCalendarReservationServlet.java (/dinner/reservation)
-To : DinnerCancelReservationServlet.java (/dinner/cancelReservation)
+To : DinnerCheckReservationServlet.java (/dinner/checkReservation)
 
 스크립트를 이용해서 달력을 생성
 ajax 를 이용해서 달력에서 보여지는 달에 해당하는 예약 정보를 json 형태로 받아옴

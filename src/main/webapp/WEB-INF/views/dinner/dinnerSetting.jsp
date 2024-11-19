@@ -75,6 +75,7 @@
 								class="fa-solid fa-car"></i> <span id="parking">
 								${dinner.dinnerParking}</span><br />
 						</div>
+					</div>
 				</form>
 			</section>
 
@@ -88,14 +89,16 @@
 						for="menu" onclick="showContent('menu-content')">메뉴</label> <input
 						id="review" type="radio" name="tab-item" /> <label
 						class="tab-item" for="review"
-						onclick="showContent('review-content')">리뷰</label> 
-						<input id="picture" type="radio" name="tab-item" /> 
-						<label class="tab-item" for="picture" onclick="showContent('picture-content')">사진</label> 
+						onclick="showContent('review-content')">리뷰</label> <input
+						id="picture" type="radio" name="tab-item" /> <label
+						class="tab-item" for="picture"
+						onclick="showContent('picture-content')">사진</label>
 				</div>
 
 				<%-- 탭 콘텐츠 --%>
 				<div class="restaurant-detail-content">
-					<div class="tab-content active" id="information-content">정보 콘텐츠</div>
+					<div class="tab-content active" id="information-content">정보
+						콘텐츠</div>
 					<div class="tab-content" id="menu-content">메뉴 콘텐츠</div>
 					<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>

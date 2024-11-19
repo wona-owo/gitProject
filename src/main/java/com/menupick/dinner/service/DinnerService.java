@@ -203,16 +203,25 @@ public class DinnerService {
 		return result;
 	}
 
+	// daniel
+	public BookInfo bookInfoForCancelEmail(String bookNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		BookInfo bookInfoForCancelEmail = dao.bookInfoForCancelEmail(conn, bookNo);
+		JDBCTemplate.close(conn);
+		return bookInfoForCancelEmail;
+	}
+
 	public int deleteDinner(String dinnerNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.deleteDinner(conn, dinnerNo);
+
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
 		} else {
 			JDBCTemplate.rollback(conn);
 		}
 		JDBCTemplate.close(conn);
-		
+
 		return result;
 	}
 }
