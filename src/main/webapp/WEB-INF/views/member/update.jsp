@@ -409,13 +409,13 @@ button:hover {
 	    // 중복 체크가 필요한 항목 확인
 	    if(!checkObj.idDuplChk && checkObj.memberIdChanged){
 	        str = "아이디 중복체크를 진행하세요";
-	        msg("회원가입 실패", str, "error");
+	        msg("정보수정 실패", str, "error");
 	        return false;
 	    }
 
 	    if(!checkObj.nickDuplChk && checkObj.memberNickChanged){
 	        str = "닉네임 중복체크를 진행하세요";
-	        msg("회원가입 실패", str, "error");
+	        msg("정보수정 실패", str, "error");
 	        return false;
 	    }
 
@@ -431,7 +431,7 @@ button:hover {
 	                case "memberPhone": str = "전화번호 형식이 유효하지 않습니다"; break;
 	            }
 	            str += "";
-	            msg("회원가입 실패", str, "error");
+	            msg("정보수정 실패", str, "error");
 	            return false;
 	        }
 	    }
