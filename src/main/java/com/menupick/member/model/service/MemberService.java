@@ -298,9 +298,23 @@ public class MemberService {
 
     }
 
-	public String searchMemberId(String memberName, String memberPhone) {
-		// TODO Auto-generated method stub
-		return null;
+    public String searchMemberId(String memberName, String memberPhone) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    String result = null;
+	    try {
+	        result = dao.searchMemberId(conn, memberName, memberPhone);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (conn != null && !conn.isClosed()) {
+	                conn.close(); // Connection 자원 반환
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return result; // 조회된 결과를 반환
 	}
 }
  
