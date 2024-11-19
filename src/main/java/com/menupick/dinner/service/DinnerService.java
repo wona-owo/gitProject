@@ -85,7 +85,7 @@ public class DinnerService {
 		Connection conn = JDBCTemplate.getConnection();
 		Dinner dinner = dao.dinnerDetail(conn, dinnerNo);
 		JDBCTemplate.close(conn);
-		System.out.println(dinnerNo);
+		System.out.println("from DinnerService dinnerDetail dinnerNo : "+dinnerNo);
 		return dinner;
 	}
 
@@ -189,4 +189,17 @@ public class DinnerService {
 		return result;
 	}
 
+	public int updateDinner(Dinner updDinner) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateDinner(conn, updDinner);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
 }

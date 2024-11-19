@@ -209,7 +209,7 @@ public class MemberDao {
 		// Oracle에서의 페이징 쿼리
 		String query = "SELECT * FROM (" + "    SELECT a.*, ROWNUM AS rnum FROM ("
 				+ "        SELECT * FROM tbl_member ORDER BY member_no" + "    ) a " + "    WHERE ROWNUM <= ?" + ") "
-				+ "WHERE rnum > ? and member_level > 1";
+				+ "WHERE rnum > ? and member_level = 2";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -492,18 +492,21 @@ public class MemberDao {
 		return result;
 	}
 
-	public int bookingMember(Connection conn, String dinnerNo, String memberNo) {
+	public int bookingMember(Connection conn, Book book) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date(?, 'yy/mm/dd'), ?, ?)";
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, 'm2411140021', to_date (?, 'yyyy/mm/dd'), ?, ?)";
 		
 		try {
+			
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, "dinner_no");
-			pstmt.setString(2, "member_no");
-			pstmt.setString(3, "book_date");
-			pstmt.setString(4, "book_time");
-			pstmt.setString(5, "book_cnt");
+			//pstmt.setString(2, "member_no");
+			pstmt.setString(2, "book_date");
+			pstmt.setString(3, "book_time");
+			pstmt.setString(4, "book_cnt");
+			pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -607,8 +610,76 @@ public class MemberDao {
 		}
 		
 		
-		return srchList;
+		return srchList;  
 	}
+	
+	public String getEmailByMemberId(String memberId) {
+			Connection conn = JDBCTemplate.getConnection();
+			String sql = "SELECT member_email FROM tbl_member WHERE member_id = ?";
+	        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setString(1, memberId);
+
+	            try (ResultSet rs = pstmt.executeQuery()) {
+	                if (rs.next()) {
+	                    return rs.getString("member_email");
+	                }
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return null;
+		}
+
+	public Member searchMemberPw(String memberId, String memberPhone) {
+        Connection conn = JDBCTemplate.getConnection();
+        Member member = null;
+        String sql = "SELECT * FROM tbl_member WHERE member_id = ? AND member_phone = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, memberId);
+            pstmt.setString(2, memberPhone);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    member = new Member();
+                    member.setMemberId(rs.getString("member_id"));
+                    member.setMemberPhone(rs.getString("member_phone"));
+                    member.setMemberEmail(rs.getString("member_email"));
+                    member.setMemberPw(rs.getString("member_pw"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(conn);
+        }
+        return member;
     }
 
+    // 비밀번호 업데이트
+    public boolean updateMemberPassword(String memberId, String tempPassword) {
+        Connection conn = JDBCTemplate.getConnection();
+        String sql = "UPDATE tbl_member SET member_pw = ? WHERE member_id = ?";
+        boolean isUpdated = false;
 
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, tempPassword);
+            pstmt.setString(2, memberId);
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                isUpdated = true;
+                JDBCTemplate.commit(conn);  // 커밋
+            } else {
+                JDBCTemplate.rollback(conn);  // 롤백
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(conn);
+        }
+        return isUpdated;
+    }
+
+	
+    }

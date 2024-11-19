@@ -1,3 +1,14 @@
+<%--
+From : DinnerCalendarFrmServlet.java
+AJAX with : DinnerCalendarReservationServlet.java (/dinner/reservation)
+To : DinnerCancelReservationServlet.java (/dinner/cancelReservation)
+
+스크립트를 이용해서 달력을 생성
+ajax 를 이용해서 달력에서 보여지는 달에 해당하는 예약 정보를 json 형태로 받아옴
+예약 있는 날을 클릭하면 예약을 상세보기/취소 할수 있는 페이지로 이동
+
+Author : 김찬희
+ --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>

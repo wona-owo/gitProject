@@ -37,9 +37,21 @@ public class ApiEmailSendServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String emailTitle = request.getParameter("emailTitle");
+		String dinnerNo = request.getParameter("dinnerNo");
+		String memberNo = request.getParameter("memberNo");
+		String selectedValue = request.getParameter("selectedValue");
+		
+
+		System.out.println("===== from ApiEmailSendServlet =====");
+		System.out.println("dinnerNo : " + dinnerNo);
+		System.out.println("memberNo : " + memberNo);
+		System.out.println("selectedValue : " + selectedValue);
+
+		
 		String receiver = request.getParameter("receiver");
 		String emailContent = request.getParameter("emailContent");
+		
+		String emailTitle = "";
 
 		// 1. 환경설정 정보 세팅
 		Properties prop = new Properties();
@@ -52,7 +64,7 @@ public class ApiEmailSendServlet extends HttpServlet {
 		// 2. 세션 설정 및 인증 정보 설정
 		Session session = Session.getDefaultInstance(prop, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("unemotioned@naver.com", "Blackdwarf9");
+				return new PasswordAuthentication("unemotioned@naver.com", "비밀번호");
 			}
 		});
 
@@ -64,15 +76,8 @@ public class ApiEmailSendServlet extends HttpServlet {
 
 			msg.setFrom(new InternetAddress("unemotioned@naver.com", "UnEmotioneD"));
 
-			// 수신자 1명 일때
-//			InternetAddress to = new InternetAddress(receiver);
-//			msg.setRecipient(Message.RecipientType.TO, to);
-
-			// 수신자 여러명 일때
-			InternetAddress[] receiverArr = new InternetAddress[2];
-			receiverArr[0] = new InternetAddress("blackeagle10@icloud.com");
-			receiverArr[1] = new InternetAddress("blackeagle10@icloud.com");
-			msg.setRecipients(Message.RecipientType.TO, receiverArr);
+			InternetAddress to = new InternetAddress(receiver);
+			msg.setRecipient(Message.RecipientType.TO, to);
 
 			msg.setSubject(emailTitle);
 			msg.setContent(emailContent, "text/html; charset=UTF-8");
@@ -86,7 +91,6 @@ public class ApiEmailSendServlet extends HttpServlet {
 		request.setAttribute("title", "알림");
 		request.setAttribute("msg", "이메일이 정상적으로 발송 되었습니다");
 		request.setAttribute("icon", "success");
-		request.setAttribute("loc", "/index.jsp");
 
 		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 	}

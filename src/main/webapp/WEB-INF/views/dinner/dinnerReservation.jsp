@@ -1,3 +1,13 @@
+<%--
+From : DinnerCheckReservationServlet.java
+AJAX with DinnerCancelReservationServlet.java
+
+예약 상세 정보를 보여주고 예약을 취소 할 수 도 있음
+예약을 취소하면 DB 에서 예약 정보를 삭제 하고 회원에게 email 을 보내줘야함
+그리고 새로고침
+
+@Author : 김찬희
+ --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -9,9 +19,6 @@
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
-* {
-	border: 1px solid transparent;
-}
 /*
 clear
 -- float 속성이 있는거 다음에 올때 float 속성을 없애줌
@@ -34,8 +41,7 @@ border 가 없으면 취소 버튼을 눌렀을때 margin 이 이상한곳에 �
 transparent 한 border 를 만들어줌
 */
 ul {
-	/*	border: 1px solid transparent; */
-	
+	border: 1px solid transparent;
 }
 
 .group-menu {
@@ -76,7 +82,11 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookDate}</div>
+				<div class="page-title">${bookMonth}월${bookDay} 일</div>
+				<input type="hidden" value="${bookYear}" id="bookYear"> <input
+					type="hidden" value="${bookMonth}" id="bookMonth"> <input
+					type="hidden" value="${bookDay}" id="bookDay">
+					<input type="hidden" value="${dinnerNo}" id="dinnerNo">
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
 					<span>취소를 해주는 버튼</span>
@@ -105,15 +115,17 @@ ul {
 								class="cancel-btn" value="취소">
 								<ul class="sub-menu" id="sub-menu-${b.memberNo}">
 									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
-									<li><select id="select-input-${b.memberNo}">
-											<option value="placeholder" class="select-placeholder"
-												selected>취소 사유 선택</option>
+									<li><select id="select-input-${b.memberNo}"
+										class="cancel-reason-select">
+											<option value="" class="select-placeholder" selected disabled>취소
+												사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
 									</select></li>
+
 									<li>
 										<button type="submit"
-											onclick="confirmCancel('${b.memberNo}', '${b.bookNo}')">확인</button>
+											onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
 									</li>
 								</ul></li>
 						</ul>
@@ -123,21 +135,7 @@ ul {
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<%-- 					
-let form = document.createElement('form');
-form.method = "get";
-form.action = "/dinner/cancelReservation";
 
-// Adding form data
-let input = document.createElement('input');
-input.type = 'hidden';
-input.name = 'bookNo';
-input.value = bookNo;
-form.appendChild(input);
-
-document.body.appendChild(form);
-form.submit();
---%>
 	<script>
 		$(function() {
 			$('.menu-item .cancel-btn').click(
@@ -173,12 +171,21 @@ form.submit();
 					});
 		});
 
-		function confirmCancel(memberNo, bookNo) {
+		function refresh() {
+			let year = $("#bookYear").val();
+			let month = $("#bookMonth").val();
+			let day = $("#bookDay").val();
+			let dinnerNo = $("#dinnerNo").val();
+
+			window.location.href = "/dinner/checkReservation?year=" + year
+					+ "&month=" + month + "&day=" + day + "&dinnerNo=" + dinnerNo +"&check=" + 1;
+		}
+
+		function confirmCancel(dinnerNo, memberNo, bookNo) {
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
-			let selectElement = subMenu.find('select');
-
+			let selectElement = subMenu.find('#select-input-' + memberNo);
 			let selectedValue = selectElement.val();
 
 			// 확인 버튼을 눌렀을때 sub-menu 를 닫고 포함 되어있는 div 태그의 margin 을 지움
@@ -212,24 +219,50 @@ form.submit();
 					}
 				}).then(function(isConfirm) {
 					if (isConfirm) {
-						let form = document.createElement('form');
-						form.method = "get";
-						form.action = "/dinner/cancelReservation";
+						$.ajax({
+							url : "/dinner/cancelReservation",
+							type : "GET",
+							data : {
+								"bookNo" : bookNo
+							},
+							success : function(res) {
+								let title = "알림";
+								let text = "";
+								let icon = "";
 
-						// Adding form data
-						let input = document.createElement('input');
-						input.type = 'hidden';
-						input.name = 'bookNo';
-						input.value = bookNo;
-						form.appendChild(input);
+								if (res > 0) {
+									text = "예약이 취소 되었습니다";
+									icon = "success";
+								} else {
+									text = "예약 취소 중 오류가 발생하였습니다";
+									icon = "error";
+								}
 
-						document.body.appendChild(form);
-						form.submit();
+								swal({
+									title : title,
+									text : text,
+									icon : icon,
+								});
+								
+								console.log(dinnerNo);
+								console.log(memberNo);
+								console.log(selectedValue);
+
+								window.location.href = "/api/emailSend?dinnerNo=" + dinnerNo + "&memberNo=" + memberNo + "&selectedValue=" +  selectedValue;
+
+								/*
+								if (icon === "success") {
+									refresh();
+								}
+								*/
+							},
+							error : function() {
+								console.log("foobar");
+							}
+						});
 					}
 				});
 			}
-
-			console.log("Selected value :", selectedValue);
 		}
 	</script>
 </body>

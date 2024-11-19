@@ -1,3 +1,9 @@
+/**
+ * From :  header.jsp 
+ * To : dinnerCalendar.jsp
+ * 
+ * @author 김찬희
+ */
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
