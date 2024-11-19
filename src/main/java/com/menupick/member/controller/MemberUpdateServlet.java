@@ -87,7 +87,7 @@ public class MemberUpdateServlet extends HttpServlet {
             request.setAttribute("title", "성공");
             request.setAttribute("msg", "회원 정보가 수정되었습니다. 재로그인 하시기 바랍니다.");
             request.setAttribute("icon", "success");
-            request.setAttribute("loc", "/member/login");
+            request.setAttribute("loc", "/member/loginFrm");
 
         } else {
             request.setAttribute("title", "실패");
