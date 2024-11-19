@@ -1,16 +1,16 @@
 package com.menupick.member.controller;
 
-import com.menupick.member.model.service.MemberService;
-import com.menupick.member.model.vo.Member;
+import java.io.IOException;
+import java.security.SecureRandom;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.security.SecureRandom;
-import java.util.Random;
+
+import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 
 @WebServlet("/member/searchPw")
 public class MemberSearchPwServlet extends HttpServlet {

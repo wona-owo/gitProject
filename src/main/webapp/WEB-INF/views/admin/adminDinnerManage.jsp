@@ -79,30 +79,31 @@
 							</tr>
 						</c:forEach>
 					</table>
-					<div class="pagination">
-						<!-- 이전 버튼 -->
-						<c:if test="${currentPage > 1}">
-							<a href="?page=${currentPage - 1}&sort=${sort}&order=${order}"
-								class="prev">&laquo; 이전</a>
-						</c:if>
+				</div>
+				<div class="pagination">
+					<!-- 이전 버튼 -->
+					<c:if test="${currentPage > 1}">
+						<a href="?page=${currentPage - 1}&sort=${sort}&order=${order}"
+							class="prev">&laquo; 이전</a>
+					</c:if>
 
-						<!-- 3단위 페이지 번호 표시 -->
-						<c:set var="startPage"
-							value="${currentPage - 1 > 0 ? currentPage - 1 : 1}" />
-						<c:set var="endPage"
-							value="${currentPage + 1 <= totalPages ? currentPage + 1 : totalPages}" />
+					<!-- 3단위 페이지 번호 표시 -->
+					<c:set var="startPage"
+						value="${currentPage - 1 > 0 ? currentPage - 1 : 1}" />
+					<c:set var="endPage"
+						value="${currentPage + 1 <= totalPages ? currentPage + 1 : totalPages}" />
 
-						<c:forEach var="i" begin="${startPage}" end="${endPage}">
-							<a href="?page=${i}&sort=${sort}&order=${order}"
-								class="${i == currentPage ? 'active' : ''}">${i}</a>
-						</c:forEach>
+					<c:forEach var="i" begin="${startPage}" end="${endPage}">
+						<a href="?page=${i}&sort=${sort}&order=${order}"
+							class="${i == currentPage ? 'active' : ''}">${i}</a>
+					</c:forEach>
 
-						<!-- 다음 버튼 -->
-						<c:if test="${currentPage < totalPages}">
-							<a href="?page=${currentPage + 1}&sort=${sort}&order=${order}"
-								class="next">다음 &raquo;</a>
-						</c:if>
-					</div>
+					<!-- 다음 버튼 -->
+					<c:if test="${currentPage < totalPages}">
+						<a href="?page=${currentPage + 1}&sort=${sort}&order=${order}"
+							class="next">다음 &raquo;</a>
+					</c:if>
+				</div>
 			</section>
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
