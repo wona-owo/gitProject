@@ -47,7 +47,7 @@ main {
 }
 
 .section {
-	width: 70%;
+	width: 60%;
 }
 
 .notice-list-wrap>div {
@@ -80,7 +80,7 @@ ul {
 
 .group-menu {
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: center;
 	padding: 10px;
 	background-color: #f8f9fa;
