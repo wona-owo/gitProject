@@ -117,8 +117,8 @@ ul {
 									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
 									<li><select id="select-input-${b.memberNo}"
 										class="cancel-reason-select">
-											<option value="none" class="select-placeholder" selected
-												disabled>취소 사유 선택</option>
+											<option value="" class="select-placeholder" disabled>취소
+												사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
 									</select></li>
@@ -186,8 +186,8 @@ ul {
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
-			let selectElement = $('#select-input-' + memberNo);
-			let selectedValue = selectElement.val();
+		    let selectElement = $('#select-input-' + memberNo);
+		    let selectedValue = selectElement.find(":selected").val();
 
 			console.log("Selected Value:", selectedValue);
 
@@ -250,23 +250,13 @@ ul {
 															icon : icon,
 														});
 
-														console
-																.log(selectedValue);
+														window.location.href = "/api/emailSend?bookNo=" + bookNo + "&selectedValue=" + selectedValue;
 
-														window.location.href = "/api/emailSend?dinnerNo="
-																+ dinnerNo
-																+ "&memberNo="
-																+ memberNo
-																+ "&bookNo="
-																+ bookNo
-																+ "&selectedValue="
-																+ selectedValue;
-
-														// 알림 창이 띄어지자 마자 새로고침 되서 2초간 대기
+														// 알림 창이 띄어지자 마자 새로고침 되서 3초간 대기
 														if (icon === "success") {
 														    setTimeout(() => {
 														        refresh();
-														    }, 2000);
+														    }, 3000);
 														}
 
 													},

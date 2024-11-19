@@ -1,5 +1,6 @@
 package com.menupick.dinner.dao;
 
+import java.net.SocketTimeoutException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -707,6 +708,10 @@ public class DinnerDao {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, bookNo);
 			rt = pt.executeQuery();
+
+			System.out.println("===== from DinnerDao =====");
+			System.out.println(bookNo);
+			System.out.println(rt.next());
 
 			if (rt.next()) {
 				b = new BookInfo();

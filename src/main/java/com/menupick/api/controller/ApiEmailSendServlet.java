@@ -44,16 +44,32 @@ public class ApiEmailSendServlet extends HttpServlet {
 		String bookNo = request.getParameter("bookNo");
 		String selectedValue = request.getParameter("selectedValue");
 
+		String emailContent = "";
+
+		switch (selectedValue) {
+		case "0":
+			emailContent = "숯불에 불남";
+			break;
+		case "1":
+			emailContent = "불판에 불남";
+			break;
+		default:
+			break;
+		}
+
 		DinnerService service = new DinnerService();
-		BookInfo bookInfoForCancelEmail = service.bookInfoForCancelEmail(bookNo);
+		BookInfo info = service.bookInfoForCancelEmail(bookNo);
 
 		System.out.println("===== from ApiEmailSendServlet =====");
 		System.out.println("selectedValue : " + selectedValue);
-		System.out.println("bookInfoForCancelEmail : " + bookInfoForCancelEmail);
+		System.out.println("bookInfoForCancelEmail : " + info);
+		
+		String memberName = info.getDinnerName();
+		
+		String dinnerName = info.getDinnerName();
+		String receiver = info.getMemberEmail();
 
 		String emailTitle = "";
-		String receiver = "";
-		String emailContent = "";
 
 		// 1. 환경설정 정보 세팅
 		Properties prop = new Properties();
@@ -93,6 +109,7 @@ public class ApiEmailSendServlet extends HttpServlet {
 		request.setAttribute("title", "알림");
 		request.setAttribute("msg", "이메일이 정상적으로 발송 되었습니다");
 		request.setAttribute("icon", "success");
+		request.setAttribute("loc", "/WEB-INF/views/dinner/dinnerReservation.jsp");
 
 		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 	}
