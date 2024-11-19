@@ -316,5 +316,21 @@ public class MemberService {
 	    }
 	    return result; // 조회된 결과를 반환
 	}
+
+	public boolean memberAddLike(String dinnerNo, String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();		
+		boolean likeDinner = false;		
+		likeDinner = dao.memberAddLike(conn, dinnerNo, memberNo);
+		JDBCTemplate.close(conn);
+		return likeDinner;	
+	}
+
+	public boolean memberFindLike(String dinnerNo, String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();		
+		boolean findLike = false;		
+		findLike = dao.memberFindLike(conn, dinnerNo, memberNo);
+		JDBCTemplate.close(conn);
+		return findLike;	
+	}
 }
  

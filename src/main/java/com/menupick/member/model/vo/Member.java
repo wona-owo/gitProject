@@ -20,4 +20,6 @@ public class Member {
 	private String enrollDate;
 	private String adultConfirm;
 	private int memberLevel;
+	
+	private String dinnerNo; //즐겨찾기 식당
 }
