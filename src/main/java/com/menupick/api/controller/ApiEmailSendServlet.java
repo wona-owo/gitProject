@@ -1,3 +1,11 @@
+/**
+ * AJAX with  DinnerCancelReservationServlet.java
+ * 
+ * 이전 서블릿에서 삭제를 하기 전에 이메일을 보낸다음에 삭제를 한다
+ * 그리고 돌아가서 DB 에서 예약 정보 삭제
+ * 
+ * @author 김찬희
+ */
 package com.menupick.api.controller;
 
 import java.io.IOException;
@@ -44,16 +52,34 @@ public class ApiEmailSendServlet extends HttpServlet {
 		String bookNo = request.getParameter("bookNo");
 		String selectedValue = request.getParameter("selectedValue");
 
+		String emailContent = "취소 사유 : ";
+
+		switch (selectedValue) {
+		case "0":
+			emailContent += "숯불에 불남";
+			break;
+		case "1":
+			emailContent += "불판에 불남";
+			break;
+		default:
+			emailContent = "foobar";
+			break;
+		}
+
 		DinnerService service = new DinnerService();
-		BookInfo bookInfoForCancelEmail = service.bookInfoForCancelEmail(bookNo);
+		BookInfo info = service.bookInfoForCancelEmail(bookNo);
 
-		System.out.println("===== from ApiEmailSendServlet =====");
-		System.out.println("selectedValue : " + selectedValue);
-		System.out.println("bookInfoForCancelEmail : " + bookInfoForCancelEmail);
+		String dinnerName = info.getDinnerName();
 
-		String emailTitle = "";
-		String receiver = "";
-		String emailContent = "";
+		String memberName = info.getMemberName();
+		String receiver = info.getMemberEmail();
+
+		String bookDate = info.getBookDate();
+		String bookTime = info.getBookTime();
+		String newDate = bookDate.substring(5, 7) + "월 " + bookDate.substring(8) + "일";
+		String newTime = bookTime.substring(0, 2) + "시 " + bookTime.substring(2) + "분";
+
+		String emailTitle = memberName + " 님의 '" + dinnerName + "'에 대한 " + newDate + " " + newTime + " 예약이 취소 되었습니다";
 
 		// 1. 환경설정 정보 세팅
 		Properties prop = new Properties();
@@ -76,7 +102,8 @@ public class ApiEmailSendServlet extends HttpServlet {
 		try {
 			msg.setSentDate(new Date());
 
-			msg.setFrom(new InternetAddress("unemotioned@naver.com", "UnEmotioneD"));
+			String emailSender = "메뉴픽";
+			msg.setFrom(new InternetAddress("unemotioned@naver.com", emailSender));
 
 			InternetAddress to = new InternetAddress(receiver);
 			msg.setRecipient(Message.RecipientType.TO, to);
@@ -90,11 +117,8 @@ public class ApiEmailSendServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		request.setAttribute("title", "알림");
-		request.setAttribute("msg", "이메일이 정상적으로 발송 되었습니다");
-		request.setAttribute("icon", "success");
-
-		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+		int emailSent = 1;
+		response.getWriter().print(emailSent);
 	}
 
 	/**

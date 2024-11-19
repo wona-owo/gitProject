@@ -274,19 +274,29 @@ public class MemberService {
 	}
 
 	// 회원 정보 조회 (회원 아이디, 전화번호로 비밀번호 찾기)
-    public Member searchMemberPw(String memberId, String memberPhone) {
-        return dao.searchMemberPw(memberId, memberPhone);
+	public Member searchMemberPw(String memberId, String memberPhone) {
+        Connection conn = JDBCTemplate.getConnection(); 
+        Member member = dao.searchMemberPw(conn, memberId, memberPhone);
+        JDBCTemplate.close(conn); 
+        return member;
     }
 
     // 비밀번호 업데이트
     public boolean updateMemberPassword(String memberId, String tempPassword) {
-        return dao.updateMemberPassword(memberId, tempPassword);
+        Connection conn = JDBCTemplate.getConnection(); 
+        boolean isUpdated = dao.updateMemberPassword(conn, memberId, tempPassword);
+        if (isUpdated) {
+            JDBCTemplate.commit(conn); 
+        } else {
+            JDBCTemplate.rollback(conn);
+        }
+        JDBCTemplate.close(conn); 
+        return isUpdated;
     }
 
     // 임시 비밀번호를 이메일로 전송
     public boolean sendPwByEmail(String recipientEmail, String tempPassword) {
         try {
-            // 이메일 전송
             String subject = "비밀번호 찾기 결과";
             String message = "회원님의 임시 비밀번호는 다음과 같습니다: " + tempPassword + " 로그인 후 비밀번호를 변경해주세요";
             EmailUtil.sendEmail(recipientEmail, subject, message);
@@ -295,9 +305,9 @@ public class MemberService {
             e.printStackTrace();
             return false;
         }
-
     }
 
+    // 회원 ID 조회
     public String searchMemberId(String memberName, String memberPhone) {
 	    Connection conn = JDBCTemplate.getConnection();
 	    String result = null;
@@ -331,6 +341,7 @@ public class MemberService {
 		findLike = dao.memberFindLike(conn, dinnerNo, memberNo);
 		JDBCTemplate.close(conn);
 		return findLike;	
-	}
-}
+		}
+    }
+
  
