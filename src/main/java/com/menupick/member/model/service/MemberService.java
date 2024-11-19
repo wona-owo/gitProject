@@ -288,7 +288,7 @@ public class MemberService {
         try {
             // 이메일 전송
             String subject = "비밀번호 찾기 결과";
-            String message = "회원님의 비밀번호는 다음과 같습니다: " + tempPassword;
+            String message = "회원님의 임시 비밀번호는 다음과 같습니다: " + tempPassword + " 로그인 후 비밀번호를 변경해주세요";
             EmailUtil.sendEmail(recipientEmail, subject, message);
             return true;
         } catch (Exception e) {
