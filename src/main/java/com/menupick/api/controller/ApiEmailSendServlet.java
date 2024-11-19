@@ -1,3 +1,12 @@
+/**
+ * From :  DinnerCancelReservationServlet.java
+ * To :  DinnerCancelReservationServlet.java
+ * 
+ * 이전 서블릿에서 삭제를 하기 전에 이메일을 보낸다음에 삭제를 한다
+ * 그리고 돌아가서 DB 에서 예약 정보 삭제
+ * 
+ * @author 김찬희
+ */
 package com.menupick.api.controller;
 
 import java.io.IOException;
@@ -43,6 +52,10 @@ public class ApiEmailSendServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String bookNo = request.getParameter("bookNo");
 		String selectedValue = request.getParameter("selectedValue");
+		
+		System.out.println("===== from ApiEmailSendServlet ===");
+		System.out.println("bookNo : " + bookNo);
+		System.out.println("selectedValue : " + selectedValue);
 
 		String emailContent = "";
 
@@ -65,7 +78,6 @@ public class ApiEmailSendServlet extends HttpServlet {
 		System.out.println("bookInfoForCancelEmail : " + info);
 		
 		String memberName = info.getDinnerName();
-		
 		String dinnerName = info.getDinnerName();
 		String receiver = info.getMemberEmail();
 
@@ -105,13 +117,15 @@ public class ApiEmailSendServlet extends HttpServlet {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
+		
+		return;
 
-		request.setAttribute("title", "알림");
-		request.setAttribute("msg", "이메일이 정상적으로 발송 되었습니다");
-		request.setAttribute("icon", "success");
-		request.setAttribute("loc", "/WEB-INF/views/dinner/dinnerReservation.jsp");
-
-		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+//		request.setAttribute("title", "알림");
+//		request.setAttribute("msg", "이메일이 정상적으로 발송 되었습니다");
+//		request.setAttribute("icon", "success");
+//		request.setAttribute("loc", "/WEB-INF/views/dinner/dinnerReservation.jsp");
+//
+//		request.getRequestDispatcher("/dinner/cancelReservation").forward(request, response);
 	}
 
 	/**

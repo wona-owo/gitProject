@@ -181,6 +181,10 @@ ul {
 					+ "&month=" + month + "&day=" + day + "&dinnerNo="
 					+ dinnerNo + "&check=" + 1;
 		}
+		
+		function sendEmail(bookNo, selectedValue) {
+			window.location.href ="/api/emailSend" + "?bookNo=" + bookNo + "&selectedValue=" + selectedValue;
+		}
 
 		function confirmCancel(dinnerNo, memberNo, bookNo) {
 			let groupMenu = $('#group-menu-' + memberNo);
@@ -224,12 +228,14 @@ ul {
 						.then(
 								function(isConfirm) {
 									if (isConfirm) {
+										sendEmail(bookNo, selectedValue);
+
 										$
 												.ajax({
 													url : "/dinner/cancelReservation",
 													type : "GET",
 													data : {
-														"bookNo" : bookNo
+														"bookNo" : bookNo,
 													},
 													success : function(res) {
 														let title = "알림";
@@ -249,9 +255,7 @@ ul {
 															text : text,
 															icon : icon,
 														});
-
-														window.location.href = "/api/emailSend?bookNo=" + bookNo + "&selectedValue=" + selectedValue;
-
+														
 														// 알림 창이 띄어지자 마자 새로고침 되서 3초간 대기
 														if (icon === "success") {
 														    setTimeout(() => {

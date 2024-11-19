@@ -208,6 +208,8 @@ public class DinnerService {
 		Connection conn = JDBCTemplate.getConnection();
 		BookInfo bookInfoForCancelEmail = dao.bookInfoForCancelEmail(conn, bookNo);
 		JDBCTemplate.close(conn);
+		System.out.println("===== from DinnerService =====");
+		System.out.println(bookInfoForCancelEmail);
 		return bookInfoForCancelEmail;
 	}
 
