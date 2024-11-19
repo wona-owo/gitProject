@@ -20,64 +20,136 @@ AJAX with ApiEmailSend.java
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
-* {
-	border: 1px solid black;
-}
-/*
-clear
--- float 속성이 있는거 다음에 올때 float 속성을 없애줌
-
-content
--- ::after 랑 같이 사용 자식 속성에 내용이 없더라도 부모 속성이 감쌀 수 있도록 해준다
-*/
-div {
-	display: block;
-	clear: both;
+.wrap { $1
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #ffffff;
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
 }
 
-.clearfix::after {
-	content: "";
-	clear: both;
-	display: table;
+main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 80vh;
 }
-/*
-border 가 없으면 취소 버튼을 눌렀을때 margin 이 이상한곳에 생겨서
-transparent 한 border 를 만들어줌
-*/
+
+.page-title {
+	font-size: 24px;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #f40;
+	text-align: center;
+	padding: 15px;
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+
+.section {
+	width: 70%;
+}
+
+.notice-list-wrap>div {
+	display: flex;
+	justify-content: center;
+	padding: 10px;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.notice-list-wrap>div>span {
+	width: 20%;
+	font-size: 16px;
+	padding: 5px;
+	text-align: center;
+}
+
+.new-book-hour {
+	font-weight: bold;
+	font-size: 20px;
+	margin-top: 20px;
+	padding: 5px;
+	text-align: center;
+}
+
 ul {
-	border: 1px solid transparent;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
 .group-menu {
-	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	background-color: #f8f9fa;
+	border-radius: 6px;
+	margin-top: 0;
+	width: 100%;
 }
 
 .group-menu li {
-	list-style-type: none;
+	font-size: 16px;
+	margin-right: 10px;
 }
 
-.group-menu>li {
-	float: left;
-	text-align: center;
+.menu-item {
+	position: relative;
+}
+
+.cancel-btn {
+	background-color: #f44336;
+	color: #ffffff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+	background-color: #d32f2f;
 }
 
 .sub-menu {
 	display: none;
 	position: absolute;
+	top: 100%;
 	left: 0;
+	background-color: #ffffff;
+	border: 1px solid #ddd;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+	padding: 10px;
+	border-radius: 4px;
+	z-index: 100;
+	width: 220px;
 }
 
 .sub-menu>li {
-	text-align: center;
-	float: left;
+	margin-bottom: 10px;
 }
 
-.sub-menu>li>a {
-	display: block;
+.cancel-reason-select {
+	width: 100%;
+	padding: 6px;
+	font-size: 14px;
 }
 
-.select-placeholder {
-	display: none;
+.sub-menu button {
+	background-color: #4caf50;
+	color: #ffffff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s;
+}
+
+.sub-menu button:hover {
+	background-color: #388e3c;
 }
 </style>
 </head>
@@ -86,7 +158,7 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookMonth}월 ${bookDay}일</div>
+				<div class="page-title">${bookMonth}월${bookDay}일</div>
 				<input type="hidden" value="${bookYear}" name="bookYear"
 					id="bookYear"> <input type="hidden" value="${bookMonth}"
 					name="bookMonth" id="bookMonth"> <input type="hidden"
@@ -94,7 +166,7 @@ ul {
 					type="hidden" value="${dinnerNo}" id="dinnerNo">
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
-					<span>취소를 해주는 버튼</span>
+					<span>취소</span>
 				</div>
 
 				<%-- 이전 시간값을 선언 --%>
