@@ -115,7 +115,6 @@ button:hover {
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
-
 <section class="section update-wrap">
     <div class="page-title">회원정보 수정</div>
     
@@ -183,17 +182,13 @@ button:hover {
                 	<label for="memberAddr">주소</label>
                 </div>
                 <div class="input-item">
-               			     <input type="hidden" id="zipp_code_id" name="zipp_code"
-								maxlength="10" placeholder="우편번호" 
-								style="width: 50%; display: inline;">
-							<input type="text" name="memberAddr" id="memberAddr" maxlength="40" value="${loginMember.memberAddr}"
-								placeholder="기본 주소를 입력하세요" required>
-								
-							<button type="button" id="zipp_btn" class="btn btn-primary"
-								onclick="execDaumPostcode()">도로명주소 찾기</button>
-						
+           		     <input type="hidden" id="zipp_code_id" name="zipp_code"
+							maxlength="10" placeholder="우편번호">
+					<input type="text" name="memberAddr" id="memberAddr" maxlength="40" value="${loginMember.memberAddr}"
+							placeholder="기본 주소를 입력하세요" required>								
+					<button type="button" id="zipp_btn" class="btn btn-primary"
+							onclick="execDaumPostcode()">도로명주소 찾기</button>						
             	</div>
-            </div>
             </div>
             <div class="input-wrap">
             	<div class="input-title">
@@ -208,8 +203,7 @@ button:hover {
             	</div>
               	<div class="delete-button">
                     <a href="/member/delete" class="delete"><p>회원 탈퇴</p></a>         
-            	</div>
-            
+            	</div>  
     	</form>
     </section>
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
