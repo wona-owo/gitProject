@@ -1,6 +1,7 @@
 <%--
 From : DinnerCheckReservationServlet.java
 AJAX with DinnerCancelReservationServlet.java
+AJAX with ApiEmailSend.java
 
 예약 상세 정보를 보여주고 예약을 취소 할 수 도 있음
 예약을 취소하면 DB 에서 예약 정보를 삭제 하고 회원에게 email 을 보내줘야함
@@ -83,9 +84,10 @@ ul {
 		<main class="content">
 			<section class="section notice-list-wrap">
 				<div class="page-title">${bookMonth}월${bookDay}일</div>
-				<input type="hidden" value="${bookYear}" id="bookYear"> <input
-					type="hidden" value="${bookMonth}" id="bookMonth"> <input
-					type="hidden" value="${bookDay}" id="bookDay"> <input
+				<input type="hidden" value="${bookYear}" name="bookYear"
+					id="bookYear"> <input type="hidden" value="${bookMonth}"
+					name="bookMonth" id="bookMonth"> <input type="hidden"
+					value="${bookDay}" name="bookDay" id="bookDay"> <input
 					type="hidden" value="${dinnerNo}" id="dinnerNo">
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
@@ -183,7 +185,40 @@ ul {
 		}
 		
 		function sendEmail(bookNo, selectedValue) {
-			window.location.href ="/api/emailSend" + "?bookNo=" + bookNo + "&selectedValue=" + selectedValue;
+		    console.log("Sending email");
+		    $.ajax({
+		        url: "/api/emailSend",
+		        type: "GET",
+		        data: {
+		            bookNo: bookNo,
+		            selectedValue: selectedValue
+		        },
+				success : function(res) {
+					let title = "알림";
+					let text = "";
+					let icon = "";
+
+					if (res > 0) {
+					    title = "성공",
+						text = "이메일이 전송되었습니다";
+						icon = "success";
+					} else {
+					    title = "실패",
+						text = "이메일 전송중 오류가 발생하였습니다";
+						icon = "error";
+					}
+
+					swal({
+						title : title,
+						text : text,
+						icon : icon,
+					});
+
+				},
+				error : function() {
+					console.log("foobar sending email");
+				}
+		    });
 		}
 
 		function confirmCancel(dinnerNo, memberNo, bookNo) {
@@ -224,52 +259,50 @@ ul {
 							closeModal : true
 						}
 					}
-				})
-						.then(
-								function(isConfirm) {
-									if (isConfirm) {
-										sendEmail(bookNo, selectedValue);
+				}).then( function(isConfirm) {
+					if (isConfirm) {
 
-										$
-												.ajax({
-													url : "/dinner/cancelReservation",
-													type : "GET",
-													data : {
-														"bookNo" : bookNo,
-													},
-													success : function(res) {
-														let title = "알림";
-														let text = "";
-														let icon = "";
+						sendEmail(bookNo, selectedValue);
 
-														if (res > 0) {
-															text = "예약이 취소 되었습니다";
-															icon = "success";
-														} else {
-															text = "예약 취소 중 오류가 발생하였습니다";
-															icon = "error";
-														}
+						$.ajax({
+							url : "/dinner/cancelReservation",
+							type : "GET",
+							data : {
+								"bookNo" : bookNo,
+							},
+							success : function(res) {
+								let title = "알림";
+								let text = "";
+								let icon = "";
 
-														swal({
-															title : title,
-															text : text,
-															icon : icon,
-														});
-														
-														// 알림 창이 띄어지자 마자 새로고침 되서 3초간 대기
-														if (icon === "success") {
-														    setTimeout(() => {
-														        refresh();
-														    }, 3000);
-														}
+								if (res > 0) {
+									text = "예약이 취소 되었습니다";
+									icon = "success";
+								} else {
+									text = "예약 취소 중 오류가 발생하였습니다";
+									icon = "error";
+								}
 
-													},
-													error : function() {
-														console.log("foobar");
-													}
-												});
-									}
+								swal({
+									title : title,
+									text : text,
+									icon : icon,
 								});
+								
+								// 알림 창이 띄어지자 마자 새로고침 되서 3초간 대기
+								if (icon === "success") {
+									setTimeout(() => {
+										refresh();
+									}, 3000);
+								}
+
+							},
+							error : function() {
+								console.log("foobar confirming cancel");
+							}
+						});
+					}
+     			});
 			}
 		}
 	</script>

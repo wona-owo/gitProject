@@ -1,6 +1,5 @@
 /**
- * From :  DinnerCancelReservationServlet.java
- * To :  DinnerCancelReservationServlet.java
+ * AJAX with  DinnerCancelReservationServlet.java
  * 
  * 이전 서블릿에서 삭제를 하기 전에 이메일을 보낸다음에 삭제를 한다
  * 그리고 돌아가서 DB 에서 예약 정보 삭제
@@ -53,10 +52,6 @@ public class ApiEmailSendServlet extends HttpServlet {
 		String bookNo = request.getParameter("bookNo");
 		String selectedValue = request.getParameter("selectedValue");
 		
-		System.out.println("===== from ApiEmailSendServlet ===");
-		System.out.println("bookNo : " + bookNo);
-		System.out.println("selectedValue : " + selectedValue);
-
 		String emailContent = "";
 
 		switch (selectedValue) {
@@ -67,20 +62,19 @@ public class ApiEmailSendServlet extends HttpServlet {
 			emailContent = "불판에 불남";
 			break;
 		default:
+			emailContent = "foobar";
 			break;
 		}
 
 		DinnerService service = new DinnerService();
 		BookInfo info = service.bookInfoForCancelEmail(bookNo);
-
-		System.out.println("===== from ApiEmailSendServlet =====");
-		System.out.println("selectedValue : " + selectedValue);
-		System.out.println("bookInfoForCancelEmail : " + info);
 		
 		String memberName = info.getDinnerName();
 		String dinnerName = info.getDinnerName();
 		String receiver = info.getMemberEmail();
-
+		String bookDate = info.getBookDate();
+		String bookTime = info.getBookTime();
+		
 		String emailTitle = "";
 
 		// 1. 환경설정 정보 세팅
@@ -118,14 +112,8 @@ public class ApiEmailSendServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		return;
-
-//		request.setAttribute("title", "알림");
-//		request.setAttribute("msg", "이메일이 정상적으로 발송 되었습니다");
-//		request.setAttribute("icon", "success");
-//		request.setAttribute("loc", "/WEB-INF/views/dinner/dinnerReservation.jsp");
-//
-//		request.getRequestDispatcher("/dinner/cancelReservation").forward(request, response);
+		int emailSent = 1;
+		response.getWriter().print(emailSent);
 	}
 
 	/**

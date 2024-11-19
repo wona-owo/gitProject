@@ -714,8 +714,6 @@ public class DinnerDao {
 				b.setMemberName(rt.getString("member_name"));
 				b.setMemberEmail(rt.getString("member_email"));
 				b.setDinnerName(rt.getString("dinner_name"));
-
-				System.out.println(b);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
