@@ -86,7 +86,7 @@ button:hover {
 .btn-primary {
 	background-color: #007bff;
 	border: none;
-	border-radius: 5px;
+	border-radius: 30px;
 	padding: 10px 20px;
 	color: #fff;
 	font-size: 16px;
@@ -100,7 +100,7 @@ button:hover {
 .btn-default {
 	background-color: #f40;
 	border: none;
-	border-radius: 5px;
+	border-radius: 30px;
 	padding: 10px 20px;
 	color: #fff;
 	font-size: 16px;
