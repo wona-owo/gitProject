@@ -1,6 +1,6 @@
 <%--
 From : DinnerCheckReservationServlet.java
-AJAX with DinnerCancelReservationServlet.jav
+AJAX with DinnerCancelReservationServlet.java
 
 예약 상세 정보를 보여주고 예약을 취소 할 수 도 있음
 예약을 취소하면 DB 에서 예약 정보를 삭제 하고 회원에게 email 을 보내줘야함
