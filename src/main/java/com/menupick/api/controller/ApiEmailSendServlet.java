@@ -51,15 +51,15 @@ public class ApiEmailSendServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String bookNo = request.getParameter("bookNo");
 		String selectedValue = request.getParameter("selectedValue");
-		
-		String emailContent = "";
+
+		String emailContent = "취소 사유 : ";
 
 		switch (selectedValue) {
 		case "0":
-			emailContent = "숯불에 불남";
+			emailContent += "숯불에 불남";
 			break;
 		case "1":
-			emailContent = "불판에 불남";
+			emailContent += "불판에 불남";
 			break;
 		default:
 			emailContent = "foobar";
@@ -68,14 +68,18 @@ public class ApiEmailSendServlet extends HttpServlet {
 
 		DinnerService service = new DinnerService();
 		BookInfo info = service.bookInfoForCancelEmail(bookNo);
-		
-		String memberName = info.getDinnerName();
+
 		String dinnerName = info.getDinnerName();
+
+		String memberName = info.getMemberName();
 		String receiver = info.getMemberEmail();
+
 		String bookDate = info.getBookDate();
 		String bookTime = info.getBookTime();
-		
-		String emailTitle = "";
+		String newDate = bookDate.substring(5, 7) + "월 " + bookDate.substring(8) + "일";
+		String newTime = bookTime.substring(0, 2) + "시 " + bookTime.substring(2) + "분";
+
+		String emailTitle = memberName + " 님의 '" + dinnerName + "'에 대한 " + newDate + " " + newTime + " 예약이 취소 되었습니다";
 
 		// 1. 환경설정 정보 세팅
 		Properties prop = new Properties();
@@ -98,7 +102,8 @@ public class ApiEmailSendServlet extends HttpServlet {
 		try {
 			msg.setSentDate(new Date());
 
-			msg.setFrom(new InternetAddress("unemotioned@naver.com", "UnEmotioneD"));
+			String emailSender = "메뉴픽";
+			msg.setFrom(new InternetAddress("unemotioned@naver.com", emailSender));
 
 			InternetAddress to = new InternetAddress(receiver);
 			msg.setRecipient(Message.RecipientType.TO, to);
@@ -111,7 +116,7 @@ public class ApiEmailSendServlet extends HttpServlet {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
-		
+
 		int emailSent = 1;
 		response.getWriter().print(emailSent);
 	}

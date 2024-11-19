@@ -39,7 +39,7 @@ public class DinnerCancelReservationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String bookNo = request.getParameter("bookNo");
-		
+
 		DinnerService service = new DinnerService();
 
 		response.getWriter().print(service.dinnerCancelReservaion(bookNo));
