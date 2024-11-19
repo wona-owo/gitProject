@@ -103,7 +103,7 @@
 			<section class="section mypage-wrap">
 				<div class="page-title">매장 정보페이지</div>
 
-				<form id="updateForm" action="/dinner/update" method="post">
+				<form id="updateForm" action="/adminDinner/update" method="post">
 
 					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}">
 
