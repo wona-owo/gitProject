@@ -82,11 +82,11 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookMonth}월${bookDay} 일</div>
+				<div class="page-title">${bookMonth}월${bookDay}일</div>
 				<input type="hidden" value="${bookYear}" id="bookYear"> <input
 					type="hidden" value="${bookMonth}" id="bookMonth"> <input
-					type="hidden" value="${bookDay}" id="bookDay">
-					<input type="hidden" value="${dinnerNo}" id="dinnerNo">
+					type="hidden" value="${bookDay}" id="bookDay"> <input
+					type="hidden" value="${dinnerNo}" id="dinnerNo">
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
 					<span>취소를 해주는 버튼</span>
@@ -117,8 +117,8 @@ ul {
 									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
 									<li><select id="select-input-${b.memberNo}"
 										class="cancel-reason-select">
-											<option value="" class="select-placeholder" selected disabled>취소
-												사유 선택</option>
+											<option value="none" class="select-placeholder" selected
+												disabled>취소 사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
 									</select></li>
@@ -178,15 +178,18 @@ ul {
 			let dinnerNo = $("#dinnerNo").val();
 
 			window.location.href = "/dinner/checkReservation?year=" + year
-					+ "&month=" + month + "&day=" + day + "&dinnerNo=" + dinnerNo +"&check=" + 1;
+					+ "&month=" + month + "&day=" + day + "&dinnerNo="
+					+ dinnerNo + "&check=" + 1;
 		}
 
 		function confirmCancel(dinnerNo, memberNo, bookNo) {
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
-			let selectElement = subMenu.find('#select-input-' + memberNo);
+			let selectElement = $('#select-input-' + memberNo);
 			let selectedValue = selectElement.val();
+
+			console.log("Selected Value:", selectedValue);
 
 			// 확인 버튼을 눌렀을때 sub-menu 를 닫고 포함 되어있는 div 태그의 margin 을 지움
 			subMenu.hide();
@@ -196,7 +199,7 @@ ul {
 			$('.sub-menu').hide();
 			$('.group-menu').css('margin-bottom', '0px');
 
-			if (selectedValue === "placeholder") {
+			if (selectedValue === "none") {
 				return;
 			} else {
 				swal({
@@ -217,51 +220,62 @@ ul {
 							closeModal : true
 						}
 					}
-				}).then(function(isConfirm) {
-					if (isConfirm) {
-						$.ajax({
-							url : "/dinner/cancelReservation",
-							type : "GET",
-							data : {
-								"bookNo" : bookNo
-							},
-							success : function(res) {
-								let title = "알림";
-								let text = "";
-								let icon = "";
+				})
+						.then(
+								function(isConfirm) {
+									if (isConfirm) {
+										$
+												.ajax({
+													url : "/dinner/cancelReservation",
+													type : "GET",
+													data : {
+														"bookNo" : bookNo
+													},
+													success : function(res) {
+														let title = "알림";
+														let text = "";
+														let icon = "";
 
-								if (res > 0) {
-									text = "예약이 취소 되었습니다";
-									icon = "success";
-								} else {
-									text = "예약 취소 중 오류가 발생하였습니다";
-									icon = "error";
-								}
+														if (res > 0) {
+															text = "예약이 취소 되었습니다";
+															icon = "success";
+														} else {
+															text = "예약 취소 중 오류가 발생하였습니다";
+															icon = "error";
+														}
 
-								swal({
-									title : title,
-									text : text,
-									icon : icon,
+														swal({
+															title : title,
+															text : text,
+															icon : icon,
+														});
+
+														console
+																.log(selectedValue);
+
+														window.location.href = "/api/emailSend?dinnerNo="
+																+ dinnerNo
+																+ "&memberNo="
+																+ memberNo
+																+ "&bookNo="
+																+ bookNo
+																+ "&selectedValue="
+																+ selectedValue;
+
+														// 알림 창이 띄어지자 마자 새로고침 되서 2초간 대기
+														if (icon === "success") {
+														    setTimeout(() => {
+														        refresh();
+														    }, 2000);
+														}
+
+													},
+													error : function() {
+														console.log("foobar");
+													}
+												});
+									}
 								});
-								
-								console.log(dinnerNo);
-								console.log(memberNo);
-								console.log(selectedValue);
-
-								window.location.href = "/api/emailSend?dinnerNo=" + dinnerNo + "&memberNo=" + memberNo + "&selectedValue=" +  selectedValue;
-
-								/*
-								if (icon === "success") {
-									refresh();
-								}
-								*/
-							},
-							error : function() {
-								console.log("foobar");
-							}
-						});
-					}
-				});
 			}
 		}
 	</script>

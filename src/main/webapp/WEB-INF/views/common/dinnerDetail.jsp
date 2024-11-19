@@ -55,7 +55,7 @@
 		<main>
 			<%-- TODO form tag 가 없었음 action, method 지정 필요 --%>
 				<section class="restaurant-detail-header">
-			<form action="/dinner/dinnerDetailFrm" method="get">
+			<form action="/dinner/settingsfrm" method="get">
 			<input type="hidden" name="${dinner.dinnerNo}">
 			<input type="hidden" name="memberNo">
 					<div class="dinner-main-img">
