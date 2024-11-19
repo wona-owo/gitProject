@@ -169,27 +169,20 @@ button:hover {
             	</div>
             	<p id="phoneMessage" class="input-msg"></p>
             </div>
-				           
-				 <div class="input-wrap">
-				    <div class="input-title">
-				        <label for="zipp_code_id">우편번호</label>
-				    </div>
                 <div class="input-wrap">
             	<div class="input-title">
                 	<label for="memberAddr">주소</label>
                 </div>
                 <div class="input-item">
-               			    <input type="text" id="zipp_code_id" name="zipp_code"
-								maxlength="10" placeholder="우편번호" value="${loginMember.memberAddr}"
+               			     <input type="hidden" id="zipp_code_id" name="zipp_code"
+								maxlength="10" placeholder="우편번호" 
 								style="width: 50%; display: inline;">
+							<input type="text" name="memberAddr" id="memberAddr" maxlength="40" value="${loginMember.memberAddr}"
+								placeholder="기본 주소를 입력하세요" required>
 								
 							<button type="button" id="zipp_btn" class="btn btn-primary"
-								onclick="execDaumPostcode()">우편번호 찾기</button>
+								onclick="execDaumPostcode()">도로명주소 찾기</button>
 						
-							<input type="text" name="user_add1" id="UserAdd1" maxlength="40"
-								placeholder="기본 주소를 입력하세요" required>
-							 <input type="text"	name="user_add2" id="UserAdd2" maxlength="40"
-								placeholder="상세 주소를 입력하세요"> 
             	</div>
             </div>
             </div>
@@ -477,14 +470,13 @@ button:hover {
                         extraAddr = ' (' + extraAddr + ')';
                     }
                 } else {
-                    document.getElementById("UserAdd1").value = '';
+                    document.getElementById("memberAddr").value = '';
                 }
 
                 // 선택된 우편번호와 주소 정보를 input 박스에 넣는다.
                 document.getElementById('zipp_code_id').value = data.zonecode;
-                document.getElementById("UserAdd1").value = addr;
-                document.getElementById("UserAdd1").value += extraAddr;
-                document.getElementById("UserAdd2").focus(); // 우편번호 + 주소 입력이 완료되었음으로 상세주소로 포커스 이동
+                document.getElementById("memberAddr").value = addr;
+                document.getElementById("memberAddr").value += extraAddr;
             }
         }).open();
     }
