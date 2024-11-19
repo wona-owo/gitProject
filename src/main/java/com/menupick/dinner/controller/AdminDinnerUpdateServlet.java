@@ -64,7 +64,7 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         if (result > 0) {
             // 성공 시
             request.setAttribute("title", "알림");
-            request.setAttribute("msg", "회원 정보가 수정되었습니다. 재로그인하시기 바랍니다.");
+            request.setAttribute("msg", "매장 정보가 수정되었습니다. ");
             request.setAttribute("icon", "success");
             request.setAttribute("loc", "/");
 
@@ -73,7 +73,7 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         } else {
             // 실패 시
             request.setAttribute("title", "알림");
-            request.setAttribute("msg", "회원 정보 수정 중 오류가 발생했습니다.");
+            request.setAttribute("msg", "매장정보 수정 중 오류가 발생했습니다.");
             request.setAttribute("icon", "error");
             request.setAttribute("loc", "/");
 
