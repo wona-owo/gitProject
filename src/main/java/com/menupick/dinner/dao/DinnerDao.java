@@ -700,7 +700,7 @@ public class DinnerDao {
 	public BookInfo bookInfoForCancelEmail(Connection conn, String bookNo) {
 		PreparedStatement pt = null;
 		ResultSet rt = null;
-		BookInfo b = null;
+		BookInfo b = new BookInfo();
 		String query = "select m.member_name, m.member_email, b.book_date, b.book_time, d.dinner_name from tbl_book b join tbl_member m on b.member_no = m.member_no join tbl_dinner d on b.dinner_no = d.dinner_no where b.book_no = ?";
 
 		try {
@@ -709,7 +709,6 @@ public class DinnerDao {
 			rt = pt.executeQuery();
 
 			if (rt.next()) {
-				b = new BookInfo();
 				b.setBookDate(rt.getDate("book_date").toString());
 				b.setBookTime(rt.getString("book_time"));
 				b.setMemberName(rt.getString("member_name"));
