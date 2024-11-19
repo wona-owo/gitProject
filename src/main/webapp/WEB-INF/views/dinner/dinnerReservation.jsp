@@ -292,7 +292,7 @@ ul {
 									icon : icon,
 								});
 								
-								// 알림 창이 띄어지자 마자 새로고침 되서 3초간 대기
+								// 알림 창이 띄어지자 마자 새로고침 되서 1.5초간 대기
 								if (icon === "success") {
 									setTimeout(() => {
 										refresh();
