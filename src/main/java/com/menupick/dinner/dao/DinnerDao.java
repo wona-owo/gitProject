@@ -69,7 +69,6 @@ public class DinnerDao {
 				d.setFoodCat(rset.getString("food_cat"));
 
 				dinnerList.add(d);
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -249,7 +248,7 @@ public class DinnerDao {
 				d.setFoodName(rset.getString("FOOD_NAME"));
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
-				System.out.println("from DinnerDao dinnerDetail dinnerNo : " + dinnerNo);
+				System.out.println(dinnerNo);
 			}
 
 		} catch (SQLException e) {
@@ -653,17 +652,14 @@ public class DinnerDao {
 	}
 
 	public int updateDinner(Connection conn, Dinner updDinner) {
-
 		PreparedStatement pstmt = null;
 		int result = 0;
-
 		String query = "UPDATE TBL_DINNER " + "SET dinner_name = ?, dinner_addr = ?, dinner_open = ?, "
 				+ "dinner_close = ?, dinner_phone = ?, dinner_email = ?, dinner_parking = ?, "
 				+ "busi_no = ?, dinner_max_person = ?, dinner_confirm = ? " + "WHERE LOWER(dinner_no) = LOWER(?)";
 
 		try {
 			pstmt = conn.prepareStatement(query);
-
 			pstmt.setString(1, updDinner.getDinnerName());
 			pstmt.setString(2, updDinner.getDinnerAddr());
 			pstmt.setString(3, updDinner.getDinnerOpen());
@@ -727,5 +723,23 @@ public class DinnerDao {
 			JDBCTemplate.close(pt);
 		}
 		return b;
+	}
+
+	public int deleteDinner(Connection conn, String dinnerNo) {
+		PreparedStatement pt = null;
+		int result = 0;
+		String query = "DELETE FROM TBL_DINNER WHERE DINNER_NO = ?";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		return result;
 	}
 }
