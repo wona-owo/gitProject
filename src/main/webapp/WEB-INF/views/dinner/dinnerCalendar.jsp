@@ -228,59 +228,54 @@ section {
 					return data[dayStr] || 0;
 				}
 
-				$
-						.ajax({
-							url : "/dinner/reservation",
-							data : {
-								dinnerNo : $("#dinnerNo").val(),
-								displayMonth : $("#month").text(),
-								displayYear : $("#year").text()
-							},
-							type : "GET",
-							success : function(res) {
-								for (let day = 1; day <= daysInMonth; day++) {
-									const dayEl = $("<span></span>");
-									const dayNumEl = $("<div></div>").text(day);
-									const bookCnt = getBookCnt(day, res);
+				$.ajax({
+					url : "/dinner/reservation",
+					data : {
+						dinnerNo : $("#dinnerNo").val(),
+						displayMonth : $("#month").text(),
+						displayYear : $("#year").text()
+					},
+					type : "GET",
+					success : function(res) {
+						for (let day = 1; day <= daysInMonth; day++) {
+							const dayEl = $("<span></span>");
+							const dayNumEl = $("<div></div>").text(day);
+							const bookCnt = getBookCnt(day, res);
 
-									const bookCntEl = $("<div></div>").html(
-											bookCnt ? bookCnt + "팀" : "&nbsp;");
-									dayEl.append(dayNumEl, bookCntEl);
+							const bookCntEl = $("<div></div>").html(
+									bookCnt ? bookCnt + "팀" : "&nbsp;");
+							dayEl.append(dayNumEl, bookCntEl);
 
-									if (bookCnt) {
-										dayEl.addClass("has-number");
-									}
-
-									const today = new Date();
-									if (day === today.getDate()
-											&& year === today.getFullYear()
-											&& month === today.getMonth()) {
-										dayEl.addClass("today");
-									}
-
-									dinnerNo = $("#dinnerNo").val();
-
-									const dayLink = $("<a></a>")
-											.attr(
-													"href",
-													bookCnt ? "/dinner/checkReservation?dinnerNo="
-															+ dinnerNo
-															+ "&day="
-															+ day
-															+ "&month="
-															+ month
-															+ "&year=" + year
-															: null).addClass(
-													bookCnt ? "" : "disabled");
-
-									dayLink.append(dayEl);
-									daysContainer.append(dayLink);
-								}
-							},
-							error : function() {
-								console.error("poop");
+							if (bookCnt) {
+								dayEl.addClass("has-number");
 							}
-						});
+
+							const today = new Date();
+							if (day === today.getDate()
+									&& year === today.getFullYear()
+									&& month === today.getMonth()) {
+								dayEl.addClass("today");
+							}
+
+							dinnerNo = $("#dinnerNo").val();
+
+							const dayLink = $("<a></a>").attr( "href",
+											bookCnt ? "/dinner/checkReservation?dinnerNo="
+													+ dinnerNo
+													+ "&day="
+													+ day
+													+ "&month="
+													+ month
+													+ "&year=" + year : null).addClass( bookCnt ? "" : "disabled");
+
+							dayLink.append(dayEl);
+							daysContainer.append(dayLink);
+						}
+					},
+					error : function() {
+						console.error("poop");
+					}
+				});
 			}
 
 			$("#prev-month").on("click", function() {
