@@ -202,4 +202,12 @@ public class DinnerService {
 
 		return result;
 	}
+
+	// daniel
+	public BookInfo bookInfoForCancelEmail(String bookNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		BookInfo bookInfoForCancelEmail = dao.bookInfoForCancelEmail(conn, bookNo);
+		JDBCTemplate.close(conn);
+		return bookInfoForCancelEmail;
+	}
 }
