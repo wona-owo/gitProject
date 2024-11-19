@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.menupick.common.JDBCTemplate;
+import com.menupick.review.model.vo.Recommend;
 import com.menupick.review.model.vo.Review;
 
 public class ReviewDao {
@@ -59,6 +60,49 @@ public class ReviewDao {
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	//리뷰신고(경래)
+	public boolean isReviewReported(Connection conn, Recommend recommend) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "SELECT COUNT(*) FROM tbl_recommend WHERE review_no = ? AND member_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, recommend.getReviewNo());
+			pstmt.setString(2, recommend.getMemberNo());
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				return rset.getInt(1) > 0;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	//리뷰신고(경래)
+	public int addReviewReport(Connection conn, Recommend recommend) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "INSERT INTO tbl_recommend (review_no, member_no, report) VALUES (?, ?, 'y')";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, recommend.getReviewNo());
+			pstmt.setString(2, recommend.getMemberNo());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);

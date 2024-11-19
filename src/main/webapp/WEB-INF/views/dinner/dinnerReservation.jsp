@@ -1,6 +1,6 @@
 <%--
 From : DinnerCheckReservationServlet.java
-AJAX with DinnerCancelReservationServlet.jav
+AJAX with DinnerCancelReservationServlet.java
 
 예약 상세 정보를 보여주고 예약을 취소 할 수 도 있음
 예약을 취소하면 DB 에서 예약 정보를 삭제 하고 회원에게 email 을 보내줘야함
@@ -125,7 +125,7 @@ ul {
 
 									<li>
 										<button type="submit"
-											onclick="confirmCancel('${b.memberNo}', '${b.bookNo}')">확인</button>
+											onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
 									</li>
 								</ul></li>
 						</ul>
@@ -181,7 +181,7 @@ ul {
 					+ "&month=" + month + "&day=" + day + "&dinnerNo=" + dinnerNo +"&check=" + 1;
 		}
 
-		function confirmCancel(memberNo, bookNo) {
+		function confirmCancel(dinnerNo, memberNo, bookNo) {
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
@@ -243,10 +243,18 @@ ul {
 									text : text,
 									icon : icon,
 								});
+								
+								console.log(dinnerNo);
+								console.log(memberNo);
+								console.log(selectedValue);
 
+								window.location.href = "/api/emailSend?dinnerNo=" + dinnerNo + "&memberNo=" + memberNo + "&selectedValue=" +  selectedValue;
+
+								/*
 								if (icon === "success") {
 									refresh();
 								}
+								*/
 							},
 							error : function() {
 								console.log("foobar");
