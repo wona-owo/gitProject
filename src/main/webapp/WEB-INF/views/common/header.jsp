@@ -45,7 +45,7 @@
 				<c:when test="${sessionScope.loginType eq 'dinner'}">
 					<li><a href="/member/dinnerCalendarFrm">${sessionScope.loginMember.dinnerName}님
 							(식당)</a></li>
-					<li><a href="/dinner/settings">식당 설정</a></li>
+					<li><a href="/dinner/settingsfrm">식당 설정</a></li>
 					<li><a href="/member/logout">로그아웃</a></li>
 				</c:when>
 			</c:choose>
