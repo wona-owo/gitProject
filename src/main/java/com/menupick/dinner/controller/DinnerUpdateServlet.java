@@ -8,29 +8,28 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
 
-@WebServlet("/adminDinner/update")
-public class AdminDinnerUpdateServlet extends HttpServlet {
+@WebServlet("/dinner/update")
+public class DinnerUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    public AdminDinnerUpdateServlet() {
+    public DinnerUpdateServlet() {
         super();
     }
 
-    // POST 요청 처리
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // POST 요청을 GET 요청처럼 처리
         doGet(request, response);
     }
 
-    // GET 요청 처리
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 값 추출
+        // 입력 값 추출
         String dinnerNo = request.getParameter("dinnerNo");
         String dinnerName = request.getParameter("dinnerName");
+        String dinnerId = request.getParameter("dinnerId");
         String dinnerAddr = request.getParameter("dinnerAddr");
         String dinnerOpen = request.getParameter("dinnerOpen");
         String dinnerClose = request.getParameter("dinnerClose");
@@ -41,10 +40,35 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         String dinnerMaxPerson = request.getParameter("dinnerMaxPerson");
         String dinnerConfirm = request.getParameter("dinnerConfirm");
 
-        // Dinner 객체 생성 및 값 설정
+        // 기본값 설정
+        if (dinnerConfirm == null || dinnerConfirm.isEmpty()) {
+            dinnerConfirm = "N";
+        }
+
+        // 유효성 검사 (예: 시간 형식)
+        if (!dinnerOpen.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$")) {
+            request.setAttribute("msg", "오픈 시간 형식이 잘못되었습니다.");
+            forwardToErrorPage(request, response);
+            return;
+        }
+
+        if (!dinnerClose.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$")) {
+            request.setAttribute("msg", "마감 시간 형식이 잘못되었습니다.");
+            forwardToErrorPage(request, response);
+            return;
+        }
+
+        if (!dinnerPhone.matches("^010-\\d{3,4}-\\d{4}$")) {
+            request.setAttribute("msg", "전화번호 형식이 잘못되었습니다.");
+            forwardToErrorPage(request, response);
+            return;
+        }
+
+        // Dinner 객체 생성
         Dinner updDinner = new Dinner();
         updDinner.setDinnerNo(dinnerNo);
         updDinner.setDinnerName(dinnerName);
+        updDinner.setDinnerId(dinnerId);
         updDinner.setDinnerAddr(dinnerAddr);
         updDinner.setDinnerOpen(dinnerOpen);
         updDinner.setDinnerClose(dinnerClose);
@@ -59,25 +83,31 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         DinnerService service = new DinnerService();
         int result = service.updateDinner(updDinner);
 
-        // 결과 처리
+
         if (result > 0) {
-            // 성공 시
+            // 데이터베이스 수정 성공 시, 세션 갱신
+            HttpSession session = request.getSession();
+            Dinner updatedDinner = service.getDinnerByNo(dinnerNo); // 수정된 데이터를 다시 가져옴
+            session.setAttribute("loginMember", updatedDinner); // 세션 갱신
+
             request.setAttribute("title", "알림");
-            request.setAttribute("msg", "매장 정보가 수정되었습니다. ");
+            request.setAttribute("msg", "매장 정보가 수정되었습니다.");
             request.setAttribute("icon", "success");
-            request.setAttribute("loc", "/");
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-            dispatcher.forward(request, response);
+            request.setAttribute("loc", "/dinner/setting");
         } else {
-            // 실패 시
             request.setAttribute("title", "알림");
-            request.setAttribute("msg", "매장정보 수정 중 오류가 발생했습니다.");
+            request.setAttribute("msg", "매장 정보 수정 중 오류가 발생했습니다.");
             request.setAttribute("icon", "error");
-            request.setAttribute("loc", "/");
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-            dispatcher.forward(request, response);
+            request.setAttribute("loc", "/dinner/setting");
         }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void forwardToErrorPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/error.jsp");
+        dispatcher.forward(request, response);
     }
 }
+

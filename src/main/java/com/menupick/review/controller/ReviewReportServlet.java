@@ -7,17 +7,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.review.model.service.ReviewService;
+import com.menupick.review.model.vo.Recommend;
+
 /**
- * Servlet implementation class ReviewWriteFrmServlet
+ * Servlet implementation class ReviewReportServlet
  */
-@WebServlet("/review/WriteFrm")
-public class ReviewWriteFrmServlet extends HttpServlet {
+@WebServlet("/review/report")
+public class ReviewReportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReviewWriteFrmServlet() {
+    public ReviewReportServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,7 +29,16 @@ public class ReviewWriteFrmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerWriteReview.jsp").forward(request, response);
+		String reviewNo = request.getParameter("review_no");
+		String memberNo = request.getParameter("member_no");
+		
+		if(reviewNo != null && memberNo != null) {
+			Recommend recommend = new Recommend(reviewNo, memberNo, "y");
+			ReviewService service = new ReviewService();
+			
+			boolean isReported = service.reportReview(recommend);
+			
+	    } 
 	}
 
 	/**

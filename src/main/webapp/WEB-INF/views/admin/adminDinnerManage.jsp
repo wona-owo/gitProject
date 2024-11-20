@@ -29,9 +29,11 @@
 	border-color: #f40;
 }
 </style>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
 </head>
 <body>
+
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
@@ -44,13 +46,6 @@
 								type="text" name="dinnerName" placeholder="매장 이름 검색">
 							<button type="submit">검색</button>
 						</form>
-
-						<!-- 매장 이름 순 정렬 버튼 -->
-						<button type="button" id="firstname" class="btn-primary"
-							onclick="toggleSortByName()">매장이름순 정렬</button>
-						<!-- 승인 여부 필터링 버튼 -->
-						<button type="button" id="firstCon" class="btn-primary"
-							onclick="filterByApproval()">승인여부 순 정렬</button>
 
 					</div>
 
@@ -84,34 +79,34 @@
 							</tr>
 						</c:forEach>
 					</table>
+				</div>
+				<div class="pagination">
+					<!-- 이전 버튼 -->
+					<c:if test="${currentPage > 1}">
+						<a href="?page=${currentPage - 1}&sort=${sort}&order=${order}"
+							class="prev">&laquo; 이전</a>
+					</c:if>
 
-					<!-- 페이지 번호 -->
-					<div class="pagination">
-						<c:forEach var="i" begin="1" end="${totalPages}">
-							<a href="?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
-						</c:forEach>
-					</div>
+					<!-- 3단위 페이지 번호 표시 -->
+					<c:set var="startPage"
+						value="${currentPage - 1 > 0 ? currentPage - 1 : 1}" />
+					<c:set var="endPage"
+						value="${currentPage + 1 <= totalPages ? currentPage + 1 : totalPages}" />
+
+					<c:forEach var="i" begin="${startPage}" end="${endPage}">
+						<a href="?page=${i}&sort=${sort}&order=${order}"
+							class="${i == currentPage ? 'active' : ''}">${i}</a>
+					</c:forEach>
+
+					<!-- 다음 버튼 -->
+					<c:if test="${currentPage < totalPages}">
+						<a href="?page=${currentPage + 1}&sort=${sort}&order=${order}"
+							class="next">다음 &raquo;</a>
+					</c:if>
 				</div>
 			</section>
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-
-	<script>
-		let sortOrder = 'asc'; // 초기 정렬 순서
-
-		// 매장이름순 정렬 토글 함수
-		function toggleSortByName() {
-			sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; // 정렬 순서 변경
-			const url = `/admin/dinner?action=sortByName&order=${sortOrder}`;
-			window.location.href = url;
-		}
-
-		// 승인 여부 필터링 함수
-		function filterByApproval() {
-			const url = `/admin/dinner?action=filterByApproval&approved=y`;
-			window.location.href = url;
-		}
-	</script>
 </body>
 </html>

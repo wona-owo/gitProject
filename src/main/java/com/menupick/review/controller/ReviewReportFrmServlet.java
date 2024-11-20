@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class ReviewWriteFrmServlet
+ * Servlet implementation class ReviewReportFrmServlet
  */
-@WebServlet("/review/WriteFrm")
-public class ReviewWriteFrmServlet extends HttpServlet {
+@WebServlet("/review/reportFrm")
+public class ReviewReportFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReviewWriteFrmServlet() {
+    public ReviewReportFrmServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,7 +26,7 @@ public class ReviewWriteFrmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerWriteReview.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerReviewReport.jsp").forward(request, response);
 	}
 
 	/**

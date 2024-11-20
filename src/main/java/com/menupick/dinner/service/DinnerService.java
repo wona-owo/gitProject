@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.dao.DinnerDao;
 import com.menupick.dinner.vo.Address;
@@ -190,8 +192,63 @@ public class DinnerService {
 	}
 
 	public int updateDinner(Dinner updDinner) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateDinner(conn, updDinner);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
 	}
 
+	// daniel
+	public BookInfo bookInfoForCancelEmail(String bookNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		BookInfo bookInfoForCancelEmail = dao.bookInfoForCancelEmail(conn, bookNo);
+		JDBCTemplate.close(conn);
+		return bookInfoForCancelEmail;
+	}
+
+	public int deleteDinner(String dinnerNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.deleteDinner(conn, dinnerNo);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+
+	public int updateMemberPw(String dinnerId, String newDinnerPw) {
+		Connection conn = JDBCTemplate.getConnection();
+
+		// 새 비밀번호 암호화
+		newDinnerPw = BCrypt.hashpw(dinnerId, BCrypt.gensalt());
+		
+		int result = dao.updateMemberPw(conn, dinnerId, newDinnerPw);
+		
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+
+	public Dinner getDinnerByNo(String dinnerNo) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    Dinner dinner = dao.getDinnerByNo(conn, dinnerNo);
+	    JDBCTemplate.close(conn);
+	    return dinner;
+	}
 }

@@ -38,9 +38,7 @@ public class DinnerLikeServlet extends HttpServlet {
 		String dinnerNo = request.getParameter("dinner_no");
 		String dinnerName = request.getParameter("dinner_name");
 		
-		
-		
-		
+
 		// 3. 로직
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 		DinnerService service = new DinnerService();

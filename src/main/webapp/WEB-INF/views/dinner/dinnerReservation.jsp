@@ -1,11 +1,11 @@
 <%--
-From : DinnerCheckReservation.java
-AJAX with : DinnerCancelReservation.java
+From : DinnerCheckReservationServlet.java
+AJAX with DinnerCancelReservationServlet.java
+AJAX with ApiEmailSend.java
 
-bookNo 를 이용해서 예약을 취소 할 수 있고
-memberNo 를 이용해서 예약 취소한것을 이메일로 보낸다
-
-예약 취소를 하면 ajax 를 통해서 한후에 현재 페이지를 새로고침
+예약 상세 정보를 보여주고 예약을 취소 할 수 도 있음
+예약을 취소하면 DB 에서 예약 정보를 삭제 하고 회원에게 email 을 보내줘야함
+그리고 새로고침
 
 @Author : 김찬희
  --%>
@@ -20,65 +20,136 @@ memberNo 를 이용해서 예약 취소한것을 이메일로 보낸다
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
-* {
-	border: 1px solid transparent;
-}
-/*
-clear
--- float 속성이 있는거 다음에 올때 float 속성을 없애줌
-
-content
--- ::after 랑 같이 사용 자식 속성에 내용이 없더라도 부모 속성이 감쌀 수 있도록 해준다
-*/
-div {
-	display: block;
-	clear: both;
+.wrap { $1
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #ffffff;
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
 }
 
-.clearfix::after {
-	content: "";
-	clear: both;
-	display: table;
+main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 80vh;
 }
-/*
-border 가 없으면 취소 버튼을 눌렀을때 margin 이 이상한곳에 생겨서
-transparent 한 border 를 만들어줌
-*/
+
+.page-title {
+	font-size: 24px;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #f40;
+	text-align: center;
+	padding: 15px;
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+
+.section {
+	width: 60%;
+}
+
+.notice-list-wrap>div {
+	display: flex;
+	justify-content: center;
+	padding: 10px;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.notice-list-wrap>div>span {
+	width: 20%;
+	font-size: 16px;
+	padding: 5px;
+	text-align: center;
+}
+
+.new-book-hour {
+	font-weight: bold;
+	font-size: 20px;
+	margin-top: 20px;
+	padding: 5px;
+	text-align: center;
+}
+
 ul {
-	/*	border: 1px solid transparent; */
-	
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
 .group-menu {
-	position: relative;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	padding: 10px;
+	background-color: #f8f9fa;
+	border-radius: 6px;
+	margin-top: 0;
+	width: 100%;
 }
 
 .group-menu li {
-	list-style-type: none;
+	font-size: 16px;
+	margin-right: 10px;
 }
 
-.group-menu>li {
-	float: left;
-	text-align: center;
+.menu-item {
+	position: relative;
+}
+
+.cancel-btn {
+	background-color: #f44336;
+	color: #ffffff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+	background-color: #d32f2f;
 }
 
 .sub-menu {
 	display: none;
 	position: absolute;
+	top: 100%;
 	left: 0;
+	background-color: #ffffff;
+	border: 1px solid #ddd;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+	padding: 10px;
+	border-radius: 4px;
+	z-index: 100;
+	width: 220px;
 }
 
 .sub-menu>li {
-	text-align: center;
-	float: left;
+	margin-bottom: 10px;
 }
 
-.sub-menu>li>a {
-	display: block;
+.cancel-reason-select {
+	width: 100%;
+	padding: 6px;
+	font-size: 14px;
 }
 
-.select-placeholder {
-	display: none;
+.sub-menu button {
+	background-color: #4caf50;
+	color: #ffffff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s;
+}
+
+.sub-menu button:hover {
+	background-color: #388e3c;
 }
 </style>
 </head>
@@ -87,13 +158,15 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookMonth} 월 ${bookDay} 일</div>
-				<input type="hidden" value="${bookYear}" id="bookYear">
-				<input type="hidden" value="${bookMonth}" id="bookMonth">
-				<input type="hidden" value="${bookDay}" id="bookDay">
+				<div class="page-title">${bookMonth}월${bookDay}일</div>
+				<input type="hidden" value="${bookYear}" name="bookYear"
+					id="bookYear"> <input type="hidden" value="${bookMonth}"
+					name="bookMonth" id="bookMonth"> <input type="hidden"
+					value="${bookDay}" name="bookDay" id="bookDay"> <input
+					type="hidden" value="${dinnerNo}" id="dinnerNo">
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
-					<span>취소를 해주는 버튼</span>
+					<span>취소</span>
 				</div>
 
 				<%-- 이전 시간값을 선언 --%>
@@ -119,15 +192,17 @@ ul {
 								class="cancel-btn" value="취소">
 								<ul class="sub-menu" id="sub-menu-${b.memberNo}">
 									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
-									<li><select id="select-input-${b.memberNo}">
-											<option value="placeholder" class="select-placeholder"
-												selected>취소 사유 선택</option>
+									<li><select id="select-input-${b.memberNo}"
+										class="cancel-reason-select">
+											<option value="" class="select-placeholder" disabled>취소
+												사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
 									</select></li>
+
 									<li>
 										<button type="submit"
-											onclick="confirmCancel('${b.memberNo}', '${b.bookNo}')">확인</button>
+											onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
 									</li>
 								</ul></li>
 						</ul>
@@ -162,37 +237,70 @@ ul {
 								subMenu.is(':visible') ? '100px' : '0px');
 					});
 
-			// Close sub-menus and reset margins when clicking elsewhere
-			$(document).click(
-					function(event) {
-						if (!$(event.target).closest(
-								'.sub-menu, .menu-item .cancel-btn').length) {
-							$('.sub-menu').hide();
-							$('.group-menu').css('margin-bottom', '0px');
-						}
-					});
+		// Close sub-menus and reset margins when clicking elsewhere
+		$(document).click(
+				function(event) {
+					if (!$(event.target).closest(
+							'.sub-menu, .menu-item .cancel-btn').length) {
+						$('.sub-menu').hide();
+						$('.group-menu').css('margin-bottom', '0px');
+					}
+				});
 		});
 
-		function refresh(bookYear, bookMonth, bookDay) {
-			let year = bookYear;
-			let month = bookMonth;
-			let day = bookDay;
-			
+		function refresh() {
+			let year = $("#bookYear").val();
+			let month = $("#bookMonth").val();
+			let day = $("#bookDay").val();
+			let dinnerNo = $("#dinnerNo").val();
+
 			window.location.href = "/dinner/checkReservation?year=" + year
-					+ "&month=" + month + "&day=" + day + "&check=1";
+					+ "&month=" + month + "&day=" + day + "&dinnerNo="
+					+ dinnerNo + "&check=" + 1;
+		}
+		
+		function sendEmail(bookNo, selectedValue) {
+		    $.ajax({
+		        url: "/api/emailSend",
+		        type: "GET",
+		        data: {
+		            bookNo: bookNo,
+		            selectedValue: selectedValue
+		        },
+				success : function(res) {
+					let title = "알림";
+					let text = "";
+					let icon = "";
+
+					if (res > 0) {
+					    title = "성공",
+						text = "이메일이 전송되었습니다";
+						icon = "success";
+					} else {
+					    title = "실패",
+						text = "이메일 전송중 오류가 발생하였습니다";
+						icon = "error";
+					}
+
+					swal({
+						title : title,
+						text : text,
+						icon : icon,
+					});
+
+				},
+				error : function() {
+					console.log("foobar sending email");
+				}
+		    });
 		}
 
-		function confirmCancel(memberNo, bookNo) {
-			let bookYear = $("#bookYear").val(); 
-			let bookMonth = $("#bookMonth").val(); 
-			let bookDay = $("#bookDay").val(); 
-			
+		function confirmCancel(dinnerNo, memberNo, bookNo) {
 			let groupMenu = $('#group-menu-' + memberNo);
 			let subMenu = $('#sub-menu-' + memberNo);
 
-			let selectElement = subMenu.find('select');
-
-			let selectedValue = selectElement.val();
+		    let selectElement = $('#select-input-' + memberNo);
+		    let selectedValue = selectElement.find(":selected").val();
 
 			// 확인 버튼을 눌렀을때 sub-menu 를 닫고 포함 되어있는 div 태그의 margin 을 지움
 			subMenu.hide();
@@ -202,7 +310,7 @@ ul {
 			$('.sub-menu').hide();
 			$('.group-menu').css('margin-bottom', '0px');
 
-			if (selectedValue === "placeholder") {
+			if (selectedValue === "none") {
 				return;
 			} else {
 				swal({
@@ -223,13 +331,16 @@ ul {
 							closeModal : true
 						}
 					}
-				}).then(function(isConfirm) {
+				}).then( function(isConfirm) {
 					if (isConfirm) {
+
+						sendEmail(bookNo, selectedValue);
+
 						$.ajax({
 							url : "/dinner/cancelReservation",
 							type : "GET",
 							data : {
-								"bookNo" : bookNo
+								"bookNo" : bookNo,
 							},
 							success : function(res) {
 								let title = "알림";
@@ -249,21 +360,29 @@ ul {
 									text : text,
 									icon : icon,
 								});
-
+								
 								if (icon === "success") {
-									refresh(bookYear, bookMonth, bookDay);
+									setTimeout(() => {
+										refresh();
+									});
 								}
+
 							},
 							error : function() {
-								console.log("foobar");
+								console.log("foobar confirming cancel");
 							}
 						});
 					}
-				});
+     			});
 			}
-
-			console.log("Selected value :", selectedValue);
 		}
+
+		// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
+		window.addEventListener('pageshow', function(event) {
+			if (event.persisted) {
+				history.back();
+			}
+		});
 	</script>
 </body>
 </html>

@@ -101,6 +101,12 @@
 										</div>
 										<p>${review.reviewContent}</p>
 										<div class="checkbox-container">
+											<form action="/review/report" method="post">
+												<input type="hidden" name="review_no"
+													value="${review.reviewNo}"> <input type="hidden"
+													name="member_no" value="${member.memberNo}">
+												<button type="button" onclick="reportReview('${review.reviewNo}', '${member.memberNo}')">신고</button>
+											</form>
 											<input type="checkbox" name="rpchk" data-review-no="${review.reviewNo}">
 										</div>
 									</div>
@@ -120,6 +126,26 @@
 </body>
 
 <script>
+
+	//리뷰 신고 성공여부 알림창
+	function reportReview(reviewNo, memberNo) {
+		$.ajax({
+			url : "/review/report",
+			type : "GET",
+			data : {
+				review_no : reviewNo,
+				member_no : memberNo
+			},
+			success : function(response) {
+				// 서버에서 반환된 텍스트 메시지를 표시
+				swal("알림", "리뷰 신고가 완료되었습니다.", "success");
+			},
+			error : function() {
+				swal("오류", "리뷰 신고 중 오류가 발생하였습니다", "error");
+			}
+		});
+	}
+
 	//선택된 회원 탈퇴
 	function removeAllMembers() {
 		let checkBoxes = $("input[name='rpchk']:checked");

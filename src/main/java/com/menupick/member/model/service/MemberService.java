@@ -11,6 +11,7 @@ import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.dao.MemberDao;
 import com.menupick.member.model.vo.Member;
+import com.menupick.member.util.EmailUtil;
 import com.menupick.review.model.vo.Review;
 
 public class MemberService {
@@ -272,7 +273,42 @@ public class MemberService {
 	    return dinnerList;
 	}
 
-	public String searchMemberId(String memberName, String memberPhone) {
+	// 회원 정보 조회 (회원 아이디, 전화번호로 비밀번호 찾기)
+	public Member searchMemberPw(String memberId, String memberPhone) {
+        Connection conn = JDBCTemplate.getConnection(); 
+        Member member = dao.searchMemberPw(conn, memberId, memberPhone);
+        JDBCTemplate.close(conn); 
+        return member;
+    }
+
+    // 비밀번호 업데이트
+    public boolean updateMemberPassword(String memberId, String tempPassword) {
+        Connection conn = JDBCTemplate.getConnection(); 
+        boolean isUpdated = dao.updateMemberPassword(conn, memberId, tempPassword);
+        if (isUpdated) {
+            JDBCTemplate.commit(conn); 
+        } else {
+            JDBCTemplate.rollback(conn);
+        }
+        JDBCTemplate.close(conn); 
+        return isUpdated;
+    }
+
+    // 임시 비밀번호를 이메일로 전송
+    public boolean sendPwByEmail(String recipientEmail, String tempPassword) {
+        try {
+            String subject = "비밀번호 찾기 결과";
+            String message = "회원님의 임시 비밀번호는 다음과 같습니다: " + tempPassword + " 로그인 후 비밀번호를 변경해주세요";
+            EmailUtil.sendEmail(recipientEmail, subject, message);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // 회원 ID 조회
+    public String searchMemberId(String memberName, String memberPhone) {
 	    Connection conn = JDBCTemplate.getConnection();
 	    String result = null;
 	    try {
@@ -290,11 +326,22 @@ public class MemberService {
 	    }
 	    return result; // 조회된 결과를 반환
 	}
+
+	public boolean memberAddLike(String dinnerNo, String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();		
+		boolean likeDinner = false;		
+		likeDinner = dao.memberAddLike(conn, dinnerNo, memberNo);
+		JDBCTemplate.close(conn);
+		return likeDinner;	
+	}
+
+	public boolean memberFindLike(String dinnerNo, String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();		
+		boolean findLike = false;		
+		findLike = dao.memberFindLike(conn, dinnerNo, memberNo);
+		JDBCTemplate.close(conn);
+		return findLike;	
+		}
     }
 
-
-
-
-
-
-
+ 

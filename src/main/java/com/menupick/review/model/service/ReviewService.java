@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 
 import com.menupick.common.JDBCTemplate;
 import com.menupick.review.model.dao.ReviewDao;
+import com.menupick.review.model.vo.Recommend;
 import com.menupick.review.model.vo.Review;
 
 public class ReviewService {
@@ -72,5 +73,26 @@ public class ReviewService {
 		} else {
 			return 0;
 		}
+	}
+
+	// 리뷰신고(경래)
+	public boolean reportReview(Recommend recommend) {
+		Connection conn = JDBCTemplate.getConnection();
+		boolean isReported = false;
+		
+		isReported = dao.isReviewReported(conn, recommend);
+		
+		if(!isReported) {
+			//신고 등록
+			int result = dao.addReviewReport(conn, recommend);
+			
+			if(result > 0) {
+				JDBCTemplate.commit(conn);
+			}else {
+				JDBCTemplate.rollback(conn);
+			}
+			JDBCTemplate.close(conn);
+		}
+		return !isReported;
 	}
 }

@@ -106,14 +106,18 @@
 		<c:forEach var="dinner" items="${likeList}">
 			<div class="card"
 				onclick="location.href='dinnerDetail.jsp?name=${dinner.dinnerName}'">
-				<!-- 식당별 이미지 삽입 자리 -->
+				<img
+					src="${pageContext.request.contextPath}/resources/images/${dinner.dinnerNo != null && !dinner.dinnerNo.isEmpty() ? dinner.dinnerNo : 'default'}.jpg"
+					onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/resources/images/default.jpg';"
+					alt="${dinner.dinnerName} 이미지">
 				<div class="card-info">
 					<h3>${dinner.dinnerName}</h3>
-					<p class="cuisine-type">국가</p>
-					<!-- 국가별 카테고리 연동 -->
+					<p>${dinner.dinnerAddr}</p>
+					 <p class="cuisine-type">${dinner.foodNation}</p>
 				</div>
-				<span class="favorite-icon active" data-dinner-no="${dinner.dinnerNo}">
-					<i class="fa-solid fa-map-pin"></i>
+				<span class="favorite-icon active"
+					data-dinner-no="${dinner.dinnerNo}"> <i
+					class="fa-solid fa-map-pin"></i>
 				</span>
 			</div>
 		</c:forEach>
@@ -121,35 +125,42 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
-		$(document).ready(function() {
-			// 즐겨찾기 아이콘 클릭 이벤트 설정
-			$(".favorite-icon").click(function(event) {
-				event.stopPropagation(); // 상위 카드로 클릭 이벤트 전파 방지
-				const iconElement = $(this); // 클릭된 아이콘 요소 참조						
-				const dinnerNo = iconElement.attr("data-dinner-no"); // 직접 속성으로 접근
+		$(document).ready(
+				function() {
+					// 즐겨찾기 아이콘 클릭 이벤트 설정
+					$(".favorite-icon").click(
+							function(event) {
+								event.stopPropagation(); // 상위 카드로 클릭 이벤트 전파 방지
+								const iconElement = $(this); // 클릭된 아이콘 요소 참조						
+								const dinnerNo = iconElement
+										.attr("data-dinner-no"); // 직접 속성으로 접근
 
-				// AJAX 요청 보내기
-				$.ajax({
-					url : "/member/delLike", // 요청할 서버 URL
-					type : "POST",
-					data : {						
-						"dinnerNo" : dinnerNo
-					},
-					dataType : "json",
-					success : function(res) { // 요청 성공 시
-						iconElement.addClass("inactive").removeClass("active"); // 버튼을 회색으로 변경
-						console.log("즐겨찾기 삭제 성공:", res);
+								// AJAX 요청 보내기
+								$.ajax({
+									url : "/member/delLike", // 요청할 서버 URL
+									type : "POST",
+									data : {
+										"dinnerNo" : dinnerNo
+									},
+									dataType : "json",
+									success : function(res) { // 요청 성공 시
+										iconElement.addClass("inactive")
+												.removeClass("active"); // 버튼을 회색으로 변경
+										console.log("즐겨찾기 삭제 성공:", res);
 
-						//새로고침
-						window.location.reload();
-					},
-					 error:function(request,status,error){        
-					 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);       
-					
-					}
+										//새로고침
+										window.location.reload();
+									},
+									error : function(request, status, error) {
+										alert("code:" + request.status + "\n"
+												+ "message:"
+												+ request.responseText + "\n"
+												+ "error:" + error);
+
+									}
+								});
+							});
 				});
-			});
-		});
 	</script>
 </body>
 </html>

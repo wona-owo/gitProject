@@ -239,6 +239,35 @@ body {
 #pwMessage.invalid, #pwConfirmMessage.invalid {
 	color: red !important; /* 유효하지 않은 메시지는 빨간색 */
 }
+
+.submit-btn, .cancel-btn {
+    flex: 1;
+    max-width: 48%; /* 버튼이 너무 넓어지지 않도록 제한 */
+}
+
+.submit-btn:hover, .cancel-btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 부드러운 강조 효과 */
+}
+
+.btn-primary {
+    background-color: #f40; /* 기본 색상 */
+    color: white; /* 텍스트 흰색 */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 12px 20px;
+    transition: background-color 0.3s, box-shadow 0.3s; /* 부드러운 전환 효과 */
+}
+
+.btn-primary:hover {
+    background-color: #d93636; /* 호버 시 색상 */
+    box-shadow: 0 4px 10px rgba(217, 54, 54, 0.3); /* 버튼 호버 시 그림자 */
+}
+
+.btn-primary:active {
+    background-color: #b12b2b; /* 클릭 시 더 어두운 빨간색 */
+    box-shadow: none; /* 클릭 시 그림자 제거 */
+}
 </style>
 </head>
 <body>
@@ -371,7 +400,7 @@ body {
 			<!-- 사업자 등록 번호 -->
 			<div class="form-group">
 				<label for="busiNo">사업자 등록 번호</label> <input type="text" id="busiNo"
-					name="busiNo" required maxlength="12"
+					name="busiNo" required pattern="^\d{3}-\d{2}-\d{5}$" maxlength="12"
 					placeholder="예: 123-45-67890">
 			</div>
 
@@ -404,7 +433,10 @@ body {
 			</div>
 
 			<!-- 제출 버튼 -->
-			<button type="submit" class="submit-btn">등록</button>
+			<div style="display: flex; justify-content: space-between; gap: 10px;">
+				<button type="submit" class="submit-btn">등록</button>
+				<button type="button" class="submit-btn cancel-btn" onclick="history.back();">취소</button>
+			</div>
 		</form>
 	</div>
 </body>
@@ -428,7 +460,7 @@ $(document).ready(function() {
         checkObj.dinnerPwChanged = true;
         pwMessage.removeClass('valid invalid');
 
-        const regExp = /(?=.*[0-9])(?=.*[!@#$%^&*()-_=+])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*()-_=+]{8,20}$/;
+        const regExp = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,20}$/;
 
         if (regExp.test($(this).val())) {
             pwMessage.html("사용 가능한 비밀번호입니다");
@@ -440,7 +472,7 @@ $(document).ready(function() {
                 checkPasswordMatch();
             }
         } else {
-            pwMessage.html("비밀번호 형식이 유효하지 않습니다");
+        	pwMessage.html("비밀번호는 8~20자로 설정해주세요. (숫자, 영문자, 특수문자를 포함)");
             pwMessage.addClass("invalid");
             checkObj.dinnerPw = false;
 
@@ -527,6 +559,18 @@ $(document).ready(function() {
             event.preventDefault();
             return false;
         }
+        
+    	// 영업 시작 시간과 종료 시간 값 가져오기
+        const openTime = $('#dinnerOpen').val(); // HH:mm 형식
+        const closeTime = $('#dinnerClose').val(); // HH:mm 형식
+
+        // HH:mm -> HHmm 형식으로 변환
+        const formattedOpenTime = openTime.replace(':', '');
+        const formattedCloseTime = closeTime.replace(':', '');
+
+        // 변환된 값으로 input 값을 업데이트
+        $('#dinnerOpen').val(formattedOpenTime);
+        $('#dinnerClose').val(formattedCloseTime);
     });
 
 });

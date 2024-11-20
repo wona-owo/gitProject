@@ -1,4 +1,5 @@
 package com.menupick.member.controller;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -10,13 +11,14 @@ import javax.servlet.http.HttpSession;
 
 import com.menupick.member.model.service.MemberService;
 import com.menupick.member.model.vo.Member;
+
 /**
  * Servlet implementation class MemberUpdateServlet
  */
 @WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+    private static final long serialVersionUID = 1L;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -26,19 +28,18 @@ public class MemberUpdateServlet extends HttpServlet {
     }
 
     /**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 회원 정보 수정 페이지로 이동
-	    request.getRequestDispatcher("/WEB-INF/views/member/update.jsp").forward(request, response);
-	
-			}
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 회원 정보 수정 페이지로 이동
+        request.getRequestDispatcher("/WEB-INF/views/member/update.jsp").forward(request, response);
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
         String memberNo = request.getParameter("memberNo");
@@ -47,13 +48,9 @@ public class MemberUpdateServlet extends HttpServlet {
         String memberName = request.getParameter("memberName");
         String memberNick = request.getParameter("memberNick");
         String memberPhone = request.getParameter("memberPhone");
+        String memberAddr = request.getParameter("memberAddr");
         String memberEmail = request.getParameter("memberEmail");
 
-        String zipp_code = request.getParameter("zipp_code");
-        String userAdd1 = request.getParameter("user_add1");
-        String userAdd2 = request.getParameter("user_add2");
-
-        String memberAddr = zipp_code + " " + userAdd1 + " " + userAdd2;
 
         Member updMember = new Member();
         updMember.setMemberNo(memberNo);
@@ -69,27 +66,20 @@ public class MemberUpdateServlet extends HttpServlet {
         int result = service.updateMember(updMember);
 
         if (result > 0) {
+            // 회원 정보 수정 성공 시 세션 처리 (로그아웃)
             HttpSession session = request.getSession(false);
             if (session != null) {
-                Member sessionMember = (Member) session.getAttribute("loginMember");
-                sessionMember.setMemberId(memberId);
-                sessionMember.setMemberPw(memberPw);
-                sessionMember.setMemberName(memberName);
-                sessionMember.setMemberNick(memberNick);
-                sessionMember.setMemberPhone(memberPhone);
-                sessionMember.setMemberAddr(memberAddr);
-                sessionMember.setMemberAddr(zipp_code);
-                sessionMember.setMemberAddr(userAdd1);
-                sessionMember.setMemberAddr(userAdd2);
-                sessionMember.setMemberEmail(memberEmail);
+                session.invalidate();  // 세션을 무효화하여 로그아웃 처리
             }
 
+            // 메시지 처리
             request.setAttribute("title", "성공");
             request.setAttribute("msg", "회원 정보가 수정되었습니다. 재로그인 하시기 바랍니다.");
             request.setAttribute("icon", "success");
-            request.setAttribute("loc", "/member/login");
+            request.setAttribute("loc", "/member/loginFrm");
 
         } else {
+            // 수정 실패 시
             request.setAttribute("title", "실패");
             request.setAttribute("msg", "회원 정보 수정 중 오류가 발생했습니다.");
             request.setAttribute("icon", "error");
