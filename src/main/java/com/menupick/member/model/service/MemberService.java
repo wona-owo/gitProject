@@ -350,6 +350,37 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return book;
 	}
+	
+	
+	//예약 취소
+	public int memberDelBook(String bookNo) {
+		Connection conn = JDBCTemplate.getConnection();	
+		int result = dao.memberDelBook(conn, bookNo);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+	
+	//리뷰 삭제
+	public int memberDelReview(String reviewNo) {
+		Connection conn = JDBCTemplate.getConnection();	
+		int result = dao.memberDelReview(conn, reviewNo);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
     }
 
  

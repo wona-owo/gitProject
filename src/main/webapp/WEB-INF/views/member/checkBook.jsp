@@ -101,62 +101,115 @@
 			<c:when test="${not empty bookList}">
 				<c:forEach var="book" items="${bookList}">
 					<div class="card"
-						onclick="location.href='dinnerDetail.jsp?name=${book.dinnerName}'">
-						<div class="dinner-date">
-							<h3>${book.dinnerName}</h3>
-							<p>${book.bookDate}</p>
+						onclick="location.href='${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/dinner/dinnerDetail?dinnerNo=${book.dinnerNo}'">
+						<!-- 식당 사진 -->
+						<img
+							src="${pageContext.request.contextPath}/resources/images/${book.dinnerNo}.jpg"
+							alt="식당 이미지">
+						<div class="card-info">
+							<h2 class="restaurant-name">${book.dinnerName}</h2>
+							<!-- 날짜만 표시 -->
+							<p class="reservation-date">${book.bookDate.split(" ")[0]}</p>
+							<!-- 시간 표시 -->
+							<p class="reservation-time">${book.bookTime.substring(0, 2)}:${book.bookTime.substring(2, 4)}</p>
+							<!-- 예약 인원 -->
+							<p class="reservation-count">총 ${book.bookCnt}명</p>
 						</div>
-						<%-- 식당 이미지 넣는가..? --%> <span
-							class="del-icon active" data-review-no="${review.reviewNo}">
+						<span class="del-icon active" data-book-no="${book.bookNo}">
 							<i class="fa-solid fa-x"></i>
 						</span>
-						<div class="time-ctn">
-							<h3>${book.bookTime}</h3>
-							<h3>총 ${book.bookCnt}명</h3>
-						</div>
 					</div>
 				</c:forEach>
 			</c:when>
+			<c:otherwise>
+				<p>예약 내역이 없습니다.</p>
+			</c:otherwise>
 		</c:choose>
 	</div>
+
+
+
+
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-    $(document).ready(function() {
-        // 삭제 아이콘 클릭 이벤트 설정
-        $(".del-icon").click(function(event) {
-            event.stopPropagation(); // 상위 카드로 클릭 이벤트 전파 방지
-            const iconElement = $(this); // 클릭된 아이콘 요소 참조						
-            const bookNo = iconElement.attr("data-book-no"); // 데이터 속성 사용
+		$(document)
+				.ready(
+						function() {
+							// 삭제 아이콘 클릭 이벤트 설정
+							$(".del-icon")
+									.click(
+											function(event) {
+												event.stopPropagation(); // 상위 카드로 클릭 이벤트 전파 방지
+												const iconElement = $(this); // 클릭된 아이콘 요소 참조						
+												const bookNo = iconElement
+														.attr("data-book-no"); // 데이터 속성 사용
 
-            // 예약 취소 확인 메시지
-            if (confirm("예약을 취소하시겠습니까?")) { // 확인 버튼을 누르면 AJAX 요청 실행
-                // AJAX 요청 보내기
-                $.ajax({
-                    url: "/member/delBook", // 요청할 서버 URL
-                    type: "POST",
-                    data: {
-                        "bookNo": bookNo // 변수명 일치
-                    },
-                    dataType: "json",
-                    success: function(res) { // 요청 성공 시
-                        iconElement.addClass("inactive").removeClass("active"); // x 클릭하면 삭제
-                        console.log("예약 삭제 성공:", res);
+												// 예약 취소 확인 메시지
+												if (confirm("예약을 취소하시겠습니까?")) { // 확인 버튼을 누르면 AJAX 요청 실행
+													// AJAX 요청 보내기
+													$
+															.ajax({
+																url : "/member/delBook", // 요청할 서버 URL
+																type : "POST",
+																data : {
+																	"bookNo" : bookNo
+																// 변수명 일치
+																},
+																dataType : "json",
+																success : function(
+																		res) { // 요청 성공 시
+																	if (res.status === "success") {
+																		alert("예약이 취소되었습니다.");
+																		window.location
+																				.reload(); // 페이지 새로고침
+																	} else {
+																		alert(res.message
+																				|| "예약 취소에 실패했습니다.");
+																	}
+																},
+																error : function(
+																		request,
+																		status,
+																		error) {
+																	alert("code:"
+																			+ request.status
+																			+ "\n"
+																			+ "message:"
+																			+ request.responseText
+																			+ "\n"
+																			+ "error:"
+																			+ error);
+																}
+															});
+												} else {
+													// 취소 버튼을 누르면 아무 작업도 하지 않음
+													console
+															.log("예약 취소가 중단되었습니다.");
+												}
+											});
+						});
+		
+		document.addEventListener("DOMContentLoaded", () => {
+		    // 날짜 포맷팅
+		    document.querySelectorAll(".reservation-date").forEach(element => {
+		        const rawDate = element.getAttribute("data-date"); // 원본 데이터 (yyyy-MM-dd HH:mm:ss)
+		        if (rawDate) {
+		            const formattedDate = rawDate.split(" ")[0]; // 시간 제거
+		            element.textContent = formattedDate; // 표시되는 내용 변경
+		        }
+		    });
 
-                        // 새로고침
-                        window.location.reload();
-                    },
-                    error: function(request, status, error) {
-                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                    }
-                });
-            } else {
-                // 취소 버튼을 누르면 아무 작업도 하지 않음
-                console.log("예약 취소가 중단되었습니다.");
-            }
-        });
-    });
-</script>
+		    // 시간 포맷팅
+		    document.querySelectorAll(".reservation-time").forEach(element => {
+		        const rawTime = element.getAttribute("data-time"); // 원본 데이터 (HHmm)
+		        if (rawTime && rawTime.length === 4) {
+		            const formattedTime = `${rawTime.substring(0, 2)}:${rawTime.substring(2, 4)}`; // HH:mm 형식
+		            element.textContent = formattedTime; // 표시되는 내용 변경
+		        }
+		    });
+		});
+	</script>
 </body>
 </html>
