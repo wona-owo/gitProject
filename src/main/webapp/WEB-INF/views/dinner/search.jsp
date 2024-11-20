@@ -179,7 +179,7 @@
     <div class="wrap">
         <main class="content">
         
-           <!-- 검색 박스 -->
+            <!-- 검색 박스 -->
             <div class="search-box">
                 <button class="filter-button" onclick="toggleFilterContainer()">
                     필터 <span class="arrow">▼</span>
@@ -204,27 +204,15 @@
                     </c:forEach>
                 </div>
             </div>
-        
-        
-        
+        	
             <div class="card-container" id="cardContainer">
                 <c:forEach var="dinner" items="${dinnerList}">
-                
-                    <c:choose>
-						<c:when test="${not empty dinner.photoList}">
-							<c:set var="photoPath" value="${dinner.photoList[0].photoPath}" />
-						</c:when>
-						<c:otherwise>
-							<c:set var="photoPath" value="default.jpg" />
-						</c:otherwise>
-					</c:choose>
-                
                     <div class="card" data-name="${dinner.dinnerName}"
                         data-addr="${dinner.dinnerAddr}"
                         data-cuisine="${dinner.foodNation}" data-type="${dinner.foodCat}"
                         onclick="openDetailPage('${dinner.dinnerNo}', event)">
                         <img
-                            src="/resources/photos/${photoPath}"
+                            src="${pageContext.request.contextPath}/resources/images/${dinner.dinnerNo != null && !dinner.dinnerNo.isEmpty() ? dinner.dinnerNo : 'default'}.jpg"
                             onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/resources/images/default.jpg';"
                             alt="${dinner.dinnerName} 이미지">
                         <div class="card-info">
@@ -246,6 +234,7 @@
     </div>
 
     <script>
+    
     
     const filters = {
             cuisine: [],
@@ -303,7 +292,7 @@
             arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-    
+
     
     // 서버에서 전달된 loginType과 memberLevel을 JavaScript 변수로 설정
     const loginType = '${sessionScope.loginType}' || '';
