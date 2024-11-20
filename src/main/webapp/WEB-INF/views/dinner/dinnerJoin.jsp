@@ -31,11 +31,11 @@ body {
 
 /* 오른쪽 위 이미지 스타일 */
 .header-img {
-    position: absolute;
-    top:10px;
-    right: 0px;
-    width: 50px;
-    height: auto;
+	position: absolute;
+	top: 10px;
+	right: 0px;
+	width: 50px;
+	height: auto;
 }
 
 .page-title {
@@ -228,44 +228,44 @@ body {
 }
 
 .submit-btn, .cancel-btn {
-    flex: 1;
-    max-width: 48%; /* 버튼이 너무 넓어지지 않도록 제한 */
+	flex: 1;
+	max-width: 48%; /* 버튼이 너무 넓어지지 않도록 제한 */
 }
 
 .submit-btn:hover, .cancel-btn:hover {
 	background-color: #c30;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 부드러운 강조 효과 */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 부드러운 강조 효과 */
 }
 
 .btn-primary {
-    background-color: #f40; /* 기본 색상 */
-    color: white; /* 텍스트 흰색 */
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 12px 20px;
-    transition: background-color 0.3s, box-shadow 0.3s; /* 부드러운 전환 효과 */
+	background-color: #f40; /* 기본 색상 */
+	color: white; /* 텍스트 흰색 */
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	padding: 12px 20px;
+	transition: background-color 0.3s, box-shadow 0.3s; /* 부드러운 전환 효과 */
 }
 
 .btn-primary:hover {
-    background-color: #c30; /* 호버 시 색상 */
-    box-shadow: 0 4px 10px rgba(217, 54, 54, 0.3); /* 버튼 호버 시 그림자 */
+	background-color: #c30; /* 호버 시 색상 */
+	box-shadow: 0 4px 10px rgba(217, 54, 54, 0.3); /* 버튼 호버 시 그림자 */
 }
 
 .btn-primary:active {
-    background-color: #b12b2b; /* 클릭 시 더 어두운 빨간색 */
-    box-shadow: none; /* 클릭 시 그림자 제거 */
+	background-color: #b12b2b; /* 클릭 시 더 어두운 빨간색 */
+	box-shadow: none; /* 클릭 시 그림자 제거 */
 }
 </style>
 </head>
 <body>
 	<div class="wrap">
-		<a href="/">
-			<img src="/resources/images/logo.png" alt="Logo" class="header-img">
+		<a href="/"> <img src="/resources/images/logo.png" alt="Logo"
+			class="header-img">
 		</a>
 		<h1 class="page-title">식당 정보 등록</h1>
-		<form action="${pageContext.request.contextPath}/dinnerJoin"
-			method="post">
+		<form action="${pageContext.request.contextPath}/dinnerJoin" method="post" enctype="multipart/form-data">
+		
 			<!-- 식당 번호 (히든 필드) -->
 			<input type="hidden" id="dinnerNo" name="dinnerNo"
 				value="${dinnerNo}">
@@ -391,6 +391,13 @@ body {
 					placeholder="예: 123-45-67890">
 			</div>
 
+			<%-- 매장 사진 업로드 --%>
+			<%-- daniel --%>
+			<div class="form-group">
+				<label for="uploadFile">매장 사진 업로드</label> <input type="file"
+					name="uploadFile" id="uploadFile">
+			</div>
+
 			<!-- 아이디 -->
 			<div class="form-group id-check">
 				<label for="dinnerId">아이디</label>
@@ -420,146 +427,169 @@ body {
 			</div>
 
 			<!-- 제출 버튼 -->
-			<div style="display: flex; justify-content: space-between; gap: 10px;">
+			<div
+				style="display: flex; justify-content: space-between; gap: 10px;">
 				<button type="submit" class="submit-btn">등록</button>
-				<button type="button" class="submit-btn cancel-btn" onclick="history.back();">취소</button>
+				<button type="button" class="submit-btn cancel-btn"
+					onclick="history.back();">취소</button>
 			</div>
 		</form>
 	</div>
 </body>
 
 <script>
-$(document).ready(function() {
-    const checkObj = {
-        dinnerPw: false,
-        dinnerPwConfirm: false,
-        dinnerPwChanged: false,
-        idDuplChk: false
-    };
+	$(document)
+			.ready(
+					function() {
+						const checkObj = {
+							dinnerPw : false,
+							dinnerPwConfirm : false,
+							dinnerPwChanged : false,
+							idDuplChk : false
+						};
 
-    const dinnerPw = $('#dinnerPw');
-    const dinnerPwConfirm = $('#dinnerPwConfirm');
-    const pwMessage = $('#pwMessage');
-    const pwConfirmMessage = $('#pwConfirmMessage');
+						const dinnerPw = $('#dinnerPw');
+						const dinnerPwConfirm = $('#dinnerPwConfirm');
+						const pwMessage = $('#pwMessage');
+						const pwConfirmMessage = $('#pwConfirmMessage');
 
-    // 비밀번호 입력 유효성 검사
-    dinnerPw.on('input', function() {
-        checkObj.dinnerPwChanged = true;
-        pwMessage.removeClass('valid invalid');
+						// 비밀번호 입력 유효성 검사
+						dinnerPw
+								.on(
+										'input',
+										function() {
+											checkObj.dinnerPwChanged = true;
+											pwMessage
+													.removeClass('valid invalid');
 
-        const regExp = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,20}$/;
+											const regExp = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,20}$/;
 
-        if (regExp.test($(this).val())) {
-            pwMessage.html("사용 가능한 비밀번호입니다");
-            pwMessage.addClass("valid");
-            checkObj.dinnerPw = true;
+											if (regExp.test($(this).val())) {
+												pwMessage
+														.html("사용 가능한 비밀번호입니다");
+												pwMessage.addClass("valid");
+												checkObj.dinnerPw = true;
 
-            // 비밀번호가 유효할 때만 비밀번호 확인 일치 여부를 검사
-            if (dinnerPwConfirm.val() !== "") {
-                checkPasswordMatch();
-            }
-        } else {
-        	pwMessage.html("비밀번호는 8~20자로 설정해주세요. (숫자, 영문자, 특수문자를 포함)");
-            pwMessage.addClass("invalid");
-            checkObj.dinnerPw = false;
+												// 비밀번호가 유효할 때만 비밀번호 확인 일치 여부를 검사
+												if (dinnerPwConfirm.val() !== "") {
+													checkPasswordMatch();
+												}
+											} else {
+												pwMessage
+														.html("비밀번호는 8~20자로 설정해주세요. (숫자, 영문자, 특수문자를 포함)");
+												pwMessage.addClass("invalid");
+												checkObj.dinnerPw = false;
 
-            // 비밀번호 형식이 유효하지 않으면 비밀번호 확인 메시지 초기화
-            pwConfirmMessage.html("");
-            pwConfirmMessage.removeClass('valid invalid');
-            checkObj.dinnerPwConfirm = false;
-        }
-    });
+												// 비밀번호 형식이 유효하지 않으면 비밀번호 확인 메시지 초기화
+												pwConfirmMessage.html("");
+												pwConfirmMessage
+														.removeClass('valid invalid');
+												checkObj.dinnerPwConfirm = false;
+											}
+										});
 
-    // 비밀번호 확인 일치 여부 검사
-    dinnerPwConfirm.on('input', function() {
-        // 비밀번호 형식이 유효할 때만 일치 여부를 검사
-        if (checkObj.dinnerPw) {
-            checkPasswordMatch();
-        } else {
-            pwConfirmMessage.html("");
-            pwConfirmMessage.removeClass('valid invalid');
-            checkObj.dinnerPwConfirm = false;
-        }
-    });
+						// 비밀번호 확인 일치 여부 검사
+						dinnerPwConfirm.on('input', function() {
+							// 비밀번호 형식이 유효할 때만 일치 여부를 검사
+							if (checkObj.dinnerPw) {
+								checkPasswordMatch();
+							} else {
+								pwConfirmMessage.html("");
+								pwConfirmMessage.removeClass('valid invalid');
+								checkObj.dinnerPwConfirm = false;
+							}
+						});
 
-    // 비밀번호와 비밀번호 확인 일치 여부 검사 함수
-    function checkPasswordMatch() {
-        pwConfirmMessage.removeClass('valid invalid');
+						// 비밀번호와 비밀번호 확인 일치 여부 검사 함수
+						function checkPasswordMatch() {
+							pwConfirmMessage.removeClass('valid invalid');
 
-        if (dinnerPw.val() === dinnerPwConfirm.val()) {
-            pwConfirmMessage.html("비밀번호가 일치합니다");
-            pwConfirmMessage.addClass('valid');
-            checkObj.dinnerPwConfirm = true;
-        } else {
-            pwConfirmMessage.html("비밀번호가 일치하지 않습니다");
-            pwConfirmMessage.addClass('invalid');
-            checkObj.dinnerPwConfirm = false;
-        }
-    }
+							if (dinnerPw.val() === dinnerPwConfirm.val()) {
+								pwConfirmMessage.html("비밀번호가 일치합니다");
+								pwConfirmMessage.addClass('valid');
+								checkObj.dinnerPwConfirm = true;
+							} else {
+								pwConfirmMessage.html("비밀번호가 일치하지 않습니다");
+								pwConfirmMessage.addClass('invalid');
+								checkObj.dinnerPwConfirm = false;
+							}
+						}
 
-    // 아이디 중복체크
-    $('#idDuplChkBtn').on('click', function() {
-        const dinnerId = $('#dinnerId').val();
+						// 아이디 중복체크
+						$('#idDuplChkBtn').on(
+								'click',
+								function() {
+									const dinnerId = $('#dinnerId').val();
 
-        if (!dinnerId) {
-            msg("알림", "유효한 아이디를 입력한 후 중복체크를 진행하세요", "error");
-            return false;
-        }
+									if (!dinnerId) {
+										msg("알림", "유효한 아이디를 입력한 후 중복체크를 진행하세요",
+												"error");
+										return false;
+									}
 
-        $.ajax({
-            url: "/dinner/idDuplChk",
-            data: { "dinnerId": dinnerId },
-            type: "get",
-            success: function(res) {
-                if (res == 0) {
-                    msg("알림", "사용 가능한 아이디입니다", "success");
-                    checkObj.idDuplChk = true;
-                } else {
-                    msg("알림", "중복된 아이디가 존재합니다", "warning");
-                    checkObj.idDuplChk = false;
-                }
-            },
-            error: function() {
-                console.log('ajax 오류 발생');
-            }
-        });
-    });
+									$.ajax({
+										url : "/dinner/idDuplChk",
+										data : {
+											"dinnerId" : dinnerId
+										},
+										type : "get",
+										success : function(res) {
+											if (res == 0) {
+												msg("알림", "사용 가능한 아이디입니다",
+														"success");
+												checkObj.idDuplChk = true;
+											} else {
+												msg("알림", "중복된 아이디가 존재합니다",
+														"warning");
+												checkObj.idDuplChk = false;
+											}
+										},
+										error : function() {
+											console.log('ajax 오류 발생');
+										}
+									});
+								});
 
-    // SweetAlert 메시지 표시 함수
-    function msg(title, text, icon) {
-        swal({
-            title: title,
-            text: text,
-            icon: icon,
-        });
-    }
-    
-    $('form').on('submit', function(event) {
-        if (!checkObj.idDuplChk) {
-            msg("알림", "아이디 중복체크를 진행해주세요", "error");
-            event.preventDefault();
-            return false;
-        }
+						// SweetAlert 메시지 표시 함수
+						function msg(title, text, icon) {
+							swal({
+								title : title,
+								text : text,
+								icon : icon,
+							});
+						}
 
-        if (!checkObj.dinnerPw || !checkObj.dinnerPwConfirm) {
-            msg("알림", "비밀번호를 확인해주세요", "error");
-            event.preventDefault();
-            return false;
-        }
-        
-    	// 영업 시작 시간과 종료 시간 값 가져오기
-        const openTime = $('#dinnerOpen').val(); // HH:mm 형식
-        const closeTime = $('#dinnerClose').val(); // HH:mm 형식
+						$('form').on(
+								'submit',
+								function(event) {
+									if (!checkObj.idDuplChk) {
+										msg("알림", "아이디 중복체크를 진행해주세요", "error");
+										event.preventDefault();
+										return false;
+									}
 
-        // HH:mm -> HHmm 형식으로 변환
-        const formattedOpenTime = openTime.replace(':', '');
-        const formattedCloseTime = closeTime.replace(':', '');
+									if (!checkObj.dinnerPw
+											|| !checkObj.dinnerPwConfirm) {
+										msg("알림", "비밀번호를 확인해주세요", "error");
+										event.preventDefault();
+										return false;
+									}
 
-        // 변환된 값으로 input 값을 업데이트
-        $('#dinnerOpen').val(formattedOpenTime);
-        $('#dinnerClose').val(formattedCloseTime);
-    });
+									// 영업 시작 시간과 종료 시간 값 가져오기
+									const openTime = $('#dinnerOpen').val(); // HH:mm 형식
+									const closeTime = $('#dinnerClose').val(); // HH:mm 형식
 
-});
+									// HH:mm -> HHmm 형식으로 변환
+									const formattedOpenTime = openTime.replace(
+											':', '');
+									const formattedCloseTime = closeTime
+											.replace(':', '');
+
+									// 변환된 값으로 input 값을 업데이트
+									$('#dinnerOpen').val(formattedOpenTime);
+									$('#dinnerClose').val(formattedCloseTime);
+								});
+
+					});
 </script>
 </html>

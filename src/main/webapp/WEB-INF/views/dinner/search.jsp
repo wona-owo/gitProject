@@ -178,6 +178,33 @@
 
     <div class="wrap">
         <main class="content">
+        
+            <!-- 검색 박스 -->
+            <div class="search-box">
+                <button class="filter-button" onclick="toggleFilterContainer()">
+                    필터 <span class="arrow">▼</span>
+                </button>
+                <input type="text" id="searchInput" class="search-input" placeholder="식당 이름 또는 메뉴 검색">
+                <button class="search-button" onclick="search()">검색</button>
+            </div>
+
+            <!-- 콤팩트 필터 컨테이너 -->
+            <div class="filter-container">
+                <div class="filter-title">국가별 필터</div>
+                <div class="filter-section">
+                    <c:forEach var="dinner" items="${dinnerList}">
+                        <span class="filter-button" data-value="${dinner.foodNation}" onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
+                    </c:forEach>
+                </div>
+
+                <div class="filter-title">음식 유형 필터</div>
+                <div class="filter-section">
+                    <c:forEach var="dinner" items="${dinnerList}">
+                        <span class="filter-button" data-value="${dinner.foodCat}" onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
+                    </c:forEach>
+                </div>
+            </div>
+        	
             <div class="card-container" id="cardContainer">
                 <c:forEach var="dinner" items="${dinnerList}">
                     <div class="card" data-name="${dinner.dinnerName}"
@@ -207,6 +234,66 @@
     </div>
 
     <script>
+    
+    
+    const filters = {
+            cuisine: [],
+            type: []
+        };
+
+        function toggleFilter(event, filterType) {
+            const button = event.target;
+            const value = button.getAttribute('data-value');
+            const isActive = button.classList.toggle('active');
+
+            if (isActive) {
+                filters[filterType].push(value);
+            } else {
+                filters[filterType] = filters[filterType].filter(item => item !== value);
+            }
+
+            filterCards();
+        }
+
+        function filterCards() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardCuisine = card.getAttribute('data-cuisine');
+                const cardType = card.getAttribute('data-type');
+                
+                const cuisineMatch = filters.cuisine.length === 0 || filters.cuisine.includes(cardCuisine);
+                const typeMatch = filters.type.length === 0 || filters.type.includes(cardType);
+
+                card.style.display = cuisineMatch && typeMatch ? 'flex' : 'none';
+            });
+        }
+
+        function search() {
+            const searchKeyword = document.getElementById("searchInput").value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const addr = card.getAttribute('data-addr').toLowerCase();
+
+                if (name.includes(searchKeyword) || addr.includes(searchKeyword)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleFilterContainer() {
+            const filterContainer = document.querySelector('.filter-container');
+            const arrow = document.querySelector('.arrow');
+            const isOpen = filterContainer.style.display === 'block';
+            filterContainer.style.display = isOpen ? 'none' : 'block';
+            arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+
+    
     // 서버에서 전달된 loginType과 memberLevel을 JavaScript 변수로 설정
     const loginType = '${sessionScope.loginType}' || '';
     const memberLevel = '${sessionScope.memberLevel}' || '';

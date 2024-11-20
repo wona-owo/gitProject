@@ -13,6 +13,7 @@ import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Menu;
+import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.vo.Member;
 
 public class DinnerService {
@@ -167,15 +168,35 @@ public class DinnerService {
 		return member;
 	}
 
-	// 식당등록 (경래)
-	public boolean insertDinner(Dinner dinner) {
+	// 식당등록 (경래 + daniel)
+	public boolean insertDinner(Dinner dinner, ArrayList<Photo> photoList) {
 		Connection conn = JDBCTemplate.getConnection();
 		boolean result = false;
-
+		
 		result = dao.insertDinner(conn, dinner);
 
-		if (result) {
+		if(result) {
 			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+
+		if (result) {
+			String dinnerNo = dao.getDinnerNoById(conn, dinner.getDinnerId());
+
+			for(Photo p : photoList) {
+				p.setDinnerNo(dinnerNo);
+				
+				int pResult = dao.insertDinnerPhoto(conn, p);
+				
+				if (pResult < 1) {
+					JDBCTemplate.rollback(conn);
+					break;
+				} else {
+					JDBCTemplate.commit(conn);
+				}
+			}
+			
 		} else {
 			JDBCTemplate.rollback(conn);
 		}
@@ -258,5 +279,13 @@ public class DinnerService {
 	    List<Menu> menuList = dao.getMenuByDinnerNo(conn, dinnerNo, foodNo);  
 	    JDBCTemplate.close(conn); 
 	    return menuList;
+	}
+
+	// daniel
+	public String dinnerPhotoPath(String dinnerNo) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    String photoPath = dao.dinnerPhotoPath(conn, dinnerNo);
+	    JDBCTemplate.close(conn); 
+		return photoPath;
 	}
 }

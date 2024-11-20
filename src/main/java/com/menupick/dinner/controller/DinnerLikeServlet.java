@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Photo;
 
 
 /**
@@ -40,10 +41,36 @@ public class DinnerLikeServlet extends HttpServlet {
 		
 
 		// 3. 로직
-		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
+		ArrayList<Dinner> dinnerList = new ArrayList<>();
 		DinnerService service = new DinnerService();
 		dinnerList = service.likeDinner(dinnerNo, dinnerName);
+		
+		for (Dinner d : dinnerList) {
+		    String photoPath = service.dinnerPhotoPath(d.getDinnerNo());
 
+		    // Get the photoList from the Dinner object
+		    ArrayList<Photo> photoList = d.getPhotoList();
+
+		    // Initialize photoList if it's null
+		    if (photoList == null) {
+		        photoList = new ArrayList<>();
+		        d.setPhotoList(photoList);
+		    }
+
+		    Photo photo;
+
+		    // Check if the list already has at least one Photo
+		    if (photoList.size() > 0) {
+		        // Get the first Photo and set its photoPath
+		        photo = photoList.get(0);
+		        photo.setPhotoPath(photoPath);
+		    } else {
+		        // Create a new Photo, set its photoPath, and add it to the list
+		        photo = new Photo();
+		        photo.setPhotoPath(photoPath);
+		        photoList.add(photo);
+		    }
+		}
 		
 		// 4. 결과 처리
 		request.setAttribute("dinnerList", dinnerList);

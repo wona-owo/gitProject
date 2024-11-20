@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
-import com.menupick.member.model.service.MemberService;
 
 /**
  * Servlet implementation class DinnerDetailServlet
@@ -34,17 +33,15 @@ public class DinnerDetailServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinnerNo");
 		
-		
 		DinnerService service = new DinnerService();
 		
 		Dinner dinner = service.dinnerDetail(dinnerNo);
-
+		String photoPath = service.dinnerPhotoPath(dinnerNo);
 		
 		request.setAttribute("dinner", dinner);
-		
+		request.setAttribute("photoPath", photoPath);
 		
 		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
-
 	}
 
 	/**

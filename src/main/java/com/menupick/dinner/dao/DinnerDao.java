@@ -15,6 +15,7 @@ import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Menu;
+import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
@@ -593,12 +594,10 @@ public class DinnerDao {
 		return m;
 	}
 
-	// 식당등록 (경래)
+	// 식당등록 (경래 + daniel)
 	public boolean insertDinner(Connection conn, Dinner dinner) {
 		PreparedStatement pstmt = null;
-		String query = "INSERT INTO tbl_dinner (dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, "
-				+ "dinner_phone, dinner_email, dinner_parking, dinner_max_person, busi_no, dinner_id, dinner_pw, dinner_confirm) "
-				+ "VALUES ('d' || to_char(sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO tbl_dinner VALUES ('d' || to_char(sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'n')";
 		boolean result = false;
 
 		try {
@@ -614,7 +613,6 @@ public class DinnerDao {
 			pstmt.setString(9, dinner.getBusiNo());
 			pstmt.setString(10, dinner.getDinnerId());
 			pstmt.setString(11, dinner.getDinnerPw());
-			pstmt.setString(12, dinner.getDinnerConfirm());
 
 			int rowsAffected = pstmt.executeUpdate();
 			result = rowsAffected > 0;
@@ -842,5 +840,73 @@ public class DinnerDao {
 	    }
 	    
 	    return menuList;
+	}
+
+	// daniel
+	public String getDinnerNoById(Connection conn, String dinnerId) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		String dinnerNo = "";
+		String query = "select dinner_no from tbl_dinner where dinner_id = ?";
+		
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerId);
+			rt = pt.executeQuery();
+			
+			if(rt.next()) {
+				dinnerNo = rt.getString("dinner_no");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return dinnerNo;
+	}
+
+	// daniel
+	public int insertDinnerPhoto(Connection conn, Photo p) {
+		PreparedStatement pt = null;
+		int result = -1;
+		String query = "insert into tbl_photo values ('p' || to_char(sysdate, 'yymmdd') || lpad (seq_photo.nextval, 4, '0'), ?, ?, ?)";
+		
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, p.getDinnerNo());
+			pt.setString(2, p.getPhotoName());
+			pt.setString(3, p.getPhotoPath());
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		return result;
+	}
+
+	// daniel
+	public String dinnerPhotoPath(Connection conn, String dinnerNo) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		String photoPath = "";
+		String query = "select photo_path from tbl_photo where dinner_no = ?";
+		
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			rt = pt.executeQuery();
+			
+			while(rt.next()) {
+				photoPath = rt.getString("photo_path");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return photoPath;
 	}
 }
