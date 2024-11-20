@@ -237,15 +237,15 @@ ul {
 								subMenu.is(':visible') ? '100px' : '0px');
 					});
 
-			// Close sub-menus and reset margins when clicking elsewhere
-			$(document).click(
-					function(event) {
-						if (!$(event.target).closest(
-								'.sub-menu, .menu-item .cancel-btn').length) {
-							$('.sub-menu').hide();
-							$('.group-menu').css('margin-bottom', '0px');
-						}
-					});
+		// Close sub-menus and reset margins when clicking elsewhere
+		$(document).click(
+				function(event) {
+					if (!$(event.target).closest(
+							'.sub-menu, .menu-item .cancel-btn').length) {
+						$('.sub-menu').hide();
+						$('.group-menu').css('margin-bottom', '0px');
+					}
+				});
 		});
 
 		function refresh() {
@@ -377,13 +377,12 @@ ul {
 			}
 		}
 
-			// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
-			window.addEventListener('pageshow', function(event) {
-			    if (event.persisted) {
-			        // The page is shown from the back-forward cache
-			        history.back();
-			    }
-			});
+		// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
+		window.addEventListener('pageshow', function(event) {
+			if (event.persisted) {
+				history.back();
+			}
+		});
 	</script>
 </body>
 </html>
