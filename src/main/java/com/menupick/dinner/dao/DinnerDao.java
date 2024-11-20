@@ -228,7 +228,7 @@ public class DinnerDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Dinner d = new Dinner();
-		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking, food_no, food_name, food_nation, food_cat from tbl_dinner, tbl_food where dinner_no = ?";
+		String query = "select dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, dinner_phone, dinner_parking, dinner_max_person, food_no, food_name, food_nation, food_cat from tbl_dinner, tbl_food where dinner_no = ?";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -243,6 +243,7 @@ public class DinnerDao {
 				d.setDinnerOpen(rset.getString("DINNER_OPEN"));
 				d.setDinnerClose(rset.getString("DINNER_CLOSE"));
 				d.setDinnerPhone(rset.getString("DINNER_PHONE"));
+				d.setDinnerMaxPerson(rset.getString("DINNER_MAX_PERSON"));
 				d.setDinnerParking(rset.getString("DINNER_PARKING"));
 				d.setFoodNo(rset.getString("FOOD_NO"));
 				d.setFoodName(rset.getString("FOOD_NAME"));

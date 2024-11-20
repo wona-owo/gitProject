@@ -45,16 +45,14 @@ public class MemberReservation extends HttpServlet {
 		String bookCnt = request.getParameter("bookCnt");
 		
 		String bookDate = request.getParameter("bookDate");
-		
+		String memberNo = null;
 		
 		HttpSession session = request.getSession();
 		Member loginMember = (Member) session.getAttribute("loginMember");
-		String memberNo = loginMember.getMemberNo();
-		
-
+		memberNo = loginMember.getMemberNo();
 		
 		MemberService mservice = new MemberService();
-		DinnerService dservice = new DinnerService();
+		
 		
 		
 		//bookDate 값 substring로 'yyyy/mm/dd'로 전달
@@ -83,7 +81,7 @@ public class MemberReservation extends HttpServlet {
 			request.setAttribute("icon", "error");
 			request.setAttribute("loc", "/");
 		}
-
+		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		view.forward(request, response);
 	}
