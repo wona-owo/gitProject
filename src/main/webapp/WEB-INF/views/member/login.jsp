@@ -102,6 +102,10 @@ input[type="checkbox"] {
 					<div class="member-link-box">
 						<a href="/join/selectFrm">회원가입</a> | <button type="button" onclick="showIdSearchPopup()" class="search">아이디 찾기</button> | <a
 							href="javascript:void(0)" onclick="searchInfo('pw')">비밀번호 찾기</a>
+<<<<<<< HEAD
+
+=======
+>>>>>>> 65586863b5a61fdd2a7e54539005d1d3197396f5
 					</div>
 				</form>
 			</section>
@@ -125,6 +129,13 @@ input[type="checkbox"] {
 		function showIdSearchPopup() {
 			 
 			  var popupURL = "/member/searchIdFrm";
+			  var popupProperties = "width=600,height=500,scrollbars=yes";
+			  
+			  window.open(popupURL, "Popup", popupProperties);
+			}
+		function showPwSearchPopup() {
+			 
+			  var popupURL = "/member/searchPwFrm";
 			  var popupProperties = "width=600,height=500,scrollbars=yes";
 			  
 			  window.open(popupURL, "Popup", popupProperties);
