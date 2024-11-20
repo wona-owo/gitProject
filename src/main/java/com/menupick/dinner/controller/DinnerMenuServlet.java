@@ -28,7 +28,7 @@ public class DinnerMenuServlet extends HttpServlet {
         
         try {
         	dinnerNo = request.getParameter("dinnerNo");
-            foodNo = request.getParameter("foodNo");  // foodNo를 String으로 받음
+            foodNo = request.getParameter("foodNo");
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

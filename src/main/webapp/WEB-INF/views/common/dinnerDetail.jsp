@@ -113,24 +113,8 @@
 
 				<%-- 탭 콘텐츠 --%>
 				<div class="restaurant-detail-content">
-					<div class="tab-content active" id="information-content">정보
-						콘텐츠</div>
-					<div class="tab-content" id="menu-content">
-						<c:if test="${not empty menuList}">
-							<ul>
-								<c:forEach var="menu" items="${menuList}">
-									<li>
-										<span>${menu.dinnerNo} - ${menu.foodNo}</span>: 
-										<span>${menu.price}원</span>
-									</li>
-								</c:forEach>
-							</ul>
-						</c:if>
-						<c:if test="${empty menuList}">
-							<p>메뉴가 없습니다.</p>
-						</c:if>
-					</div>
-					
+					<div class="tab-content active" id="information-content">정보 콘텐츠</div>
+					<jsp:include page="/WEB-INF/views/common/menu.jsp" />		
 					<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
 				</div>
