@@ -1,6 +1,7 @@
 package com.menupick.dinner.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,19 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Photo;
 
 /**
  * Servlet implementation class DinnerSettingServletFrm
  */
-@WebServlet("/dinner/setting")
-public class DinnerSettingServletFrm extends HttpServlet {
+@WebServlet("/dinner/settingFrm")
+public class DinnerSettingFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DinnerSettingServletFrm() {
+	public DinnerSettingFrmServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -40,9 +43,23 @@ public class DinnerSettingServletFrm extends HttpServlet {
 			return;
 		}
 		
+		String dinnerNo = loginDinner.getDinnerNo();
 		
-
+		DinnerService service = new DinnerService();
+		String photoPath = service.dinnerPhotoPath(dinnerNo);
+		
+		ArrayList<Photo> photoList = new ArrayList<>();
+		
+		Photo photo = new Photo();
+		
+		photo.setPhotoPath(photoPath);
+		
+		photoList.add(photo); 
+		
+		loginDinner.setPhotoList(photoList);
+		
 		request.setAttribute("dinner", loginDinner);
+		request.setAttribute("photoPath", photoPath);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerSetting.jsp").forward(request, response);
 	}
 
