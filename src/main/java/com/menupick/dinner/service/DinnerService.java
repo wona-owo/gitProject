@@ -280,4 +280,12 @@ public class DinnerService {
 	    JDBCTemplate.close(conn); 
 	    return menuList;
 	}
+
+	// daniel
+	public String dinnerPhotoPath(String dinnerNo) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    String photoPath = dao.dinnerPhotoPath(conn, dinnerNo);
+	    JDBCTemplate.close(conn); 
+		return photoPath;
+	}
 }
