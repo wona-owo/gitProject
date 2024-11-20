@@ -6,22 +6,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
 
 import com.menupick.member.model.service.MemberService;
-import com.menupick.member.model.vo.Member;
 
 /**
- * Servlet implementation class MemberLikeListFindServlet
+ * Servlet implementation class MemberDeleteReviewServlet
  */
-@WebServlet("/member/findLike")
-public class MemberLikeListFindServlet extends HttpServlet {
+@WebServlet("/member/delReview")
+public class MemberDeleteReviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberLikeListFindServlet() {
+    public MemberDeleteReviewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,26 +30,32 @@ public class MemberLikeListFindServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//값 추출 -> 리뷰번호
+		String reviewNo = request.getParameter("reviewNo");
 		
-		//값 추출 -> 클릭한 식당 코드, 회원 번호
-		String dinnerNo = request.getParameter("dinnerNo");
-
-		HttpSession session = request.getSession(false);
-		Member member = (Member) session.getAttribute("loginMember");
-		String memberNo = member.getMemberNo();
+		//비즈니스 로직 -> 리뷰삭제
 		
-		//비즈니스 로직 -> DB에서 찾기 (성공 여부에 따라 참/거짓 반환)
 		MemberService service = new MemberService();
-		boolean findLike = service.memberFindLike(dinnerNo, memberNo);
+		int result = service.memberDelReview(reviewNo);
 		
-		//결과처리 : 있는지 없는지 boolean 데이터 전달.		
-		if(findLike) {			
-			response.getWriter().print("{\"isFavorited\": " + true + "}");
-		}else {		
-			response.getWriter().print("{\"isFavorited\": " + false + "}");
+		response.setContentType("application/json; charset=UTF-8");
+		
+		if (result > 0) {
+		    JSONObject json = new JSONObject();
+		    json.put("status", "success");
+		    json.put("message", "리뷰 삭제");
+		    response.getWriter().print(json.toString());
+			
+		} else {
+			JSONObject json = new JSONObject();
+		    json.put("status", "error");
+		    json.put("message", "리뷰 삭제 중 오류 발생");
+		    response.getWriter().print(json.toString());
 		}
 		
 	}
+
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

@@ -115,6 +115,11 @@
                                                     location.description || location.address;
                                                 animateMarkerDrop(marker);
                                             });
+
+                                            // 더블클릭 시 마커가 이동하지 않도록 설정
+                                            kakao.maps.event.addListener(marker, "dblclick", function (mouseEvent) {
+                                                marker.setPosition(coords);
+                                            });
                                         }
                                     } else {
                                         console.error("주소 지오코딩 실패:", location.address, "상태:", status);
@@ -131,34 +136,31 @@
 
             searchPlacesInBounds();
 
-            // 마커 애니메이션
+            // 마커 애니메이션 (위에서 아래로 핀 꼽히기, 짧고 빠르게)
             function animateMarkerDrop(marker) {
-                let originalPosition = marker.getPosition();
-                let dropHeight = 20;
-                let duration = 300;
-                let start = null;
+                const originalPosition = marker.getPosition();
+                const dropHeight = 50;
+                const duration = 300;
+                const start = performance.now();
 
                 function dropAnimationStep(timestamp) {
-                    if (!start) start = timestamp;
-                    let progress = timestamp - start;
-                    let amount = Math.min(progress / duration, 1);
+                    const elapsed = timestamp - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const newLat = originalPosition.getLat() + (dropHeight * (1 - progress)) / 100000;
+                    marker.setPosition(new kakao.maps.LatLng(newLat, originalPosition.getLng()));
 
-                    let displacement = dropHeight * Math.sin(amount * Math.PI);
-                    let newPosition = new kakao.maps.LatLng(
-                        originalPosition.getLat() - displacement / 100000,
-                        originalPosition.getLng()
-                    );
-                    marker.setPosition(newPosition);
-
-                    if (amount < 1) {
+                    if (progress < 1) {
                         requestAnimationFrame(dropAnimationStep);
-                    } else {
-                        marker.setPosition(originalPosition);
                     }
                 }
 
                 requestAnimationFrame(dropAnimationStep);
             }
+
+            // 더블클릭 시 지도 이동 방지
+            kakao.maps.event.addListener(map, "dblclick", function (mouseEvent) {
+                mouseEvent.preventDefault();
+            });
         });
 
         // 검색 기능

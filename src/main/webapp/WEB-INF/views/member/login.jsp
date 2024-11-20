@@ -129,8 +129,7 @@ input[type="checkbox"] {
 			  
 			  window.open(popupURL, "Popup", popupProperties);
 			}
-		function showPwSearchPopup() {
-			 
+		function showPwSearchPopup() {		 
 			  var popupURL = "/member/searchPwFrm";
 			  var popupProperties = "width=600,height=500,scrollbars=yes";
 			  
