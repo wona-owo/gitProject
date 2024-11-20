@@ -72,25 +72,25 @@
 }
 
 .mypage-btn {
-    display: flex;
-    justify-content: center; /* 가로 방향 중앙 정렬 */
-    gap: 20px; /* 버튼 간격 설정 */
-    margin-top: 20px;
+	display: flex;
+	justify-content: center; /* 가로 방향 중앙 정렬 */
+	gap: 20px; /* 버튼 간격 설정 */
+	margin-top: 20px;
 }
 
 .btn-primary {
-    padding: 10px 20px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    background-color: #3a5fcd;
-    text-align: center;
+	padding: 10px 20px;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	font-size: 1em;
+	cursor: pointer;
+	background-color: #3a5fcd;
+	text-align: center;
 }
 
 .btn-primary:hover {
-    background-color: #2f4fa8;
+	background-color: #2f4fa8;
 }
 </style>
 </head>
@@ -117,7 +117,9 @@
 						</tr>
 						<tr>
 							<th>매장 ID</th>
-							<td><input type="text" value="${dinner.dinnerId}" readonly /></td>
+							<td><input type="text" value="${dinner.dinnerId}" readonly />
+								<input type="hidden" name="dinnerId" value="${dinner.dinnerId}" />
+							</td>
 						</tr>
 						<tr>
 							<th>비밀번호</th>
@@ -179,7 +181,7 @@
 					</table>
 
 					<div class="mypage-btn">
-					<button type="button" onclick="deleteDinner()" class="btn-primary">회원탈퇴</button>
+						<button type="button" onclick="deleteDinner()" class="btn-primary">회원탈퇴</button>
 						<button type="button"
 							onclick="window.location.href='/admin/DinnerPageFrm'"
 							class="btn-primary" style="margin-left: 30px;">매장 상세페이지
@@ -215,22 +217,30 @@
 			const timeExp = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
 			const phoneExp = /^010-\d{3,4}-\d{4}$/;
 
-			if (!timeExp.test(dinnerOpen)) {
-				swal("알림", "오픈 시간 형식을 올바르게 입력하세요.", "warning");
-				return false;
-			}
+			// 오픈 시간 유효성 검사
+		    if (!timeExp.test(dinnerOpenField.value)) {
+		        swal("알림", "오픈 시간 형식을 올바르게 입력하세요.", "warning");
+		        return false;
+		    }
 
-			if (!timeExp.test(dinnerClose)) {
-				swal("알림", "마감 시간 형식을 올바르게 입력하세요.", "warning");
-				return false;
-			}
+		    // 마감 시간 유효성 검사
+		    if (!timeExp.test(dinnerCloseField.value)) {
+		        swal("알림", "마감 시간 형식을 올바르게 입력하세요.", "warning");
+		        return false;
+		    }
 
-			if (!phoneExp.test(dinnerPhone)) {
-				swal("알림", "전화번호 형식을 올바르게 입력하세요.", "warning");
-				return false;
-			}
+		    // 전화번호 유효성 검사
+		    if (!phoneExp.test(dinnerPhone)) {
+		        swal("알림", "전화번호 형식을 올바르게 입력하세요.", "warning");
+		        return false;
+		    }
 
-			return confirm("매장 정보를 수정하시겠습니까?");
+		    // ":" 제거 후 값 변환
+		    dinnerOpenField.value = dinnerOpenField.value.replace(":", "");
+		    dinnerCloseField.value = dinnerCloseField.value.replace(":", "");
+
+		    // 확인 메시지
+		    return confirm("매장 정보를 수정하시겠습니까?");
 		}
 		function deleteDinner() {
 			swal({
