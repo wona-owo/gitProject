@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+    // 세션에서 로그인 상태 확인
+    Boolean isLogIn = (session.getAttribute("loginMember") != null);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -267,8 +271,14 @@ textarea {
     	  parking.innerHTML = "주차자리없음"
       }
       
+      let isLogIn = <%= isLogIn %>;
       function resBtn(){
-    	  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
+    	  if(isLogIn = null){
+    		  event.preventDefault();
+    		  msg("알림","로그인 후 이용하세요","warning");
+    	  }else{
+    		  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}&memberNo=${member.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
+    	  }
       }
 
     </script>

@@ -819,6 +819,7 @@ public class DinnerDao {
 	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 	    	 pstmt.setString(1, dinnerNo); 
 	         pstmt.setString(2, foodNo);
+	         
 	        try (ResultSet rs = pstmt.executeQuery()) {
 	            while (rs.next()) {
 	                Menu menu = new Menu();
