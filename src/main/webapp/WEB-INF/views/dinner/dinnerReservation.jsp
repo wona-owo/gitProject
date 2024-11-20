@@ -191,14 +191,14 @@ ul {
 							<li>${b.memberPhone}</li>
 							<li>${b.bookCnt}</li>
 							<li class="menu-item"><input type="button" class="cancel-btn" value="취소">
-
+								<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
 								<ul class="dinner-sub-menu" id="sub-menu-${b.memberNo}">
-									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
 									<li>
 										<select id="select-input-${b.memberNo}" class="cancel-reason-select">
-											<option value="" class="select-placeholder" selected disabled>취소 사유 선택</option>
+											<option value="" class="select-placeholder" disabled<%-- hidden 속성이 오류는 나지만 정상 동작함 --%>hidden>취소 사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
+											<option value="2">예약 시스템의 오류로 시간당 최대 수용인원을 초과 하였습니다</option>
 										</select>
 									</li>
 
