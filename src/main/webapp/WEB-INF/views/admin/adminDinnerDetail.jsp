@@ -106,6 +106,7 @@
 				<form id="updateForm" action="/adminDinner/update" method="post">
 
 					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}">
+					<input type="hidden" name="dinnerId" value="${dinner.dinnerId}">
 
 					<table class="tbl">
 						<tr>
@@ -178,12 +179,13 @@
 					</table>
 
 					<div class="mypage-btn">
-						<button type="button" onclick="deleteDinner()" class="btn-primary" >회원탈퇴</button>
+						<button type="button" onclick="deleteDinner()" class="btn-primary">회원탈퇴</button>
 						<button type="button" id="updateButton" class="btn-primary"
 							style="margin-left: 30px;" onclick="updateDinner()">정보수정</button>
 						<button type="button"
 							onclick="window.location.href='/admin/DinnerPageFrm'"
-							class="btn-primary" style = "margin-left: 30px;">매장 상세페이지 이동</button>
+							class="btn-primary" style="margin-left: 30px;">매장 상세페이지
+							이동</button>
 					</div>
 				</form>
 			</section>
@@ -193,14 +195,21 @@
 
 	<script>
 		function updateDinner() {
-			// 입력 필드 선택
-			const dinnerOpen = $('#dinnerOpen'); // 오픈 시간
-			const dinnerClose = $('#dinnerClose'); // 마감 시간
-			const dinnerPhone = $('#dinnerPhone'); // 전화번호
+			const dinnerId = $('input[name="dinnerId"]').val(); // 숨겨진 필드에서 값 가져오기
 
-			// 정규식
-			const timeExp = /^([01][0-9]|2[0-3]):[0-5][0-9]$/; // HH:mm 형식
-			const phoneExp = /^010-\d{3,4}-\d{4}$/; // 전화번호 형식
+			if (!dinnerId || dinnerId.trim() === "") {
+				swal("알림", "DINNER_ID가 누락되었습니다. 관리자에게 문의하세요.", "error");
+				return;
+			}
+
+			// 입력 필드 가져오기
+			const dinnerOpen = $('#dinnerOpen');
+			const dinnerClose = $('#dinnerClose');
+			const dinnerPhone = $('#dinnerPhone');
+
+			// 정규식 패턴
+			const timeExp = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
+			const phoneExp = /^010-\d{3,4}-\d{4}$/;
 
 			// 유효성 검사
 			if (!timeExp.test(dinnerOpen.val())) {
@@ -218,12 +227,15 @@
 				return;
 			}
 
-			// 값 변환: ":" 제거
-			const formattedDinnerOpen = dinnerOpen.val().replace(':', '');
-			const formattedDinnerClose = dinnerClose.val().replace(':', '');
-			const formattedDinnerPhone = dinnerPhone.val();
+			// ":" 제거
+			const formattedDinnerOpen = dinnerOpen.val().replace(":", "");
+			const formattedDinnerClose = dinnerClose.val().replace(":", "");
 
-			// 유효성 검사가 모두 통과한 경우 swal 확인 팝업
+			// 수정된 값으로 업데이트
+			dinnerOpen.val(formattedDinnerOpen);
+			dinnerClose.val(formattedDinnerClose);
+
+			// 확인 메시지
 			swal({
 				title : "알림",
 				text : "매장 정보를 수정하시겠습니까?",
@@ -243,13 +255,12 @@
 					}
 				}
 			}).then(function(isConfirm) {
-				// 수정 버튼 클릭 시 form 제출
 				if (isConfirm) {
-					$('#updateForm').submit(); // form 태그 submit
+					$('#updateForm').submit(); // 폼 제출
 				}
 			});
 		}
-		
+
 		function deleteDinner() {
 			swal({
 				title : "매장 회원 삭제",

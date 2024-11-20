@@ -31,6 +31,7 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         // 값 추출
         String dinnerNo = request.getParameter("dinnerNo");
         String dinnerName = request.getParameter("dinnerName");
+        String dinnerId = request.getParameter("dinnerId");
         String dinnerAddr = request.getParameter("dinnerAddr");
         String dinnerOpen = request.getParameter("dinnerOpen");
         String dinnerClose = request.getParameter("dinnerClose");
@@ -45,6 +46,7 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         Dinner updDinner = new Dinner();
         updDinner.setDinnerNo(dinnerNo);
         updDinner.setDinnerName(dinnerName);
+        updDinner.setDinnerId(dinnerId);
         updDinner.setDinnerAddr(dinnerAddr);
         updDinner.setDinnerOpen(dinnerOpen);
         updDinner.setDinnerClose(dinnerClose);
