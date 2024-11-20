@@ -106,7 +106,7 @@ body {
 }
 
 #zipp_btn:hover {
-	background-color: #d93636; /* 버튼 호버 시 색상 */
+	background-color: #c30; /* 버튼 호버 시 색상 */
 }
 
 /* 기본 주소와 상세 주소 입력란을 한 줄에 나란히 배치 */
@@ -221,7 +221,7 @@ body {
 		transition: background-color 0.3s;
 	}
 	.id-check button:hover {
-		background-color: #d93636;
+		background-color: #c30;
 	}
 }
 
@@ -246,6 +246,7 @@ body {
 }
 
 .submit-btn:hover, .cancel-btn:hover {
+	background-color: #c30;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 부드러운 강조 효과 */
 }
 
@@ -260,7 +261,7 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #d93636; /* 호버 시 색상 */
+    background-color: #c30; /* 호버 시 색상 */
     box-shadow: 0 4px 10px rgba(217, 54, 54, 0.3); /* 버튼 호버 시 그림자 */
 }
 
