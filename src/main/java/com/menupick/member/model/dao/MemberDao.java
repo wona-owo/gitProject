@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
@@ -792,21 +794,23 @@ public class MemberDao {
 	    return isUpdated;
 	}
 
-	public Book getDupBookChk(Connection conn, String memberNo) {
+	public int getDupBookChk(Connection conn, String memberNo, String bookNo, String bookDate,
+			String bookTime) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select * from tbl_book where member_no= ?";
-		Book book = new Book();
+		 int cnt = 0;
+		String query = "SELECT COUNT(*) FROM reservation WHERE member_no = ? AND book_no = ? AND book_date = ? AND book_time = ?";
+		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
+			pstmt.setString(2, bookNo);
+			pstmt.setString(3, bookDate);
+			pstmt.setString(4, bookTime);
 			rset = pstmt.executeQuery();
+			
 			if(rset.next()) {
-				book.setBookNo(rset.getString("book_no"));
-				book.setBookNo(memberNo);
-				book.setBookNo(rset.getString("book_date"));
-				book.setBookNo(rset.getString("book_time"));
-				book.setBookNo(rset.getString("book_cnt"));
+				cnt = rset.getInt("cnt");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -815,8 +819,13 @@ public class MemberDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-		return book;
+		
+		return cnt;
 	}
+
+
+
+
 
 }
 	

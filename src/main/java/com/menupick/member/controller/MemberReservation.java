@@ -74,12 +74,13 @@ public class MemberReservation extends HttpServlet {
 			request.setAttribute("title", "성공");
 			request.setAttribute("msg", "예약 성공 했습니다.");
 			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/");
+			request.setAttribute("loc", "window.close()");
+			
 		} else {
 			request.setAttribute("title", "실패");
 			request.setAttribute("msg", "예약 실패했습니다.");
 			request.setAttribute("icon", "error");
-			request.setAttribute("loc", "/");
+			request.setAttribute("loc", "window.close()");
 		}
 
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");

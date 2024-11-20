@@ -277,7 +277,7 @@ textarea {
     		  event.preventDefault();
     		  msg("알림","로그인 후 이용하세요","warning");
     	  }else{
-    		  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}&memberNo=${member.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
+    		  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
     	  }
       }
 

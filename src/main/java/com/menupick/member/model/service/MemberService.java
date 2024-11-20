@@ -343,13 +343,16 @@ public class MemberService {
 		return findLike;
 		}
 
-	public Book getDupBookChk(String memberNo) {
+	public boolean getDupBookChk(String memberNo, String bookNo, String bookDate, String bookTime) {
 		Connection conn = JDBCTemplate.getConnection();
-		Book book = new Book();
-		book = dao.getDupBookChk(conn, memberNo);
+		boolean dupBook = false;
+		int dupBookCnt = dao.getDupBookChk(conn, memberNo, bookNo, bookDate, bookTime);
+		dupBook = (dupBookCnt > 0);
 		JDBCTemplate.close(conn);
-		return book;
+		return dupBook;
 	}
+
+
     }
 
  

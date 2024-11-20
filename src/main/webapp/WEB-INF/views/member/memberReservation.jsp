@@ -107,7 +107,7 @@ button[type="submit"]:hover {
 		<input id="dinnerNo" type="hidden" name="dinnerNo" value="${dinner.dinnerNo}">
 		<input type="hidden" id="memberNo" name="memberNo"
 				value="${loginMember.memberNo}">
-		<span>${book.bookTime}</span>
+		<span>${bookDate}</span>
 		<span>${book.bookDate}</span>
 		<div id="resDetail" style="margin-top: 20px;"></div>
 		<div class=resBtn id="resOption">
@@ -135,7 +135,7 @@ button[type="submit"]:hover {
 						cntInput.value = count;
 						cnt.innerText = count;
 					}else{
-						alert("인원수는 \${minCnt} 이상 입력바랍니다.");
+						alert("인원수는 '\${minCnt}' 이상 입력바랍니다.");
 					}
 						
 				});
