@@ -277,8 +277,8 @@ body {
 			class="header-img">
 		</a>
 		<h1 class="page-title">식당 정보 등록</h1>
-		<form action="${pageContext.request.contextPath}/dinnerJoin"
-			method="post">
+		<form action="${pageContext.request.contextPath}/dinnerJoin" method="post" enctype="multipart/form-data">
+		
 			<!-- 식당 번호 (히든 필드) -->
 			<input type="hidden" id="dinnerNo" name="dinnerNo"
 				value="${dinnerNo}">
