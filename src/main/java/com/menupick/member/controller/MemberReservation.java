@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Book;
@@ -55,25 +56,6 @@ public class MemberReservation extends HttpServlet {
 		MemberService mservice = new MemberService();
 		DinnerService dservice = new DinnerService();
 		
-		System.out.println(memberNo);
-		/*
-		String year = bookDate.substring(0,4);
-		String month = bookDate.substring(5,7);
-		String day = bookDate.substring(8,10);
-		String date = (year +"/"+ month +"/"+ day);
-		bookDate = date;
-		System.out.println(bookDate = date);
-		*/
-		
-		
-		
-		System.out.println("==========");
-		System.out.println("from MemberReservation.java");
-		System.out.println("dinnerNo: " + dinnerNo);
-		
-        System.out.println("bookDate: " + bookDate);
-        System.out.println("bookCnt: " + bookCnt);
-        System.out.println("bookTime: " + bookTime);
 		
 		//bookDate 값 substring로 'yyyy/mm/dd'로 전달
 		String year = bookDate.substring(0,4);
