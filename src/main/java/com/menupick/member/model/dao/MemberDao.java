@@ -401,7 +401,6 @@ public class MemberDao {
 		return revList;
 	}
 
-	// 리뷰 삭제
 
 	// 예약 확인
 	public ArrayList<Book> memberBookList(Connection conn, String memberNo) {
@@ -822,11 +821,28 @@ public class MemberDao {
 		
 		return cnt;
 	}
+	
+	//예약 취소 - 마이페이지
+	public int memberDelBook(Connection conn, String bookNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
 
+		String query = "delete from tbl_book where book_no = ?";
 
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, bookNo);
 
+			result = pstmt.executeUpdate();
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
 
+		return result;
+	}
 }
 	
 
