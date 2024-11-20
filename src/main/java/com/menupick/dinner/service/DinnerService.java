@@ -216,6 +216,10 @@ public class DinnerService {
 	public int updateDinner(Dinner updDinner) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateDinner(conn, updDinner);
+		
+		if (updDinner.getPhotoList() != null) {
+			result = (dao.updateDinnerPhoto(conn, updDinner.getDinnerNo(), updDinner.getPhotoList())  == 1 ? 1 : 0);
+		}
 
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
