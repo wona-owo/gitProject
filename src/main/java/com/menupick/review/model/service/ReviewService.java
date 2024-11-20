@@ -6,8 +6,10 @@ import java.util.StringTokenizer;
 
 import com.menupick.common.JDBCTemplate;
 import com.menupick.review.model.dao.ReviewDao;
+import com.menupick.review.model.vo.MemberReport;
 import com.menupick.review.model.vo.Recommend;
 import com.menupick.review.model.vo.Review;
+import com.menupick.review.model.vo.ReviewReport;
 
 public class ReviewService {
 	ReviewDao dao;
@@ -91,8 +93,28 @@ public class ReviewService {
 			}else {
 				JDBCTemplate.rollback(conn);
 			}
-			JDBCTemplate.close(conn);
 		}
+		
+		JDBCTemplate.close(conn);
 		return !isReported;
+	}
+
+	// admin 회원 상세 페이지(회원 신고 당한 횟수 조회)
+	public MemberReport getMemberReport(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+	    MemberReport report = dao.getMemberReport(conn, memberNo);
+	    if (report == null) {
+	        report = new MemberReport(memberNo, "N/A", 0); // 기본값 설정
+	    }
+	    JDBCTemplate.close(conn);
+	    return report;
+	}
+
+	// admin 회원 상세 페이지(리뷰별 신고 당한 횟수 조회)
+	public List<ReviewReport> getReviewReportsByMemberNo(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+	    List<ReviewReport> reports = dao.getReviewReportsByMemberNo(conn, memberNo);
+	    JDBCTemplate.close(conn);
+	    return reports;
 	}
 }
