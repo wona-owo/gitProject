@@ -14,6 +14,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Menu;
 import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
@@ -797,5 +798,27 @@ public class DinnerDao {
 	    }
 
 	    return dinner;
+	}
+	public List<Menu> getMenuByDinnerNo(Connection conn, String dinnerNo, String foodNo) {
+	    List<Menu> menuList = new ArrayList<>();
+	    String sql = "SELECT dinner_no, food_no, price FROM tbl_menu WHERE dinner_no = ? AND food_no = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	    	 pstmt.setString(1, dinnerNo); 
+	         pstmt.setString(2, foodNo);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                Menu menu = new Menu();
+	                menu.setDinnerNo(rs.getString("dinner_no"));
+	                menu.setFoodNo(rs.getString("food_no"));
+	                menu.setPrice(rs.getInt("price"));
+	                menuList.add(menu);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return menuList;
 	}
 }

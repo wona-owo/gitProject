@@ -108,19 +108,31 @@
 						id="picture" type="radio" name="tab-item" /> <label
 						class="tab-item" for="picture"
 						onclick="showContent('picture-content')">사진</label> <input
-						id="around" type="radio" name="tab-item" /> <label
-						class="tab-item" for="around"
-						onclick="showContent('around-content')">주변</label>
+						id="around" type="radio" name="tab-item" />
 				</div>
 
 				<%-- 탭 콘텐츠 --%>
 				<div class="restaurant-detail-content">
 					<div class="tab-content active" id="information-content">정보
 						콘텐츠</div>
-					<div class="tab-content" id="menu-content">메뉴 콘텐츠</div>
+					<div class="tab-content" id="menu-content">
+						<c:if test="${not empty menuList}">
+							<ul>
+								<c:forEach var="menu" items="${menuList}">
+									<li>
+										<span>${menu.dinnerNo} - ${menu.foodNo}</span>: 
+										<span>${menu.price}원</span>
+									</li>
+								</c:forEach>
+							</ul>
+						</c:if>
+						<c:if test="${empty menuList}">
+							<p>메뉴가 없습니다.</p>
+						</c:if>
+					</div>
+					
 					<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
-					<div class="tab-content" id="around-content">주변 콘텐츠</div>
 				</div>
 			</section>
 
