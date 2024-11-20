@@ -1,4 +1,5 @@
 -- 작성자 : 김찬희
+
 drop table tbl_dinner cascade constraints;
 drop table tbl_food cascade constraints;
 drop table tbl_menu;
@@ -7,12 +8,14 @@ drop table tbl_like;
 drop table tbl_review cascade constraints;
 drop table tbl_book;
 drop table tbl_recommend;
+drop table tbl_photo;
 
 drop sequence seq_dinner;
 drop sequence seq_member;
 drop sequence seq_review;
 drop sequence seq_book;
 drop sequence seq_food;
+drop sequence seq_photo;
 
 create table
   tbl_dinner (
@@ -161,5 +164,15 @@ create table
     report char(1) default 'n' not null check (report in ('n', 'y')),
     primary key (review_no, member_no)
   );
+  
+  CREATE TABLE
+    TBL_photo (
+        photo_NO VARCHAR2 (11) PRIMARY KEY,
+        dinner_NO VARCHAR2 (11) REFERENCES TBL_dinner (dinner_NO) ON DELETE CASCADE,
+        photo_NAME VARCHAR2 (300), -- 사용자가 업로드한 파일 명칭
+        photo_PATH VARCHAR2 (300) -- 서버에 중복된 파일명이 존재할때 각 파일을 구분하기 위한 관리용 파일명
+    );
+-- 'p' || to_char(sysdate, 'yymmdd') || lpad (seq_photo.nextval, 4, '0')
+CREATE SEQUENCE SEQ_photo MAXVALUE 9999 CYCLE;
 
 commit;

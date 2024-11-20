@@ -866,7 +866,7 @@ public class DinnerDao {
 	public int insertDinnerPhoto(Connection conn, Photo p) {
 		PreparedStatement pt = null;
 		int result = -1;
-		String query = "insert into tbl_photo values ('p' || to_char(sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), ?, ?, ?)";
+		String query = "insert into tbl_photo values ('p' || to_char(sysdate, 'yymmdd') || lpad (seq_photo.nextval, 4, '0'), ?, ?, ?)";
 		
 		try {
 			pt = conn.prepareStatement(query);
