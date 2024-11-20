@@ -15,6 +15,7 @@ import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Menu;
+import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
@@ -835,5 +836,49 @@ public class DinnerDao {
 	    }
 	    
 	    return menuList;
+	}
+
+	// daniel
+	public String getDinnerNoById(Connection conn, String dinnerId) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		String dinnerNo = "";
+		String query = "select dinner_no from tbl_dinner where dinner_id = ?";
+		
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			rt = pt.executeQuery();
+			
+			if(rt.next()) {
+				dinnerNo = rt.getString("dinner_no");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return dinnerNo;
+	}
+
+	// daniel
+	public int insertDinnerPhoto(Connection conn, Photo p) {
+		PreparedStatement pt = null;
+		int result = -1;
+		String query = "insert into tbl_photo values ('p' || to_char(sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), ?, ?, ?)";
+		
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, p.getDinerNo());
+			pt.setString(2, p.getPhotoName());
+			pt.setString(3, p.getPhotoPath());
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		return result;
 	}
 }
