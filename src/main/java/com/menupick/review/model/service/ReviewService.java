@@ -43,6 +43,33 @@ public class ReviewService {
 		JDBCTemplate.close(conn);
 		return reviews;
 	}
+	
+	
+	// 식당 상세페이지(경래) 리뷰 조회 + 정렬 (식당이름 조인시킴)
+		public List<Review> getReviewsBydinnerNo(String dinnerNo, String sortOption) {
+			Connection conn = JDBCTemplate.getConnection();
+
+			// 정렬 기준 설정
+			String orderBy;
+			switch (sortOption) {
+			case "latest":
+				orderBy = "review_date DESC"; // 최신순
+				break;
+			case "oldest":
+				orderBy = "review_date ASC"; // 오래된순
+				break;
+			case "report":
+				orderBy = "report_count DESC"; // 신고순
+				break;
+			default:
+				orderBy = "review_date DESC"; // 기본값: 최신순
+			}
+
+			List<Review> reviews = dao.getReviewsBydinnerNo(conn, dinnerNo, orderBy);
+
+			JDBCTemplate.close(conn);
+			return reviews;
+		}
 
 	// admin(경래) 리뷰 선택 삭제
 	public int reviewRemoveAll(String reviewNoArr) {

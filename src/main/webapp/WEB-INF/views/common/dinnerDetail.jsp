@@ -245,6 +245,11 @@ textarea {
 							    <c:param name="memberNo" value="${member.memberNo}" />
 							</c:import>
 						</div>
+						<div>
+							<c:import url="/dinner/review">
+							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
+							</c:import>
+						</div>
 					</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
 				</div>

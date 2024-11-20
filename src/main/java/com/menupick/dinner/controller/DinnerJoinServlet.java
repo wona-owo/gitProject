@@ -32,11 +32,7 @@ public class DinnerJoinServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinnerNo"); // 히든 필드
         String dinnerName = request.getParameter("dinnerName");
-        
-        String zipp_code = request.getParameter("zipp_code"); // 우편번호
-		String userAdd1 = request.getParameter("user_add1");   // 기본 주소
-		String userAdd2 = request.getParameter("user_add2");   // 상세 주소
-		
+        String dinnerAddr = request.getParameter("dinnerAddr"); // 우편번호
         String dinnerOpen = request.getParameter("dinnerOpen");
         String dinnerClose = request.getParameter("dinnerClose");
         String dinnerPhone = request.getParameter("dinnerPhone");
@@ -48,7 +44,6 @@ public class DinnerJoinServlet extends HttpServlet {
         String dinnerPw = request.getParameter("dinnerPw");
         String dinnerConfirm = request.getParameter("dinnerConfirm"); // 히든 필드
         
-        String dinnerAddr = zipp_code + " " + userAdd1 + " " + userAdd2;
         
         Dinner dinner = new Dinner(dinnerNo, dinnerName, dinnerAddr, dinnerOpen, dinnerClose,
                 dinnerPhone, dinnerEmail, dinnerParking, dinnerMaxPerson, 
