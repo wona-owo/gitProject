@@ -140,6 +140,7 @@ public class ReviewDao {
 		return report;
 	}
 
+	// admin 회원 상세 페이지(리뷰별 신고 당한 횟수 조회)
 	public List<ReviewReport> getReviewReportsByMemberNo(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -165,5 +166,30 @@ public class ReviewDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return list;
+	}
+
+	// 리뷰 작성(경래)
+	public int insertReview(Connection conn, String dinnerNo, String memberNo, String content) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "INSERT INTO tbl_review (review_no, member_no, dinner_no, review_con, review_date) "
+                + "VALUES ('r' || to_char(sysdate, 'yymmdd') || lpad (seq_review.nextval, 4, '0'), ?, ?, ?, SYSDATE)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			pstmt.setString(2, dinnerNo);
+			pstmt.setString(3, content);
+			
+			result = pstmt.executeUpdate(); 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
 	}
 }

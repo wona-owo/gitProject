@@ -98,6 +98,11 @@ button {
             $.ajax({
                 url: "/reviewWrite/module", // 서블릿 URL
                 method: "GET",
+                data: {
+                    dinnerName: "${dinner.dinnerName}",
+                    dinnerNo: "${dinner.dinnerNo}",
+                    memberNo: "${member.memberNo}"
+                },
                 success: function (data) {
                     // 데이터를 컨테이너에 삽입
                     $("#reviewModalContainer").html(data);

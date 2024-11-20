@@ -116,4 +116,20 @@ public class ReviewService {
 		JDBCTemplate.close(conn);
 		return reports;
 	}
+
+	//리뷰 작성(경래)
+	public boolean insertReview(String dinnerNo, String memberNo, String content) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.insertReview(conn, dinnerNo, memberNo, content);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result > 0;
+	}
 }
