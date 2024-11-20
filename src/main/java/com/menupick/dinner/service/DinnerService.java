@@ -12,6 +12,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Menu;
 import com.menupick.member.model.vo.Member;
 
 public class DinnerService {
@@ -250,5 +251,12 @@ public class DinnerService {
 	    Dinner dinner = dao.getDinnerByNo(conn, dinnerNo);
 	    JDBCTemplate.close(conn);
 	    return dinner;
+	}
+	
+	public List<Menu> getMenuListByDinnerNo(String dinnerNo, String foodNo) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    List<Menu> menuList = dao.getMenuByDinnerNo(conn, dinnerNo, foodNo);  
+	    JDBCTemplate.close(conn); 
+	    return menuList;
 	}
 }
