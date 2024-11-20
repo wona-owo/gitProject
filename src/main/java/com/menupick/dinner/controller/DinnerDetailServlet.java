@@ -44,7 +44,7 @@ public class DinnerDetailServlet extends HttpServlet {
 		
 		
 		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
-		
+
 	}
 
 	/**

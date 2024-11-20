@@ -35,7 +35,7 @@ public class MemberReservationFrm extends HttpServlet {
 		String dinnerNo = request.getParameter("dinnerNo");
 		
 		DinnerService service = new DinnerService();
-		Dinner dinner = service.dinnerDetail(dinnerNo);
+		Dinner dinner = service.getDinnerNo(dinnerNo);
 		request.setAttribute("dinner", dinner);
 		
 		

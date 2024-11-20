@@ -497,7 +497,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 
-		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date (?, 'yyyy/mm/dd'), ?, ?)";
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, 'm2411140021', to_date (?, 'yyyy/mm/dd'), ?, ?)";
 
 		try {
 

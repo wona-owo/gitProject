@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,15 +104,16 @@ button[type="submit"]:hover {
 </head>
 <body>
 	<form action="/member/reservation" method="get">
-		<input type="hidden" id="dinnerNo"  name="dinnerNo" value="${dinner.dinnerNo}">
-		<input type="hidden" id="memberNo" name="memberNo" value="${loginMember.memberNo}">
+		<input id="dinnerNo" type="hidden" name="dinnerNo" value="${dinner.dinnerNo}">
+		<input type="hidden" id="memberNo" name="memberNo"
+				value="${loginMember.memberNo}">
 		
 		<div id="resDetail" style="margin-top: 20px;"></div>
 		<div class=resBtn id="resOption">
 			<label for="resDate">날짜 선택:</label> <input type="date" id="resDate"
 				name="bookDate" required>
 			<button type="button" class="btn-primary" id="mBookCnt">-</button>
-			<label id="cnt" for="bookCnt">인원수 : 0</label> <input type="hidden"
+			<label id="cnt" for="bookCnt">0</label> <input type="hidden"
 				name="bookCnt" id="cntInput" value="0">
 			<button type="button" class="btn-primary" id="pBookCnt">+</button>
 			<ul id="resTime" class="time-list"></ul>
@@ -122,21 +122,15 @@ button[type="submit"]:hover {
 		</div>
 	</form>
 	<script>
-		const maxCnt = '${dinner.dinnerMaxPerson}';
-		console.log(maxCnt);
-		const minCnt = 0;
 		document.getElementById("mBookCnt").addEventListener("click",
 				function() {
 					const cntInput = document.getElementById("cntInput");
 					const cnt = document.getElementById("cnt");
-					let count = parseInt(cntInput.value);
-					if(cntInput > minCnt){
-					count--; // 인원수 감소
+					let count = parseInt(cntInput.value) || 0;
+					if (count > 0)
+						count--; // 인원수 감소
 					cntInput.value = count;
-					cnt.innerText = "인원수 : " + count;
-					}else{
-						msg("알림", "인원수는 ${minCnt} 보다 적을수없습니다.","warning");
-					}
+					cnt.innerText = count;
 				});
 
 		document.getElementById("pBookCnt").addEventListener("click",
@@ -146,8 +140,7 @@ button[type="submit"]:hover {
 					let count = parseInt(cntInput.value) || 0;
 					count++; // 인원수 증가
 					cntInput.value = count;
-					cnt.innerText = "인원수 : " + count;
-					
+					cnt.innerText = count;
 				});
 			
 		const openTime = parseInt('${dinner.dinnerOpen}', 10); // 예: '0900' -> 900
@@ -195,7 +188,6 @@ button[type="submit"]:hover {
 			ulEl.appendChild(liEl);
 		   }
 		
-
 		
 
 		/*
