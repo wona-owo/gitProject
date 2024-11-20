@@ -34,8 +34,7 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		
+
 		// daniel - 사진을 입력 받는것
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
 		String savePath = rootPath + "resources/photos/";
@@ -48,6 +47,7 @@ public class DinnerUpdateServlet extends HttpServlet {
 		}
 
 		MultipartRequest mRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new MyRenamePolicy());
+
 		Enumeration<String> files = mRequest.getFileNames();
 
 		ArrayList<Photo> photoList = new ArrayList<>();
@@ -64,7 +64,7 @@ public class DinnerUpdateServlet extends HttpServlet {
 				photoList.add(p);
 			}
 		}
-		
+
 		// 입력 값 추출
 		String dinnerNo = mRequest.getParameter("dinnerNo");
 		String dinnerName = mRequest.getParameter("dinnerName");
@@ -117,10 +117,32 @@ public class DinnerUpdateServlet extends HttpServlet {
 		updDinner.setBusiNo(busiNo);
 		updDinner.setDinnerMaxPerson(dinnerMaxPerson);
 		updDinner.setDinnerConfirm(dinnerConfirm);
-		updDinner.setPhotoList(photoList);
+
+		DinnerService service = new DinnerService();
+
+		if (photoList != null) {
+			updDinner.setPhotoList(photoList);
+
+			String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
+			String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
+
+			if (prevPhotoPath != null) {
+				absolutePath += prevPhotoPath;
+
+				File file = new File(absolutePath);
+				if (file.exists()) {
+					if (file.delete()) {
+						System.out.println("File deleted successfully: " + absolutePath);
+					} else {
+						System.out.println("Failed to delete file: " + absolutePath);
+					}
+				} else {
+					System.out.println("File does not exist: " + absolutePath);
+				}
+			}
+		}
 
 		// 서비스 호출
-		DinnerService service = new DinnerService();
 		int result = service.updateDinner(updDinner);
 
 		if (result > 0) {
