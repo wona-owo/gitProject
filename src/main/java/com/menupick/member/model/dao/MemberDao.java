@@ -496,17 +496,18 @@ public class MemberDao {
 	public int bookingMember(Connection conn, Book book) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, 'm2411140021', to_date (?, 'yyyy/mm/dd'), ?, ?)";
-		
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date(?, 'yyyy/mm/dd'), ?, ?)";
+		System.out.println("=============");
+		System.out.println("MemberDao bookingMember : " + book);
 		try {
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, "dinner_no");
-			//pstmt.setString(2, "member_no");
-			pstmt.setString(2, "book_date");
-			pstmt.setString(3, "book_time");
-			pstmt.setString(4, "book_cnt");
-			pstmt.executeUpdate();
+			pstmt.setString(1, book.getDinnerNo());
+			pstmt.setString(2, book.getMemberNo());
+			pstmt.setString(3, book.getBookDate());
+			pstmt.setString(4, book.getBookTime());
+			pstmt.setInt(5, book.getBookCnt());
+			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

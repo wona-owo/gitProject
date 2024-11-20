@@ -249,7 +249,7 @@ public class DinnerDao {
 				d.setFoodName(rset.getString("FOOD_NAME"));
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
-				System.out.println(dinnerNo);
+				
 			}
 
 		} catch (SQLException e) {
