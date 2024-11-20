@@ -186,9 +186,30 @@
 
 		// 수정 아이콘 클릭 이벤트 설정 - 리뷰 수정 페이지로 이동
 		$(".modi-icon").click(function(event) {
-			event.stopPropagation(); // 카드의 클릭 이벤트 전파 방지
+			event.stopPropagation();
+
 			const reviewNo = $(this).attr("data-review-no");
-			location.href = `reviewUpdate.jsp?no=${reviewNo}`;
+
+			// 유효성 검사
+			if (!reviewNo) {
+				alert("리뷰 번호가 유효하지 않습니다.");
+				return;
+			}
+
+			// 동적 폼 생성
+			const form = document.createElement("form");
+			form.method = "POST";
+			form.action = "/member/reviewUpdate"; // 서블릿 경로
+
+			const input = document.createElement("input");
+			input.type = "hidden";
+			input.name = "reviewNo";
+			input.value = reviewNo;
+
+			form.appendChild(input);
+			document.body.appendChild(form);
+			form.submit();
+			document.body.removeChild(form);
 		});
 	</script>
 </body>
