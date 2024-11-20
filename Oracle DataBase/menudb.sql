@@ -154,8 +154,6 @@ insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_bo
 insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200002', to_date ('24/11/15', 'yy/mm/dd'), '1900', 4);
 insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200003', to_date ('24/12/25', 'yy/mm/dd'), '1800', 4);
 
-select * from tbl_book;
-
 create table
   tbl_recommend (
     review_no varchar2 (11) references tbl_review (review_no) on delete cascade,
@@ -163,7 +161,5 @@ create table
     report char(1) default 'n' not null check (report in ('n', 'y')),
     primary key (review_no, member_no)
   );
-
-select * from tbl_dinner d left join tbl_like l on (d.dinner_no = l.dinner_no) where l.member_no = 'm2411200002';
 
 commit;
