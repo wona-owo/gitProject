@@ -1,3 +1,11 @@
+/**
+ * AJAX with : dinnerRservation.jsp
+ * 
+ * 취소 버튼을 누른 예약건에서 bookNo 를 가져와서 DB 에서 삭제
+ * 그리고 새로고침
+ * 
+ * @author 김찬희
+ */
 package com.menupick.dinner.controller;
 
 import java.io.IOException;

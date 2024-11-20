@@ -77,7 +77,7 @@
 							<th style="width: 10%">이메일</th>
 							<th style="width: 15%">전화번호</th>
 							<th style="width: 15%">주소</th>
-							<th style="width: 10%">등급변경</th>
+							<th style="width: 10%">등급</th>
 							<th style="width: 10%">강제탈퇴</th>
 						</tr>
 
@@ -96,15 +96,7 @@
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberEmail}</a></td>
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberPhone}</a></td>
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberAddr}</a></td>
-								<td>
-									<!-- 등급변경 -->
-									<div class="select">
-										<select onchange="memberLevelChange(this)">
-											<option value="2" ${m.memberLevel == 2 ? 'selected' : ''}>회원</option>
-											<option value="3" ${m.memberLevel == 3 ? 'selected' : ''}>가맹점</option>
-										</select>
-									</div>
-								</td>
+								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">회원</a></td>
 								<td>
 									<!-- 탈퇴 -->
 									<button class="btn-primary sm"
@@ -123,8 +115,6 @@
 
 					<!-- 선택 등급 변경 및 회원 탈퇴 버튼 -->
 					<div class="btn-container">
-						<button class="btn-selectlv lg" onclick="chgLevel(this)">선택
-							등급 변경</button>
 						<button class="btn-selectrm lg" onclick="removeAllMembers()">선택
 							회원 탈퇴</button>
 					</div>

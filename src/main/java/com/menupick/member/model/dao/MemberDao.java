@@ -113,10 +113,11 @@ public class MemberDao {
 	public int insertMember(Connection conn, Member member) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		
-		String query ="insert into tbl_member (member_no, member_id, member_pw, member_name, member_nick, member_phone, member_addr, member_gender, member_email, enroll_date, adult_confirm, member_level) " +
-	               "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'n', 2)";
-		//String query = "insert into tbl_member values (to_char(seq_member.nextval), ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'N', 2)";
+
+		String query = "insert into tbl_member (member_no, member_id, member_pw, member_name, member_nick, member_phone, member_addr, member_gender, member_email, enroll_date, adult_confirm, member_level) "
+				+ "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'n', 2)";
+		// String query = "insert into tbl_member values (to_char(seq_member.nextval),
+		// ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'N', 2)";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -209,7 +210,7 @@ public class MemberDao {
 		// Oracle에서의 페이징 쿼리
 		String query = "SELECT * FROM (" + "    SELECT a.*, ROWNUM AS rnum FROM ("
 				+ "        SELECT * FROM tbl_member ORDER BY member_no" + "    ) a " + "    WHERE ROWNUM <= ?" + ") "
-				+ "WHERE rnum > ? and member_level > 1";
+				+ "WHERE rnum > ? and member_level = 2";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -479,7 +480,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String query = "delete from tbl_member where member_no = ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
@@ -492,24 +493,29 @@ public class MemberDao {
 		return result;
 	}
 
-	public int bookingMember(Connection conn, String dinnerNo, String memberNo) {
+	public int bookingMember(Connection conn, Book book) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date(?, 'yy/mm/dd'), ?, ?)";
-		
+
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, 'm2411140021', to_date (?, 'yyyy/mm/dd'), ?, ?)";
+
 		try {
+
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, "dinner_no");
-			pstmt.setString(2, "member_no");
-			pstmt.setString(3, "book_date");
-			pstmt.setString(4, "book_time");
-			pstmt.setString(5, "book_cnt");
+			pstmt.setString(1, book.getDinnerNo());
+			pstmt.setString(2, book.getMemberNo());
+			pstmt.setString(3, book.getBookDate());
+			pstmt.setString(4, book.getBookTime());
+			pstmt.setInt(5, book.getBookCnt());
+			result = pstmt.executeUpdate();
+			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return result;
 	}
 
@@ -527,7 +533,7 @@ public class MemberDao {
 			pstmt.setString(6, updMember.getMemberAddr());
 			pstmt.setString(7, updMember.getMemberEmail());
 			pstmt.setString(8, updMember.getMemberNo());
-			
+
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -540,62 +546,187 @@ public class MemberDao {
 	}
 
 	public boolean checkPassword(Connection conn, String memberNo, String memberPw) {
-        boolean isMatch = false;
-        String sql = "select member_pw from tbl_member where member_no = ?";
-        
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, memberNo);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                String dbPassword = rs.getString("member_pw");
-                isMatch = dbPassword.equals(memberPw);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return isMatch;
-    }
-	
+		boolean isMatch = false;
+		String sql = "select member_pw from tbl_member where member_no = ?";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, memberNo);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				String dbPassword = rs.getString("member_pw");
+				isMatch = dbPassword.equals(memberPw);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isMatch;
+	}
+
 	public String searchMemberId(Connection conn, String memberName, String memberPhone) throws SQLException {
-	/* TODO 해당 부분 확인 부탁!
-        String sql = "SELECT member_Id FROM tbl_member WHERE member_name = ? AND member_phone = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, memberName);
-            pstmt.setString(2, memberPhone);
+		String sql = "SELECT member_Id FROM tbl_member WHERE member_name = ? AND member_phone = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, memberName);
+			pstmt.setString(2, memberPhone);
 
-			}	
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("member_id"); // 아이디 반환
-                }
-            }
-        */
-        return null; // 일치하는 결과가 없을 경우
-		
-        }
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("member_id"); // 아이디 반환
+				}
+			}
+		}
+		return null; // 일치하는 결과가 없을 경우
+	}
 
-	//식당 검색
+	// 식당 검색
 	public ArrayList<Dinner> searchDinner(Connection conn, String srchQuery) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Dinner> srchList = new ArrayList<Dinner>();
-		
+
 		String sql = "select d.dinner_name, d.dinner_addr, f.food_nation, f.food_cat from (tbl_dinner d join tbl_menu m on (d.dinner_no = m.dinner_no)) join tbl_food f on (m.food_no = f.food_no) where d.dinner_name Like ?";
-		
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, "%"+ srchQuery + "%");
-			
+			pstmt.setString(1, "%" + srchQuery + "%");
+
 			rset = pstmt.executeQuery();
-			
-			while(rset.next()) {
+
+			while (rset.next()) {
 				Dinner d = new Dinner();
 				d.setDinnerName(rset.getString("dinner_name"));
 				d.setDinnerAddr(rset.getString("dinner_addr"));
 				d.setFoodNation(rset.getString("food_nation"));
 				d.setFoodCat(rset.getString("food_cat"));
 				srchList.add(d);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return srchList;
+	}
+
+	public String getEmailByMemberId(String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		String sql = "SELECT member_email FROM tbl_member WHERE member_id = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, memberId);
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("member_email");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Member searchMemberPw(String memberId, String memberPhone) {
+		Connection conn = JDBCTemplate.getConnection();
+		Member member = null;
+		String sql = "SELECT * FROM tbl_member WHERE member_id = ? AND member_phone = ?";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberPhone);
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					member = new Member();
+					member.setMemberId(rs.getString("member_id"));
+					member.setMemberPhone(rs.getString("member_phone"));
+					member.setMemberEmail(rs.getString("member_email"));
+					member.setMemberPw(rs.getString("member_pw"));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
+		return member;
+	}
+
+	// 비밀번호 업데이트
+	public boolean updateMemberPassword(String memberId, String tempPassword) {
+		Connection conn = JDBCTemplate.getConnection();
+		String sql = "UPDATE tbl_member SET member_pw = ? WHERE member_id = ?";
+		boolean isUpdated = false;
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, tempPassword);
+			pstmt.setString(2, memberId);
+			int rowsAffected = pstmt.executeUpdate();
+
+			if (rowsAffected > 0) {
+				isUpdated = true;
+				JDBCTemplate.commit(conn); // 커밋
+			} else {
+				JDBCTemplate.rollback(conn); // 롤백
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
+		return isUpdated;
+	}
+
+	// 좋아요 추가 -> 성공시 true 반환:
+	public boolean memberAddLike(Connection conn, String dinnerNo, String memberNo) {
+		PreparedStatement pstmt = null;
+		String query = "insert into tbl_like values (?, ?)";
+		boolean addLike = false;
+		int result = 0;
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo);
+			pstmt.setString(2, memberNo);
+
+			result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				addLike = true;
+			}
+			System.out.println("result: " + result);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return addLike;
+	}
+	
+	
+	//count 값이 1 이상일 경우에 true 반환(즐겨찾기 일치 식당이 있는지 서치)
+	public boolean memberFindLike(Connection conn, String dinnerNo, String memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		boolean findLike = false;
+		
+		
+		String query = "select count(*) from tbl_like where member_no =? and dinner_no=?";
+	
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			pstmt.setString(2, dinnerNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				int count  = rset.getInt(1); //첫번째 컬럼값 가져오기
+				findLike = count > 0;
 			}
 			
 		} catch (SQLException e) {
@@ -605,10 +736,64 @@ public class MemberDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-		
-		
-		return srchList;
+				
+		return findLike;
 	}
-    }
 
+	public String getEmailByMemberId(Connection conn, String memberId) {
+	    String sql = "SELECT member_email FROM tbl_member WHERE member_id = ?";
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, memberId);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getString("member_email");
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
 
+	public Member searchMemberPw(Connection conn, String memberId, String memberPhone) {
+	    Member member = null;
+	    String sql = "SELECT * FROM tbl_member WHERE member_id = ? AND member_phone = ?";
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, memberId);
+	        pstmt.setString(2, memberPhone);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                member = new Member();
+	                member.setMemberId(rs.getString("member_id"));
+	                member.setMemberPhone(rs.getString("member_phone"));
+	                member.setMemberEmail(rs.getString("member_email"));
+	                member.setMemberPw(rs.getString("member_pw"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return member;
+	}
+
+	public boolean updateMemberPassword(Connection conn, String memberId, String tempPassword) {
+	    String sql = "UPDATE tbl_member SET member_pw = ? WHERE member_id = ?";
+	    boolean isUpdated = false;
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, tempPassword);
+	        pstmt.setString(2, memberId);
+	        int rowsAffected = pstmt.executeUpdate();
+	        if (rowsAffected > 0) {
+	            isUpdated = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return isUpdated;
+	}
+
+}
+	
+
+	
+    

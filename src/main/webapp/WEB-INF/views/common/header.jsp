@@ -28,7 +28,10 @@
 						<c:when test="${sessionScope.memberLevel == 1}">
 							<li><a href="/admin/member">회원 관리페이지</a></li>
 							<li><a href="/admin/dinner">매장 관리페이지</a></li>
-							<li><a href="/dinnerJoinForm">매장 등록(테스트)</a></li>		<!-- 매장등록 테스트할려고 잠깐 만들어놓음 -경래- -->
+							<%-- 매장등록 테스트할려고 잠깐 만들어놓음 -경래- --%>
+							<li><a href="/dinnerJoinForm">매장 등록(테스트)</a></li>
+							<%-- 리뷰작성 테스트할려고 잠깐 만들어놓음 -경래- --%>
+							<li><a href="/review/WriteFrm">리뷰 작성(테스트)</a></li>
 
 						</c:when>
 						<c:when test="${sessionScope.memberLevel == 2}">
@@ -44,7 +47,7 @@
 				<c:when test="${sessionScope.loginType eq 'dinner'}">
 					<li><a href="/member/dinnerCalendarFrm">${sessionScope.loginMember.dinnerName}님
 							(식당)</a></li>
-					<li><a href="/dinner/settings">식당 설정</a></li>
+					<li><a href="/dinner/setting">식당 설정</a></li>
 					<li><a href="/member/logout">로그아웃</a></li>
 				</c:when>
 			</c:choose>
