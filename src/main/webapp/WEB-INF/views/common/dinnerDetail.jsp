@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+    // 세션에서 로그인 상태 확인
+    Boolean isLogIn = (session.getAttribute("loginMember") != null);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +60,7 @@
 				<section class="restaurant-detail-header">
 			<form action="/dinner/settingsfrm" method="get">
 			<input type="hidden" name="${dinner.dinnerNo}">
-			<input type="hidden" name="memberNo">
+			<input type="hidden" name="${loginMember.memberNo}">
 					<div class="dinner-main-img">
 						<img src="/resources/images/${dinner.dinnerNo}.jpg" id="main-img"
 							alt="Restaurant Image" />
@@ -102,7 +106,9 @@
 						onclick="showContent('information-content')">정보</label> <input
 						id="menu" type="radio" name="tab-item" /> <label class="tab-item"
 						for="menu" onclick="showContent('menu-content')">메뉴</label> <input
-						id="review" type="radio" name="tab-item" /> <label
+						id="review" type="radio" name="tab-item" /> 
+						
+						<label
 						class="tab-item" for="review"
 						onclick="showContent('review-content')">리뷰</label> <input
 						id="picture" type="radio" name="tab-item" /> <label
@@ -131,6 +137,7 @@
 	</div>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script>
+	
       function showContent(contentId) {
         // 모든 탭 콘텐츠 숨기기
         const contents = document.querySelectorAll(".tab-content");
@@ -149,9 +156,17 @@
     	  parking.innerHTML = "주차자리없음"
       }
       
+      let isLogIn = <%= isLogIn %>;
       function resBtn(){
-    	  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
+    	  if(!isLogIn){
+    		 event.preventDefault();
+    		 msg("알림", "로그인 후 이용", "warning");
+    	  }else{
+    	  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}&memberNo=${loginMember.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');
+    	  }
       }
+      
+      
 
     </script>
 
