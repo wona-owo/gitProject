@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class MemberDinnerServlet
  */
-@WebServlet("/member/dinnerCalendarFrm")
+@WebServlet("/dinner/dinnerCalendarFrm")
 public class DinnerCalendarFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
