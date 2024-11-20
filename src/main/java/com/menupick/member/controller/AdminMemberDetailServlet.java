@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.menupick.member.model.service.MemberService;
 import com.menupick.member.model.vo.Member;
 import com.menupick.review.model.service.ReviewService;
+import com.menupick.review.model.vo.MemberReport;
 import com.menupick.review.model.vo.Review;
+import com.menupick.review.model.vo.ReviewReport;
 
 /**
  * Servlet implementation class AdminMemberDetailServlet
@@ -53,11 +55,20 @@ public class AdminMemberDetailServlet extends HttpServlet {
 		ReviewService rvservice = new ReviewService();
 		List<Review> reviews = rvservice.getReviewsByMemberNo(memberNo, sortOption);
 
+		// 회원별 신고 횟수 가져오기
+        MemberReport memberReport = rvservice.getMemberReport(memberNo);
+
+        // 리뷰별 신고 횟수 가져오기
+        List<ReviewReport> reviewReports = rvservice.getReviewReportsByMemberNo(memberNo);
+        
+        
 		// 4. 결과 처리
 		request.setAttribute("member", member);
 		request.setAttribute("reviews", reviews);
+		request.setAttribute("memberReport", memberReport);     // 회원 신고 횟수
+        request.setAttribute("reviewReports", reviewReports);   // 리뷰별 신고 횟수
 		request.setAttribute("sortOption", sortOption); // 현재 정렬 옵션 전달
-		request.getRequestDispatcher("/WEB-INF/views/admin/reviewReportTest.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/admin/adminMemberDetail.jsp").forward(request, response);
 
 	}
 
