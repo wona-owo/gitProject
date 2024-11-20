@@ -22,7 +22,6 @@ AJAX with ApiEmailSend.java
 <style>
 .wrap {
 	margin: 0 auto;
-	padding: 20px;
 	background-color: #ffffff;
 	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
@@ -157,12 +156,16 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookMonth}월${bookDay}일</div>
-				<input type="hidden" value="${bookYear}" name="bookYear"
-					id="bookYear"> <input type="hidden" value="${bookMonth}"
-					name="bookMonth" id="bookMonth"> <input type="hidden"
-					value="${bookDay}" name="bookDay" id="bookDay"> <input
-					type="hidden" value="${dinnerNo}" id="dinnerNo">
+
+				<div class="page-title">
+					${bookMonth}월${bookDay}일
+				</div>
+
+				<input type="hidden" value="${bookYear}" name="bookYear" id="bookYear"> 
+				<input type="hidden" value="${bookMonth}" name="bookMonth" id="bookMonth"> 
+				<input type="hidden" value="${bookDay}" name="bookDay" id="bookDay"> 
+				<input type="hidden" value="${dinnerNo}" id="dinnerNo">
+
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
 					<span>취소</span>
@@ -187,23 +190,24 @@ ul {
 							<li>${b.memberName}</li>
 							<li>${b.memberPhone}</li>
 							<li>${b.bookCnt}</li>
-							<li class="menu-item"><input type="button"
-								class="cancel-btn" value="취소">
+							<li class="menu-item"><input type="button" class="cancel-btn" value="취소">
+
 								<ul class="dinner-sub-menu" id="sub-menu-${b.memberNo}">
 									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
-									<li><select id="select-input-${b.memberNo}"
-										class="cancel-reason-select">
-											<option value="" class="select-placeholder" selected disabled>취소
-												사유 선택</option>
+									<li>
+										<select id="select-input-${b.memberNo}" class="cancel-reason-select">
+											<option value="" class="select-placeholder" selected disabled>취소 사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
-									</select></li>
+										</select>
+									</li>
 
 									<li>
-										<button type="submit"
-											onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
+										<button type="submit" onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
 									</li>
-								</ul></li>
+								</ul>
+
+							</li>
 						</ul>
 					</div>
 				</c:forEach>
@@ -214,37 +218,33 @@ ul {
 
 	<script>
 		$(function() {
-			$('.menu-item .cancel-btn').click(
-					function(event) {
-						event.stopPropagation();
+			$('.menu-item .cancel-btn').click( function(event) {
+				event.stopPropagation();
 
-						let subMenu = $(this).siblings('.dinner-sub-menu');
+				let subMenu = $(this).siblings('.dinner-sub-menu');
 
-						// Hide other sub-menus and reset their parent margins
-						$('.dinner-sub-menu').not(subMenu).each(
-								function() {
-									$(this).hide();
-									$(this).closest('.group-menu').css(
-											'margin-bottom', '0px');
-								});
-
-						subMenu.toggle();
-
-						// Adjust the margin of the parent .group-menu
-						let groupMenu = $(this).closest('.group-menu');
-						groupMenu.css('margin-bottom',
-								subMenu.is(':visible') ? '100px' : '0px');
-					});
-
-		// Close sub-menus and reset margins when clicking elsewhere
-		$(document).click(
-				function(event) {
-					if (!$(event.target).closest(
-							'.dinner-sub-menu, .menu-item .cancel-btn').length) {
-						$('.dinner-sub-menu').hide();
-						$('.group-menu').css('margin-bottom', '0px');
-					}
+				// Hide other sub-menus and reset their parent margins
+				$('.dinner-sub-menu').not(subMenu).each( function() {
+					$(this).hide();
+					$(this).closest('.group-menu').css( 'margin-bottom', '0px');
 				});
+
+				subMenu.toggle();
+
+				// Adjust the margin of the parent .group-menu
+				let groupMenu = $(this).closest('.group-menu');
+				groupMenu.css('margin-bottom', 
+						subMenu.is(':visible') ? '100px' : '0px');
+			});
+
+			// Close sub-menus and reset margins when clicking elsewhere
+			$(document).click( function(event) {
+				if (!$(event.target).closest('.dinner-sub-menu, .menu-item .cancel-btn').length) {
+					$('.dinner-sub-menu').hide();
+					$('.group-menu').css('margin-bottom', '0px');
+				}
+			});
+
 		});
 
 		function refresh() {
@@ -365,7 +365,6 @@ ul {
 										refresh();
 									});
 								}
-
 							},
 							error : function() {
 								console.log("foobar confirming cancel");
