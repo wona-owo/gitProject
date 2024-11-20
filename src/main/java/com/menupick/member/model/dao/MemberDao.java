@@ -860,6 +860,29 @@ public class MemberDao {
 
 		return result;
 	}
+
+	public int memberUpdateReview(Connection conn, String reviewNo, String reviewCon) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = "UPDATE tbl_review SET review_con = ? WHERE review_no = ?";
+				
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, reviewCon);
+			pstmt.setString(2, reviewNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+				
+		return result;
+	}
 }
 	
 

@@ -381,6 +381,21 @@ public class MemberService {
 
 		return result;
 	}
+	
+	//리뷰 업데이트
+	public int memberUpdateReview(String reviewNo, String reviewCon) {
+		Connection conn = JDBCTemplate.getConnection();	
+		int result = dao.memberUpdateReview(conn, reviewNo, reviewCon);
+		
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+		
+	}
     }
 
  
