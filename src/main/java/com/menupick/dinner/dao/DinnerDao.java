@@ -653,49 +653,59 @@ public class DinnerDao {
 	}
 
 	public int updateDinner(Connection conn, Dinner updDinner) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String query = "UPDATE TBL_DINNER " + "SET dinner_name = ?, dinner_addr = ?, dinner_open = ?, dinner_id = ?"
-				+ "dinner_close = ?, dinner_phone = ?, dinner_email = ?, dinner_parking = ?, "
-				+ "busi_no = ?, dinner_max_person = ?, dinner_confirm = ? " + "WHERE LOWER(dinner_no) = LOWER(?)";
+	    PreparedStatement pstmt = null;
+	    int result = 0;
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, updDinner.getDinnerName());
-			pstmt.setString(2, updDinner.getDinnerAddr());
-			pstmt.setString(3, updDinner.getDinnerOpen());
-			pstmt.setString(4, updDinner.getDinnerId());
-			pstmt.setString(5, updDinner.getDinnerClose());
-			pstmt.setString(6, updDinner.getDinnerPhone());
-			pstmt.setString(7, updDinner.getDinnerEmail());
+	    // SQL 구문 정의
+	    String query = "UPDATE TBL_DINNER " +
+	                   "SET dinner_name = ?, dinner_addr = ?, dinner_open = ?, dinner_id = ?, " +
+	                   "dinner_close = ?, dinner_phone = ?, dinner_email = ?, dinner_parking = ?, " +
+	                   "busi_no = ?, dinner_max_person = ?, dinner_confirm = ? " +
+	                   "WHERE LOWER(dinner_no) = LOWER(?)";
 
-			// 유효성 검사 추가
-			if (!"y".equalsIgnoreCase(updDinner.getDinnerParking())
-					&& !"n".equalsIgnoreCase(updDinner.getDinnerParking())) {
-				throw new IllegalArgumentException("Invalid value for dinner_parking: " + updDinner.getDinnerParking());
-			}
-			pstmt.setString(7, updDinner.getDinnerParking().toLowerCase());
+	    try {
+	        // 1. DINNER_ID 값 검증
+	        if (updDinner.getDinnerId() == null || updDinner.getDinnerId().trim().isEmpty()) {
+	            throw new IllegalArgumentException("DINNER_ID cannot be null or empty.");
+	        }
 
-			pstmt.setString(8, updDinner.getBusiNo());
-			pstmt.setString(9, updDinner.getDinnerMaxPerson());
+	        pstmt = conn.prepareStatement(query);
 
-			if (!"y".equalsIgnoreCase(updDinner.getDinnerConfirm())
-					&& !"n".equalsIgnoreCase(updDinner.getDinnerConfirm())) {
-				throw new IllegalArgumentException("Invalid value for dinner_confirm: " + updDinner.getDinnerConfirm());
-			}
-			pstmt.setString(10, updDinner.getDinnerConfirm().toLowerCase());
+	        // 2. 매개변수 설정
+	        pstmt.setString(1, updDinner.getDinnerName());
+	        pstmt.setString(2, updDinner.getDinnerAddr());
+	        pstmt.setString(3, updDinner.getDinnerOpen());
+	        pstmt.setString(4, updDinner.getDinnerId());  // NOT NULL 필드
+	        pstmt.setString(5, updDinner.getDinnerClose());
+	        pstmt.setString(6, updDinner.getDinnerPhone());
+	        pstmt.setString(7, updDinner.getDinnerEmail());
 
-			pstmt.setString(11, updDinner.getDinnerNo());
+	        if (!"y".equalsIgnoreCase(updDinner.getDinnerParking()) 
+	                && !"n".equalsIgnoreCase(updDinner.getDinnerParking())) {
+	            throw new IllegalArgumentException("Invalid value for dinner_parking: " + updDinner.getDinnerParking());
+	        }
+	        pstmt.setString(8, updDinner.getDinnerParking().toLowerCase());
 
-			result = pstmt.executeUpdate();
+	        pstmt.setString(9, updDinner.getBusiNo());
+	        pstmt.setInt(10, Integer.parseInt(updDinner.getDinnerMaxPerson()));
+	        pstmt.setString(11, updDinner.getDinnerConfirm().toLowerCase());
+	        pstmt.setString(12, updDinner.getDinnerNo());
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}
+	        // 3. SQL 실행
+	        result = pstmt.executeUpdate();
 
-		return result;
+	    } catch (SQLException e) {
+	        System.err.println("SQL Error: " + e.getMessage());
+	        System.err.println("SQL Query: " + query);
+	        e.printStackTrace();
+	    } catch (IllegalArgumentException e) {
+	        System.err.println("Validation Error: " + e.getMessage());
+	        throw e;  // 필요 시 재전달
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return result;
 	}
 
 	// daniel
@@ -801,7 +811,10 @@ public class DinnerDao {
 	}
 	public List<Menu> getMenuByDinnerNo(Connection conn, String dinnerNo, String foodNo) {
 	    List<Menu> menuList = new ArrayList<>();
-	    String sql = "SELECT dinner_no, food_no, price FROM tbl_menu WHERE dinner_no = ? AND food_no = ?";
+	    String sql = "SELECT m.dinner_no, m.food_no, m.price, f.food_name " +
+                "FROM tbl_menu m " +
+                "JOIN tbl_food f ON m.food_no = f.food_no " +
+                "WHERE m.dinner_no = ? AND m.food_no = ?";
 	    
 	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 	    	 pstmt.setString(1, dinnerNo); 
@@ -813,6 +826,7 @@ public class DinnerDao {
 	                menu.setDinnerNo(rs.getString("dinner_no"));
 	                menu.setFoodNo(rs.getString("food_no"));
 	                menu.setPrice(rs.getInt("price"));
+	                menu.setFoodName(rs.getString("food_name"));
 	                menuList.add(menu);
 	            }
 	        }
