@@ -37,8 +37,6 @@ public class MemberLikeListFindServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		Member member = (Member) session.getAttribute("loginMember");
 		String memberNo = member.getMemberNo();
-		System.out.println(memberNo);
-		System.out.println(dinnerNo);
 		
 		//비즈니스 로직 -> DB에서 찾기 (성공 여부에 따라 참/거짓 반환)
 		MemberService service = new MemberService();
