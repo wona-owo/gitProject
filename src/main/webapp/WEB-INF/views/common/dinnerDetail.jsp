@@ -43,6 +43,124 @@
 .btn-primary {
 	margin: 10px;
 }
+
+/*------------리뷰 작성 모듈 여기부터------------*/
+/* 기본 설정 */
+* {
+	box-sizing: border-box; /* 모든 요소에 border-box 적용 */
+}
+
+/* 모달 배경 스타일 */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* 모달 컨텐츠 스타일 */
+.modal-content {
+	width: 90%;
+	max-width: 600px;
+	background-color: #fff;
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	position: relative;
+	text-align: center;
+}
+
+/* 닫기 버튼 스타일 */
+.close-btn {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	font-size: 20px;
+	cursor: pointer;
+	color: #f40;
+	font-weight: bold;
+	transition: color 0.3s;
+}
+
+.close-btn:hover {
+	color: #c30;
+}
+
+/* 버튼 공통 스타일 */
+button {
+	padding: 12px 20px;
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+/* 리뷰 작성 버튼 스타일 */
+#openModalBtn {
+	background-color: #f40;
+	color: #fff;
+	margin: 20px auto;
+	display: block;
+}
+
+#openModalBtn:hover {
+	background-color: #c30;
+}
+
+/* 제출 버튼 스타일 */
+.submit-btn {
+	background-color: #f40;
+	color: #fff;
+	width: 100%;
+}
+
+.submit-btn:hover {
+	background-color: #c30;
+}
+
+/* 입력 폼 스타일 */
+.form-group {
+	margin-bottom: 20px;
+	text-align: left;
+}
+
+.form-group label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: 5px;
+	color: #333;
+}
+
+.form-group input[type="text"], .form-group textarea {
+	width: 100%;
+	padding: 15px;
+	font-size: 16px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	box-sizing: border-box;
+	transition: border-color 0.3s;
+}
+
+textarea {
+	height: 200px;
+	resize: none;
+}
+
+#charCount {
+	display: block;
+	margin-top: 5px;
+	font-size: 14px;
+	color: #555;
+}
+/*------------리뷰 작성 모듈 여기까지---------------*/
 </style>
 
 </head>
@@ -113,25 +231,13 @@
 
 				<%-- 탭 콘텐츠 --%>
 				<div class="restaurant-detail-content">
-					<div class="tab-content active" id="information-content">정보
-						콘텐츠</div>
-					<div class="tab-content" id="menu-content">
-						<c:if test="${not empty menuList}">
-							<ul>
-								<c:forEach var="menu" items="${menuList}">
-									<li>
-										<span>${menu.dinnerNo} - ${menu.foodNo}</span>: 
-										<span>${menu.price}원</span>
-									</li>
-								</c:forEach>
-							</ul>
-						</c:if>
-						<c:if test="${empty menuList}">
-							<p>메뉴가 없습니다.</p>
-						</c:if>
+					<div class="tab-content active" id="information-content">정보 콘텐츠</div>
+					<jsp:include page="/WEB-INF/views/common/menu.jsp" />		
+					<div class="tab-content" id="review-content">리뷰 콘텐츠
+					<div>
+					<jsp:include page="/WEB-INF/views/dinner/dinnerWriteReview.jsp" />										
 					</div>
-					
-					<div class="tab-content" id="review-content">리뷰 콘텐츠</div>
+					</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
 				</div>
 			</section>

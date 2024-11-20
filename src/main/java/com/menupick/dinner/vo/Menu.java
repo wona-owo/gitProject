@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class Menu {
 	private String dinnerNo;
 	private String foodNo;
+	private String foodName;
 	private int price;
 }
