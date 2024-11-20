@@ -319,7 +319,7 @@
         });
     }
 
- 
+
     // 상세 페이지 열기
     function openDetailPage(dinnerNo, event) {
         if (event.target.closest('.favorite-button')) {
