@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Photo {
-	private String photoNo;
-	private String dinnerNo;
-	private String photoName;
-	private String photoPath;
+	public String photoNo;
+	public String dinnerNo;
+	public String photoName;
+	public String photoPath;
 }

@@ -885,4 +885,28 @@ public class DinnerDao {
 		}
 		return result;
 	}
+
+	// daniel
+	public String dinnerPhotoPath(Connection conn, String dinnerNo) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		String photoPath = "";
+		String query = "select photo_path from tbl_photo where dinner_no = ?";
+		
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			rt = pt.executeQuery();
+			
+			while(rt.next()) {
+				photoPath = rt.getString("photo_path");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return photoPath;
+	}
 }
