@@ -270,10 +270,11 @@ textarea {
       }else {
     	  parking.innerHTML = "주차자리없음"
       }
-      
+      //session member값 jstl로 불러옴 
       let isLogIn = <%= isLogIn %>;
+      
       function resBtn(){
-    	  if(isLogIn = null){
+    	  if(isLogIn != true){
     		  event.preventDefault();
     		  msg("알림","로그인 후 이용하세요","warning");
     	  }else{

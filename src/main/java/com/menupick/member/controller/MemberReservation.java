@@ -40,20 +40,19 @@ public class MemberReservation extends HttpServlet {
 			throws ServletException, IOException {
 		//book 등록값
 		String dinnerNo = request.getParameter("dinnerNo");
-		
 		String bookTime = request.getParameter("bookTime");
-		int bookCnt = (Integer.parseInt(request.getParameter("bookCnt")));
-		
+		String bookCntStr = request.getParameter("bookCnt");
 		String bookDate = request.getParameter("bookDate");
 		
 		
+		
+		System.out.println(bookCntStr);
 		HttpSession session = request.getSession();
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		String memberNo = loginMember.getMemberNo();
 
-		MemberService mservice = new MemberService();
-
-		
+		MemberService mservice = new MemberService();    
+	    
 		//bookDate 값 substring로 'yyyy/mm/dd'로 전달
 		String year = bookDate.substring(0,4);
 		String month = bookDate.substring(5,7);
@@ -65,9 +64,10 @@ public class MemberReservation extends HttpServlet {
 		book.setMemberNo(memberNo);
 		book.setBookDate(date);
 		book.setBookTime(bookTime);
-		book.setBookCnt(bookCnt);
+		book.setBookCnt(Integer.parseInt(bookCntStr));
 		
 		int result = mservice.bookingMember(book);
+		
 		
 		
 		if (result > 0) {
@@ -86,14 +86,13 @@ public class MemberReservation extends HttpServlet {
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		view.forward(request, response);
 	}
-
+		
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		doGet(request, response);
 	}
 

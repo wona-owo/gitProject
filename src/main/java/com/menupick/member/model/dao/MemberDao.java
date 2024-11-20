@@ -793,23 +793,22 @@ public class MemberDao {
 	    return isUpdated;
 	}
 
-	public int getDupBookChk(Connection conn, String memberNo, String bookNo, String bookDate,
-			String bookTime) {
+	public boolean getDupBookChk(Connection conn, String memberNo, String bookTime, String bookDate) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		 int cnt = 0;
-		String query = "SELECT COUNT(*) FROM reservation WHERE member_no = ? AND book_no = ? AND book_date = ? AND book_time = ?";
+		 boolean dupBook = false;
+		String query = "SELECT COUNT(*) FROM tbl_book WHERE member_no = ? AND book_date = to_date(?) AND book_time = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
-			pstmt.setString(2, bookNo);
-			pstmt.setString(3, bookDate);
-			pstmt.setString(4, bookTime);
+			pstmt.setString(2, bookDate);
+			pstmt.setString(3, bookTime);
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
-				cnt = rset.getInt("cnt");
+				int cnt = rset.getInt(1);
+				dupBook = cnt > 0;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -819,7 +818,7 @@ public class MemberDao {
 			JDBCTemplate.close(pstmt);
 		}
 		
-		return cnt;
+		return dupBook;
 	}
 	
 	//예약 취소 - 마이페이지
@@ -842,6 +841,28 @@ public class MemberDao {
 		}
 
 		return result;
+	}
+
+	public List<String> getReservedTimes(Connection conn, String dinnerNo, String bookDate) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<String> reservedTimes = new ArrayList<>(); 
+		String query = "SELECT BOOK_TIME FROM TBL_BOOK WHERE DINNER_NO = ? AND BOOK_DATE = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo);
+			pstmt.setString(2, bookDate);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				reservedTimes.add(rset.getString("BOOK_TIME"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return reservedTimes;
 	}
 }
 	
