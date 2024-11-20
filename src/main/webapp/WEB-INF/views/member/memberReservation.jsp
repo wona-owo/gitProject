@@ -107,7 +107,8 @@ button[type="submit"]:hover {
 		<input id="dinnerNo" type="hidden" name="dinnerNo" value="${dinner.dinnerNo}">
 		<input type="hidden" id="memberNo" name="memberNo"
 				value="${loginMember.memberNo}">
-		
+		<span>${book.bookTime}</span>
+		<span>${book.bookDate}</span>
 		<div id="resDetail" style="margin-top: 20px;"></div>
 		<div class=resBtn id="resOption">
 			<label for="resDate">날짜 선택:</label> <input type="date" id="resDate"
@@ -122,25 +123,35 @@ button[type="submit"]:hover {
 		</div>
 	</form>
 	<script>
+		let maxCnt = '${dinner.dinnerMaxPerson}';
+		let minCnt = 0;
 		document.getElementById("mBookCnt").addEventListener("click",
 				function() {
 					const cntInput = document.getElementById("cntInput");
 					const cnt = document.getElementById("cnt");
-					let count = parseInt(cntInput.value) || 0;
-					if (count > 0)
+					let count = parseInt(cntInput.value);
+					if (count > minCnt){
 						count--; // 인원수 감소
-					cntInput.value = count;
-					cnt.innerText = count;
+						cntInput.value = count;
+						cnt.innerText = count;
+					}else{
+						alert("인원수는 \${minCnt} 이상 입력바랍니다.");
+					}
+						
 				});
 
 		document.getElementById("pBookCnt").addEventListener("click",
 				function() {
 					const cntInput = document.getElementById("cntInput");
 					const cnt = document.getElementById("cnt");
-					let count = parseInt(cntInput.value) || 0;
+					let count = parseInt(cntInput.value);
+					if(count < maxCnt){
 					count++; // 인원수 증가
 					cntInput.value = count;
-					cnt.innerText = count;
+					cnt.innerText = count;						
+					}else{
+						alert("식당 수용할 인원수 이상입니다.");
+					}
 				});
 			
 		const openTime = parseInt('${dinner.dinnerOpen}', 10); // 예: '0900' -> 900
@@ -189,51 +200,7 @@ button[type="submit"]:hover {
 		   }
 		
 		
-
-		/*
-		 document.getElementById('reserveBtn').addEventListener('click',
-		 function() {
-		 const resEl = document.getElementById('resDetail');
-
-		 // 선택된 시간이 없거나 인원 수가 0명 이하일 때 안내 메시지 출력
-		
-		 if (!selectedTime) {
-		 resEl.innerText = '시간을 선택해 주세요.';
-		 return;
-		 }
-		 if (bookCount <= 0) {
-		 resEl.innerText = '인원 수를 선택해 주세요.';
-		 return;
-		 }
-		
-		 });
-
-		 document.getElementById('reserveBtn').addEventListener('click',
-		 function() {
-		 const resOption = document.getElementById('resOption');
-		 if (resOption.style.display === 'none') {
-		 resOption.style.display = 'block'; // 예약 옵션 div를 표시
-		 } else {
-		 resOption.style.display = 'none';
-		 }
-		 });
-
-		 const form = document.createElement('form');
-		 form.method = 'POST';
-		 form.action = '/dinner/bookDinner'; // 서블릿 경로로 변경
-
-
-		 // 선택된 시간 값 전달
-		 const timeInput = document.createElement('input');
-		 timeInput.type = 'hidden';
-		 timeInput.name = 'bookTime';
-		 timeInput.value = selectedTime.innerText;
-		 form.appendChild(timeInput);
-		 console.log(timeInput);
-		 // 폼을 문서에 추가하고 전송
-		 document.body.appendChild(form);
-		 form.submit();
-		 */
+			
 
 		let resDate = new Date();
 		 

@@ -497,7 +497,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 
-		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, 'm2411140021', to_date (?, 'yyyy/mm/dd'), ?, ?)";
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date (?, 'yyyy/mm/dd'), ?, ?)";
 
 		try {
 
@@ -790,6 +790,32 @@ public class MemberDao {
 	        e.printStackTrace();
 	    }
 	    return isUpdated;
+	}
+
+	public Book getDupBookChk(Connection conn, String memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select * from tbl_book where member_no= ?";
+		Book book = new Book();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				book.setBookNo(rset.getString("book_no"));
+				book.setBookNo(memberNo);
+				book.setBookNo(rset.getString("book_date"));
+				book.setBookNo(rset.getString("book_time"));
+				book.setBookNo(rset.getString("book_cnt"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return book;
 	}
 
 }

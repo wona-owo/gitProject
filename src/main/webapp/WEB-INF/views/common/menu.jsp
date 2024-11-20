@@ -13,7 +13,7 @@
 	        <ul>
 	            <c:forEach var="menu" items="${menuList}">
 	                <li>
-	                    <span>${menu.dinnerNo} - ${menu.foodNo}</span>:
+	                    <span type="hidden">${menu.dinnerNo} - ${menu.foodNo}</span>
 	                    <span>${menu.foodName}</span> 
 	                    <span>${menu.price}원</span>
 	                </li>

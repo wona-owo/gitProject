@@ -340,8 +340,16 @@ public class MemberService {
 		boolean findLike = false;		
 		findLike = dao.memberFindLike(conn, dinnerNo, memberNo);
 		JDBCTemplate.close(conn);
-		return findLike;	
+		return findLike;
 		}
+
+	public Book getDupBookChk(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Book book = new Book();
+		book = dao.getDupBookChk(conn, memberNo);
+		JDBCTemplate.close(conn);
+		return book;
+	}
     }
 
  
