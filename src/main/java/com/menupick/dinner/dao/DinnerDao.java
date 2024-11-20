@@ -597,9 +597,7 @@ public class DinnerDao {
 	// 식당등록 (경래)
 	public boolean insertDinner(Connection conn, Dinner dinner) {
 		PreparedStatement pstmt = null;
-		String query = "INSERT INTO tbl_dinner (dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, "
-				+ "dinner_phone, dinner_email, dinner_parking, dinner_max_person, busi_no, dinner_id, dinner_pw, dinner_confirm) "
-				+ "VALUES (seq_dinner.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO tbl_dinner VALUES ('d' || to_char(sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'n')";
 		boolean result = false;
 
 		try {
@@ -615,7 +613,6 @@ public class DinnerDao {
 			pstmt.setString(9, dinner.getBusiNo());
 			pstmt.setString(10, dinner.getDinnerId());
 			pstmt.setString(11, dinner.getDinnerPw());
-			pstmt.setString(12, dinner.getDinnerConfirm());
 
 			int rowsAffected = pstmt.executeUpdate();
 			result = rowsAffected > 0;
@@ -847,7 +844,7 @@ public class DinnerDao {
 		
 		try {
 			pt = conn.prepareStatement(query);
-			pt.setString(1, dinnerNo);
+			pt.setString(1, dinnerId);
 			rt = pt.executeQuery();
 			
 			if(rt.next()) {
@@ -870,7 +867,7 @@ public class DinnerDao {
 		
 		try {
 			pt = conn.prepareStatement(query);
-			pt.setString(1, p.getDinerNo());
+			pt.setString(1, p.getDinnerNo());
 			pt.setString(2, p.getPhotoName());
 			pt.setString(3, p.getPhotoPath());
 			result = pt.executeUpdate();

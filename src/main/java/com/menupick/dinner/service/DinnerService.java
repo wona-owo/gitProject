@@ -172,14 +172,20 @@ public class DinnerService {
 	public boolean insertDinner(Dinner dinner, ArrayList<Photo> photoList) {
 		Connection conn = JDBCTemplate.getConnection();
 		boolean result = false;
-
+		
 		result = dao.insertDinner(conn, dinner);
+
+		if(result) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
 
 		if (result) {
 			String dinnerNo = dao.getDinnerNoById(conn, dinner.getDinnerId());
 
 			for(Photo p : photoList) {
-				p.setDinerNo(dinnerNo);
+				p.setDinnerNo(dinnerNo);
 				
 				int pResult = dao.insertDinnerPhoto(conn, p);
 				

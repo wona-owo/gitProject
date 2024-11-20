@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Photo {
 	private String photoNo;
-	private String dinerNo;
+	private String dinnerNo;
 	private String photoName;
 	private String photoPath;
 }

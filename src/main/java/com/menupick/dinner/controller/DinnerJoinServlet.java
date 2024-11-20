@@ -36,10 +36,8 @@ public class DinnerJoinServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String dinnerNo = request.getParameter("dinnerNo"); // 히든 필드
-		
 		String rootPath = request.getSession().getServletContext().getRealPath("/"); // webapp 폴더 경로
-		String savePath = rootPath + "resources/photos/" + dinnerNo + "/"; // 파일 저장 경로
+		String savePath = rootPath + "resources/photos/"; // 파일 저장 경로
 
 		int maxSize = 1024 * 1024 * 100; // 바이트 단위 // 100MB 까지
 
@@ -72,44 +70,40 @@ public class DinnerJoinServlet extends HttpServlet {
 			}
 		}
 
-        String dinnerName = request.getParameter("dinnerName");
+        String dinnerName = mRequest.getParameter("dinnerName");
         
-        String zipp_code = request.getParameter("zipp_code"); // 우편번호
-		String userAdd1 = request.getParameter("user_add1");   // 기본 주소
-		String userAdd2 = request.getParameter("user_add2");   // 상세 주소
+        String zipp_code = mRequest.getParameter("zipp_code"); // 우편번호
+		String userAdd1 = mRequest.getParameter("user_add1");   // 기본 주소
+		String userAdd2 = mRequest.getParameter("user_add2");   // 상세 주소
 		
-        String dinnerOpen = request.getParameter("dinnerOpen");
-        String dinnerClose = request.getParameter("dinnerClose");
-        String dinnerPhone = request.getParameter("dinnerPhone");
-        String dinnerEmail = request.getParameter("dinnerEmail");
-        String dinnerParking = request.getParameter("dinnerParking");
-        String dinnerMaxPerson = request.getParameter("dinnerMaxPerson");
-        String busiNo = request.getParameter("busiNo");
-        String dinnerId = request.getParameter("dinnerId");
-        String dinnerPw = request.getParameter("dinnerPw");
-        String dinnerConfirm = request.getParameter("dinnerConfirm"); // 히든 필드
+        String dinnerOpen = mRequest.getParameter("dinnerOpen");
+        String dinnerClose = mRequest.getParameter("dinnerClose");
+        String dinnerPhone = mRequest.getParameter("dinnerPhone");
+        String dinnerEmail = mRequest.getParameter("dinnerEmail");
+        String dinnerParking = mRequest.getParameter("dinnerParking");
+        String dinnerMaxPerson = mRequest.getParameter("dinnerMaxPerson");
+        String busiNo = mRequest.getParameter("busiNo");
+        String dinnerId = mRequest.getParameter("dinnerId");
+        String dinnerPw = mRequest.getParameter("dinnerPw");
         
         String dinnerAddr = zipp_code + " " + userAdd1 + " " + userAdd2;
         
-        Dinner dinner = new Dinner(dinnerNo, dinnerName, dinnerAddr, dinnerOpen, dinnerClose,
-                dinnerPhone, dinnerEmail, dinnerParking, dinnerMaxPerson, 
-                busiNo, dinnerId, dinnerPw, dinnerConfirm, null, null, null, null, null, null);
+        Dinner d = new Dinner();
+        
+        d.setDinnerName(dinnerName);
+        d.setDinnerAddr(dinnerAddr);
+        d.setDinnerOpen(dinnerOpen);
+        d.setDinnerClose(dinnerClose);
+        d.setDinnerPhone(dinnerPhone);
+        d.setDinnerEmail(dinnerEmail);
+        d.setDinnerParking(dinnerParking);
+        d.setDinnerMaxPerson(dinnerMaxPerson);
+        d.setBusiNo(busiNo);
+        d.setDinnerId(dinnerId);
+        d.setDinnerPw(dinnerPw);
         
         DinnerService service = new DinnerService();
-        boolean isInserted = service.insertDinner(dinner, photoList);
-        
-        System.out.println("dinnerName : " + dinnerName);
-        System.out.println("dinnerAddr : " + dinnerAddr);
-        System.out.println("dinnerOpen : " + dinnerOpen);
-        System.out.println("dinnerClose : " + dinnerClose);
-        System.out.println("dinnerPhone : " + dinnerPhone);
-        System.out.println("dinnerEmail : " + dinnerEmail);
-        System.out.println("dinnerParking : " + dinnerParking);
-        System.out.println("dinnerMaxPerson : " + dinnerMaxPerson);
-        System.out.println("busiNo : " + busiNo);
-        System.out.println("dinnerId : " + dinnerId);
-        System.out.println("dinnerPw : " + dinnerPw);
-        System.out.println("dinnerConfirm : " + dinnerConfirm);
+        boolean isInserted = service.insertDinner(d, photoList);
         
         if (isInserted) {
 			request.setAttribute("title", "성공");
