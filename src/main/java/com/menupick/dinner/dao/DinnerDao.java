@@ -594,7 +594,7 @@ public class DinnerDao {
 		return m;
 	}
 
-	// 식당등록 (경래)
+	// 식당등록 (경래 + daniel)
 	public boolean insertDinner(Connection conn, Dinner dinner) {
 		PreparedStatement pstmt = null;
 		String query = "INSERT INTO tbl_dinner VALUES ('d' || to_char(sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'n')";
@@ -630,25 +630,32 @@ public class DinnerDao {
 	public int idDuplChk(Connection conn, String dinnerId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select count(*) as cnt from tbl_dinner where dinner_id = ?";
-		int cnt = 0;
+		String query = 
+		        "select count(*) as cnt " +
+		        "from (" +
+		        "    select dinner_id as id from tbl_dinner " +
+		        "    union all " +
+		        "    select member_id as id from tbl_member" +
+		        ") all_ids " +
+		        "where id = ?";
+		    int cnt = 0;
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, dinnerId);
-			rset = pstmt.executeQuery();
+		    try {
+		        pstmt = conn.prepareStatement(query);
+		        pstmt.setString(1, dinnerId); // 입력받은 ID를 쿼리에 바인딩
+		        rset = pstmt.executeQuery();
 
-			if (rset.next()) {
-				cnt = rset.getInt("cnt");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
+		        if (rset.next()) {
+		            cnt = rset.getInt("cnt"); // 중복된 ID 개수를 가져옴
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        JDBCTemplate.close(rset);
+		        JDBCTemplate.close(pstmt);
+		    }
+		    return cnt; // 중복된 ID 개수 반환
 		}
-		return cnt;
-	}
 
 	public int updateDinner(Connection conn, Dinner updDinner) {
 	    PreparedStatement pstmt = null;
