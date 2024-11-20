@@ -27,11 +27,6 @@
 						<c:when test="${sessionScope.memberLevel == 1}">
 							<li><a href="/admin/member">회원 관리페이지</a></li>
 							<li><a href="/admin/dinner">매장 관리페이지</a></li>
-							<%-- 매장등록 테스트할려고 잠깐 만들어놓음 -경래- --%>
-							<li><a href="/dinnerJoinForm">매장 등록(테스트)</a></li>
-							<%-- 리뷰작성 테스트할려고 잠깐 만들어놓음 -경래- --%>
-							<li><a href="/review/WriteFrm">리뷰 작성(테스트)</a></li>
-
 						</c:when>
 						<c:when test="${sessionScope.memberLevel == 2}">
 							<li><a href="/dinner/likeFrm">인기식당</a></li>
