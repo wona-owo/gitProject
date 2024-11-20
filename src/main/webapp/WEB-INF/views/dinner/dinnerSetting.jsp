@@ -99,7 +99,7 @@
 				<div class="page-title">매장 정보 수정</div>
 				<form id="updateForm"
 					action="${pageContext.request.contextPath}/dinner/update"
-					method="post" onsubmit="return validateAndConfirmUpdate();">
+					method="post" onsubmit="return validateAndConfirmUpdate();" enctype="multipart/form-data">
 					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}" />
 
 					<table class="tbl">
