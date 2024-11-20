@@ -228,54 +228,59 @@ section {
 					return data[dayStr] || 0;
 				}
 
-				$.ajax({
-					url : "/dinner/reservation",
-					data : {
-						dinnerNo : $("#dinnerNo").val(),
-						displayMonth : $("#month").text(),
-						displayYear : $("#year").text()
-					},
-					type : "GET",
-					success : function(res) {
-						for (let day = 1; day <= daysInMonth; day++) {
-							const dayEl = $("<span></span>");
-							const dayNumEl = $("<div></div>").text(day);
-							const bookCnt = getBookCnt(day, res);
+				$
+						.ajax({
+							url : "/dinner/reservation",
+							data : {
+								dinnerNo : $("#dinnerNo").val(),
+								displayMonth : $("#month").text(),
+								displayYear : $("#year").text()
+							},
+							type : "GET",
+							success : function(res) {
+								for (let day = 1; day <= daysInMonth; day++) {
+									const dayEl = $("<span></span>");
+									const dayNumEl = $("<div></div>").text(day);
+									const bookCnt = getBookCnt(day, res);
 
-							const bookCntEl = $("<div></div>").html(
-									bookCnt ? bookCnt + "팀" : "&nbsp;");
-							dayEl.append(dayNumEl, bookCntEl);
+									const bookCntEl = $("<div></div>").html(
+											bookCnt ? bookCnt + "팀" : "&nbsp;");
+									dayEl.append(dayNumEl, bookCntEl);
 
-							if (bookCnt) {
-								dayEl.addClass("has-number");
+									if (bookCnt) {
+										dayEl.addClass("has-number");
+									}
+
+									const today = new Date();
+									if (day === today.getDate()
+											&& year === today.getFullYear()
+											&& month === today.getMonth()) {
+										dayEl.addClass("today");
+									}
+
+									dinnerNo = $("#dinnerNo").val();
+
+									const dayLink = $("<a></a>")
+											.attr(
+													"href",
+													bookCnt ? "/dinner/checkReservation?dinnerNo="
+															+ dinnerNo
+															+ "&day="
+															+ day
+															+ "&month="
+															+ month
+															+ "&year=" + year
+															: null).addClass(
+													bookCnt ? "" : "disabled");
+
+									dayLink.append(dayEl);
+									daysContainer.append(dayLink);
+								}
+							},
+							error : function() {
+								console.error("poop");
 							}
-
-							const today = new Date();
-							if (day === today.getDate()
-									&& year === today.getFullYear()
-									&& month === today.getMonth()) {
-								dayEl.addClass("today");
-							}
-
-							dinnerNo = $("#dinnerNo").val();
-
-							const dayLink = $("<a></a>").attr( "href",
-											bookCnt ? "/dinner/checkReservation?dinnerNo="
-													+ dinnerNo
-													+ "&day="
-													+ day
-													+ "&month="
-													+ month
-													+ "&year=" + year : null).addClass( bookCnt ? "" : "disabled");
-
-							dayLink.append(dayEl);
-							daysContainer.append(dayLink);
-						}
-					},
-					error : function() {
-						console.error("poop");
-					}
-				});
+						});
 			}
 
 			$("#prev-month").on("click", function() {
@@ -298,10 +303,10 @@ section {
 
 			// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
 			window.addEventListener('pageshow', function(event) {
-			    if (event.persisted) {
-			        // The page is shown from the back-forward cache
-			        renderCalendar();
-			    }
+				if (event.persisted) {
+					// The page is shown from the back-forward cache
+					renderCalendar();
+				}
 			});
 
 		});

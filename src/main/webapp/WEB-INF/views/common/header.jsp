@@ -13,7 +13,6 @@
 			<img src="/resources/images/logo.png" class="logo-img" /> <a
 				href="/">Menu Pick!</a>
 		</div>
-
 		<ul class="sub-menu">
 			<c:choose>
 				<%-- 비로그인 상태 --%>
@@ -45,7 +44,7 @@
 
 				<%-- 식당 계정 로그인 상태 --%>
 				<c:when test="${sessionScope.loginType eq 'dinner'}">
-					<li><a href="/member/dinnerCalendarFrm">${sessionScope.loginMember.dinnerName}님
+					<li><a href="/dinner/dinnerCalendarFrm">${sessionScope.loginMember.dinnerName}님
 							(식당)</a></li>
 					<li><a href="/dinner/setting">식당 설정</a></li>
 					<li><a href="/member/logout">로그아웃</a></li>
