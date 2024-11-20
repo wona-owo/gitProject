@@ -70,13 +70,27 @@
 
 .card-info h3 {
 	margin: 4px 0;
-	font-size: 1.1em;
+	font-size: 1.3em; /* 식당 이름 크기 증가 */
+	font-weight: bold;
 }
 
 .card-info p {
 	margin: 3px 0;
 	font-size: 1em;
 	color: #aaa;
+}
+
+/* 리뷰 내용 스타일 */
+.contents {
+	width: 100%;
+	text-align: left; /* 좌측 정렬 */
+	padding-left: 5px;
+}
+
+.contents h5 {
+	font-size: 1em;
+	margin: 6px 0;
+	color: #333;
 }
 
 /* 삭제 아이콘 스타일 */
@@ -100,6 +114,7 @@
 	transition: color 0.3s;
 }
 </style>
+
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
@@ -114,7 +129,7 @@
 							<h3>${review.dinnerName}</h3>
 							<p>${review.reviewDate}</p>
 						</div>
-						<img src="${review.reviewImg}" alt="식당 이미지"> <span
+						<img src="${review.reviewImage}" alt="식당 이미지"> <span
 							class="del-icon active" data-review-no="${review.reviewNo}">
 							<i class="fa-solid fa-x"></i>
 						</span> <span class="modi-icon active"

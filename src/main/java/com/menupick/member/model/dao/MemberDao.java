@@ -838,6 +838,28 @@ public class MemberDao {
 
 		return result;
 	}
+	
+	//리뷰삭제 - 마이페이지
+	public int memberDelReview(Connection conn, String reviewNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = "delete from tbl_review where review_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, reviewNo);
+
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
 }
 	
 
