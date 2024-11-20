@@ -20,8 +20,8 @@ AJAX with ApiEmailSend.java
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
-.wrap { $1
-	margin: 20px auto;
+.wrap {
+	margin: 0 auto;
 	padding: 20px;
 	background-color: #ffffff;
 	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
@@ -42,7 +42,6 @@ main {
 	background-color: #f40;
 	text-align: center;
 	padding: 15px;
-	border-radius: 8px;
 	margin-bottom: 20px;
 }
 
@@ -113,7 +112,7 @@ ul {
 	background-color: #d32f2f;
 }
 
-.sub-menu {
+.dinner-sub-menu {
 	display: none;
 	position: absolute;
 	top: 100%;
@@ -127,7 +126,7 @@ ul {
 	width: 220px;
 }
 
-.sub-menu>li {
+.dinner-sub-menu>li {
 	margin-bottom: 10px;
 }
 
@@ -137,7 +136,7 @@ ul {
 	font-size: 14px;
 }
 
-.sub-menu button {
+.dinner-sub-menu button {
 	background-color: #4caf50;
 	color: #ffffff;
 	border: none;
@@ -148,7 +147,7 @@ ul {
 	transition: background-color 0.3s;
 }
 
-.sub-menu button:hover {
+.dinner-sub-menu button:hover {
 	background-color: #388e3c;
 }
 </style>
@@ -190,11 +189,11 @@ ul {
 							<li>${b.bookCnt}</li>
 							<li class="menu-item"><input type="button"
 								class="cancel-btn" value="취소">
-								<ul class="sub-menu" id="sub-menu-${b.memberNo}">
+								<ul class="dinner-sub-menu" id="sub-menu-${b.memberNo}">
 									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
 									<li><select id="select-input-${b.memberNo}"
 										class="cancel-reason-select">
-											<option value="" class="select-placeholder" disabled>취소
+											<option value="" class="select-placeholder" selected disabled>취소
 												사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
@@ -219,10 +218,10 @@ ul {
 					function(event) {
 						event.stopPropagation();
 
-						let subMenu = $(this).siblings('.sub-menu');
+						let subMenu = $(this).siblings('.dinner-sub-menu');
 
 						// Hide other sub-menus and reset their parent margins
-						$('.sub-menu').not(subMenu).each(
+						$('.dinner-sub-menu').not(subMenu).each(
 								function() {
 									$(this).hide();
 									$(this).closest('.group-menu').css(
@@ -237,15 +236,15 @@ ul {
 								subMenu.is(':visible') ? '100px' : '0px');
 					});
 
-			// Close sub-menus and reset margins when clicking elsewhere
-			$(document).click(
-					function(event) {
-						if (!$(event.target).closest(
-								'.sub-menu, .menu-item .cancel-btn').length) {
-							$('.sub-menu').hide();
-							$('.group-menu').css('margin-bottom', '0px');
-						}
-					});
+		// Close sub-menus and reset margins when clicking elsewhere
+		$(document).click(
+				function(event) {
+					if (!$(event.target).closest(
+							'.dinner-sub-menu, .menu-item .cancel-btn').length) {
+						$('.dinner-sub-menu').hide();
+						$('.group-menu').css('margin-bottom', '0px');
+					}
+				});
 		});
 
 		function refresh() {
@@ -307,7 +306,7 @@ ul {
 			groupMenu.css('margin-bottom', '0px');
 
 			// 확인 버튼을 눌렀을때 sub-menu 를 다른 div 태그의 margin 을 지움
-			$('.sub-menu').hide();
+			$('.dinner-sub-menu').hide();
 			$('.group-menu').css('margin-bottom', '0px');
 
 			if (selectedValue === "none") {
@@ -377,13 +376,12 @@ ul {
 			}
 		}
 
-			// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
-			window.addEventListener('pageshow', function(event) {
-			    if (event.persisted) {
-			        // The page is shown from the back-forward cache
-			        history.back();
-			    }
-			});
+		// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
+		window.addEventListener('pageshow', function(event) {
+			if (event.persisted) {
+				history.back();
+			}
+		});
 	</script>
 </body>
 </html>

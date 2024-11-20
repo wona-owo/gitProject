@@ -41,7 +41,6 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String dinnerNo = request.getParameter("dinnerNo");
 
 		String year = request.getParameter("year");
@@ -58,6 +57,7 @@ public class DinnerCheckReservationServlet extends HttpServlet {
 		// Parse the day as an integer and format it as a 2-digit string
 		int day = Integer.parseInt(request.getParameter("day"));
 		String dayPadded = String.format("%02d", day);
+
 		String date = (justYear + "/" + monthPadded + "/" + dayPadded);
 
 		DinnerService service = new DinnerService();

@@ -2,16 +2,19 @@ package com.menupick.member.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.service.MemberService;
+import com.menupick.member.model.vo.Member;
 
 
 /**
@@ -37,28 +40,52 @@ public class MemberReservation extends HttpServlet {
 			throws ServletException, IOException {
 		//book 등록값
 		String dinnerNo = request.getParameter("dinnerNo");
-		String memberNo = request.getParameter("memberId");
-		String bookDate = request.getParameter("bookDate");
+		
 		String bookTime = request.getParameter("bookTime");
 		String bookCnt = request.getParameter("bookCnt");
+		
+		String bookDate = request.getParameter("bookDate");
+		
+		
+		HttpSession session = request.getSession();
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		String memberNo = loginMember.getMemberNo();
+		
+
+		
 		MemberService mservice = new MemberService();
 		DinnerService dservice = new DinnerService();
+		
+		
+		//bookDate 값 substring로 'yyyy/mm/dd'로 전달
+		String year = bookDate.substring(0,4);
+		String month = bookDate.substring(5,7);
+		String day = bookDate.substring(8,10);
+		String date = (year +"/"+ month +"/"+ day);
+		
 		Book book = new Book();
-		Dinner dinner = dservice.getDinnerNo(dinnerNo);
-		
+		book.setDinnerNo(dinnerNo);
+		book.setMemberNo(memberNo);
+		book.setBookDate(date);
+		book.setBookTime(bookTime);
+		book.setBookCnt(Integer.parseInt(bookCnt));
 		int result = mservice.bookingMember(book);
-		 
 		
-		request.setAttribute("dinner", dinner);
+		
+		if (result > 0) {
+			request.setAttribute("title", "성공");
+			request.setAttribute("msg", "예약 성공 했습니다.");
+			request.setAttribute("icon", "success");
+			request.setAttribute("loc", "/");
+		} else {
+			request.setAttribute("title", "실패");
+			request.setAttribute("msg", "예약 실패했습니다.");
+			request.setAttribute("icon", "error");
+			request.setAttribute("loc", "/");
+		}
 
-		System.out.println("dinnerNo: " + dinnerNo);
-        System.out.println("memberNo: " + memberNo);
-        System.out.println("bookDate: " + bookDate);
-        System.out.println("bookCnt: " + bookCnt);
-        System.out.println("bookTime: " + bookTime);
-
-        
-		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+		view.forward(request, response);
 	}
 
 	/**

@@ -233,7 +233,7 @@ public class MemberService {
 		Connection conn = JDBCTemplate.getConnection();
 		
 		int result = dao.bookingMember(conn, book);
-		System.out.println(book);
+		
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {

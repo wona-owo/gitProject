@@ -14,6 +14,7 @@ import com.menupick.dinner.vo.Address;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Menu;
 import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
@@ -248,7 +249,7 @@ public class DinnerDao {
 				d.setFoodName(rset.getString("FOOD_NAME"));
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
-				System.out.println(dinnerNo);
+				
 			}
 
 		} catch (SQLException e) {
@@ -797,5 +798,31 @@ public class DinnerDao {
 	    }
 
 	    return dinner;
+	}
+	public List<Menu> getMenuByDinnerNo(Connection conn, String dinnerNo, String foodNo) {
+	    List<Menu> menuList = new ArrayList<>();
+	    String sql = "SELECT m.dinner_no, m.food_no, m.price, f.food_name " +
+                "FROM tbl_menu m " +
+                "JOIN tbl_food f ON m.food_no = f.food_no " +
+                "WHERE m.dinner_no = ? AND m.food_no = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	    	 pstmt.setString(1, dinnerNo); 
+	         pstmt.setString(2, foodNo);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                Menu menu = new Menu();
+	                menu.setDinnerNo(rs.getString("dinner_no"));
+	                menu.setFoodNo(rs.getString("food_no"));
+	                menu.setPrice(rs.getInt("price"));
+	                menu.setFoodName(rs.getString("food_name"));
+	                menuList.add(menu);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return menuList;
 	}
 }
