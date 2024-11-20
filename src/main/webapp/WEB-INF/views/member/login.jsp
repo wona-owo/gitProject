@@ -101,11 +101,7 @@ input[type="checkbox"] {
 
 					<div class="member-link-box">
 						<a href="/join/selectFrm">회원가입</a> | <button type="button" onclick="showIdSearchPopup()" class="search">아이디 찾기</button> | <a
-							href="javascript:void(0)" onclick="searchInfo('pw')">비밀번호 찾기</a>
-<<<<<<< HEAD
-
-=======
->>>>>>> 65586863b5a61fdd2a7e54539005d1d3197396f5
+							href="javascript:void(0)" onclick="showPwSearchPopup()">비밀번호 찾기</a>
 					</div>
 				</form>
 			</section>
