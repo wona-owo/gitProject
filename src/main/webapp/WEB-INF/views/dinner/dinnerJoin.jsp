@@ -10,7 +10,6 @@
 	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <style>
 /* 페이지 전체 스타일 */
 body {
@@ -391,7 +390,6 @@ body {
 					placeholder="예: 123-45-67890">
 			</div>
 
-			<%-- 매장 사진 업로드 --%>
 			<%-- daniel --%>
 			<div class="form-group">
 				<label for="uploadFile">매장 사진 업로드</label> <input type="file"

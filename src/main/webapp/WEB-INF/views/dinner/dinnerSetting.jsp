@@ -8,9 +8,6 @@
 <title>매장 정보 수정</title>
 <link rel="stylesheet"
 	href="/resources/css/diner_admin_memberdetail.css" />
-<link rel="stylesheet" href="/resources/css/default.css" />
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="/resources/js/sweetalert.min.js"></script>
 <style>
 /* CSS 코드는 이전과 동일 */
 .page-title {
@@ -133,6 +130,16 @@
 							<td><input type="text" name="dinnerAddr"
 								value="${dinner.dinnerAddr}" required /></td>
 						</tr>
+						<%-- <daniel> --%>
+						<tr>
+							<th>식당 사진</th>
+							<td><img src="/resources/photos/${photoPath}" style="height: 150px; width: auto;" alt="식당 사진이 없습니다"></td>
+						</tr>
+						<tr>
+							<th>식당 사진 변경</th>
+							<td><input type="file" name="uploadFile"/></td>
+						</tr>
+						<%-- </daniel> --%>
 						<tr>
 							<th>오픈 시간</th>
 							<td><input type="text" name="dinnerOpen"

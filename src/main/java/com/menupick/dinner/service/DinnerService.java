@@ -24,10 +24,10 @@ public class DinnerService {
 	}
 
 	// 인기식당 페이지
-	public ArrayList<Dinner> likeDinner(String dinnerNo, String dinnerName) {
+	public ArrayList<Dinner> likeDinner() {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> dinnerList = null;
-		dinnerList = dao.likeDinner(conn, dinnerNo, dinnerName);
+		dinnerList = dao.likeDinner(conn);
 		JDBCTemplate.close(conn);
 		return dinnerList;
 	}

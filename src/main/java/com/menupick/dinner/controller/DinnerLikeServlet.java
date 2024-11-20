@@ -34,16 +34,11 @@ public class DinnerLikeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 2. 값 추출
-		// dinner 값
-		String dinnerNo = request.getParameter("dinner_no");
-		String dinnerName = request.getParameter("dinner_name");
-		
 
 		// 3. 로직
 		ArrayList<Dinner> dinnerList = new ArrayList<>();
 		DinnerService service = new DinnerService();
-		dinnerList = service.likeDinner(dinnerNo, dinnerName);
+		dinnerList = service.likeDinner();
 		
 		for (Dinner d : dinnerList) {
 		    String photoPath = service.dinnerPhotoPath(d.getDinnerNo());
@@ -74,7 +69,6 @@ public class DinnerLikeServlet extends HttpServlet {
 		
 		// 4. 결과 처리
 		request.setAttribute("dinnerList", dinnerList);
-		
 		request.getRequestDispatcher("/WEB-INF/views/dinner/search.jsp").forward(request, response);
 	}
 

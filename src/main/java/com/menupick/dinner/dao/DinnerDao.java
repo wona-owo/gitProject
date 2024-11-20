@@ -51,7 +51,7 @@ public class DinnerDao {
 		return list;
 	}
 
-	public ArrayList<Dinner> likeDinner(Connection conn, String dinnerNo, String dinnerName) {
+	public ArrayList<Dinner> likeDinner(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String query = "select dinner.dinner_no, dinner.dinner_name, dinner.dinner_addr, food.food_no, food.food_nation, food.food_cat from tbl_dinner dinner, tbl_menu menu, tbl_food food where dinner.dinner_no = menu.dinner_no and food.food_no = menu.food_no order by 1";
@@ -59,7 +59,6 @@ public class DinnerDao {
 
 		try {
 			pstmt = conn.prepareStatement(query);
-
 			rset = pstmt.executeQuery();
 
 			while (rset.next()) {
