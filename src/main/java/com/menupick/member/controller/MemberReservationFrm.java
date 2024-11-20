@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.dinner.service.DinnerService;
+import com.menupick.dinner.vo.Dinner;
+
 /**
  * Servlet implementation class MemberReservationFrm
  */
-@WebServlet("/member/memberresFrm")
+@WebServlet("/member/reservationFrm")
 public class MemberReservationFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -29,6 +32,13 @@ public class MemberReservationFrm extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String dinnerNo = request.getParameter("dinnerNo");
+		
+		DinnerService service = new DinnerService();
+		Dinner dinner = service.getDinnerNo(dinnerNo);
+		request.setAttribute("dinner", dinner);
+		
+		
 		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
 	}
 

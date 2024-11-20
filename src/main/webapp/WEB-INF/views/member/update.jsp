@@ -139,6 +139,7 @@ button:hover {
                 <div class="input-item">
                 	<input type="password" id="memberPw" name="memberPw" value="${loginMember.memberPw}">
             	</div>
+            	<p id="pwMessage" class="input-msg"></p>
             </div>
             <div class="input-wrap">
 				<div class="input-title">
@@ -147,7 +148,7 @@ button:hover {
 				<div class="input-item">
 					<input type="password" id="memberPwConfirm" name="memberPwConfirm" maxlength="20"/>
 				</div>
-					<p id="pwMessage" class="input-msg"></p>
+					<p id="pwConfirmMessage" class="input-msg"></p>
 				</div>
             <div class="input-wrap">
             	<div class="input-title">
@@ -325,37 +326,62 @@ button:hover {
 	const memberPw = $('#memberPw');
 	const pwMessage = $('#pwMessage');
 	
-	memberPw.on('input',function(){
-		checkObj.memberPwChanged = true;
-        pwMessage.removeClass('valid');
-        pwMessage.removeClass('invalid');
-        
-        const regExp = /(?=.*[0-9])(?=.*[!@#$%^&*()-_=+])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*()-_=+]{8,20}$/;
+	memberPw.on('input', function() {
+	    checkObj.memberPwChanged = true;
+	    pwMessage.removeClass('valid');
+	    pwMessage.removeClass('invalid');
+	    
+	    const regExp = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,20}$/;
 
-        
-        if(regExp.test($(this).val())){
-            checkObj.memberPw = true;
-            pwMessage.html("");
-            pwMessage.addClass("valid");
-        }else{
-            pwMessage.html("비밀번호 형식이 유효하지 않습니다");
-            pwMessage.addClass("invalid");
-            checkObj.memberPw = false;
-        }
-    });
+	    if (regExp.test($(this).val())) {
+	        checkObj.memberPw = true;
+	        pwMessage.html("");
+	        pwMessage.addClass("valid");
+
+	        // 비밀번호가 유효할 경우 비밀번호 확인 입력 필드를 활성화
+	        $('#memberPwConfirm').prop('disabled', false);  // 비밀번호 확인 필드를 활성화
+	        checkPasswordMatch(); // 비밀번호 확인 일치 여부 체크
+	    } else {
+	        pwMessage.html("비밀번호 형식이 유효하지 않습니다");
+	        pwMessage.addClass("invalid");
+	        checkObj.memberPw = false;
+	        
+	        // 비밀번호가 유효하지 않으면 비밀번호 확인 필드를 비활성화
+	        $('#memberPwConfirm').prop('disabled', true);  // 비밀번호 확인 필드를 비활성화
+	        pwConfirmMessage.html("");
+	        pwConfirmMessage.removeClass('valid invalid');
+	        checkObj.memberPwConfirm = false;
+	    }
+	});
 	
 	const memberPwConfirm = $('#memberPwConfirm');
-    memberPwConfirm.on('input', function(){
-        if(memberPwConfirm.val() === memberPw.val()){
-            pwMessage.addClass('valid');
-            pwMessage.html('');
-            checkObj.memberPwConfirm = true;
-        }else{
-            pwMessage.addClass('invalid');
-            pwMessage.html('비밀번호가 일치하지 않습니다');
-            checkObj.memberPwConfirm = false;
-        }
-    });
+	const pwConfirmMessage = $('#pwConfirmMessage');
+
+	memberPwConfirm.on('input', function() {
+	    if (memberPwConfirm.val() === memberPw.val()) {
+	        pwConfirmMessage.addClass('valid');
+	        pwConfirmMessage.html('비밀번호가 일치합니다');
+	        checkObj.memberPwConfirm = true;  // 비밀번호 확인이 일치하면 true
+	    } else {
+	        pwConfirmMessage.addClass('invalid');
+	        pwConfirmMessage.html('비밀번호가 일치하지 않습니다');
+	        checkObj.memberPwConfirm = false;  // 비밀번호 확인이 일치하지 않으면 false
+	    }
+	});
+    
+	function checkPasswordMatch() {
+	    if (memberPwConfirm.val() === memberPw.val()) {
+	        pwConfirmMessage.removeClass('invalid');
+	        pwConfirmMessage.addClass('valid');
+	        pwConfirmMessage.html('비밀번호가 일치합니다');
+	        checkObj.memberPwConfirm = true;
+	    } else {
+	        pwConfirmMessage.removeClass('valid');
+	        pwConfirmMessage.addClass('invalid');
+	        pwConfirmMessage.html('비밀번호가 일치하지 않습니다');
+	        checkObj.memberPwConfirm = false;
+	    }
+    }
 	
 	const memberPhone = $('#memberPhone');
 	const phoneMessage = $('#phoneMessage');
@@ -411,6 +437,12 @@ button:hover {
 
 	    if(!checkObj.nickDuplChk && checkObj.memberNickChanged){
 	        str = "닉네임 중복체크를 진행하세요";
+	        msg("정보수정 실패", str, "error");
+	        return false;
+	    }
+	    // 비밀번호를 변경한 경우, 비밀번호 확인이 유효한지 확인
+	    if (checkObj.memberPwChanged && !checkObj.memberPwConfirm) {
+	        str = "비밀번호 확인이 일치하지 않습니다";
 	        msg("정보수정 실패", str, "error");
 	        return false;
 	    }

@@ -20,9 +20,8 @@ AJAX with ApiEmailSend.java
 <meta charset="UTF-8">
 <title>dinnerReservation.jsp</title>
 <style>
-.wrap { $1
-	margin: 20px auto;
-	padding: 20px;
+.wrap {
+	margin: 0 auto;
 	background-color: #ffffff;
 	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
@@ -42,7 +41,6 @@ main {
 	background-color: #f40;
 	text-align: center;
 	padding: 15px;
-	border-radius: 8px;
 	margin-bottom: 20px;
 }
 
@@ -113,7 +111,7 @@ ul {
 	background-color: #d32f2f;
 }
 
-.sub-menu {
+.dinner-sub-menu {
 	display: none;
 	position: absolute;
 	top: 100%;
@@ -127,7 +125,7 @@ ul {
 	width: 220px;
 }
 
-.sub-menu>li {
+.dinner-sub-menu>li {
 	margin-bottom: 10px;
 }
 
@@ -137,7 +135,7 @@ ul {
 	font-size: 14px;
 }
 
-.sub-menu button {
+.dinner-sub-menu button {
 	background-color: #4caf50;
 	color: #ffffff;
 	border: none;
@@ -148,7 +146,7 @@ ul {
 	transition: background-color 0.3s;
 }
 
-.sub-menu button:hover {
+.dinner-sub-menu button:hover {
 	background-color: #388e3c;
 }
 </style>
@@ -158,12 +156,16 @@ ul {
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
 			<section class="section notice-list-wrap">
-				<div class="page-title">${bookMonth}월${bookDay}일</div>
-				<input type="hidden" value="${bookYear}" name="bookYear"
-					id="bookYear"> <input type="hidden" value="${bookMonth}"
-					name="bookMonth" id="bookMonth"> <input type="hidden"
-					value="${bookDay}" name="bookDay" id="bookDay"> <input
-					type="hidden" value="${dinnerNo}" id="dinnerNo">
+
+				<div class="page-title">
+					${bookMonth}월${bookDay}일
+				</div>
+
+				<input type="hidden" value="${bookYear}" name="bookYear" id="bookYear"> 
+				<input type="hidden" value="${bookMonth}" name="bookMonth" id="bookMonth"> 
+				<input type="hidden" value="${bookDay}" name="bookDay" id="bookDay"> 
+				<input type="hidden" value="${dinnerNo}" id="dinnerNo">
+
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
 					<span>취소</span>
@@ -188,23 +190,24 @@ ul {
 							<li>${b.memberName}</li>
 							<li>${b.memberPhone}</li>
 							<li>${b.bookCnt}</li>
-							<li class="menu-item"><input type="button"
-								class="cancel-btn" value="취소">
-								<ul class="sub-menu" id="sub-menu-${b.memberNo}">
-									<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
-									<li><select id="select-input-${b.memberNo}"
-										class="cancel-reason-select">
-											<option value="" class="select-placeholder" disabled>취소
-												사유 선택</option>
+							<li class="menu-item"><input type="button" class="cancel-btn" value="취소">
+								<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
+								<ul class="dinner-sub-menu" id="sub-menu-${b.memberNo}">
+									<li>
+										<select id="select-input-${b.memberNo}" class="cancel-reason-select">
+											<option value="" class="select-placeholder" disabled<%-- hidden 속성이 오류는 나지만 정상 동작함 --%>hidden>취소 사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
-									</select></li>
+											<option value="2">예약 시스템의 오류로 시간당 최대 수용인원을 초과 하였습니다</option>
+										</select>
+									</li>
 
 									<li>
-										<button type="submit"
-											onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
+										<button type="submit" onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
 									</li>
-								</ul></li>
+								</ul>
+
+							</li>
 						</ul>
 					</div>
 				</c:forEach>
@@ -215,37 +218,33 @@ ul {
 
 	<script>
 		$(function() {
-			$('.menu-item .cancel-btn').click(
-					function(event) {
-						event.stopPropagation();
+			$('.menu-item .cancel-btn').click( function(event) {
+				event.stopPropagation();
 
-						let subMenu = $(this).siblings('.sub-menu');
+				let subMenu = $(this).siblings('.dinner-sub-menu');
 
-						// Hide other sub-menus and reset their parent margins
-						$('.sub-menu').not(subMenu).each(
-								function() {
-									$(this).hide();
-									$(this).closest('.group-menu').css(
-											'margin-bottom', '0px');
-								});
+				// Hide other sub-menus and reset their parent margins
+				$('.dinner-sub-menu').not(subMenu).each( function() {
+					$(this).hide();
+					$(this).closest('.group-menu').css( 'margin-bottom', '0px');
+				});
 
-						subMenu.toggle();
+				subMenu.toggle();
 
-						// Adjust the margin of the parent .group-menu
-						let groupMenu = $(this).closest('.group-menu');
-						groupMenu.css('margin-bottom',
-								subMenu.is(':visible') ? '100px' : '0px');
-					});
+				// Adjust the margin of the parent .group-menu
+				let groupMenu = $(this).closest('.group-menu');
+				groupMenu.css('margin-bottom', 
+						subMenu.is(':visible') ? '100px' : '0px');
+			});
 
 			// Close sub-menus and reset margins when clicking elsewhere
-			$(document).click(
-					function(event) {
-						if (!$(event.target).closest(
-								'.sub-menu, .menu-item .cancel-btn').length) {
-							$('.sub-menu').hide();
-							$('.group-menu').css('margin-bottom', '0px');
-						}
-					});
+			$(document).click( function(event) {
+				if (!$(event.target).closest('.dinner-sub-menu, .menu-item .cancel-btn').length) {
+					$('.dinner-sub-menu').hide();
+					$('.group-menu').css('margin-bottom', '0px');
+				}
+			});
+
 		});
 
 		function refresh() {
@@ -307,7 +306,7 @@ ul {
 			groupMenu.css('margin-bottom', '0px');
 
 			// 확인 버튼을 눌렀을때 sub-menu 를 다른 div 태그의 margin 을 지움
-			$('.sub-menu').hide();
+			$('.dinner-sub-menu').hide();
 			$('.group-menu').css('margin-bottom', '0px');
 
 			if (selectedValue === "none") {
@@ -366,7 +365,6 @@ ul {
 										refresh();
 									});
 								}
-
 							},
 							error : function() {
 								console.log("foobar confirming cancel");
@@ -377,13 +375,12 @@ ul {
 			}
 		}
 
-			// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
-			window.addEventListener('pageshow', function(event) {
-			    if (event.persisted) {
-			        // The page is shown from the back-forward cache
-			        history.back();
-			    }
-			});
+		// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
+		window.addEventListener('pageshow', function(event) {
+			if (event.persisted) {
+				history.back();
+			}
+		});
 	</script>
 </body>
 </html>

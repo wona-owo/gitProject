@@ -115,7 +115,7 @@ public class MemberDao {
 		int result = 0;
 
 		String query = "insert into tbl_member (member_no, member_id, member_pw, member_name, member_nick, member_phone, member_addr, member_gender, member_email, enroll_date, adult_confirm, member_level) "
-				+ "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'n', 2)";
+				+ "values ('m' || to_char(sysdate, 'yymmdd') || lpad(seq_member.nextval, 4, '0'), ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'n', 2)";
 		// String query = "insert into tbl_member values (to_char(seq_member.nextval),
 		// ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'N', 2)";
 
@@ -399,7 +399,6 @@ public class MemberDao {
 		return revList;
 	}
 
-	// 리뷰 삭제
 
 	// 예약 확인
 	public ArrayList<Book> memberBookList(Connection conn, String memberNo) {
@@ -496,17 +495,19 @@ public class MemberDao {
 	public int bookingMember(Connection conn, Book book) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, 'm2411140021', to_date (?, 'yyyy/mm/dd'), ?, ?)";
+
+		String query = "insert into tbl_book values ( 'b' || to_char(sysdate, 'yymmdd') || lpad(seq_book.nextval, 4, '0'), ?, ?, to_date (?, 'yyyy/mm/dd'), ?, ?)";
 
 		try {
 
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, "dinner_no");
-			// pstmt.setString(2, "member_no");
-			pstmt.setString(2, "book_date");
-			pstmt.setString(3, "book_time");
-			pstmt.setString(4, "book_cnt");
-			pstmt.executeUpdate();
+			pstmt.setString(1, book.getDinnerNo());
+			pstmt.setString(2, book.getMemberNo());
+			pstmt.setString(3, book.getBookDate());
+			pstmt.setString(4, book.getBookTime());
+			pstmt.setInt(5, book.getBookCnt());
+			result = pstmt.executeUpdate();
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -790,6 +791,75 @@ public class MemberDao {
 	    return isUpdated;
 	}
 
+	public Book getDupBookChk(Connection conn, String memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select * from tbl_book where member_no= ?";
+		Book book = new Book();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				book.setBookNo(rset.getString("book_no"));
+				book.setBookNo(memberNo);
+				book.setBookNo(rset.getString("book_date"));
+				book.setBookNo(rset.getString("book_time"));
+				book.setBookNo(rset.getString("book_cnt"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return book;
+	}
+	
+	//예약 취소 - 마이페이지
+	public int memberDelBook(Connection conn, String bookNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = "delete from tbl_book where book_no = ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, bookNo);
+
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
+	
+	//리뷰삭제 - 마이페이지
+	public int memberDelReview(Connection conn, String reviewNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = "delete from tbl_review where review_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, reviewNo);
+
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
 }
 	
 

@@ -7,61 +7,108 @@
 <title>Insert title here</title>
 
 <style>
-/* 시간표 버튼 스타일 */
-.time-list {
-	list-style: none;
-	padding: 0;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
 }
 
-.time-list li {
-	display: inline-block;
-	padding: 10px 15px;
-	background-color: #f30;
-	color: #fff;
-	border-radius: 5px;
-	cursor: pointer;
-	text-align: center;
-	transition: background-color 0.3s;
+/* 날짜 선택 */
+#resDate {
+    display: block;
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.time-list li.selected {
-	background-color: #f30;
+/* 버튼 스타일 */
+button.btn-primary {
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f40;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
 }
 
-.time-list li:hover {
-	background-color: #0056b3;
+button.btn-primary:focus {
+    background-color: #0056b3;
 }
 
-#resBtn:click {
-	display: inline-block;
+/* 인원수 버튼 및 라벨 */
+#cnt {
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-.btn-primary {
-	margin: 10px;
+/* 시간 선택 리스트 */
+ul.time-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    gap: 10px;
 }
 
-.time-button {
-	display: inline-block;
-	padding: 5px 10px;
-	border: 1px solid #ddd;
-	margin: 5px;
-	cursor: pointer;
+ul.time-list li {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    width: calc(25% - 10px); /* 4개 한 줄 배치 */
+    box-sizing: border-box;
 }
 
-.time-button.selected {
-	background-color: #007bff;
-	color: white;
+ul.time-list li:focus {
+    background-color: #f40;
+    border-color: #007BFF;
 }
+
+ul.time-list li.selected {
+    background-color: #f40;
+    color: white;
+    border-color: #0056b3;
+}
+
+/* 예약 확인 버튼 */
+button[type="submit"] {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #000;
+    border-color: #000;
+    border-radius: 4px;
+}
+
+button[type="submit"]:hover {
+    background-color: #f40;
+}
+
 </style>
 </head>
 <body>
 	<form action="/member/reservation" method="get">
-		<input id="memberNo" type="hidden" name="${dinner.dinnerNo}" value="${dinner.dinnerNo}">
-		<input type="hidden" name="${member.memberId}">
-		
+		<input id="dinnerNo" type="hidden" name="dinnerNo" value="${dinner.dinnerNo}">
+		<input type="hidden" id="memberNo" name="memberNo"
+				value="${loginMember.memberNo}">
+		<span>${book.bookTime}</span>
+		<span>${book.bookDate}</span>
 		<div id="resDetail" style="margin-top: 20px;"></div>
 		<div class=resBtn id="resOption">
 			<label for="resDate">날짜 선택:</label> <input type="date" id="resDate"
@@ -76,25 +123,35 @@
 		</div>
 	</form>
 	<script>
+		let maxCnt = '${dinner.dinnerMaxPerson}';
+		let minCnt = 0;
 		document.getElementById("mBookCnt").addEventListener("click",
 				function() {
 					const cntInput = document.getElementById("cntInput");
 					const cnt = document.getElementById("cnt");
-					let count = parseInt(cntInput.value) || 0;
-					if (count > 0)
+					let count = parseInt(cntInput.value);
+					if (count > minCnt){
 						count--; // 인원수 감소
-					cntInput.value = count;
-					cnt.innerText = count;
+						cntInput.value = count;
+						cnt.innerText = count;
+					}else{
+						alert("인원수는 \${minCnt} 이상 입력바랍니다.");
+					}
+						
 				});
 
 		document.getElementById("pBookCnt").addEventListener("click",
 				function() {
 					const cntInput = document.getElementById("cntInput");
 					const cnt = document.getElementById("cnt");
-					let count = parseInt(cntInput.value) || 0;
+					let count = parseInt(cntInput.value);
+					if(count < maxCnt){
 					count++; // 인원수 증가
 					cntInput.value = count;
-					cnt.innerText = count;
+					cnt.innerText = count;						
+					}else{
+						alert("식당 수용할 인원수 이상입니다.");
+					}
 				});
 			
 		const openTime = parseInt('${dinner.dinnerOpen}', 10); // 예: '0900' -> 900
@@ -143,51 +200,7 @@
 		   }
 		
 		
-
-		/*
-		 document.getElementById('reserveBtn').addEventListener('click',
-		 function() {
-		 const resEl = document.getElementById('resDetail');
-
-		 // 선택된 시간이 없거나 인원 수가 0명 이하일 때 안내 메시지 출력
-		
-		 if (!selectedTime) {
-		 resEl.innerText = '시간을 선택해 주세요.';
-		 return;
-		 }
-		 if (bookCount <= 0) {
-		 resEl.innerText = '인원 수를 선택해 주세요.';
-		 return;
-		 }
-		
-		 });
-
-		 document.getElementById('reserveBtn').addEventListener('click',
-		 function() {
-		 const resOption = document.getElementById('resOption');
-		 if (resOption.style.display === 'none') {
-		 resOption.style.display = 'block'; // 예약 옵션 div를 표시
-		 } else {
-		 resOption.style.display = 'none';
-		 }
-		 });
-
-		 const form = document.createElement('form');
-		 form.method = 'POST';
-		 form.action = '/dinner/bookDinner'; // 서블릿 경로로 변경
-
-
-		 // 선택된 시간 값 전달
-		 const timeInput = document.createElement('input');
-		 timeInput.type = 'hidden';
-		 timeInput.name = 'bookTime';
-		 timeInput.value = selectedTime.innerText;
-		 form.appendChild(timeInput);
-		 console.log(timeInput);
-		 // 폼을 문서에 추가하고 전송
-		 document.body.appendChild(form);
-		 form.submit();
-		 */
+			
 
 		let resDate = new Date();
 		 

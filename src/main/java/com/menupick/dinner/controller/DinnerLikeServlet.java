@@ -38,13 +38,16 @@ public class DinnerLikeServlet extends HttpServlet {
 		String dinnerNo = request.getParameter("dinner_no");
 		String dinnerName = request.getParameter("dinner_name");
 		
+
 		// 3. 로직
 		ArrayList<Dinner> dinnerList = new ArrayList<Dinner>();
 		DinnerService service = new DinnerService();
 		dinnerList = service.likeDinner(dinnerNo, dinnerName);
+
 		
 		// 4. 결과 처리
 		request.setAttribute("dinnerList", dinnerList);
+		
 		request.getRequestDispatcher("/WEB-INF/views/dinner/search.jsp").forward(request, response);
 	}
 

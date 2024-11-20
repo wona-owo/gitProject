@@ -32,15 +32,17 @@ public class DinnerDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String dinnerNo = request.getParameter("dinner_no");
-		String foodNo = request.getParameter("food_no");
-
+		String dinnerNo = request.getParameter("dinnerNo");
+		
+		
 		DinnerService service = new DinnerService();
-		MemberService mservice = new MemberService();
+		
 		Dinner dinner = service.dinnerDetail(dinnerNo);
 
+		
 		request.setAttribute("dinner", dinner);
-
+		
+		
 		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
 
 	}

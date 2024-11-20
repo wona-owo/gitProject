@@ -4,7 +4,7 @@ AJAX with : DinnerCalendarReservationServlet.java (/dinner/reservation)
 To : DinnerCheckReservationServlet.java (/dinner/checkReservation)
 
 스크립트를 이용해서 달력을 생성
-ajax 를 이용해서 달력에서 보여지는 달에 해당하는 예약 정보를 json 형태로 받아옴
+AJAX 를 이용해서 달력에서 보여지는 달에 해당하는 예약 정보를 JSON 형태로 받아옴
 예약 있는 날을 클릭하면 예약을 상세보기/취소 할수 있는 페이지로 이동
 
 Author : front-end : 정원화
@@ -80,7 +80,6 @@ section {
 	align-items: center;
 	justify-content: center;
 	padding: 10px;
-	cursor: pointer;
 	border: 1px solid #dcdcdc;
 	text-align: center;
 	box-sizing: border-box;
@@ -104,6 +103,7 @@ section {
 
 .days span.has-number:hover {
 	background-color: rgba(255, 68, 0, 0.1);
+	cursor: pointer;
 }
 
 .days .today {
@@ -259,14 +259,18 @@ section {
 
 							dinnerNo = $("#dinnerNo").val();
 
-							const dayLink = $("<a></a>").attr( "href",
+							const dayLink = $("<a></a>")
+									.attr(
+											"href",
 											bookCnt ? "/dinner/checkReservation?dinnerNo="
 													+ dinnerNo
 													+ "&day="
 													+ day
 													+ "&month="
 													+ month
-													+ "&year=" + year : null).addClass( bookCnt ? "" : "disabled");
+													+ "&year=" + year
+													: null).addClass(
+											bookCnt ? "" : "disabled");
 
 							dayLink.append(dayEl);
 							daysContainer.append(dayLink);
@@ -298,12 +302,11 @@ section {
 
 			// dinnerReservation.jsp 에서 예약 취소 하고 돌아올때 페이지를 새로고침 시켜주기
 			window.addEventListener('pageshow', function(event) {
-			    if (event.persisted) {
-			        // The page is shown from the back-forward cache
-			        renderCalendar();
-			    }
+				if (event.persisted) {
+					// The page is shown from the back-forward cache
+					renderCalendar();
+				}
 			});
-
 		});
 	</script>
 </body>
