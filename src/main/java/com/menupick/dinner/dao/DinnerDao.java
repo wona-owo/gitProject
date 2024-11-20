@@ -801,7 +801,10 @@ public class DinnerDao {
 	}
 	public List<Menu> getMenuByDinnerNo(Connection conn, String dinnerNo, String foodNo) {
 	    List<Menu> menuList = new ArrayList<>();
-	    String sql = "SELECT dinner_no, food_no, price FROM tbl_menu WHERE dinner_no = ? AND food_no = ?";
+	    String sql = "SELECT m.dinner_no, m.food_no, m.price, f.food_name " +
+                "FROM tbl_menu m " +
+                "JOIN tbl_food f ON m.food_no = f.food_no " +
+                "WHERE m.dinner_no = ? AND m.food_no = ?";
 	    
 	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 	    	 pstmt.setString(1, dinnerNo); 
@@ -812,6 +815,7 @@ public class DinnerDao {
 	                menu.setDinnerNo(rs.getString("dinner_no"));
 	                menu.setFoodNo(rs.getString("food_no"));
 	                menu.setPrice(rs.getInt("price"));
+	                menu.setFoodName(rs.getString("food_name"));
 	                menuList.add(menu);
 	            }
 	        }

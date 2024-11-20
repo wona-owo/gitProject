@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.menupick.review.model.service.ReviewService;
+
 /**
  * Servlet implementation class ReviewReportFrmServlet
  */

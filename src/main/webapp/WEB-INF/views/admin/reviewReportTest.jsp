@@ -128,20 +128,38 @@
 <script>
 
 	//리뷰 신고 성공여부 알림창
+	
 	function reportReview(reviewNo, memberNo) {
-		$.ajax({
-			url : "/review/report",
-			type : "GET",
-			data : {
-				review_no : reviewNo,
-				member_no : memberNo
-			},
-			success : function(response) {
-				// 서버에서 반환된 텍스트 메시지를 표시
-				swal("알림", "리뷰 신고가 완료되었습니다.", "success");
-			},
-			error : function() {
-				swal("오류", "리뷰 신고 중 오류가 발생하였습니다", "error");
+		swal({
+			title : "리뷰 신고",
+			text : "이 리뷰를 신고하시겠습니까?",
+			icon : "warning",
+			buttons : {
+				cancel : "취소",
+				confirm : "신고"
+			}
+		}).then(function(confirm) {
+			if (confirm) {
+				$.ajax({
+					url : "/review/report",
+					type : "GET",
+					data : {
+						review_no : reviewNo,
+						member_no : memberNo
+					},
+					success : function(response) {
+						if (response === "success") {
+							swal("알림", "리뷰 신고가 완료되었습니다.", "success");
+						} else if (response === "already_reported") {
+							swal("알림", "이미 신고된 리뷰입니다.", "info");
+						} else {
+							swal("오류", "알 수 없는 오류가 발생하였습니다.", "error");
+						}
+					},
+					error : function() {
+						swal("오류", "리뷰 신고 중 오류가 발생하였습니다.", "error");
+					}
+				});
 			}
 		});
 	}
