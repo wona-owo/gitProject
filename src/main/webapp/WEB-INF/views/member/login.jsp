@@ -100,8 +100,8 @@ input[type="checkbox"] {
 					</div>
 
 					<div class="member-link-box">
-						<a href="/join/selectFrm">회원가입</a> | <button type="button" onclick="showIdSearchPopup()" class="search">아이디 찾기</button> | <a
-							href="javascript:void(0)" onclick="showPwSearchPopup()">비밀번호 찾기</a>
+						<a href="/join/selectFrm">회원가입</a> | <button type="button" onclick="showIdSearchPopup()" class="search">아이디 찾기</button> | 
+						<a href="javascript:void(0)" onclick="showPwSearchPopup()">비밀번호 찾기</a>
 					</div>
 				</form>
 			</section>
