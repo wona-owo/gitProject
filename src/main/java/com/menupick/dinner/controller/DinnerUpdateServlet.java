@@ -117,10 +117,11 @@ public class DinnerUpdateServlet extends HttpServlet {
 		updDinner.setBusiNo(busiNo);
 		updDinner.setDinnerMaxPerson(dinnerMaxPerson);
 		updDinner.setDinnerConfirm(dinnerConfirm);
+		updDinner.setPhotoList(photoList);
 
 		DinnerService service = new DinnerService();
 
-		if (photoList != null) {
+		if (photoList != null && !photoList.isEmpty()) {
 			updDinner.setPhotoList(photoList);
 
 			String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
@@ -131,14 +132,10 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 				File file = new File(absolutePath);
 				if (file.exists()) {
-					if (file.delete()) {
-						System.out.println("File deleted successfully: " + absolutePath);
-					} else {
-						System.out.println("Failed to delete file: " + absolutePath);
-					}
-				} else {
-					System.out.println("File does not exist: " + absolutePath);
+					file.delete();
 				}
+
+				service.insertFakePhoto(dinnerNo);
 			}
 		}
 
