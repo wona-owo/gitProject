@@ -102,6 +102,7 @@
 					method="post" onsubmit="return validateAndConfirmUpdate();"
 					enctype="multipart/form-data">
 					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}" />
+					<input type="hidden" name="dinnerId" value="${dinner.dinnerId}" />
 					<input type="hidden" name="photoPath" value="${photoPath}" />
 
 					<table class="tbl">
@@ -167,10 +168,10 @@
 						<tr>
 							<th>주차 여부</th>
 							<td><select name="dinnerParking" required>
-									<option value="Y"
-										${dinner.dinnerParking == 'Y' ? 'selected' : ''}>Y</option>
-									<option value="N"
-										${dinner.dinnerParking == 'N' ? 'selected' : ''}>N</option>
+									<option value="y"
+										${dinner.dinnerParking == 'y' ? 'selected' : ''}>Y</option>
+									<option value="n"
+										${dinner.dinnerParking == 'n' ? 'selected' : ''}>N</option>
 							</select></td>
 						</tr>
 						<tr>
