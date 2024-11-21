@@ -20,21 +20,21 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         super();
     }
 
-    // POST 요청 처리
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // POST 요청을 GET 요청처럼 처리
         doGet(request, response);
     }
 
-    // GET 요청 처리
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 값 추출
         String dinnerNo = request.getParameter("dinnerNo");
         String dinnerName = request.getParameter("dinnerName");
         String dinnerId = request.getParameter("dinnerId");
         String dinnerAddr = request.getParameter("dinnerAddr");
-        String dinnerOpen = request.getParameter("dinnerOpen");
-        String dinnerClose = request.getParameter("dinnerClose");
+
+        // 입력받은 시간 값에서 ':' 제거
+        String dinnerOpen = request.getParameter("dinnerOpen").replace(":", "");
+        String dinnerClose = request.getParameter("dinnerClose").replace(":", "");
+
         String dinnerPhone = request.getParameter("dinnerPhone");
         String dinnerEmail = request.getParameter("dinnerEmail");
         String dinnerParking = request.getParameter("dinnerParking");
@@ -48,8 +48,8 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         updDinner.setDinnerName(dinnerName);
         updDinner.setDinnerId(dinnerId);
         updDinner.setDinnerAddr(dinnerAddr);
-        updDinner.setDinnerOpen(dinnerOpen);
-        updDinner.setDinnerClose(dinnerClose);
+        updDinner.setDinnerOpen(dinnerOpen); // ':' 제거된 형식 저장
+        updDinner.setDinnerClose(dinnerClose); // ':' 제거된 형식 저장
         updDinner.setDinnerPhone(dinnerPhone);
         updDinner.setDinnerEmail(dinnerEmail);
         updDinner.setDinnerParking(dinnerParking);
@@ -61,13 +61,21 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
         DinnerService service = new DinnerService();
         int result = service.updateDinner(updDinner);
 
-        // 결과 처리
         if (result > 0) {
-            // 성공 시
+            // 성공 시: 포맷팅된 데이터를 다시 화면에 표시
+            Dinner updatedDinner = service.getDinnerByNo(dinnerNo);
+            if (updatedDinner != null) {
+                // 시간 데이터에 ':' 추가
+                updatedDinner.setDinnerOpen(formatTimeWithColon(updatedDinner.getDinnerOpen())); 
+                updatedDinner.setDinnerClose(formatTimeWithColon(updatedDinner.getDinnerClose()));
+                
+                request.setAttribute("dinner", updatedDinner); // 포맷팅된 데이터 전달
+            }
+
             request.setAttribute("title", "알림");
-            request.setAttribute("msg", "매장 정보가 수정되었습니다. ");
+            request.setAttribute("msg", "매장 정보가 수정되었습니다.");
             request.setAttribute("icon", "success");
-            request.setAttribute("loc", "/");
+            request.setAttribute("loc", "/"); 
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
             dispatcher.forward(request, response);
@@ -81,5 +89,13 @@ public class AdminDinnerUpdateServlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
             dispatcher.forward(request, response);
         }
+    }
+
+    // 시간 데이터 포맷팅 메서드
+    private String formatTimeWithColon(String time) {
+        if (time != null && time.length() == 4) {
+            return time.substring(0, 2) + ":" + time.substring(2);
+        }
+        return time; // 잘못된 형식은 그대로 반환
     }
 }

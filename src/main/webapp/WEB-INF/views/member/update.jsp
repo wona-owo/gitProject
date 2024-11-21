@@ -248,7 +248,6 @@ button:hover {
         }
     });
 	
-	
 	$('#idDuplChkBtn').on('click', function(){
         if(!checkObj.memberId){
             msg("알림", "유효한 아이디를 입력한 후 중복체크를 진행하세요", "error");
