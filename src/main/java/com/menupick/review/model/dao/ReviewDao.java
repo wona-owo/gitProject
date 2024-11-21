@@ -49,6 +49,48 @@ public class ReviewDao {
 		
 		return reviews;
 	}
+	
+	//식당상세페이지(경래) 리뷰 조회 (식당이름 조인시킴)
+		public List<Review> getReviewsBydinnerNo(Connection conn, String dinnerNo, String orderBy) {
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			List<Review> reviews = new ArrayList<>();
+			
+			String query = "SELECT r.review_no, r.dinner_no, r.member_no, m.member_nick, r.review_con, "
+	                 + "r.review_img, r.review_date, d.dinner_name "
+	                 + "FROM tbl_review r "
+	                 + "JOIN tbl_dinner d ON r.dinner_no = d.dinner_no "
+	                 + "JOIN tbl_member m ON r.member_no = m.member_no "
+	                 + "WHERE r.dinner_no = ? "
+	                 + "ORDER BY " + orderBy;
+
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, dinnerNo);
+				rset = pstmt.executeQuery();
+				
+				while(rset.next()) {
+					Review review = new Review();
+	                review.setReviewNo(rset.getString("review_no"));
+	                review.setDinnerNo(rset.getString("dinner_no"));
+	                review.setMemberNo(rset.getString("member_no"));
+	                review.setReviewContent(rset.getString("review_con"));
+	                review.setReviewImage(rset.getBytes("review_img"));
+	                review.setReviewDate(rset.getDate("review_date"));
+	                review.setDinnerName(rset.getString("dinner_name"));
+	                review.setMemberNick(rset.getString("member_nick"));
+
+	                reviews.add(review);
+	            }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				JDBCTemplate.close(rset);
+				JDBCTemplate.close(pstmt);
+			}
+			
+			return reviews;
+		}
 
 	//admin(경래) 리뷰 선택 삭제
 	public int reviewRemoveAll(Connection conn, String reviewNo) {
@@ -192,4 +234,5 @@ public class ReviewDao {
 		
 		return result;
 	}
+
 }

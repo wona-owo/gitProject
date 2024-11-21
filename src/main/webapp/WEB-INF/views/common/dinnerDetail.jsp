@@ -180,7 +180,7 @@ textarea {
 			<input type="hidden" name="${dinner.dinnerNo}">
 			<input type="hidden" name="memberNo">
 					<div class="dinner-main-img">
-						<img src="/resources/images/${dinner.dinnerNo}.jpg" id="main-img"
+						<img src="/resources/photos/${photoPath}" id="main-img"
 							alt="Restaurant Image" />
 					</div>
 					<div class="restaurant-detail">
@@ -243,6 +243,11 @@ textarea {
 							    <c:param name="dinnerName" value="${dinner.dinnerName}" />
 							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
 							    <c:param name="memberNo" value="${member.memberNo}" />
+							</c:import>
+						</div>
+						<div>
+							<c:import url="/dinner/review">
+							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
 							</c:import>
 						</div>
 					</div>

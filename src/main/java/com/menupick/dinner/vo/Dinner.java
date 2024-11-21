@@ -32,5 +32,5 @@ public class Dinner {
 	private String foodNation;
 	private String foodCat;
 
-	
+	private ArrayList<Photo> photoList;
 }
