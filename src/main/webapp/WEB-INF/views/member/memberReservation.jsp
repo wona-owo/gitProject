@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-Book book = (Book) request.getAttribute("book");
+
 Member member = (Member) request.getAttribute("loginMember");
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -123,24 +123,32 @@ ul.time-list li.disabled {
 			id="memberNo" name="memberNo" value="${loginMember.memberNo}">
 
 
-		<span>${book.bookTime}</span> <span>${book.bookDate}</span>
+		
 		<div id="resDetail" style="margin-top: 20px;"></div>
 		<div class=resBtn id="resOption">
 			<label for="resDate">날짜 선택:</label> <input type="date" id="resDate"
 				name="bookDate" required>
+				<label id="person">인원수 :</label>
 			<button type="button" class="btn-primary" id="mBookCnt">-</button>
 			<label id="cnt" for="bookCnt">0</label> <input type="hidden"
 				name="bookCnt" id="cntInput" value="0">
 			<button type="button" class="btn-primary" id="pBookCnt">+</button>
 			<ul id="resTime" class="time-list"></ul>
 			<input type="hidden" name="bookTime" id="timeInput">
-			<button type="submit" class="btn-primary">확인</button>
+			<button type="submit" id="btn" class="btn-primary" >확인</button>
 		</div>
 	</form>
 	<script>
 		let maxCnt = '${dinner.dinnerMaxPerson}';
 		let minCnt = 0;
+		
+		// 제출 버튼 DOM 요소
+		const submitBtn = document.getElementById("btn");
 
+		// 초기 버튼 상태 설정
+		submitBtn.disabled = true;
+		
+		//인원수 감소
 		document.getElementById("mBookCnt").addEventListener("click",
 				function() {
 					const cntInput = document.getElementById("cntInput");
@@ -150,11 +158,12 @@ ul.time-list li.disabled {
 						count--; // 인원수 감소
 						cntInput.value = count;
 						cnt.innerText = count;
+						submitBtnFunc(count);
 					} else {
-						alert("인원수는 " + minCnt + " 이상 입력바랍니다.");
+						alert("인원수는 " + '\${minCnt}' + " 이상 입력바랍니다.");
 					}
 				});
-
+		//인원수 증가
 		document.getElementById("pBookCnt").addEventListener("click",
 				function() {
 					const cntInput = document.getElementById("cntInput");
@@ -164,20 +173,26 @@ ul.time-list li.disabled {
 						count++; // 인원수 증가
 						cntInput.value = count;
 						cnt.innerText = count;
+						submitBtnFunc(count);
 					} else {
 						alert("식당 수용할 인원수 이상입니다.");
 					}
 				});
+		
+		function submitBtnFunc(count) {
+			submitBtn.disabled = count === minCnt; // 인원수가 0이면 비활성화, 1 이상이면 활성화
+			
+		}
 
 		const openTime = parseInt('${dinner.dinnerOpen}', 10); // 예: '0900' -> 900
 		const closeTime = parseInt('${dinner.dinnerClose}', 10); // 예: '1800' -> 1800
 		const interval = 100; // 1시간 간격 (100 단위)
 		let selectedTime = null;
-
+		
 		// 예약된 시간 조회 및 UI 비활성화
 		function fetchReservedTimes(bookDate) {
 			const dinnerNo = document.getElementById("dinnerNo").value;
-
+			
 			if (bookDate) {
 				$.ajax({
 					url : '/member/checkReservedTimes',
@@ -211,7 +226,7 @@ ul.time-list li.disabled {
 				});
 			}
 		}
-
+		
 		// 시간 클릭 핸들러
 		function handleTimeSelection(event) {
 			const liEl = event.target;
@@ -220,12 +235,12 @@ ul.time-list li.disabled {
 			}
 			liEl.classList.add("selected");
 			selectedTime = liEl;
-
+			
 			// 선택된 시간을 hidden input에 저장
 			document.getElementById("timeInput").value = liEl
 					.getAttribute("data-time");
 		}
-
+		
 		// 시간대 생성
 		const ulEl = document.getElementById("resTime");
 		for (let hour = openTime; hour <= closeTime; hour += interval) {
@@ -240,14 +255,14 @@ ul.time-list li.disabled {
 			liEl.addEventListener("click", handleTimeSelection);
 			ulEl.appendChild(liEl);
 		}
-
+		
 		// 날짜 변경 시 예약된 시간 조회
 		document.getElementById("resDate").addEventListener("change",
 				function() {
 					const bookDate = this.value; // 'YYYY/MM/DD' 형식
 					fetchReservedTimes(bookDate);
 				});
-
+		
 		// 초기화: 오늘 날짜로 예약된 시간 조회
 		const today = new Date();
 		const yyyy = today.getFullYear();
