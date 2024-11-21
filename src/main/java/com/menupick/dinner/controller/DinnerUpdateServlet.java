@@ -78,6 +78,7 @@ public class DinnerUpdateServlet extends HttpServlet {
 		String busiNo = mRequest.getParameter("busiNo");
 		String dinnerMaxPerson = mRequest.getParameter("dinnerMaxPerson");
 		String dinnerConfirm = mRequest.getParameter("dinnerConfirm");
+		String photoPath = mRequest.getParameter("photoPath");
 
 		// 기본값 설정
 		if (dinnerConfirm == null || dinnerConfirm.isEmpty()) {
@@ -117,25 +118,25 @@ public class DinnerUpdateServlet extends HttpServlet {
 		updDinner.setBusiNo(busiNo);
 		updDinner.setDinnerMaxPerson(dinnerMaxPerson);
 		updDinner.setDinnerConfirm(dinnerConfirm);
-		updDinner.setPhotoList(photoList);
 
 		DinnerService service = new DinnerService();
 
-		if (photoList != null && !photoList.isEmpty()) {
-			updDinner.setPhotoList(photoList);
+		if (photoPath.length() < 1) {
+			System.out.println("no prev pic");
+			service.insertFakePhoto(dinnerNo);
+		}
 
-			String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
-			String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
+		updDinner.setPhotoList(photoList);
 
-			if (prevPhotoPath != null) {
-				absolutePath += prevPhotoPath;
+		String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
+		String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
 
-				File file = new File(absolutePath);
-				if (file.exists()) {
-					file.delete();
-				}
+		if (prevPhotoPath != null) {
+			absolutePath += prevPhotoPath;
 
-				service.insertFakePhoto(dinnerNo);
+			File file = new File(absolutePath);
+			if (file.exists()) {
+				file.delete();
 			}
 		}
 

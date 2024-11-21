@@ -102,6 +102,7 @@
 					method="post" onsubmit="return validateAndConfirmUpdate();"
 					enctype="multipart/form-data">
 					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}" />
+					<input type="hidden" name="photoPath" value="${photoPath}" />
 
 					<table class="tbl">
 						<tr>
