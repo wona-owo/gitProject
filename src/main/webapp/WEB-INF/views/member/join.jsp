@@ -318,17 +318,25 @@ button:hover {
         pwMessage.removeClass('valid');
         pwMessage.removeClass('invalid');
         
-        const regExp = /(?=.*[0-9])(?=.*[!@#$%^&*()-_=+])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*()-_=+]{8,20}$/;
+        const regExp = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,20}$/;
 
         
         if(regExp.test($(this).val())){
             checkObj.memberPw = true;
             pwMessage.html("");
             pwMessage.addClass("valid");
+         // 비밀번호가 유효할 때만 비밀번호 확인 일치 여부를 검사
+            if (memberPwConfirm.val() !== "") {
+                checkPasswordMatch();
+            }
         }else{
             pwMessage.html("비밀번호 형식이 유효하지 않습니다");
             pwMessage.addClass("invalid");
             checkObj.memberPw = false;
+         // 비밀번호 형식이 유효하지 않으면 비밀번호 확인 메시지 초기화
+            pwConfirmMessage.html("");
+            pwConfirmMessage.removeClass('valid invalid');
+            checkObj.memberPwConfirm = false;
         }
     });
 	
@@ -344,6 +352,20 @@ button:hover {
             checkObj.memberPwConfirm = false;
         }
     });
+    
+    function checkPasswordMatch() {
+        pwConfirmMessage.removeClass('valid invalid');
+
+        if (dinnerPw.val() === dinnerPwConfirm.val()) {
+            pwConfirmMessage.html("비밀번호가 일치합니다");
+            pwConfirmMessage.addClass('valid');
+            checkObj.dinnerPwConfirm = true;
+        } else {
+            pwConfirmMessage.html("비밀번호가 일치하지 않습니다");
+            pwConfirmMessage.addClass('invalid');
+            checkObj.dinnerPwConfirm = false;
+        }
+    }
 	
 	const memberPhone = $('#memberPhone');
 	const phoneMessage = $('#phoneMessage');
