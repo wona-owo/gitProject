@@ -194,7 +194,7 @@
 					<div class="mypage-btn">
 						<button type="button" onclick="deleteDinner()" class="btn-primary">회원탈퇴</button>
 						<button type="button"
-							onclick="window.location.href='/admin/DinnerPageFrm'"
+							onclick="window.location.href='${pageContext.request.contextPath}/dinner/dinnerPageFrm?dinnerNo=${dinner.dinnerNo}'"
 							class="btn-primary" style="margin-left: 30px;">매장 상세페이지
 							이동</button>
 						<button type="submit" class="btn-primary">정보 수정</button>
