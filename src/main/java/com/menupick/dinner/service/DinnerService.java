@@ -299,7 +299,14 @@ public class DinnerService {
 	    Photo photo = new Photo();
 	    photo.setDinnerNo(dinnerNo);
 	    int result = dao.insertDinnerPhoto(conn, photo);
+	    
+	    if (result > 0) {
+	    	JDBCTemplate.commit(conn);
+	    } else {
+	    	JDBCTemplate.rollback(conn);
+	    }
 	    System.out.println("DinnerService insertFakePhoto() result : " + result);
+
 	    JDBCTemplate.close(conn); 
 	}
 }
