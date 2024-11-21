@@ -10,7 +10,6 @@
 	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <style>
 /* 페이지 전체 스타일 */
 body {
@@ -110,7 +109,7 @@ body {
 }
 
 /* 기본 주소와 상세 주소 입력란을 한 줄에 나란히 배치 */
-#UserAdd1 {
+#dinnerAddr {
 	width: 60%;
 	display: inline-block;
 	padding: 12px 15px;
@@ -123,19 +122,6 @@ body {
 	box-sizing: border-box;
 	margin-top: 1%;
 	margin-right: 0.5%;
-}
-
-#UserAdd2 {
-	width: 39%;
-	display: inline-block;
-	padding: 12px 15px;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	background-color: #fafafa;
-	font-size: 14px;
-	color: #333;
-	transition: border-color 0.3s, box-shadow 0.3s;
-	box-sizing: border-box;
 }
 
 /* 우편번호 찾기 버튼과 기본주소 및 상세주소가 잘 보이도록 여백 설정 */
@@ -297,15 +283,14 @@ body {
 			<div class="form-group">
 				<label for="dinnerAddr">식당 주소</label>
 				<div>
-					<input type="text" id="zipp_code_id" name="zipp_code"
+					<input type="hidden" id="zipp_code_id" name="zipp_code"
 						maxlength="10" placeholder="우편번호"
 						style="width: 50%; display: inline;">
+						
+					<input type="text" name="dinnerAddr" id="dinnerAddr" maxlength="40"
+						placeholder="기본 주소를 입력하세요" required> 
 					<button type="button" id="zipp_btn" class="btn btn-primary"
 						onclick="execDaumPostcode()">찾기</button>
-					<input type="text" name="user_add1" id="UserAdd1" maxlength="40"
-						placeholder="기본 주소를 입력하세요" required> <input type="text"
-						name="user_add2" id="UserAdd2" maxlength="40"
-						placeholder="상세 주소를 입력하세요">
 				</div>
 			</div>
 
@@ -343,9 +328,9 @@ body {
 
 									// 선택된 주소 정보를 해당 필드에 입력
 									document.getElementById('zipp_code_id').value = data.zonecode; // 우편번호
-									document.getElementById('UserAdd1').value = addr
+									document.getElementById('dinnerAddr').value = addr
 											+ extraAddr; // 기본 주소
-									document.getElementById('UserAdd2').focus(); // 상세주소로 포커스 이동
+									document.getElementById('dinnerAddr').focus(); // 상세주소로 포커스 이동
 								}
 							}).open();
 				}
@@ -405,7 +390,6 @@ body {
 					placeholder="예: 123-45-67890">
 			</div>
 
-			<%-- 매장 사진 업로드 --%>
 			<%-- daniel --%>
 			<div class="form-group">
 				<label for="uploadFile">매장 사진 업로드</label> <input type="file"

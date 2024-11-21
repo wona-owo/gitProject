@@ -71,11 +71,7 @@ public class DinnerJoinServlet extends HttpServlet {
 		}
 
         String dinnerName = mRequest.getParameter("dinnerName");
-        
-        String zipp_code = mRequest.getParameter("zipp_code"); // 우편번호
-		String userAdd1 = mRequest.getParameter("user_add1");   // 기본 주소
-		String userAdd2 = mRequest.getParameter("user_add2");   // 상세 주소
-		
+        String dinnerAddr = mRequest.getParameter("dinnerAddr"); // 우편번호
         String dinnerOpen = mRequest.getParameter("dinnerOpen");
         String dinnerClose = mRequest.getParameter("dinnerClose");
         String dinnerPhone = mRequest.getParameter("dinnerPhone");
@@ -85,8 +81,6 @@ public class DinnerJoinServlet extends HttpServlet {
         String busiNo = mRequest.getParameter("busiNo");
         String dinnerId = mRequest.getParameter("dinnerId");
         String dinnerPw = mRequest.getParameter("dinnerPw");
-        
-        String dinnerAddr = zipp_code + " " + userAdd1 + " " + userAdd2;
         
         Dinner d = new Dinner();
         
