@@ -24,14 +24,14 @@ public class MemberSearchPwFrmServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-   /**
-    * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-    */
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      // TODO Auto-generated method stub
-      RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/searchPw.jsp");
-      view.forward(request, response);
-   }
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/searchPw.jsp");
+		view.forward(request, response);
+	}
 
 
    /**

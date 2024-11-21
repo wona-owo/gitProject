@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
@@ -721,21 +723,22 @@ public class MemberDao {
 		return isUpdated;
 	}
 
-	public Book getDupBookChk(Connection conn, String memberNo) {
+	public boolean getDupBookChk(Connection conn, String memberNo, String bookTime, String bookDate) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select * from tbl_book where member_no= ?";
-		Book book = new Book();
+		 boolean dupBook = false;
+		String query = "SELECT COUNT(*) FROM tbl_book WHERE member_no = ? AND book_date = to_date(?) AND book_time = ?";
+		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
+			pstmt.setString(2, bookDate);
+			pstmt.setString(3, bookTime);
 			rset = pstmt.executeQuery();
-			if (rset.next()) {
-				book.setBookNo(rset.getString("book_no"));
-				book.setBookNo(memberNo);
-				book.setBookNo(rset.getString("book_date"));
-				book.setBookNo(rset.getString("book_time"));
-				book.setBookNo(rset.getString("book_cnt"));
+			
+			if(rset.next()) {
+				int cnt = rset.getInt(1);
+				dupBook = cnt > 0;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -744,7 +747,8 @@ public class MemberDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-		return book;
+		
+		return dupBook;
 	}
 
 	// 예약 취소 - 마이페이지
@@ -769,7 +773,34 @@ public class MemberDao {
 		return result;
 	}
 
-	// 리뷰삭제 - 마이페이지
+
+	public List<String> getReservedTimes(Connection conn, String dinnerNo, String bookDate) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<String> reservedTimes = new ArrayList<>(); 
+		String query = "SELECT BOOK_TIME FROM TBL_BOOK WHERE DINNER_NO = ? AND BOOK_DATE = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo);
+			pstmt.setString(2, bookDate);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				reservedTimes.add(rset.getString("BOOK_TIME"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+	
+		return reservedTimes;
+	}
+
+	
+	//리뷰삭제 - 마이페이지
 	public int memberDelReview(Connection conn, String reviewNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -812,6 +843,7 @@ public class MemberDao {
 		}
 
 		return result;
+
 	}
 
 	// 식당 상세페이지 멤버값 가져오기(경래)

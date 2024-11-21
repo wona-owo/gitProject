@@ -3,9 +3,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
+
 Member member = (Member) request.getAttribute("loginMember");
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -115,7 +117,7 @@ ul.time-list li.disabled {
 </style>
 </head>
 <body>
-
+	
 	<form action="/member/reservation" method="get">
 		<input id="dinnerNo" type="hidden" name="dinnerNo"
 			value="${dinner.dinnerNo}"> <input type="hidden"
@@ -123,29 +125,30 @@ ul.time-list li.disabled {
 		<div id="resDetail" style="margin-top: 20px;"></div>
 		<div class=resBtn id="resOption">
 			<label for="resDate">날짜 선택:</label> <input type="date" id="resDate"
-				name="bookDate" required> <label id="person">인원수 :</label>
+				name="bookDate" required>
+				<label id="person">인원수 :</label>
 			<button type="button" class="btn-primary" id="mBookCnt">-</button>
 			<label id="cnt" for="bookCnt">0</label> <input type="hidden"
 				name="bookCnt" id="cntInput" value="0">
 			<button type="button" class="btn-primary" id="pBookCnt">+</button>
 			<ul id="resTime" class="time-list"></ul>
 			<input type="hidden" name="bookTime" id="timeInput">
-			<button type="submit" id="btn" class="btn-primary">확인</button>
+			<button type="submit" id="btn" class="btn-primary" >확인</button>
 		</div>
-
+		    
 
 	</form>
-
+    
 	<script>
 		let maxCnt = '${dinner.dinnerMaxPerson}';
 		let minCnt = 0;
-
+		
 		// 제출 버튼 DOM 요소
 		const submitBtn = document.getElementById("btn");
-
+		
 		// 초기 버튼 상태 설정
 		submitBtn.disabled = true;
-
+		
 		//인원수 감소
 		document.getElementById("mBookCnt").addEventListener("click",
 				function() {
@@ -223,7 +226,6 @@ ul.time-list li.disabled {
 				});
 			}
 		}
-
 		// 시간 클릭 핸들러
 		function clickTime(e) {
 			const liEl = e.target;
@@ -232,12 +234,10 @@ ul.time-list li.disabled {
 			}
 			liEl.classList.add("selected");
 			selectedTime = liEl;
-
 			// 선택된 시간을 hidden input에 저장
 			document.getElementById("timeInput").value = liEl
 					.getAttribute("data-time");
 		}
-
 		// 시간대 생성
 		const ulEl = document.getElementById("resTime");
 		for (let hour = openTime; hour <= closeTime; hour += interval) {
@@ -259,7 +259,6 @@ ul.time-list li.disabled {
 					const bookDate = this.value; // 'YYYY/MM/DD' 형식
 					resTime(bookDate);
 				});
-
 		// 초기화: 오늘 날짜로 예약된 시간 조회
 		const today = new Date();
 		const yyyy = today.getFullYear();//주어진 날짜 현지시간 기준으로 반환

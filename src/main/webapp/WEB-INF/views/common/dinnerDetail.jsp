@@ -290,14 +290,16 @@ textarea {
       }else {
     	  parking.innerHTML = "주차자리없음"
       }
-      
-      let isLogIn = <%=isLogIn%>;
+
+      //session member값 jstl로 불러옴 
+      let isLogIn = <%= isLogIn %>;
+
       function resBtn(){
-    	  if(isLogIn = null){
+    	  if(isLogIn != true){
     		  event.preventDefault();
     		  msg("알림","로그인 후 이용하세요","warning");
     	  }else{
-    		  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}&memberNo=${member.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
+    		  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
     	  }
       }
 

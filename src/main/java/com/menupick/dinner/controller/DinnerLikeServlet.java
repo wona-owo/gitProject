@@ -67,13 +67,14 @@ public class DinnerLikeServlet extends HttpServlet {
 				photoList.add(photo);
 			}
 		}
-
-		// 필터 중복 값 제거
-
-		// foodNation 값만 추출
-		Set<String> foodNation = dinnerList.stream().map(Dinner::getFoodNation).collect(Collectors.toSet());
-		Set<String> foodCat = dinnerList.stream().map(Dinner::getFoodCat).collect(Collectors.toSet());
-
+		//필터 중복 값 제거
+		Set<String> foodNation = dinnerList.stream()
+			    .map(Dinner::getFoodNation) // foodNation 값만 추출
+			    .collect(Collectors.toSet());
+		Set<String> foodCat = dinnerList.stream()
+				.map(Dinner::getFoodCat)
+				.collect(Collectors.toSet());
+			
 		// 4. 결과 처리
 		request.setAttribute("dinnerList", dinnerList);
 		request.setAttribute("foodNation", foodNation);

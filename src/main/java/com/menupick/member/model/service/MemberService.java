@@ -350,6 +350,8 @@ public class MemberService {
 	}
 
 	// 예약 취소
+	
+	//예약 취소
 	public int memberDelBook(String bookNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.memberDelBook(conn, bookNo);
@@ -365,6 +367,18 @@ public class MemberService {
 	}
 
 	// 리뷰 삭제
+
+	public List<String> getReservedTimes(String dinnerNo, String bookDate) {
+		Connection conn = JDBCTemplate.getConnection();
+		List<String> reservedTimes = new ArrayList<>();
+		reservedTimes = dao.getReservedTimes(conn, dinnerNo, bookDate);
+		JDBCTemplate.close(conn);
+		return reservedTimes;
+	}
+
+
+	
+	//리뷰 삭제
 	public int memberDelReview(String reviewNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.memberDelReview(conn, reviewNo);

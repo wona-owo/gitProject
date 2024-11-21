@@ -39,6 +39,7 @@ public class MemberReservationFrm extends HttpServlet {
 		request.setAttribute("dinner", dinner);
 		
 		
+		
 		request.getRequestDispatcher("/WEB-INF/views/member/memberReservation.jsp").forward(request, response);
 	}
 
