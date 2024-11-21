@@ -61,14 +61,14 @@ create sequence seq_food maxvalue 9999 cycle;
 
 -- tbl_food 데이터
 insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식1', '한식', '육류');
-insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식2', '양식', '찌개');
-insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식3', '일식', '국수');
-insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식4', '일식', '몰라');
-insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식1', '한식', '육류');
-insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식2', '양식', '찌개');
-insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식3', '일식', '국수');
-insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식4', '일식', '몰라');
-insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식5', '한식', '육류');
+insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식2', '양식', '육류');
+insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식3', '일식', '해산물');
+insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식4', '일식', '육류');
+insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식5', '양식', '디저트');
+insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식6', '일식', '디저트');
+insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식7', '한식', '디저트');
+insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식8', '한식', '해산물');
+insert into tbl_food values ( 'f' || to_char (sysdate, 'yymmdd') || lpad (seq_food.nextval, 4, '0'), '음식9', '양식', '해산물');
 
 create table
   tbl_menu (

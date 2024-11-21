@@ -1,7 +1,6 @@
 <%@page import="com.menupick.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 // 세션에서 로그인 상태 확인
 Boolean isLogIn = (session.getAttribute("loginMember") != null);
@@ -170,6 +169,11 @@ textarea {
 	font-size: 14px;
 	color: #555;
 }
+
+/* 김찬희가 로고 찌그러진거 해결함 */
+.logo-img {
+	width: unset;
+}
 /*------------리뷰 작성 모듈 여기까지---------------*/
 </style>
 
@@ -186,7 +190,7 @@ textarea {
 					<input type="hidden" name="${dinner.dinnerNo}"> <input
 						type="hidden" name="memberNo">
 					<div class="dinner-main-img">
-						<img src="/resources/images/${dinner.dinnerNo}.jpg" id="main-img"
+						<img src="/resources/photos/${photoPath}" id="main-img"
 							alt="Restaurant Image" />
 					</div>
 					<div class="restaurant-detail">
@@ -292,7 +296,7 @@ textarea {
       }
 
       //session member값 jstl로 불러옴 
-      let isLogIn = <%= isLogIn %>;
+      let isLogIn = <%=isLogIn%>;
 
       function resBtn(){
     	  if(isLogIn != true){
