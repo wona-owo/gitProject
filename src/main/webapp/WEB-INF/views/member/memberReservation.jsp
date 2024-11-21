@@ -1,11 +1,17 @@
+<%@page import="com.menupick.member.model.vo.Member"%>
+<%@page import="com.menupick.dinner.vo.Book"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+Member member = (Member) request.getAttribute("loginMember");
+%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>memberReservation.jsp</title>
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
 form {
@@ -109,6 +115,7 @@ ul.time-list li.disabled {
 </style>
 </head>
 <body>
+
 	<form action="/member/reservation" method="get">
 		<input id="dinnerNo" type="hidden" name="dinnerNo"
 			value="${dinner.dinnerNo}"> <input type="hidden"
@@ -258,7 +265,7 @@ ul.time-list li.disabled {
 		const yyyy = today.getFullYear();//주어진 날짜 현지시간 기준으로 반환
 		const mm = String(today.getMonth() + 1).padStart(2, "0");// 2글자로 day 반환 2자리면 ex)11
 		const dd = String(today.getDate()).padStart(2, "0");// 2글자로 day 반환 2자리면 ex)21
-		document.getElementById("resDate").value = `${yyyy}/${mm}/${dd}`;
+		document.getElementById("resDate").value = `${yyyy}/${mm}/${dd}`;//DB에 값 출력시
 	</script>
 </body>
 </html>

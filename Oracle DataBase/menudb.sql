@@ -177,5 +177,3 @@ create table
 create sequence seq_photo maxvalue 9999 cycle;
 
 commit;
-
-select * from tbl_member;
