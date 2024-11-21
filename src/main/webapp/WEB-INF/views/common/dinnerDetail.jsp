@@ -1,20 +1,18 @@
-<%@page import="com.menupick.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 // 세션에서 로그인 상태 확인
 Boolean isLogIn = (session.getAttribute("loginMember") != null);
 %>
 <%
-Member loginMember = (Member) session.getAttribute("loginMember");
+String dinnerNo = request.getParameter("dinnerNo");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>dinnerDetail</title>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 
 /* 시간표 버튼 스타일 */
@@ -169,11 +167,6 @@ textarea {
 	font-size: 14px;
 	color: #555;
 }
-
-/* 김찬희가 로고 찌그러진거 해결함 */
-.logo-img {
-	width: unset;
-}
 /*------------리뷰 작성 모듈 여기까지---------------*/
 </style>
 
@@ -190,7 +183,7 @@ textarea {
 					<input type="hidden" name="${dinner.dinnerNo}"> <input
 						type="hidden" name="memberNo">
 					<div class="dinner-main-img">
-						<img src="/resources/photos/${photoPath}" id="main-img"
+						<img src="/resources/images/${dinner.dinnerNo}.jpg" id="main-img"
 							alt="Restaurant Image" />
 					</div>
 					<div class="restaurant-detail">
@@ -253,17 +246,7 @@ textarea {
 					<div class="tab-content" id="review-content">
 						리뷰 콘텐츠
 						<div>
-							<c:import url="/WEB-INF/views/dinner/dinnerWriteReview.jsp">
-								<c:param name="dinnerName" value="${dinner.dinnerName}" />
-								<c:param name="dinnerNo" value="${dinner.dinnerNo}" />
-								<c:param name="memberNo" value="${loginMember.memberNo}" />
-							</c:import>
-						</div>
-						<div>
-							<c:import url="/dinner/review">
-								<c:param name="dinnerNo" value="${dinner.dinnerNo}" />
-								<c:param name="memberNo" value="${loginMember.memberNo}" />
-							</c:import>
+							<jsp:include page="/WEB-INF/views/dinner/dinnerWriteReview.jsp" />
 						</div>
 					</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
@@ -281,30 +264,28 @@ textarea {
         // 모든 탭 콘텐츠 숨기기
         const contents = document.querySelectorAll(".tab-content");
         contents.forEach((content) => content.classList.remove("active"));
-		
+      
         // 선택된 콘텐츠만 보이도록 설정
         document.getElementById(contentId).classList.add("active");
       }
       
-    	  
+         
       const parking = document.getElementById('parking');
       parking.innerHTML = "";
       if('${dinner.dinnerParking}' === 'y'){
-    	  parking.innerHTML = "주차가능"
+         parking.innerHTML = "주차가능"
       }else {
-    	  parking.innerHTML = "주차자리없음"
+         parking.innerHTML = "주차자리없음"
       }
-
-      //session member값 jstl로 불러옴 
+      
       let isLogIn = <%=isLogIn%>;
-
       function resBtn(){
-    	  if(isLogIn != true){
-    		  event.preventDefault();
-    		  msg("알림","로그인 후 이용하세요","warning");
-    	  }else{
-    		  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
-    	  }
+         if(isLogIn = null){
+            event.preventDefault();
+            msg("알림","로그인 후 이용하세요","warning");
+         }else{
+            window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}&memberNo=${member.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');     
+         }
       }
 
     </script>
