@@ -3,7 +3,6 @@ package com.menupick.member.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -70,7 +69,7 @@ public class MemberCheckLikeServlet extends HttpServlet {
 				photoList.add(photo);
 			}
 		}
-		
+
 		// 4. 결과처리
 		request.setAttribute("likeList", likeList);
 		request.getRequestDispatcher("/WEB-INF/views/member/checkLike.jsp").forward(request, response);

@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Book;
+import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.service.MemberService;
 import com.menupick.member.model.vo.Member;
 
@@ -43,6 +46,30 @@ public class MemberCheckBookServlet extends HttpServlet {
 		// 비즈니스 로직 - 회원 번호와 일치하는 리뷰 list 추출
 		MemberService service = new MemberService();
 		ArrayList<Book> bookList = service.memberBookList(memberNo);
+		
+		DinnerService dinnerService = new DinnerService();
+
+		for (Book b : bookList) {
+			String photoPath = dinnerService.dinnerPhotoPath(b.getDinnerNo());
+
+			ArrayList<Photo> photoList = b.getPhotoList();
+
+			if (photoList == null) {
+				photoList = new ArrayList<>();
+				b.setPhotoList(photoList);
+			}
+
+			Photo photo;
+
+			if (photoList.size() > 0) {
+				photo = photoList.get(0);
+				photo.setPhotoPath(photoPath);
+			} else {
+				photo = new Photo();
+				photo.setPhotoPath(photoPath);
+				photoList.add(photo);
+			}
+		}
 
 		// 결과처리
 		request.setAttribute("bookList", bookList);

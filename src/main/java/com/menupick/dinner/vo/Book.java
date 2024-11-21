@@ -1,5 +1,7 @@
 package com.menupick.dinner.vo;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,6 @@ public class Book {
 	private int bookCnt;
 
 	private String dinnerName; // (조인)
+
+	private ArrayList<Photo> photoList;
 }

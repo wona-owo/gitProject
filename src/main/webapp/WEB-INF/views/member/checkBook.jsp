@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>작성 리뷰</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
@@ -100,14 +101,24 @@
 		<c:choose>
 			<c:when test="${not empty bookList}">
 				<c:forEach var="book" items="${bookList}">
+
+					<c:choose>
+						<c:when test="${not empty book.photoList}">
+							<c:set var="photoPath" value="${book.photoList[0].photoPath}" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="photoPath" value="default.jpg" />
+						</c:otherwise>
+					</c:choose>
+
 					<div class="card"
 						onclick="location.href='${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/dinner/dinnerDetail?dinnerNo=${book.dinnerNo}'">
 						<!-- 식당 사진 -->
 						<img
-							src="${pageContext.request.contextPath}/resources/images/${book.dinnerNo}.jpg"
+							src="/resources/photos/${photoPath}"
 							alt="식당 이미지">
 						<div class="card-info">
-							<h2 class="restaurant-name">${book.dinnerName}</h2>
+							<h3 class="restaurant-name">${book.dinnerName}</h3>
 							<!-- 날짜만 표시 -->
 							<p class="reservation-date">${book.bookDate.split(" ")[0]}</p>
 							<!-- 시간 표시 -->
@@ -127,12 +138,8 @@
 		</c:choose>
 	</div>
 
-
-
-
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document)
 				.ready(
