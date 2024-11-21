@@ -165,14 +165,14 @@ create table
     primary key (review_no, member_no)
   );
   
-  CREATE TABLE
-    TBL_photo (
-        photo_NO VARCHAR2 (11) PRIMARY KEY,
-        dinner_NO VARCHAR2 (11) REFERENCES TBL_dinner (dinner_NO) ON DELETE CASCADE,
-        photo_NAME VARCHAR2 (300), -- 사용자가 업로드한 파일 명칭
-        photo_PATH VARCHAR2 (300) -- 서버에 중복된 파일명이 존재할때 각 파일을 구분하기 위한 관리용 파일명
+  create table
+    tbl_photo (
+        photo_no varchar2 (11) primary key,
+        dinner_no varchar2 (11) references tbl_dinner (dinner_no) on delete cascade,
+        photo_name varchar2 (300), -- 사용자가 업로드한 파일 명칭
+        photo_path varchar2 (300) -- 서버에 중복된 파일명이 존재할때 각 파일을 구분하기 위한 관리용 파일명
     );
 -- 'p' || to_char(sysdate, 'yymmdd') || lpad (seq_photo.nextval, 4, '0')
-CREATE SEQUENCE SEQ_photo MAXVALUE 9999 CYCLE;
+create sequence seq_photo maxvalue 9999 cycle;
 
 commit;

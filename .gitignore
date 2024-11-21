@@ -121,3 +121,4 @@ $RECYCLE.BIN/
 /build/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,java,eclipse
+Oracle DataBase/.menudb.sql.un~
