@@ -46,19 +46,6 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 		ArrayList<Photo> photoList = new ArrayList<>();
 
-		while (files.hasMoreElements()) {
-			String name = files.nextElement();
-			String pName = mRequest.getOriginalFileName(name);
-			String pPath = mRequest.getFilesystemName(name);
-			if (pPath != null) {
-				Photo p = new Photo();
-				p.setPhotoName(pName);
-				p.setPhotoPath(pPath);
-
-				photoList.add(p);
-			}
-		}
-
 		// 입력 값 추출
 		String dinnerNo = mRequest.getParameter("dinnerNo");
 		String dinnerName = mRequest.getParameter("dinnerName");
@@ -73,6 +60,21 @@ public class DinnerUpdateServlet extends HttpServlet {
 		String dinnerMaxPerson = mRequest.getParameter("dinnerMaxPerson");
 		String dinnerConfirm = mRequest.getParameter("dinnerConfirm");
 		String photoPath = mRequest.getParameter("photoPath");
+
+		while (files.hasMoreElements()) {
+			String name = files.nextElement();
+			String pName = mRequest.getOriginalFileName(name);
+			String pPath = mRequest.getFilesystemName(name);
+
+			if (pPath != null) {
+				Photo p = new Photo();
+				p.setPhotoName(pName);
+				p.setPhotoPath(pPath);
+				photoList.add(p);
+			} else {
+				photoPath = "String to stop inserting fake photo";
+			}
+		}
 
 		// 기본값 설정
 		if (dinnerConfirm == null || dinnerConfirm.isEmpty()) {
@@ -115,6 +117,8 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 		DinnerService service = new DinnerService();
 
+		System.out.println(photoPath);
+
 		if (photoPath.length() < 1) {
 			service.insertFakePhoto(dinnerNo);
 		}
@@ -124,7 +128,8 @@ public class DinnerUpdateServlet extends HttpServlet {
 		String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
 		String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
 
-		if (prevPhotoPath != null) {
+		// 27 == 정상적으로 업로드된 파일 경로의 길이
+		if (prevPhotoPath != null && prevPhotoPath.length() != 27) {
 			absolutePath += prevPhotoPath;
 
 			File file = new File(absolutePath);
@@ -133,7 +138,7 @@ public class DinnerUpdateServlet extends HttpServlet {
 			}
 		}
 
-		System.out.println(updDinner);
+		System.out.println("from DinnerUpdateServlet" + updDinner);
 
 		// 서비스 호출
 		int result = service.updateDinner(updDinner);
@@ -156,7 +161,6 @@ public class DinnerUpdateServlet extends HttpServlet {
 			request.setAttribute("loc", "/dinner/settingFrm");
 		}
 		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

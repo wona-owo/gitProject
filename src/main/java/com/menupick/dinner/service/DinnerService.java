@@ -173,10 +173,10 @@ public class DinnerService {
 	public boolean insertDinner(Dinner dinner, ArrayList<Photo> photoList) {
 		Connection conn = JDBCTemplate.getConnection();
 		boolean result = false;
-		
+
 		result = dao.insertDinner(conn, dinner);
 
-		if(result) {
+		if (result) {
 			JDBCTemplate.commit(conn);
 		} else {
 			JDBCTemplate.rollback(conn);
@@ -185,11 +185,11 @@ public class DinnerService {
 		if (result) {
 			String dinnerNo = dao.getDinnerNoById(conn, dinner.getDinnerId());
 
-			for(Photo p : photoList) {
+			for (Photo p : photoList) {
 				p.setDinnerNo(dinnerNo);
-				
+
 				int pResult = dao.insertDinnerPhoto(conn, p);
-				
+
 				if (pResult < 1) {
 					JDBCTemplate.rollback(conn);
 					break;
@@ -197,7 +197,7 @@ public class DinnerService {
 					JDBCTemplate.commit(conn);
 				}
 			}
-			
+
 		} else {
 			JDBCTemplate.rollback(conn);
 		}
@@ -217,12 +217,13 @@ public class DinnerService {
 	public int updateDinner(Dinner updDinner) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateDinner(conn, updDinner);
-		System.out.println("service before : "+result);
-		
-		if (updDinner.getPhotoList() != null) {
-			result = (dao.updateDinnerPhoto(conn, updDinner.getDinnerNo(), updDinner.getPhotoList())  == 1 ? 1 : 0);
+		System.out.println("service before : " + result);
+
+		if (updDinner.getPhotoList() != null && !updDinner.getPhotoList().isEmpty()) {
+			System.out.println("photoList not null");
+			result = (dao.updateDinnerPhoto(conn, updDinner.getDinnerNo(), updDinner.getPhotoList()) == 1 ? 1 : 0);
 		}
-		System.out.println("service after : "+ result);
+		System.out.println("service after : " + result);
 
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
@@ -333,24 +334,24 @@ public class DinnerService {
 
 	// daniel
 	public String dinnerPhotoPath(String dinnerNo) {
-	    Connection conn = JDBCTemplate.getConnection();
-	    String photoPath = dao.dinnerPhotoPath(conn, dinnerNo);
-	    JDBCTemplate.close(conn); 
+		Connection conn = JDBCTemplate.getConnection();
+		String photoPath = dao.dinnerPhotoPath(conn, dinnerNo);
+		JDBCTemplate.close(conn);
 		return photoPath;
 	}
 
 	// daniel
 	public void insertFakePhoto(String dinnerNo) {
-	    Connection conn = JDBCTemplate.getConnection();
-	    Photo photo = new Photo();
-	    photo.setDinnerNo(dinnerNo);
-	    int result = dao.insertDinnerPhoto(conn, photo);
-	    
-	    if (result > 0) {
-	    	JDBCTemplate.commit(conn);
-	    } else {
-	    	JDBCTemplate.rollback(conn);
-	    }
-	    JDBCTemplate.close(conn); 
+		Connection conn = JDBCTemplate.getConnection();
+		Photo photo = new Photo();
+		photo.setDinnerNo(dinnerNo);
+		int result = dao.insertDinnerPhoto(conn, photo);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
 	}
 }

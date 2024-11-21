@@ -98,9 +98,6 @@
 			<section class="section mypage-wrap">
 				<div class="page-title">매장 정보 수정</div>
 				<form id="updateForm"
-				<%--
-${pageContext.request.contextPath}
---%>
 					action="/dinner/update"
 					method="post" onsubmit="return validateAndConfirmUpdate();"
 					enctype="multipart/form-data">

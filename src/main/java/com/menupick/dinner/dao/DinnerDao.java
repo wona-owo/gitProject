@@ -924,6 +924,9 @@ public class DinnerDao {
 		int result = 0;
 		String query = "update tbl_photo set photo_name = ?, photo_path = ? where dinner_no = ?";
 		Photo p = photoList.get(0);
+		
+		System.out.println("from dinnerdao : "  + dinnerNo);
+		System.out.println(photoList);
 
 		try {
 			pt = conn.prepareStatement(query);
