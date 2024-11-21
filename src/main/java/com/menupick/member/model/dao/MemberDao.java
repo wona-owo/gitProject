@@ -739,21 +739,6 @@ public class MemberDao {
 		return findLike;
 	}
 
-	public String getEmailByMemberId(Connection conn, String memberId) {
-	    String sql = "SELECT member_email FROM tbl_member WHERE member_id = ?";
-	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	        pstmt.setString(1, memberId);
-	        try (ResultSet rs = pstmt.executeQuery()) {
-	            if (rs.next()) {
-	                return rs.getString("member_email");
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return null;
-	}
-
 	public Member searchMemberPw(Connection conn, String memberId, String memberPhone) {
 	    Member member = null;
 	    String sql = "SELECT * FROM tbl_member WHERE member_id = ? AND member_phone = ?";
