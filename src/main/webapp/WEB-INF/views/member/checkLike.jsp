@@ -104,16 +104,24 @@
 	<div class="page-title">즐겨찾는 식당</div>
 	<div class="card-container">
 		<c:forEach var="dinner" items="${likeList}">
+
+			<c:choose>
+				<c:when test="${not empty dinner.photoList}">
+					<c:set var="photoPath" value="${dinner.photoList[0].photoPath}" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="photoPath" value="default.jpg" />
+				</c:otherwise>
+			</c:choose>
+
 			<div class="card"
-				onclick="location.href='dinnerDetail.jsp?name=${dinner.dinnerName}'">
-				<img
-					src="${pageContext.request.contextPath}/resources/images/${dinner.dinnerNo != null && !dinner.dinnerNo.isEmpty() ? dinner.dinnerNo : 'default'}.jpg"
-					onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/resources/images/default.jpg';"
+				onclick="location.href='/dinner/dinnerDetail?name=${dinner.dinnerName}'">
+				<img src="/resources/photos/${photoPath}"
 					alt="${dinner.dinnerName} 이미지">
 				<div class="card-info">
 					<h3>${dinner.dinnerName}</h3>
 					<p>${dinner.dinnerAddr}</p>
-					 <p class="cuisine-type">${dinner.foodNation}</p>
+					<p class="cuisine-type">${dinner.foodNation}</p>
 				</div>
 				<span class="favorite-icon active"
 					data-dinner-no="${dinner.dinnerNo}"> <i
