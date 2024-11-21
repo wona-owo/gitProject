@@ -2,6 +2,8 @@ package com.menupick.dinner.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -66,9 +68,18 @@ public class DinnerLikeServlet extends HttpServlet {
 		        photoList.add(photo);
 		    }
 		}
-		
+		//필터 중복 값 제거
+		Set<String> foodNation = dinnerList.stream()
+			    .map(Dinner::getFoodNation) // foodNation 값만 추출
+			    .collect(Collectors.toSet());
+		Set<String> foodCat = dinnerList.stream()
+				.map(Dinner::getFoodCat)
+				.collect(Collectors.toSet());
+			
 		// 4. 결과 처리
 		request.setAttribute("dinnerList", dinnerList);
+		request.setAttribute("foodNation", foodNation);
+		request.setAttribute("foodCat", foodCat);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/search.jsp").forward(request, response);
 	}
 

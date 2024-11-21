@@ -193,17 +193,17 @@
 			<div class="filter-container">
 				<div class="filter-title">국가별 필터</div>
 				<div class="filter-section">
-					<c:forEach var="dinner" items="${dinnerList}">
-						<span class="filter-button" data-value="${dinner.foodNation}"
-							onclick="toggleFilter(event, 'cuisine')">${dinner.foodNation}</span>
+					<c:forEach var="foodNation" items="${foodNation}">
+						<span class="filter-button" data-value="${foodNation}"
+							onclick="toggleFilter(event, 'cuisine')">${foodNation}</span>
 					</c:forEach>
 				</div>
 
 				<div class="filter-title">음식 유형 필터</div>
 				<div class="filter-section">
-					<c:forEach var="dinner" items="${dinnerList}">
-						<span class="filter-button" data-value="${dinner.foodCat}"
-							onclick="toggleFilter(event, 'type')">${dinner.foodCat}</span>
+					<c:forEach var="foodCat" items="${foodCat}">
+						<span class="filter-button" data-value="${foodCat}"
+							onclick="toggleFilter(event, 'type')">${foodCat}</span>
 					</c:forEach>
 				</div>
 			</div>
@@ -430,6 +430,8 @@
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+    
+    
 </script>
 </body>
 </html>

@@ -117,13 +117,11 @@ ul.time-list li.disabled {
 </style>
 </head>
 <body>
+	
 	<form action="/member/reservation" method="get">
 		<input id="dinnerNo" type="hidden" name="dinnerNo"
 			value="${dinner.dinnerNo}"> <input type="hidden"
 			id="memberNo" name="memberNo" value="${loginMember.memberNo}">
-
-
-		
 		<div id="resDetail" style="margin-top: 20px;"></div>
 		<div class=resBtn id="resOption">
 			<label for="resDate">날짜 선택:</label> <input type="date" id="resDate"
@@ -137,14 +135,17 @@ ul.time-list li.disabled {
 			<input type="hidden" name="bookTime" id="timeInput">
 			<button type="submit" id="btn" class="btn-primary" >확인</button>
 		</div>
+		    
+
 	</form>
+    
 	<script>
 		let maxCnt = '${dinner.dinnerMaxPerson}';
 		let minCnt = 0;
 		
 		// 제출 버튼 DOM 요소
 		const submitBtn = document.getElementById("btn");
-
+		
 		// 초기 버튼 상태 설정
 		submitBtn.disabled = true;
 		
@@ -156,8 +157,8 @@ ul.time-list li.disabled {
 					let count = parseInt(cntInput.value);
 					if (count > minCnt) {
 						count--; // 인원수 감소
-						cntInput.value = count;
-						cnt.innerText = count;
+						cntInput.value = count;//서버 전송 값
+						cnt.innerText = count;//화면 출력 값
 						submitBtnFunc(count);
 					} else {
 						alert("인원수는 " + '\${minCnt}' + " 이상 입력바랍니다.");
@@ -180,17 +181,16 @@ ul.time-list li.disabled {
 				});
 		
 		function submitBtnFunc(count) {
-			submitBtn.disabled = count === minCnt; // 인원수가 0이면 비활성화, 1 이상이면 활성화
-			
+			submitBtn.disabled = count === minCnt; // 인원수가 minCnt이면 비활성화, 1 이상이면 활성화
 		}
-
+		
 		const openTime = parseInt('${dinner.dinnerOpen}', 10); // 예: '0900' -> 900
 		const closeTime = parseInt('${dinner.dinnerClose}', 10); // 예: '1800' -> 1800
 		const interval = 100; // 1시간 간격 (100 단위)
-		let selectedTime = null;
+		let selectedTime = null; // 선택 시간값 초기호
 		
 		// 예약된 시간 조회 및 UI 비활성화
-		function fetchReservedTimes(bookDate) {
+		function resTime(bookDate) {
 			const dinnerNo = document.getElementById("dinnerNo").value;
 			
 			if (bookDate) {
@@ -211,11 +211,11 @@ ul.time-list li.disabled {
 									if (reservedTimes.includes(time)) {
 										timeSlot.classList.add('disabled');
 										timeSlot.removeEventListener('click',
-												handleTimeSelection);
+												clickTime);
 									} else {
 										timeSlot.classList.remove('disabled');
 										timeSlot.addEventListener('click',
-												handleTimeSelection);
+												clickTime);
 									}
 								});
 					},
@@ -228,8 +228,8 @@ ul.time-list li.disabled {
 		}
 		
 		// 시간 클릭 핸들러
-		function handleTimeSelection(event) {
-			const liEl = event.target;
+		function clickTime(e) {
+			const liEl = e.target;
 			if (selectedTime) {
 				selectedTime.classList.remove("selected");
 			}
@@ -252,7 +252,7 @@ ul.time-list li.disabled {
 			liEl.className = "time-button";
 			liEl.setAttribute("data-time", hourString);
 
-			liEl.addEventListener("click", handleTimeSelection);
+			liEl.addEventListener("click", clickTime);
 			ulEl.appendChild(liEl);
 		}
 		
@@ -260,15 +260,20 @@ ul.time-list li.disabled {
 		document.getElementById("resDate").addEventListener("change",
 				function() {
 					const bookDate = this.value; // 'YYYY/MM/DD' 형식
-					fetchReservedTimes(bookDate);
+					resTime(bookDate);
 				});
 		
 		// 초기화: 오늘 날짜로 예약된 시간 조회
 		const today = new Date();
-		const yyyy = today.getFullYear();
-		const mm = String(today.getMonth() + 1).padStart(2, "0");
-		const dd = String(today.getDate()).padStart(2, "0");
+		const yyyy = today.getFullYear();//주어진 날짜 현지시간 기준으로 반환
+		const mm = String(today.getMonth() + 1).padStart(2, "0");// 2글자로 day 반환 2자리면 ex)11
+		const dd = String(today.getDate()).padStart(2, "0");// 2글자로 day 반환 2자리면 ex)21
 		document.getElementById("resDate").value = `${yyyy}/${mm}/${dd}`;
+		
+		
+		
+		
+    
 	</script>
 </body>
 </html>
