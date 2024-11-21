@@ -169,7 +169,6 @@ textarea {
 }
 /*------------리뷰 작성 모듈 여기까지---------------*/
 </style>
-
 </head>
 <body>
 	<div>
@@ -252,13 +251,10 @@ textarea {
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
 				</div>
 			</section>
-
 		</main>
-
-
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 	<script>
       function showContent(contentId) {
         // 모든 탭 콘텐츠 숨기기
@@ -269,7 +265,6 @@ textarea {
         document.getElementById(contentId).classList.add("active");
       }
       
-         
       const parking = document.getElementById('parking');
       parking.innerHTML = "";
       if('${dinner.dinnerParking}' === 'y'){
@@ -287,8 +282,6 @@ textarea {
             window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}&memberNo=${member.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');     
          }
       }
-
     </script>
-
 </body>
 </html>
