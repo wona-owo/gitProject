@@ -907,6 +907,9 @@ public class DinnerDao {
 		String query = "update tbl_photo set photo_name = ?, photo_path = ? where dinner_no = ?";
 		Photo p = photoList.get(0);
 		
+		System.out.println(dinnerNo);
+		System.out.println(p);
+		
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, p.getPhotoName());
@@ -919,6 +922,7 @@ public class DinnerDao {
 		} finally {
 			JDBCTemplate.close(pt);
 		}
+		System.out.println(result);
 		return result;
 	}
 }

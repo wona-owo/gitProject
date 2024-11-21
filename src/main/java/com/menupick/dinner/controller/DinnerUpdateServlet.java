@@ -117,15 +117,16 @@ public class DinnerUpdateServlet extends HttpServlet {
 		updDinner.setBusiNo(busiNo);
 		updDinner.setDinnerMaxPerson(dinnerMaxPerson);
 		updDinner.setDinnerConfirm(dinnerConfirm);
+		updDinner.setPhotoList(photoList);
 
 		DinnerService service = new DinnerService();
 
-		if (photoList != null) {
+		if (photoList != null && !photoList.isEmpty()) {
 			updDinner.setPhotoList(photoList);
 
 			String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
 			String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
-
+			
 			if (prevPhotoPath != null) {
 				absolutePath += prevPhotoPath;
 
@@ -140,6 +141,7 @@ public class DinnerUpdateServlet extends HttpServlet {
 					System.out.println("File does not exist: " + absolutePath);
 				}
 			}
+			service.insertFakePhoto(dinnerNo);
 		}
 
 		// 서비스 호출

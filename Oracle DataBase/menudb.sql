@@ -38,15 +38,15 @@ create table
 create sequence seq_dinner maxvalue 9999 cycle;
 
 -- 실제 식당 데이터 삽입(삽입 데이터 수정)
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '온리밋', '서울 송파구 양재대로71길 19-13', '1000', '1900', '010-1111-1111', 'blackeagle10@icloud.com', 'y', '30', '111111111111', 'dinner11234', 'dinner11234@', 'y');
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '포유티', '서울 송파구 위례성대로18길 28-13', '1100', '2130', '010-2222-2222', 'blackeagle10@icloud.com', 'y', '30', '222222222222', 'dinner21234', 'dinner21234@', 'y');
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '오븐스프링', '서울 송파구 가락로 271', '1000', '2100', '010-3333-3333', 'blackeagle10@icloud.com', 'y', '30', '333333333333', 'dinner31234', 'dinner31234@', 'y');
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '바운더리프리', '서울 송파구 백제고분로48길 4-27', '1000', '2000', '010-4444-4444', 'blackeagle10@icloud.com', 'y', '30', '444444444444', 'dinner41234', 'dinner41234@', 'y');
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '청년감자탕', '서울 송파구 오금로19길 5', '1010', '2150', '010-5555-5555', 'blackeagle10@icloud.com', 'y', '30', '555555555555', 'dinner51234', 'dinner51234@', 'y');
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '교동국수', '서울 송파구 백제고분로27길 24', '1130', '2000', '010-6666-6666', 'blackeagle10@icloud.com', 'y', '30', '666666666666', 'dinner61234', 'dinner61234@', 'n');
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '서두산딤섬', '서울 송파구 올림픽로32길 18-23', '1130', '2200', '010-7777-7777', 'blackeagle10@icloud.com', 'y', '30', '777777777777', 'dinner71234', 'dinner71234@', 'n');
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '맛쟁이떡볶이', '서울 송파구 석촌호수로 134 1층', '1100', '2030', '010-8888-8888', 'blackeagle10@icloud.com', 'y', '30', '888888888888', 'dinner81234', 'dinner81234@', 'n');
-insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '송돈', '서울 송파구 가락로 280', '1600', '2230', '010-9999-9999', 'blackeagle10@icloud.com', 'y', '30', '999999999999', 'dinner91234', 'dinner91234@', 'n');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '온리밋', '서울 송파구 양재대로71길 19-13', '10:00', '19:00', '010-1111-1111', 'blackeagle10@icloud.com', 'y', '30', '111111111111', 'dinner11234', 'dinner11234@', 'y');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '포유티', '서울 송파구 위례성대로18길 28-13', '11:00', '21:30', '010-2222-2222', 'blackeagle10@icloud.com', 'y', '30', '222222222222', 'dinner21234', 'dinner21234@', 'y');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '오븐스프링', '서울 송파구 가락로 271', '10:00', '21:00', '010-3333-3333', 'blackeagle10@icloud.com', 'y', '30', '333333333333', 'dinner31234', 'dinner31234@', 'y');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '바운더리프리', '서울 송파구 백제고분로48길 4-27', '10:00', '20:00', '010-4444-4444', 'blackeagle10@icloud.com', 'y', '30', '444444444444', 'dinner41234', 'dinner41234@', 'y');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '청년감자탕', '서울 송파구 오금로19길 5', '10:10', '21:50', '010-5555-5555', 'blackeagle10@icloud.com', 'y', '30', '555555555555', 'dinner51234', 'dinner51234@', 'y');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '교동국수', '서울 송파구 백제고분로27길 24', '11:30', '20:00', '010-6666-6666', 'blackeagle10@icloud.com', 'y', '30', '666666666666', 'dinner61234', 'dinner61234@', 'n');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '서두산딤섬', '서울 송파구 올림픽로32길 18-23', '11:30', '22:00', '010-7777-7777', 'blackeagle10@icloud.com', 'y', '30', '777777777777', 'dinner71234', 'dinner71234@', 'n');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '맛쟁이떡볶이', '서울 송파구 석촌호수로 134 1층', '11:00', '20:30', '010-8888-8888', 'blackeagle10@icloud.com', 'y', '30', '888888888888', 'dinner81234', 'dinner81234@', 'n');
+insert into tbl_dinner values ( 'd' || to_char (sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), '송돈', '서울 송파구 가락로 280', '16:00', '22:30', '010-9999-9999', 'blackeagle10@icloud.com', 'y', '30', '999999999999', 'dinner91234', 'dinner91234@', 'n');
 
 create table
   tbl_food (

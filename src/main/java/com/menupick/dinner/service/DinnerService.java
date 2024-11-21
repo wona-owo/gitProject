@@ -292,4 +292,14 @@ public class DinnerService {
 	    JDBCTemplate.close(conn); 
 		return photoPath;
 	}
+
+	// daniel
+	public void insertFakePhoto(String dinnerNo) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    Photo photo = new Photo();
+	    photo.setDinnerNo(dinnerNo);
+	    int result = dao.insertDinnerPhoto(conn, photo);
+	    System.out.println("DinnerService insertFakePhoto() result : " + result);
+	    JDBCTemplate.close(conn); 
+	}
 }
