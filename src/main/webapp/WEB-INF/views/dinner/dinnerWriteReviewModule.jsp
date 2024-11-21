@@ -40,7 +40,7 @@ $("#reviewForm").submit(function (event) {
         data: formData, // 폼 데이터 전달
         success: function (response) {
             alert("리뷰 작성이 완료되었습니다.");
-            location.href = "/dinnerDetail?dinnerNo=" + $("input[name='dinnerNo']").val();
+            location.href = "/dinner/dinnerDetail?dinnerNo=" + $("input[name='dinnerNo']").val();
         },
         error: function () {
             alert("리뷰 작성 중 오류가 발생했습니다.");
