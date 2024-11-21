@@ -399,7 +399,6 @@ public class MemberDao {
 		return revList;
 	}
 
-
 	// 예약 확인
 	public ArrayList<Book> memberBookList(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
@@ -507,7 +506,6 @@ public class MemberDao {
 			pstmt.setString(4, book.getBookTime());
 			pstmt.setInt(5, book.getBookCnt());
 			result = pstmt.executeUpdate();
-			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -627,57 +625,6 @@ public class MemberDao {
 		return null;
 	}
 
-	public Member searchMemberPw(String memberId, String memberPhone) {
-		Connection conn = JDBCTemplate.getConnection();
-		Member member = null;
-		String sql = "SELECT * FROM tbl_member WHERE member_id = ? AND member_phone = ?";
-
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, memberId);
-			pstmt.setString(2, memberPhone);
-
-			try (ResultSet rs = pstmt.executeQuery()) {
-				if (rs.next()) {
-					member = new Member();
-					member.setMemberId(rs.getString("member_id"));
-					member.setMemberPhone(rs.getString("member_phone"));
-					member.setMemberEmail(rs.getString("member_email"));
-					member.setMemberPw(rs.getString("member_pw"));
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(conn);
-		}
-		return member;
-	}
-
-	// 비밀번호 업데이트
-	public boolean updateMemberPassword(String memberId, String tempPassword) {
-		Connection conn = JDBCTemplate.getConnection();
-		String sql = "UPDATE tbl_member SET member_pw = ? WHERE member_id = ?";
-		boolean isUpdated = false;
-
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, tempPassword);
-			pstmt.setString(2, memberId);
-			int rowsAffected = pstmt.executeUpdate();
-
-			if (rowsAffected > 0) {
-				isUpdated = true;
-				JDBCTemplate.commit(conn); // 커밋
-			} else {
-				JDBCTemplate.rollback(conn); // 롤백
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(conn);
-		}
-		return isUpdated;
-	}
-
 	// 좋아요 추가 -> 성공시 true 반환:
 	public boolean memberAddLike(Connection conn, String dinnerNo, String memberNo) {
 		PreparedStatement pstmt = null;
@@ -696,7 +643,7 @@ public class MemberDao {
 				addLike = true;
 			}
 			System.out.println("result: " + result);
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -706,74 +653,72 @@ public class MemberDao {
 
 		return addLike;
 	}
-	
-	
-	//count 값이 1 이상일 경우에 true 반환(즐겨찾기 일치 식당이 있는지 서치)
+
+	// count 값이 1 이상일 경우에 true 반환(즐겨찾기 일치 식당이 있는지 서치)
 	public boolean memberFindLike(Connection conn, String dinnerNo, String memberNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		boolean findLike = false;
-		
-		
+
 		String query = "select count(*) from tbl_like where member_no =? and dinner_no=?";
-	
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
 			pstmt.setString(2, dinnerNo);
 			rset = pstmt.executeQuery();
-			
-			if(rset.next()) {
-				int count  = rset.getInt(1); //첫번째 컬럼값 가져오기
+
+			if (rset.next()) {
+				int count = rset.getInt(1); // 첫번째 컬럼값 가져오기
 				findLike = count > 0;
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-				
+
 		return findLike;
 	}
 
 	public Member searchMemberPw(Connection conn, String memberId, String memberPhone) {
-	    Member member = null;
-	    String sql = "SELECT * FROM tbl_member WHERE member_id = ? AND member_phone = ?";
-	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	        pstmt.setString(1, memberId);
-	        pstmt.setString(2, memberPhone);
-	        try (ResultSet rs = pstmt.executeQuery()) {
-	            if (rs.next()) {
-	                member = new Member();
-	                member.setMemberId(rs.getString("member_id"));
-	                member.setMemberPhone(rs.getString("member_phone"));
-	                member.setMemberEmail(rs.getString("member_email"));
-	                member.setMemberPw(rs.getString("member_pw"));
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return member;
+		Member member = null;
+		String sql = "SELECT * FROM tbl_member WHERE member_id = ? AND member_phone = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberPhone);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					member = new Member();
+					member.setMemberId(rs.getString("member_id"));
+					member.setMemberPhone(rs.getString("member_phone"));
+					member.setMemberEmail(rs.getString("member_email"));
+					member.setMemberPw(rs.getString("member_pw"));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return member;
 	}
 
 	public boolean updateMemberPassword(Connection conn, String memberId, String tempPassword) {
-	    String sql = "UPDATE tbl_member SET member_pw = ? WHERE member_id = ?";
-	    boolean isUpdated = false;
-	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	        pstmt.setString(1, tempPassword);
-	        pstmt.setString(2, memberId);
-	        int rowsAffected = pstmt.executeUpdate();
-	        if (rowsAffected > 0) {
-	            isUpdated = true;
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return isUpdated;
+		String sql = "UPDATE tbl_member SET member_pw = ? WHERE member_id = ?";
+		boolean isUpdated = false;
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, tempPassword);
+			pstmt.setString(2, memberId);
+			int rowsAffected = pstmt.executeUpdate();
+			if (rowsAffected > 0) {
+				isUpdated = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isUpdated;
 	}
 
 	public Book getDupBookChk(Connection conn, String memberNo) {
@@ -785,7 +730,7 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
 			rset = pstmt.executeQuery();
-			if(rset.next()) {
+			if (rset.next()) {
 				book.setBookNo(rset.getString("book_no"));
 				book.setBookNo(memberNo);
 				book.setBookNo(rset.getString("book_date"));
@@ -795,14 +740,14 @@ public class MemberDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
 		return book;
 	}
-	
-	//예약 취소 - 마이페이지
+
+	// 예약 취소 - 마이페이지
 	public int memberDelBook(Connection conn, String bookNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -823,14 +768,14 @@ public class MemberDao {
 
 		return result;
 	}
-	
-	//리뷰삭제 - 마이페이지
+
+	// 리뷰삭제 - 마이페이지
 	public int memberDelReview(Connection conn, String reviewNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 
 		String query = "delete from tbl_review where review_no = ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, reviewNo);
@@ -851,36 +796,36 @@ public class MemberDao {
 		int result = 0;
 
 		String query = "UPDATE tbl_review SET review_con = ? WHERE review_no = ?";
-				
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, reviewCon);
 			pstmt.setString(2, reviewNo);
-			
+
 			result = pstmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(pstmt);
 		}
-				
+
 		return result;
 	}
 
-	//식당 상세페이지 멤버값 가져오기(경래)
+	// 식당 상세페이지 멤버값 가져오기(경래)
 	public Member memberDetail(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Member m = new Member();
 		String query = "select * from tbl_member where member_no =?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
 			rset = pstmt.executeQuery();
-			
+
 			if (rset.next()) {
 				m = new Member();
 				m.setMemberNo(rset.getString("member_no"));
@@ -910,14 +855,14 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<Member> members = new ArrayList<>();
-		
+
 		String query = "SELECT * FROM tbl_member WHERE member_no = ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberNo);
 			rset = pstmt.executeQuery();
-			
+
 			while (rset.next()) {
 				Member m = new Member();
 				m.setMemberNo(rset.getString("member_no"));
@@ -932,7 +877,7 @@ public class MemberDao {
 				m.setEnrollDate(rset.getString("enroll_date"));
 				m.setAdultConfirm(rset.getString("adult_confirm"));
 				m.setMemberLevel(rset.getInt("member_level"));
-				
+
 				members.add(m);
 			}
 		} catch (SQLException e) {
@@ -942,11 +887,7 @@ public class MemberDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return members;
 	}
 }
-	
-
-	
-    
