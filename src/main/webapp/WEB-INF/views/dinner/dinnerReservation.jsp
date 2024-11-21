@@ -96,6 +96,10 @@ ul {
 	position: relative;
 }
 
+.select-placeholder {
+	display: none;
+}
+
 .cancel-btn {
 	background-color: #f44336;
 	color: #ffffff;
@@ -157,14 +161,13 @@ ul {
 		<main class="content">
 			<section class="section notice-list-wrap">
 
-				<div class="page-title">
-					${bookMonth}월${bookDay}일
-				</div>
+				<div class="page-title">${bookMonth}월${bookDay}일</div>
 
-				<input type="hidden" value="${bookYear}" name="bookYear" id="bookYear"> 
-				<input type="hidden" value="${bookMonth}" name="bookMonth" id="bookMonth"> 
-				<input type="hidden" value="${bookDay}" name="bookDay" id="bookDay"> 
-				<input type="hidden" value="${dinnerNo}" id="dinnerNo">
+				<input type="hidden" value="${bookYear}" name="bookYear"
+					id="bookYear"> <input type="hidden" value="${bookMonth}"
+					name="bookMonth" id="bookMonth"> <input type="hidden"
+					value="${bookDay}" name="bookDay" id="bookDay"> <input
+					type="hidden" value="${dinnerNo}" id="dinnerNo">
 
 				<div>
 					<span>시간</span> <span>이름</span> <span>전화번호</span> <span>인원수</span>
@@ -190,24 +193,23 @@ ul {
 							<li>${b.memberName}</li>
 							<li>${b.memberPhone}</li>
 							<li>${b.bookCnt}</li>
-							<li class="menu-item"><input type="button" class="cancel-btn" value="취소">
-								<%-- memberNo 에 따라서 id 를 다르게 준다 --%>
+							<li class="menu-item"><input type="button"
+								class="cancel-btn" value="취소"> <%-- memberNo 에 따라서 id 를 다르게 준다 --%>
 								<ul class="dinner-sub-menu" id="sub-menu-${b.memberNo}">
-									<li>
-										<select id="select-input-${b.memberNo}" class="cancel-reason-select">
-											<option value="" class="select-placeholder" disabled<%-- hidden 속성이 오류는 나지만 정상 동작함 --%>hidden>취소 사유 선택</option>
+									<li><select id="select-input-${b.memberNo}"
+										class="cancel-reason-select">
+											<option value="" class="select-placeholder"disabled<%-- hidden 속성이 오류는 나지만 정상 동작함 --%>>취소
+												사유 선택</option>
 											<option value="0">숯에 불남</option>
 											<option value="1">불판에 불남</option>
 											<option value="2">예약 시스템의 오류로 시간당 최대 수용인원을 초과 하였습니다</option>
-										</select>
-									</li>
+									</select></li>
 
 									<li>
-										<button type="submit" onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
+										<button type="submit"
+											onclick="confirmCancel('${dinnerNo}', '${b.memberNo}', '${b.bookNo}')">확인</button>
 									</li>
-								</ul>
-
-							</li>
+								</ul></li>
 						</ul>
 					</div>
 				</c:forEach>
