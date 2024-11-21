@@ -919,7 +919,6 @@ public class DinnerDao {
 		} finally {
 			JDBCTemplate.close(pt);
 		}
-		System.out.println(result);
 		return result;
 	}
 }

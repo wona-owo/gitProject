@@ -305,8 +305,6 @@ public class DinnerService {
 	    } else {
 	    	JDBCTemplate.rollback(conn);
 	    }
-	    System.out.println("DinnerService insertFakePhoto() result : " + result);
-
 	    JDBCTemplate.close(conn); 
 	}
 }
