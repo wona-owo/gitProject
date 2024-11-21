@@ -84,7 +84,6 @@ button:hover {
             alert("이름과 전화번호를 입력해 주세요.");
             return;
         }
-       
 
         $.ajax({
             url: '/member/searchId', // 서블릿 URL

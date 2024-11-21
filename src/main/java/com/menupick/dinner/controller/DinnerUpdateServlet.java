@@ -1,6 +1,9 @@
 package com.menupick.dinner.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,8 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.menupick.common.vo.MyRenamePolicy;
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
+import com.menupick.dinner.vo.Photo;
+import com.oreilly.servlet.MultipartRequest;
 
 @WebServlet("/dinner/update")
 public class DinnerUpdateServlet extends HttpServlet {
@@ -28,19 +34,51 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+
+		// daniel - 사진을 입력 받는것
+		String rootPath = request.getSession().getServletContext().getRealPath("/");
+		String savePath = rootPath + "resources/photos/";
+		int maxSize = 1024 * 1024 * 100;
+
+		File dir = new File(savePath);
+
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+
+		MultipartRequest mRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new MyRenamePolicy());
+
+		Enumeration<String> files = mRequest.getFileNames();
+
+		ArrayList<Photo> photoList = new ArrayList<>();
+
+		while (files.hasMoreElements()) {
+			String name = files.nextElement();
+			String pName = mRequest.getOriginalFileName(name);
+			String pPath = mRequest.getFilesystemName(name);
+			if (pPath != null) {
+				Photo p = new Photo();
+				p.setPhotoName(pName);
+				p.setPhotoPath(pPath);
+
+				photoList.add(p);
+			}
+		}
+
 		// 입력 값 추출
-		String dinnerNo = request.getParameter("dinnerNo");
-		String dinnerName = request.getParameter("dinnerName");
-		String dinnerId = request.getParameter("dinnerId");
-		String dinnerAddr = request.getParameter("dinnerAddr");
-		String dinnerOpen = request.getParameter("dinnerOpen");
-		String dinnerClose = request.getParameter("dinnerClose");
-		String dinnerPhone = request.getParameter("dinnerPhone");
-		String dinnerEmail = request.getParameter("dinnerEmail");
-		String dinnerParking = request.getParameter("dinnerParking");
-		String busiNo = request.getParameter("busiNo");
-		String dinnerMaxPerson = request.getParameter("dinnerMaxPerson");
-		String dinnerConfirm = request.getParameter("dinnerConfirm");
+		String dinnerNo = mRequest.getParameter("dinnerNo");
+		String dinnerName = mRequest.getParameter("dinnerName");
+		String dinnerId = mRequest.getParameter("dinnerId");
+		String dinnerAddr = mRequest.getParameter("dinnerAddr");
+		String dinnerOpen = mRequest.getParameter("dinnerOpen");
+		String dinnerClose = mRequest.getParameter("dinnerClose");
+		String dinnerPhone = mRequest.getParameter("dinnerPhone");
+		String dinnerEmail = mRequest.getParameter("dinnerEmail");
+		String dinnerParking = mRequest.getParameter("dinnerParking");
+		String busiNo = mRequest.getParameter("busiNo");
+		String dinnerMaxPerson = mRequest.getParameter("dinnerMaxPerson");
+		String dinnerConfirm = mRequest.getParameter("dinnerConfirm");
 
 		// 기본값 설정
 		if (dinnerConfirm == null || dinnerConfirm.isEmpty()) {
@@ -66,49 +104,63 @@ public class DinnerUpdateServlet extends HttpServlet {
 			return;
 		}
 
-		// ":" 제거하여 데이터베이스에 저장할 형식으로 변환
-		String formattedDinnerOpen = dinnerOpen.replace(":", ""); // "12:00" -> "1200"
-		String formattedDinnerClose = dinnerClose.replace(":", ""); // "22:00" -> "2200"
-
 		// Dinner 객체 생성
 		Dinner updDinner = new Dinner();
 		updDinner.setDinnerNo(dinnerNo);
 		updDinner.setDinnerName(dinnerName);
 		updDinner.setDinnerId(dinnerId);
 		updDinner.setDinnerAddr(dinnerAddr);
-		updDinner.setDinnerOpen(formattedDinnerOpen); // ":" 제거된 값 저장
-		updDinner.setDinnerClose(formattedDinnerClose); // ":" 제거된 값 저장
+		updDinner.setDinnerOpen(dinnerOpen);
+		updDinner.setDinnerClose(dinnerClose);
 		updDinner.setDinnerPhone(dinnerPhone);
 		updDinner.setDinnerEmail(dinnerEmail);
 		updDinner.setDinnerParking(dinnerParking);
 		updDinner.setBusiNo(busiNo);
 		updDinner.setDinnerMaxPerson(dinnerMaxPerson);
 		updDinner.setDinnerConfirm(dinnerConfirm);
+		updDinner.setPhotoList(photoList);
+
+		DinnerService service = new DinnerService();
+
+		if (photoList != null && !photoList.isEmpty()) {
+			updDinner.setPhotoList(photoList);
+
+			String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
+			String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
+
+			if (prevPhotoPath != null) {
+				absolutePath += prevPhotoPath;
+
+				File file = new File(absolutePath);
+				if (file.exists()) {
+					file.delete();
+				}
+
+				service.insertFakePhoto(dinnerNo);
+			}
+		}
 
 		// 서비스 호출
-		DinnerService service = new DinnerService();
 		int result = service.updateDinner(updDinner);
 
 		if (result > 0) {
 			// 데이터베이스 수정 성공 시, 세션 갱신
 			HttpSession session = request.getSession();
 			Dinner updatedDinner = service.getDinnerByNo(dinnerNo); // 수정된 데이터를 다시 가져옴
-
-			// ":" 추가하여 출력 형식으로 변환
-			updatedDinner.setDinnerOpen(addColonToTime(updatedDinner.getDinnerOpen())); // "1200" -> "12:00"
-			updatedDinner.setDinnerClose(addColonToTime(updatedDinner.getDinnerClose())); // "2200" -> "22:00"
-
 			session.setAttribute("loginMember", updatedDinner); // 세션 갱신
 
 			request.setAttribute("title", "알림");
 			request.setAttribute("msg", "매장 정보가 수정되었습니다.");
 			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/dinner/setting");
+			request.setAttribute("loc", "/dinner/settingFrm");
+
 		} else {
 			request.setAttribute("title", "알림");
 			request.setAttribute("msg", "매장 정보 수정 중 오류가 발생했습니다.");
 			request.setAttribute("icon", "error");
-			request.setAttribute("loc", "/dinner/setting");
+
+			request.setAttribute("loc", "/dinner/settingFrm");
+
 		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
@@ -129,3 +181,4 @@ public class DinnerUpdateServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 }
+

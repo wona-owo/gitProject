@@ -7,21 +7,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Dinner;
 
 /**
- * Servlet implementation class DinnerDetailServlet
+ * Servlet implementation class DinnerSettingServletFrm
  */
-@WebServlet("/dinner/dinnerDetail")
-public class DinnerDetailServlet extends HttpServlet {
+@WebServlet("/dinner/settingFrm")
+public class DinnerSettingFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DinnerDetailServlet() {
+	public DinnerSettingFrmServlet() {
 		super();
 	}
 
@@ -31,17 +32,17 @@ public class DinnerDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String dinnerNo = request.getParameter("dinnerNo");
+		HttpSession session = request.getSession();
+		Dinner loginDinner = (Dinner) session.getAttribute("loginMember");
+
+		if (loginDinner == null) {
+			response.sendRedirect("/member/loginFrm");
+			return;
+		}
 		
-		DinnerService service = new DinnerService();
-		
-		Dinner dinner = service.dinnerDetail(dinnerNo);
-		String photoPath = service.dinnerPhotoPath(dinnerNo);
-		
-		request.setAttribute("dinner", dinner);
-		request.setAttribute("photoPath", photoPath);
-		
-		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
+		request.setAttribute("dinner", loginDinner);
+		request.setAttribute("photoPath", new DinnerService().dinnerPhotoPath(loginDinner.getDinnerNo()));
+		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerSetting.jsp").forward(request, response);
 	}
 
 	/**

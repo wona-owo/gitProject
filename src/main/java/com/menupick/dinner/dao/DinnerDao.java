@@ -16,6 +16,7 @@ import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Menu;
 import com.menupick.dinner.vo.MenuDTO;
+import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.vo.Member;
 
 public class DinnerDao {
@@ -51,7 +52,7 @@ public class DinnerDao {
 		return list;
 	}
 
-	public ArrayList<Dinner> likeDinner(Connection conn, String dinnerNo, String dinnerName) {
+	public ArrayList<Dinner> likeDinner(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String query = "select dinner.dinner_no, dinner.dinner_name, dinner.dinner_addr, food.food_no, food.food_nation, food.food_cat from tbl_dinner dinner, tbl_menu menu, tbl_food food where dinner.dinner_no = menu.dinner_no and food.food_no = menu.food_no order by 1";
@@ -59,7 +60,6 @@ public class DinnerDao {
 
 		try {
 			pstmt = conn.prepareStatement(query);
-
 			rset = pstmt.executeQuery();
 
 			while (rset.next()) {
@@ -250,7 +250,7 @@ public class DinnerDao {
 				d.setFoodName(rset.getString("FOOD_NAME"));
 				d.setFoodNation(rset.getString("FOOD_NATION"));
 				d.setFoodCat(rset.getString("FOOD_CAT"));
-				
+
 			}
 
 		} catch (SQLException e) {
@@ -594,12 +594,10 @@ public class DinnerDao {
 		return m;
 	}
 
-	// 식당등록 (경래)
+	// 식당등록 (경래 + daniel)
 	public boolean insertDinner(Connection conn, Dinner dinner) {
 		PreparedStatement pstmt = null;
-		String query = "INSERT INTO tbl_dinner (dinner_no, dinner_name, dinner_addr, dinner_open, dinner_close, "
-				+ "dinner_phone, dinner_email, dinner_parking, dinner_max_person, busi_no, dinner_id, dinner_pw, dinner_confirm) "
-				+ "VALUES (seq_dinner.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO tbl_dinner VALUES ('d' || to_char(sysdate, 'yymmdd') || lpad (seq_dinner.nextval, 4, '0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'n')";
 		boolean result = false;
 
 		try {
@@ -615,7 +613,6 @@ public class DinnerDao {
 			pstmt.setString(9, dinner.getBusiNo());
 			pstmt.setString(10, dinner.getDinnerId());
 			pstmt.setString(11, dinner.getDinnerPw());
-			pstmt.setString(12, dinner.getDinnerConfirm());
 
 			int rowsAffected = pstmt.executeUpdate();
 			result = rowsAffected > 0;
@@ -633,16 +630,17 @@ public class DinnerDao {
 	public int idDuplChk(Connection conn, String dinnerId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String query = "select count(*) as cnt from tbl_dinner where dinner_id = ?";
+		String query = "select count(*) as cnt " + "from (" + "    select dinner_id as id from tbl_dinner "
+				+ "    union all " + "    select member_id as id from tbl_member" + ") all_ids " + "where id = ?";
 		int cnt = 0;
 
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, dinnerId);
+			pstmt.setString(1, dinnerId); // 입력받은 ID를 쿼리에 바인딩
 			rset = pstmt.executeQuery();
 
 			if (rset.next()) {
-				cnt = rset.getInt("cnt");
+				cnt = rset.getInt("cnt"); // 중복된 ID 개수를 가져옴
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -650,63 +648,61 @@ public class DinnerDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-		return cnt;
+		return cnt; // 중복된 ID 개수 반환
 	}
 
 	public int updateDinner(Connection conn, Dinner updDinner) {
-	    PreparedStatement pstmt = null;
-	    int result = 0;
+		PreparedStatement pstmt = null;
+		int result = 0;
 
-	    // SQL 구문 정의
-	    String query = "UPDATE TBL_DINNER " +
-	                   "SET dinner_name = ?, dinner_addr = ?, dinner_open = ?, dinner_id = ?, " +
-	                   "dinner_close = ?, dinner_phone = ?, dinner_email = ?, dinner_parking = ?, " +
-	                   "busi_no = ?, dinner_max_person = ?, dinner_confirm = ? " +
-	                   "WHERE LOWER(dinner_no) = LOWER(?)";
+		// SQL 구문 정의
+		String query = "UPDATE TBL_DINNER " + "SET dinner_name = ?, dinner_addr = ?, dinner_open = ?, dinner_id = ?, "
+				+ "dinner_close = ?, dinner_phone = ?, dinner_email = ?, dinner_parking = ?, "
+				+ "busi_no = ?, dinner_max_person = ?, dinner_confirm = ? " + "WHERE LOWER(dinner_no) = LOWER(?)";
 
-	    try {
-	        // 1. DINNER_ID 값 검증
-	        if (updDinner.getDinnerId() == null || updDinner.getDinnerId().trim().isEmpty()) {
-	            throw new IllegalArgumentException("DINNER_ID cannot be null or empty.");
-	        }
+		try {
+			// 1. DINNER_ID 값 검증
+			if (updDinner.getDinnerId() == null || updDinner.getDinnerId().trim().isEmpty()) {
+				throw new IllegalArgumentException("DINNER_ID cannot be null or empty.");
+			}
 
-	        pstmt = conn.prepareStatement(query);
+			pstmt = conn.prepareStatement(query);
 
-	        // 2. 매개변수 설정
-	        pstmt.setString(1, updDinner.getDinnerName());
-	        pstmt.setString(2, updDinner.getDinnerAddr());
-	        pstmt.setString(3, updDinner.getDinnerOpen());
-	        pstmt.setString(4, updDinner.getDinnerId());  // NOT NULL 필드
-	        pstmt.setString(5, updDinner.getDinnerClose());
-	        pstmt.setString(6, updDinner.getDinnerPhone());
-	        pstmt.setString(7, updDinner.getDinnerEmail());
+			// 2. 매개변수 설정
+			pstmt.setString(1, updDinner.getDinnerName());
+			pstmt.setString(2, updDinner.getDinnerAddr());
+			pstmt.setString(3, updDinner.getDinnerOpen());
+			pstmt.setString(4, updDinner.getDinnerId()); // NOT NULL 필드
+			pstmt.setString(5, updDinner.getDinnerClose());
+			pstmt.setString(6, updDinner.getDinnerPhone());
+			pstmt.setString(7, updDinner.getDinnerEmail());
 
-	        if (!"y".equalsIgnoreCase(updDinner.getDinnerParking()) 
-	                && !"n".equalsIgnoreCase(updDinner.getDinnerParking())) {
-	            throw new IllegalArgumentException("Invalid value for dinner_parking: " + updDinner.getDinnerParking());
-	        }
-	        pstmt.setString(8, updDinner.getDinnerParking().toLowerCase());
+			if (!"y".equalsIgnoreCase(updDinner.getDinnerParking())
+					&& !"n".equalsIgnoreCase(updDinner.getDinnerParking())) {
+				throw new IllegalArgumentException("Invalid value for dinner_parking: " + updDinner.getDinnerParking());
+			}
+			pstmt.setString(8, updDinner.getDinnerParking().toLowerCase());
 
-	        pstmt.setString(9, updDinner.getBusiNo());
-	        pstmt.setInt(10, Integer.parseInt(updDinner.getDinnerMaxPerson()));
-	        pstmt.setString(11, updDinner.getDinnerConfirm().toLowerCase());
-	        pstmt.setString(12, updDinner.getDinnerNo());
+			pstmt.setString(9, updDinner.getBusiNo());
+			pstmt.setInt(10, Integer.parseInt(updDinner.getDinnerMaxPerson()));
+			pstmt.setString(11, updDinner.getDinnerConfirm().toLowerCase());
+			pstmt.setString(12, updDinner.getDinnerNo());
 
-	        // 3. SQL 실행
-	        result = pstmt.executeUpdate();
+			// 3. SQL 실행
+			result = pstmt.executeUpdate();
 
-	    } catch (SQLException e) {
-	        System.err.println("SQL Error: " + e.getMessage());
-	        System.err.println("SQL Query: " + query);
-	        e.printStackTrace();
-	    } catch (IllegalArgumentException e) {
-	        System.err.println("Validation Error: " + e.getMessage());
-	        throw e;  // 필요 시 재전달
-	    } finally {
-	        JDBCTemplate.close(pstmt);
-	    }
+		} catch (SQLException e) {
+			System.err.println("SQL Error: " + e.getMessage());
+			System.err.println("SQL Query: " + query);
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			System.err.println("Validation Error: " + e.getMessage());
+			throw e; // 필요 시 재전달
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
 
-	    return result;
+		return result;
 	}
 
 	// daniel
@@ -759,7 +755,7 @@ public class DinnerDao {
 		PreparedStatement pt = null;
 		int result = 0;
 		String query = "update tbl_dinner set dinner_pw = ? where dinner_id = ?";
-		
+
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, newDinnerPw);
@@ -771,7 +767,7 @@ public class DinnerDao {
 		} finally {
 			JDBCTemplate.close(pt);
 		}
-		
+
 		return result;
 	}
 
@@ -823,31 +819,119 @@ public class DinnerDao {
 	    return time;
 	}
 	public List<Menu> getMenuByDinnerNo(Connection conn, String dinnerNo, String foodNo) {
-	    List<Menu> menuList = new ArrayList<>();
-	    String sql = "SELECT m.dinner_no, m.food_no, m.price, f.food_name " +
-                "FROM tbl_menu m " +
-                "JOIN tbl_food f ON m.food_no = f.food_no " +
-                "WHERE m.dinner_no = ? AND m.food_no = ?";
-	    
-	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	    	 pstmt.setString(1, dinnerNo); 
-	         pstmt.setString(2, foodNo);
-	         
-	        try (ResultSet rs = pstmt.executeQuery()) {
-	            while (rs.next()) {
-	                Menu menu = new Menu();
-	                menu.setDinnerNo(rs.getString("dinner_no"));
-	                menu.setFoodNo(rs.getString("food_no"));
-	                menu.setPrice(rs.getInt("price"));
-	                menu.setFoodName(rs.getString("food_name"));
-	                menuList.add(menu);
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    
-	    return menuList;
+		List<Menu> menuList = new ArrayList<>();
+		String sql = "SELECT m.dinner_no, m.food_no, m.price, f.food_name " + "FROM tbl_menu m "
+				+ "JOIN tbl_food f ON m.food_no = f.food_no " + "WHERE m.dinner_no = ? AND m.food_no = ?";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, dinnerNo);
+			pstmt.setString(2, foodNo);
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					Menu menu = new Menu();
+					menu.setDinnerNo(rs.getString("dinner_no"));
+					menu.setFoodNo(rs.getString("food_no"));
+					menu.setPrice(rs.getInt("price"));
+					menu.setFoodName(rs.getString("food_name"));
+					menuList.add(menu);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return menuList;
+	}
+
+	// daniel
+	public String getDinnerNoById(Connection conn, String dinnerId) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		String dinnerNo = "";
+		String query = "select dinner_no from tbl_dinner where dinner_id = ?";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerId);
+			rt = pt.executeQuery();
+
+			if (rt.next()) {
+				dinnerNo = rt.getString("dinner_no");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return dinnerNo;
+	}
+
+	// daniel
+	public int insertDinnerPhoto(Connection conn, Photo p) {
+		PreparedStatement pt = null;
+		int result = -1;
+		String query = "insert into tbl_photo values ('p' || to_char(sysdate, 'yymmdd') || lpad (seq_photo.nextval, 4, '0'), ?, ?, ?)";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, p.getDinnerNo());
+			pt.setString(2, p.getPhotoName());
+			pt.setString(3, p.getPhotoPath());
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		return result;
+	}
+
+	// daniel
+	public String dinnerPhotoPath(Connection conn, String dinnerNo) {
+		PreparedStatement pt = null;
+		ResultSet rt = null;
+		String photoPath = "";
+		String query = "select photo_path from tbl_photo where dinner_no = ?";
+
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, dinnerNo);
+			rt = pt.executeQuery();
+
+			while (rt.next()) {
+				photoPath = rt.getString("photo_path");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rt);
+			JDBCTemplate.close(pt);
+		}
+		return photoPath;
+	}
+
+	// daniel
+	public int updateDinnerPhoto(Connection conn, String dinnerNo, ArrayList<Photo> photoList) {
+		PreparedStatement pt = null;
+		int result = 0;
+		String query = "update tbl_photo set photo_name = ?, photo_path = ? where dinner_no = ?";
+		Photo p = photoList.get(0);
+		
+		try {
+			pt = conn.prepareStatement(query);
+			pt.setString(1, p.getPhotoName());
+			pt.setString(2, p.getPhotoPath());
+			pt.setString(3, dinnerNo);
+			
+			result = pt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pt);
+		}
+		return result;
 	}
 
 	public List<MenuDTO> getMenuDetailsByDinnerNo(Connection conn, String dinnerNo) {

@@ -28,6 +28,14 @@ public class ReviewWriteModuleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        
+        String dinnerName = request.getParameter("dinnerName");
+        String dinnerNo = request.getParameter("dinnerNo");
+        String memberNo = request.getParameter("memberNo");
+        
+        request.setAttribute("dinnerName", dinnerName);
+        request.setAttribute("dinnerNo", dinnerNo);
+        request.setAttribute("memberNo", memberNo);
 		// JSP를 포함하여 출력
         request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerWriteReviewModule.jsp").include(request, response);
 	}

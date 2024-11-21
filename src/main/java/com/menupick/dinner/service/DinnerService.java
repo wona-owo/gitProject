@@ -14,6 +14,7 @@ import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Menu;
 import com.menupick.dinner.vo.MenuDTO;
+import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.vo.Member;
 
 public class DinnerService {
@@ -24,10 +25,10 @@ public class DinnerService {
 	}
 
 	// 인기식당 페이지
-	public ArrayList<Dinner> likeDinner(String dinnerNo, String dinnerName) {
+	public ArrayList<Dinner> likeDinner() {
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<Dinner> dinnerList = null;
-		dinnerList = dao.likeDinner(conn, dinnerNo, dinnerName);
+		dinnerList = dao.likeDinner(conn);
 		JDBCTemplate.close(conn);
 		return dinnerList;
 	}
@@ -168,15 +169,35 @@ public class DinnerService {
 		return member;
 	}
 
-	// 식당등록 (경래)
-	public boolean insertDinner(Dinner dinner) {
+	// 식당등록 (경래 + daniel)
+	public boolean insertDinner(Dinner dinner, ArrayList<Photo> photoList) {
 		Connection conn = JDBCTemplate.getConnection();
 		boolean result = false;
-
+		
 		result = dao.insertDinner(conn, dinner);
 
-		if (result) {
+		if(result) {
 			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+
+		if (result) {
+			String dinnerNo = dao.getDinnerNoById(conn, dinner.getDinnerId());
+
+			for(Photo p : photoList) {
+				p.setDinnerNo(dinnerNo);
+				
+				int pResult = dao.insertDinnerPhoto(conn, p);
+				
+				if (pResult < 1) {
+					JDBCTemplate.rollback(conn);
+					break;
+				} else {
+					JDBCTemplate.commit(conn);
+				}
+			}
+			
 		} else {
 			JDBCTemplate.rollback(conn);
 		}
@@ -196,6 +217,10 @@ public class DinnerService {
 	public int updateDinner(Dinner updDinner) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateDinner(conn, updDinner);
+		
+		if (updDinner.getPhotoList() != null) {
+			result = (dao.updateDinnerPhoto(conn, updDinner.getDinnerNo(), updDinner.getPhotoList())  == 1 ? 1 : 0);
+		}
 
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
@@ -302,5 +327,28 @@ public class DinnerService {
 		}
 
 		return menuList; // 결과 반환
+	}
+
+	// daniel
+	public String dinnerPhotoPath(String dinnerNo) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    String photoPath = dao.dinnerPhotoPath(conn, dinnerNo);
+	    JDBCTemplate.close(conn); 
+		return photoPath;
+	}
+
+	// daniel
+	public void insertFakePhoto(String dinnerNo) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    Photo photo = new Photo();
+	    photo.setDinnerNo(dinnerNo);
+	    int result = dao.insertDinnerPhoto(conn, photo);
+	    
+	    if (result > 0) {
+	    	JDBCTemplate.commit(conn);
+	    } else {
+	    	JDBCTemplate.rollback(conn);
+	    }
+	    JDBCTemplate.close(conn); 
 	}
 }
