@@ -88,7 +88,7 @@
 			<%-- 동그라미 버튼 그룹 컨테이너 --%>
 			<div class="button-group-container">
 				<div class="button-group">
-					<a href="/" class="circle-button"> <span>정보 수정</span>
+					<a href="/member/update" class="circle-button"> <span>정보 수정</span>
 
 					</a> <a href="/member/ckBook" class="circle-button"> <span>예약
 							확인</span>

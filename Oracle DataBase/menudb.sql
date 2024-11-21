@@ -1,4 +1,5 @@
 -- 작성자 : 김찬희
+
 drop table tbl_dinner cascade constraints;
 drop table tbl_food cascade constraints;
 drop table tbl_menu;
@@ -7,12 +8,14 @@ drop table tbl_like;
 drop table tbl_review cascade constraints;
 drop table tbl_book;
 drop table tbl_recommend;
+drop table tbl_photo;
 
 drop sequence seq_dinner;
 drop sequence seq_member;
 drop sequence seq_review;
 drop sequence seq_book;
 drop sequence seq_food;
+drop sequence seq_photo;
 
 create table
   tbl_dinner (
@@ -76,12 +79,12 @@ create table
   );
 
 -- tbl_menu 데이터
-insert into tbl_menu values ('d2411200004', 'f2411200001', 18000);
-insert into tbl_menu values ('d2411200003', 'f2411200002', 12000);
-insert into tbl_menu values ('d2411200003', 'f2411200003', 20000);
-insert into tbl_menu values ('d2411200004', 'f2411200004', 15000);
-insert into tbl_menu values ('d2411200005', 'f2411200005', 13000);
-insert into tbl_menu values ('d2411200005', 'f2411200001', 7000);
+insert into tbl_menu values ('d2411210004', 'f2411210001', 18000);
+insert into tbl_menu values ('d2411210003', 'f2411210002', 12000);
+insert into tbl_menu values ('d2411210003', 'f2411210003', 20000);
+insert into tbl_menu values ('d2411210004', 'f2411210004', 15000);
+insert into tbl_menu values ('d2411210005', 'f2411210005', 13000);
+insert into tbl_menu values ('d2411210005', 'f2411210001', 7000);
 
 create table
   tbl_member (
@@ -115,9 +118,9 @@ create table
   );
 
 -- 즐겨찾기
-insert into tbl_like values ('d2411200001', 'm2411200002');
-insert into tbl_like values ('d2411200002', 'm2411200002');
-insert into tbl_like values ('d2411200003', 'm2411200003');
+insert into tbl_like values ('d2411210001', 'm2411210002');
+insert into tbl_like values ('d2411210002', 'm2411210002');
+insert into tbl_like values ('d2411210003', 'm2411210003');
 
 create table
   tbl_review (
@@ -146,15 +149,13 @@ create table
 create sequence seq_book maxvalue 9999 cycle;
 
 -- Insert into tbl_book
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200002', to_date ('24/11/06', 'yy/mm/dd'), '1230', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200001', to_date ('24/11/15', 'yy/mm/dd'), '1230', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200002', to_date ('24/11/15', 'yy/mm/dd'), '1245', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200003', to_date ('24/11/15', 'yy/mm/dd'), '1800', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200001', to_date ('24/11/15', 'yy/mm/dd'), '1830', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200002', to_date ('24/11/15', 'yy/mm/dd'), '1900', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411200001', 'm2411200003', to_date ('24/12/25', 'yy/mm/dd'), '1800', 4);
-
-select * from tbl_book;
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411210001', 'm2411210002', to_date ('24/11/06', 'yy/mm/dd'), '1230', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411210001', 'm2411210001', to_date ('24/11/15', 'yy/mm/dd'), '1230', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411210001', 'm2411210002', to_date ('24/11/15', 'yy/mm/dd'), '1245', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411210001', 'm2411210003', to_date ('24/11/15', 'yy/mm/dd'), '1800', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411210001', 'm2411210001', to_date ('24/11/15', 'yy/mm/dd'), '1830', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411210001', 'm2411210002', to_date ('24/11/15', 'yy/mm/dd'), '1900', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411210001', 'm2411210003', to_date ('24/12/25', 'yy/mm/dd'), '1800', 4);
 
 create table
   tbl_recommend (
@@ -163,7 +164,15 @@ create table
     report char(1) default 'n' not null check (report in ('n', 'y')),
     primary key (review_no, member_no)
   );
-
-select * from tbl_dinner d left join tbl_like l on (d.dinner_no = l.dinner_no) where l.member_no = 'm2411200002';
+  
+  CREATE TABLE
+    TBL_photo (
+        photo_NO VARCHAR2 (11) PRIMARY KEY,
+        dinner_NO VARCHAR2 (11) REFERENCES TBL_dinner (dinner_NO) ON DELETE CASCADE,
+        photo_NAME VARCHAR2 (300), -- 사용자가 업로드한 파일 명칭
+        photo_PATH VARCHAR2 (300) -- 서버에 중복된 파일명이 존재할때 각 파일을 구분하기 위한 관리용 파일명
+    );
+-- 'p' || to_char(sysdate, 'yymmdd') || lpad (seq_photo.nextval, 4, '0')
+CREATE SEQUENCE SEQ_photo MAXVALUE 9999 CYCLE;
 
 commit;

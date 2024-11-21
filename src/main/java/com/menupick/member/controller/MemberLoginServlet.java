@@ -59,7 +59,8 @@ public class MemberLoginServlet extends HttpServlet {
 			session.setAttribute("loginMember", loginMember); // Member 객체 자체 저장
 			session.setAttribute("loginType", "member"); // loginType을 "member"로 설정
 			session.setAttribute("memberLevel", loginMember.getMemberLevel()); // Member의 등급 설정
-
+			session.setAttribute("memberNo", loginMember.getMemberNo());
+			
 			session.setMaxInactiveInterval(600);
 			Cookie cookie = new Cookie("saveId", loginId);
 

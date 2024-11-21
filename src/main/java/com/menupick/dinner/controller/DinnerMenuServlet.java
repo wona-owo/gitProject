@@ -26,13 +26,9 @@ public class DinnerMenuServlet extends HttpServlet {
         String dinnerNo = null;
         String foodNo = null;
         
-        try {
-        	dinnerNo = request.getParameter("dinnerNo");
+          	dinnerNo = request.getParameter("dinnerNo");
             foodNo = request.getParameter("foodNo");
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
+  
         // 메뉴 리스트 가져오기
         List<Menu> menuList = service.getMenuListByDinnerNo(dinnerNo, foodNo);
 

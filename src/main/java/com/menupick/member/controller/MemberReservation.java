@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Book;
-import com.menupick.dinner.vo.Dinner;
 import com.menupick.member.model.service.MemberService;
 import com.menupick.member.model.vo.Member;
 
@@ -42,7 +40,7 @@ public class MemberReservation extends HttpServlet {
 		String dinnerNo = request.getParameter("dinnerNo");
 		
 		String bookTime = request.getParameter("bookTime");
-		String bookCnt = request.getParameter("bookCnt");
+		int bookCnt = (Integer.parseInt(request.getParameter("bookCnt")));
 		
 		String bookDate = request.getParameter("bookDate");
 		
@@ -50,12 +48,9 @@ public class MemberReservation extends HttpServlet {
 		HttpSession session = request.getSession();
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		String memberNo = loginMember.getMemberNo();
-		
 
-		
 		MemberService mservice = new MemberService();
-		DinnerService dservice = new DinnerService();
-		
+
 		
 		//bookDate 값 substring로 'yyyy/mm/dd'로 전달
 		String year = bookDate.substring(0,4);
@@ -68,7 +63,8 @@ public class MemberReservation extends HttpServlet {
 		book.setMemberNo(memberNo);
 		book.setBookDate(date);
 		book.setBookTime(bookTime);
-		book.setBookCnt(Integer.parseInt(bookCnt));
+		book.setBookCnt(bookCnt);
+		
 		int result = mservice.bookingMember(book);
 		
 		

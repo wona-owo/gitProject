@@ -61,6 +61,9 @@ public class ApiEmailSendServlet extends HttpServlet {
 		case "1":
 			emailContent += "불판에 불남";
 			break;
+		case "2":
+			emailContent += "예약 시스템의 오류로 시간당 최대 수용인원을 초과 하였습니다";
+			break;
 		default:
 			emailContent = "foobar";
 			break;

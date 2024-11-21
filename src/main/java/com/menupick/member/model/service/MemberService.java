@@ -340,8 +340,62 @@ public class MemberService {
 		boolean findLike = false;		
 		findLike = dao.memberFindLike(conn, dinnerNo, memberNo);
 		JDBCTemplate.close(conn);
-		return findLike;	
+		return findLike;
 		}
+
+	public Book getDupBookChk(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Book book = new Book();
+		book = dao.getDupBookChk(conn, memberNo);
+		JDBCTemplate.close(conn);
+		return book;
+	}
+	
+	
+	//예약 취소
+	public int memberDelBook(String bookNo) {
+		Connection conn = JDBCTemplate.getConnection();	
+		int result = dao.memberDelBook(conn, bookNo);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+	
+	//리뷰 삭제
+	public int memberDelReview(String reviewNo) {
+		Connection conn = JDBCTemplate.getConnection();	
+		int result = dao.memberDelReview(conn, reviewNo);
+
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
+	
+	//리뷰 업데이트
+	public int memberUpdateReview(String reviewNo, String reviewCon) {
+		Connection conn = JDBCTemplate.getConnection();	
+		int result = dao.memberUpdateReview(conn, reviewNo, reviewCon);
+		
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+		
+	}
     }
 
  
