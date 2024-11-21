@@ -165,6 +165,7 @@ section {
 
 </head>
 <body>
+<%-- Hello from dinnerCalendar.jsp --%>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content">
