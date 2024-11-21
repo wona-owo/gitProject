@@ -97,11 +97,6 @@
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberPhone}</a></td>
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberAddr}</a></td>
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">회원</a></td>
-								<td>
-									<!-- 탈퇴 -->
-									<button class="btn-primary sm"
-										onclick="selectRemove('${m.memberNo}')">탈퇴</button>
-								</td>
 							</tr>
 						</c:forEach>
 					</table>
