@@ -115,7 +115,7 @@
 			</c:choose>
 
 			<div class="card"
-				onclick="location.href='/dinner/dinnerDetail?name=${dinner.dinnerName}'">
+				onclick="openDetailPage('${dinner.dinnerNo}', event)">
 				<img src="/resources/photos/${photoPath}"
 					alt="${dinner.dinnerName} 이미지">
 				<div class="card-info">
@@ -169,6 +169,14 @@
 								});
 							});
 				});
+
+		// 상세 페이지 열기
+		function openDetailPage(dinnerNo, event) {
+			if (event.target.closest('.favorite-button')) {
+				return;
+			}
+			window.location.href = "/dinner/dinnerDetail?dinnerNo=" + dinnerNo;
+		}
 	</script>
 </body>
 </html>
