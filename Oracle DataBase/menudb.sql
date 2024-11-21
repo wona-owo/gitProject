@@ -169,6 +169,7 @@ create table
     tbl_photo (
         photo_no varchar2 (11) primary key,
         dinner_no varchar2 (11) references tbl_dinner (dinner_no) on delete cascade,
+        review_no varchar2 (11) references tbl_review (review_no) on delete cascade,
         photo_name varchar2 (300), -- 사용자가 업로드한 파일 명칭
         photo_path varchar2 (300) -- 서버에 중복된 파일명이 존재할때 각 파일을 구분하기 위한 관리용 파일명
     );
@@ -176,3 +177,5 @@ create table
 create sequence seq_photo maxvalue 9999 cycle;
 
 commit;
+
+select * from tbl_member;

@@ -6,13 +6,16 @@
 // 세션에서 로그인 상태 확인
 Boolean isLogIn = (session.getAttribute("loginMember") != null);
 %>
-<% Member loginMember = (Member) session.getAttribute("loginMember"); %>
-
+<%
+Member loginMember = (Member) session.getAttribute("loginMember");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>dinnerDetail</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 
 /* 시간표 버튼 스타일 */
@@ -247,15 +250,15 @@ textarea {
 						리뷰 콘텐츠
 						<div>
 							<c:import url="/WEB-INF/views/dinner/dinnerWriteReview.jsp">
-							    <c:param name="dinnerName" value="${dinner.dinnerName}" />
-							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
-							    <c:param name="memberNo" value="${loginMember.memberNo}" />
+								<c:param name="dinnerName" value="${dinner.dinnerName}" />
+								<c:param name="dinnerNo" value="${dinner.dinnerNo}" />
+								<c:param name="memberNo" value="${loginMember.memberNo}" />
 							</c:import>
 						</div>
 						<div>
 							<c:import url="/dinner/review">
-							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
-							    <c:param name="memberNo" value="${loginMember.memberNo}" />
+								<c:param name="dinnerNo" value="${dinner.dinnerNo}" />
+								<c:param name="memberNo" value="${loginMember.memberNo}" />
 							</c:import>
 						</div>
 					</div>
