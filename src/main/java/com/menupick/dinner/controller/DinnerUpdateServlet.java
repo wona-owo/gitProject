@@ -126,22 +126,17 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 			String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
 			String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
-			
+
 			if (prevPhotoPath != null) {
 				absolutePath += prevPhotoPath;
 
 				File file = new File(absolutePath);
 				if (file.exists()) {
-					if (file.delete()) {
-						System.out.println("File deleted successfully: " + absolutePath);
-					} else {
-						System.out.println("Failed to delete file: " + absolutePath);
-					}
-				} else {
-					System.out.println("File does not exist: " + absolutePath);
+					file.delete();
 				}
+
+				service.insertFakePhoto(dinnerNo);
 			}
-			service.insertFakePhoto(dinnerNo);
 		}
 
 		// 서비스 호출
