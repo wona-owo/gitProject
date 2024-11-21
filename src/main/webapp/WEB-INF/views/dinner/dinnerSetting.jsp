@@ -99,8 +99,11 @@
 				<div class="page-title">매장 정보 수정</div>
 				<form id="updateForm"
 					action="${pageContext.request.contextPath}/dinner/update"
-					method="post" onsubmit="return validateAndConfirmUpdate();" enctype="multipart/form-data">
+					method="post" onsubmit="return validateAndConfirmUpdate();"
+					enctype="multipart/form-data">
 					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}" />
+					<input type="hidden" name="dinnerId" value="${dinner.dinnerId}" />
+					<input type="hidden" name="photoPath" value="${photoPath}" />
 
 					<table class="tbl">
 						<tr>
@@ -133,11 +136,12 @@
 						<%-- <daniel> --%>
 						<tr>
 							<th>식당 사진</th>
-							<td><img src="/resources/photos/${photoPath}" style="height: 150px; width: auto;" alt="식당 사진이 없습니다"></td>
+							<td><img src="/resources/photos/${photoPath}"
+								style="height: 150px; width: auto;" alt="식당 사진이 없습니다"></td>
 						</tr>
 						<tr>
 							<th>식당 사진 변경</th>
-							<td><input type="file" name="uploadFile"/></td>
+							<td><input type="file" name="uploadFile" /></td>
 						</tr>
 						<%-- </daniel> --%>
 						<tr>
@@ -164,10 +168,10 @@
 						<tr>
 							<th>주차 여부</th>
 							<td><select name="dinnerParking" required>
-									<option value="Y"
-										${dinner.dinnerParking == 'Y' ? 'selected' : ''}>Y</option>
-									<option value="N"
-										${dinner.dinnerParking == 'N' ? 'selected' : ''}>N</option>
+									<option value="y"
+										${dinner.dinnerParking == 'y' ? 'selected' : ''}>Y</option>
+									<option value="n"
+										${dinner.dinnerParking == 'n' ? 'selected' : ''}>N</option>
 							</select></td>
 						</tr>
 						<tr>
@@ -225,29 +229,29 @@
 			const phoneExp = /^010-\d{3,4}-\d{4}$/;
 
 			// 오픈 시간 유효성 검사
-		    if (!timeExp.test(dinnerOpenField.value)) {
-		        swal("알림", "오픈 시간 형식을 올바르게 입력하세요.", "warning");
-		        return false;
-		    }
+			if (!timeExp.test(dinnerOpenField.value)) {
+				swal("알림", "오픈 시간 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
 
-		    // 마감 시간 유효성 검사
-		    if (!timeExp.test(dinnerCloseField.value)) {
-		        swal("알림", "마감 시간 형식을 올바르게 입력하세요.", "warning");
-		        return false;
-		    }
+			// 마감 시간 유효성 검사
+			if (!timeExp.test(dinnerCloseField.value)) {
+				swal("알림", "마감 시간 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
 
-		    // 전화번호 유효성 검사
-		    if (!phoneExp.test(dinnerPhone)) {
-		        swal("알림", "전화번호 형식을 올바르게 입력하세요.", "warning");
-		        return false;
-		    }
+			// 전화번호 유효성 검사
+			if (!phoneExp.test(dinnerPhone)) {
+				swal("알림", "전화번호 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
 
-		    // ":" 제거 후 값 변환
-		    dinnerOpenField.value = dinnerOpenField.value.replace(":", "");
-		    dinnerCloseField.value = dinnerCloseField.value.replace(":", "");
+			// ":" 제거 후 값 변환
+			dinnerOpenField.value = dinnerOpenField.value.replace(":", "");
+			dinnerCloseField.value = dinnerCloseField.value.replace(":", "");
 
-		    // 확인 메시지
-		    return confirm("매장 정보를 수정하시겠습니까?");
+			// 확인 메시지
+			return confirm("매장 정보를 수정하시겠습니까?");
 		}
 		function deleteDinner() {
 			swal({
