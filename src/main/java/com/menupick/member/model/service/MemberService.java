@@ -341,17 +341,7 @@ public class MemberService {
 		return findLike;
 	}
 
-	public Book getDupBookChk(String memberNo) {
-		Connection conn = JDBCTemplate.getConnection();
-		Book book = new Book();
-		book = dao.getDupBookChk(conn, memberNo);
-		JDBCTemplate.close(conn);
-		return book;
-	}
-
 	// 예약 취소
-	
-	//예약 취소
 	public int memberDelBook(String bookNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.memberDelBook(conn, bookNo);
@@ -367,7 +357,6 @@ public class MemberService {
 	}
 
 	// 리뷰 삭제
-
 	public List<String> getReservedTimes(String dinnerNo, String bookDate) {
 		Connection conn = JDBCTemplate.getConnection();
 		List<String> reservedTimes = new ArrayList<>();
@@ -376,9 +365,7 @@ public class MemberService {
 		return reservedTimes;
 	}
 
-
-	
-	//리뷰 삭제
+	// 리뷰 삭제
 	public int memberDelReview(String reviewNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.memberDelReview(conn, reviewNo);

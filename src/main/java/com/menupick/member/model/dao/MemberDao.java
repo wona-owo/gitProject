@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import com.menupick.common.JDBCTemplate;
 import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.Dinner;
@@ -535,7 +533,6 @@ public class MemberDao {
 
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
@@ -600,7 +597,6 @@ public class MemberDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -647,7 +643,6 @@ public class MemberDao {
 			System.out.println("result: " + result);
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
@@ -676,7 +671,6 @@ public class MemberDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -723,34 +717,6 @@ public class MemberDao {
 		return isUpdated;
 	}
 
-	public boolean getDupBookChk(Connection conn, String memberNo, String bookTime, String bookDate) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		 boolean dupBook = false;
-		String query = "SELECT COUNT(*) FROM tbl_book WHERE member_no = ? AND book_date = to_date(?) AND book_time = ?";
-		
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, memberNo);
-			pstmt.setString(2, bookDate);
-			pstmt.setString(3, bookTime);
-			rset = pstmt.executeQuery();
-			
-			if(rset.next()) {
-				int cnt = rset.getInt(1);
-				dupBook = cnt > 0;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
-		}
-		
-		return dupBook;
-	}
-
 	// 예약 취소 - 마이페이지
 	public int memberDelBook(Connection conn, String bookNo) {
 		PreparedStatement pstmt = null;
@@ -769,38 +735,34 @@ public class MemberDao {
 		} finally {
 			JDBCTemplate.close(pstmt);
 		}
-
 		return result;
 	}
-
 
 	public List<String> getReservedTimes(Connection conn, String dinnerNo, String bookDate) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		List<String> reservedTimes = new ArrayList<>(); 
+		List<String> reservedTimes = new ArrayList<>();
 		String query = "SELECT BOOK_TIME FROM TBL_BOOK WHERE DINNER_NO = ? AND BOOK_DATE = ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, dinnerNo);
 			pstmt.setString(2, bookDate);
 			rset = pstmt.executeQuery();
-			while(rset.next()) {
+			while (rset.next()) {
 				reservedTimes.add(rset.getString("BOOK_TIME"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(pstmt);
 			JDBCTemplate.close(rset);
 		}
-	
+
 		return reservedTimes;
 	}
 
-	
-	//리뷰삭제 - 마이페이지
+	// 리뷰삭제 - 마이페이지
 	public int memberDelReview(Connection conn, String reviewNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -836,7 +798,6 @@ public class MemberDao {
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
@@ -874,7 +835,6 @@ public class MemberDao {
 				m.setMemberLevel(rset.getInt("member_level"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
@@ -913,13 +873,11 @@ public class MemberDao {
 				members.add(m);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-
 		return members;
 	}
 }
