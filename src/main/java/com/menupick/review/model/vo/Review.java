@@ -18,4 +18,5 @@ public class Review {
     private byte[] reviewImage;   // 리뷰 이미지 (Blob)
     private Date reviewDate;      // 리뷰 작성일
     private String dinnerName;      // 식당 이름(조인)
+    private String memberNick; 		// 회원 별명(조인)
 }

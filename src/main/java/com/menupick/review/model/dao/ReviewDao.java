@@ -49,6 +49,48 @@ public class ReviewDao {
 		
 		return reviews;
 	}
+	
+	//식당상세페이지(경래) 리뷰 조회 (식당이름 조인시킴)
+		public List<Review> getReviewsBydinnerNo(Connection conn, String dinnerNo, String orderBy) {
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			List<Review> reviews = new ArrayList<>();
+			
+			String query = "SELECT r.review_no, r.dinner_no, r.member_no, m.member_nick, r.review_con, "
+	                 + "r.review_img, r.review_date, d.dinner_name "
+	                 + "FROM tbl_review r "
+	                 + "JOIN tbl_dinner d ON r.dinner_no = d.dinner_no "
+	                 + "JOIN tbl_member m ON r.member_no = m.member_no "
+	                 + "WHERE r.dinner_no = ? "
+	                 + "ORDER BY " + orderBy;
+
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, dinnerNo);
+				rset = pstmt.executeQuery();
+				
+				while(rset.next()) {
+					Review review = new Review();
+	                review.setReviewNo(rset.getString("review_no"));
+	                review.setDinnerNo(rset.getString("dinner_no"));
+	                review.setMemberNo(rset.getString("member_no"));
+	                review.setReviewContent(rset.getString("review_con"));
+	                review.setReviewImage(rset.getBytes("review_img"));
+	                review.setReviewDate(rset.getDate("review_date"));
+	                review.setDinnerName(rset.getString("dinner_name"));
+	                review.setMemberNick(rset.getString("member_nick"));
+
+	                reviews.add(review);
+	            }
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				JDBCTemplate.close(rset);
+				JDBCTemplate.close(pstmt);
+			}
+			
+			return reviews;
+		}
 
 	//admin(경래) 리뷰 선택 삭제
 	public int reviewRemoveAll(Connection conn, String reviewNo) {
@@ -140,6 +182,7 @@ public class ReviewDao {
 		return report;
 	}
 
+	// admin 회원 상세 페이지(리뷰별 신고 당한 횟수 조회)
 	public List<ReviewReport> getReviewReportsByMemberNo(Connection conn, String memberNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -166,4 +209,30 @@ public class ReviewDao {
 		}
 		return list;
 	}
+
+	// 리뷰 작성(경래)
+	public int insertReview(Connection conn, String dinnerNo, String memberNo, String content) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "INSERT INTO tbl_review (review_no, member_no, dinner_no, review_con, review_date) "
+                + "VALUES ('r' || to_char(sysdate, 'yymmdd') || lpad (seq_review.nextval, 4, '0'), ?, ?, ?, SYSDATE)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			pstmt.setString(2, dinnerNo);
+			pstmt.setString(3, content);
+			
+			result = pstmt.executeUpdate(); 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
 }

@@ -180,7 +180,7 @@ textarea {
 			<input type="hidden" name="${dinner.dinnerNo}">
 			<input type="hidden" name="memberNo">
 					<div class="dinner-main-img">
-						<img src="/resources/images/${dinner.dinnerNo}.jpg" id="main-img"
+						<img src="/resources/photos/${photoPath}" id="main-img"
 							alt="Restaurant Image" />
 					</div>
 					<div class="restaurant-detail">
@@ -238,9 +238,18 @@ textarea {
 					<div class="tab-content active" id="information-content">정보 콘텐츠</div>
 					<jsp:include page="/WEB-INF/views/common/menu.jsp" />		
 					<div class="tab-content" id="review-content">리뷰 콘텐츠
-					<div>
-					<jsp:include page="/WEB-INF/views/dinner/dinnerWriteReview.jsp" />										
-					</div>
+						<div>
+							<c:import url="/WEB-INF/views/dinner/dinnerWriteReview.jsp">
+							    <c:param name="dinnerName" value="${dinner.dinnerName}" />
+							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
+							    <c:param name="memberNo" value="${member.memberNo}" />
+							</c:import>
+						</div>
+						<div>
+							<c:import url="/dinner/review">
+							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
+							</c:import>
+						</div>
 					</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
 				</div>

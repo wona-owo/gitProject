@@ -117,7 +117,7 @@ public class MemberDao {
 		int result = 0;
 
 		String query = "insert into tbl_member (member_no, member_id, member_pw, member_name, member_nick, member_phone, member_addr, member_gender, member_email, enroll_date, adult_confirm, member_level) "
-				+ "values (seq_member.nextval, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'n', 2)";
+				+ "values ('m' || to_char(sysdate, 'yymmdd') || lpad(seq_member.nextval, 4, '0'), ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'n', 2)";
 		// String query = "insert into tbl_member values (to_char(seq_member.nextval),
 		// ?, ?, ?, ?, ?, ?, ?, ?, sysdate, 'N', 2)";
 
@@ -843,6 +843,7 @@ public class MemberDao {
 		return result;
 	}
 
+
 	public List<String> getReservedTimes(Connection conn, String dinnerNo, String bookDate) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -857,12 +858,64 @@ public class MemberDao {
 			while(rset.next()) {
 				reservedTimes.add(rset.getString("BOOK_TIME"));
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+	
+		return reservedTimes;
+	}
+
+	
+	//리뷰삭제 - 마이페이지
+	public int memberDelReview(Connection conn, String reviewNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = "delete from tbl_review where review_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, reviewNo);
+
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
+
+	public int memberUpdateReview(Connection conn, String reviewNo, String reviewCon) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = "UPDATE tbl_review SET review_con = ? WHERE review_no = ?";
+				
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, reviewCon);
+			pstmt.setString(2, reviewNo);
+			
+			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		
+		
+		}finally {
+			JDBCTemplate.close(pstmt);
 		}
-		return reservedTimes;
+				
+		return result;
+
 	}
 }
 	

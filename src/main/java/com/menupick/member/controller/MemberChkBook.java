@@ -1,6 +1,7 @@
 package com.menupick.member.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,21 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
-
+import com.google.gson.Gson;
 import com.menupick.member.model.service.MemberService;
 
 /**
- * Servlet implementation class MemberDeleteBookServlet
+ * Servlet implementation class MemberChkBook
  */
-@WebServlet("/member/delBook")
-public class MemberDeleteBookServlet extends HttpServlet {
+@WebServlet("/member/checkReservedTimes")
+public class MemberChkBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberDeleteBookServlet() {
+    public MemberChkBook() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,31 +31,24 @@ public class MemberDeleteBookServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				//값 추출 -> 클릭한 회원 번호, 예약번호
-				String bookNo = request.getParameter("bookNo");
-				
-				//비즈니스 로직 -> 예약 취소
-				
-				MemberService service = new MemberService();
-				int result = service.memberDelBook(bookNo);
-				
-				response.setContentType("application/json; charset=UTF-8");
-				
-				if (result > 0) {
-				    JSONObject json = new JSONObject();
-				    json.put("status", "success");
-				    json.put("message", "예약 취소");
-				    response.getWriter().print(json.toString());
-					
-				} else {
-					JSONObject json = new JSONObject();
-				    json.put("status", "error");
-				    json.put("message", "예약 취소 중 오류 발생");
-				    response.getWriter().print(json.toString());
-				}
-				
-			}
+		String bookDate = request.getParameter("bookDate");
+        String dinnerNo = request.getParameter("dinnerNo");
 
+        response.setContentType("application/json; charset=UTF-8");
+
+        if (bookDate == null || dinnerNo == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"error\": \"필수 파라미터가 누락되었습니다.\"}");
+            return;
+        }
+
+        // 예약된 시간대 조회
+        MemberService memberService = new MemberService();
+        List<String> reservedTimes = memberService.getReservedTimes(dinnerNo, bookDate);
+
+        // JSON 형식으로 응답 반환
+        response.getWriter().write(new Gson().toJson(reservedTimes));
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

@@ -1,7 +1,6 @@
 package com.menupick.member.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,16 +12,16 @@ import org.json.simple.JSONObject;
 import com.menupick.member.model.service.MemberService;
 
 /**
- * Servlet implementation class MemberDeleteBookServlet
+ * Servlet implementation class MemberDeleteReviewServlet
  */
-@WebServlet("/member/delBook")
-public class MemberDeleteBookServlet extends HttpServlet {
+@WebServlet("/member/delReview")
+public class MemberDeleteReviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberDeleteBookServlet() {
+    public MemberDeleteReviewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,30 +30,31 @@ public class MemberDeleteBookServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				//값 추출 -> 클릭한 회원 번호, 예약번호
-				String bookNo = request.getParameter("bookNo");
-				
-				//비즈니스 로직 -> 예약 취소
-				
-				MemberService service = new MemberService();
-				int result = service.memberDelBook(bookNo);
-				
-				response.setContentType("application/json; charset=UTF-8");
-				
-				if (result > 0) {
-				    JSONObject json = new JSONObject();
-				    json.put("status", "success");
-				    json.put("message", "예약 취소");
-				    response.getWriter().print(json.toString());
-					
-				} else {
-					JSONObject json = new JSONObject();
-				    json.put("status", "error");
-				    json.put("message", "예약 취소 중 오류 발생");
-				    response.getWriter().print(json.toString());
-				}
-				
-			}
+		//값 추출 -> 리뷰번호
+		String reviewNo = request.getParameter("reviewNo");
+		
+		//비즈니스 로직 -> 리뷰삭제
+		
+		MemberService service = new MemberService();
+		int result = service.memberDelReview(reviewNo);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		
+		if (result > 0) {
+		    JSONObject json = new JSONObject();
+		    json.put("status", "success");
+		    json.put("message", "리뷰 삭제");
+		    response.getWriter().print(json.toString());
+			
+		} else {
+			JSONObject json = new JSONObject();
+		    json.put("status", "error");
+		    json.put("message", "리뷰 삭제 중 오류 발생");
+		    response.getWriter().print(json.toString());
+		}
+		
+	}
+
 
 
 	/**
