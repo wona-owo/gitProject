@@ -167,6 +167,11 @@ textarea {
 	font-size: 14px;
 	color: #555;
 }
+
+.logo-img {
+	width: unset;
+}
+
 /*------------리뷰 작성 모듈 여기까지---------------*/
 </style>
 </head>
