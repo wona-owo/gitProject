@@ -123,7 +123,6 @@ public class DinnerUpdateServlet extends HttpServlet {
 		DinnerService service = new DinnerService();
 
 		if (photoPath.length() < 1) {
-			System.out.println("no prev pic");
 			service.insertFakePhoto(dinnerNo);
 		}
 
