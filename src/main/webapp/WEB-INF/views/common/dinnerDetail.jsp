@@ -10,6 +10,8 @@ Boolean isLogIn = (session.getAttribute("loginMember") != null);
 <head>
 <meta charset="UTF-8">
 <title>dinnerDetail</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 
 /* 시간표 버튼 스타일 */

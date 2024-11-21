@@ -268,7 +268,7 @@ ul.time-list li.disabled {
 		const yyyy = today.getFullYear();//주어진 날짜 현지시간 기준으로 반환
 		const mm = String(today.getMonth() + 1).padStart(2, "0");// 2글자로 day 반환 2자리면 ex)11
 		const dd = String(today.getDate()).padStart(2, "0");// 2글자로 day 반환 2자리면 ex)21
-		document.getElementById("resDate").value = `${yyyy}/${mm}/${dd}`;
+		document.getElementById("resDate").value = `${yyyy}/${mm}/${dd}`;//DB에 값 출력시 
 		
 		
 		

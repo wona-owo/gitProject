@@ -44,8 +44,7 @@ public class MemberReservation extends HttpServlet {
 		
 		
 		
-		System.out.println(bookCntStr);
-		HttpSession session = request.getSession();
+		System.out.println(bookCntStr);		HttpSession session = request.getSession();
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		String memberNo = loginMember.getMemberNo();
 
