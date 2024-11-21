@@ -883,6 +883,83 @@ public class MemberDao {
 				
 		return result;
 	}
+
+	//식당 상세페이지 멤버값 가져오기(경래)
+	public Member memberDetail(Connection conn, String memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Member m = new Member();
+		String query = "select * from tbl_member where member_no =?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				m = new Member();
+				m.setMemberNo(rset.getString("member_no"));
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberPw(rset.getString("member_pw"));
+				m.setMemberName(rset.getString("member_name"));
+				m.setMemberNick(rset.getString("member_nick"));
+				m.setMemberPhone(rset.getString("member_phone"));
+				m.setMemberAddr(rset.getString("member_addr"));
+				m.setMemberGender(rset.getString("member_gender"));
+				m.setMemberEmail(rset.getString("member_email"));
+				m.setEnrollDate(rset.getString("enroll_date"));
+				m.setAdultConfirm(rset.getString("adult_confirm"));
+				m.setMemberLevel(rset.getInt("member_level"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return m;
+	}
+
+	public List<Member> getReviewsBymemberNo(Connection conn, String memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Member> members = new ArrayList<>();
+		
+		String query = "SELECT * FROM tbl_member WHERE member_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberNo);
+			rset = pstmt.executeQuery();
+			
+			while (rset.next()) {
+				Member m = new Member();
+				m.setMemberNo(rset.getString("member_no"));
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberPw(rset.getString("member_pw"));
+				m.setMemberName(rset.getString("member_name"));
+				m.setMemberNick(rset.getString("member_nick"));
+				m.setMemberPhone(rset.getString("member_phone"));
+				m.setMemberAddr(rset.getString("member_addr"));
+				m.setMemberGender(rset.getString("member_gender"));
+				m.setMemberEmail(rset.getString("member_email"));
+				m.setEnrollDate(rset.getString("enroll_date"));
+				m.setAdultConfirm(rset.getString("adult_confirm"));
+				m.setMemberLevel(rset.getInt("member_level"));
+				
+				members.add(m);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return members;
+	}
 }
 	
 

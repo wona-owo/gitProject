@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.menupick.common.JDBCTemplate;
 import com.menupick.review.model.vo.MemberReport;
@@ -184,31 +186,66 @@ public class ReviewDao {
 
 	// admin 회원 상세 페이지(리뷰별 신고 당한 횟수 조회)
 	public List<ReviewReport> getReviewReportsByMemberNo(Connection conn, String memberNo) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		List<ReviewReport> list = new ArrayList<>();
-		String query = "SELECT r.review_no, COUNT(rec.member_no) AS report_count " + "FROM tbl_review r "
-				+ "LEFT JOIN tbl_recommend rec ON r.review_no = rec.review_no AND rec.report = 'y' "
-				+ "WHERE r.member_no = ? " + "GROUP BY r.review_no";
-
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, memberNo);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				list.add(new ReviewReport(rs.getString("review_no"), // reviewNo
-						rs.getString("dinner_no"), // dinnerNo
-						rs.getInt("report_count") // reportCount
-				));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rs);
-			JDBCTemplate.close(pstmt);
-		}
-		return list;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    List<ReviewReport> list = new ArrayList<>();
+	    
+	    String query = "SELECT r.review_no, r.dinner_no, COUNT(rec.member_no) AS report_count "
+	                 + "FROM tbl_review r "
+	                 + "LEFT JOIN tbl_recommend rec ON r.review_no = rec.review_no AND rec.report = 'y' "
+	                 + "WHERE r.member_no = ? "
+	                 + "GROUP BY r.review_no, r.dinner_no";
+	    
+	    try {
+	        pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, memberNo);
+	        rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            list.add(new ReviewReport(
+	                rs.getString("review_no"),  // reviewNo
+	                rs.getString("dinner_no"), // dinnerNo
+	                rs.getInt("report_count")  // reportCount
+	            ));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(rs);
+	        JDBCTemplate.close(pstmt);
+	    }
+	    return list;
 	}
+
+	
+	// 식당 상세 페이지(리뷰별 신고 당한 횟수 조회) (경래)
+		public List<ReviewReport> getReviewReportsBydinnerNo(Connection conn, String dinnerNo) {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			List<ReviewReport> list = new ArrayList<>();
+			String query = "SELECT r.review_no, COUNT(rec.member_no) AS report_count " +
+	                   "FROM tbl_review r " +
+	                   "LEFT JOIN tbl_recommend rec ON r.review_no = rec.review_no AND rec.report = 'y' " +
+	                   "WHERE r.dinner_no = ? " +
+	                   "GROUP BY r.review_no";
+
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, dinnerNo);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					list.add(new ReviewReport(rs.getString("review_no"), // reviewNo
+							null,
+							rs.getInt("report_count") // reportCount
+					));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				JDBCTemplate.close(rs);
+				JDBCTemplate.close(pstmt);
+			}
+			return list;
+		}
 
 	// 리뷰 작성(경래)
 	public int insertReview(Connection conn, String dinnerNo, String memberNo, String content) {
@@ -235,4 +272,31 @@ public class ReviewDao {
 		return result;
 	}
 
+	public Map<String, Integer> getReviewReportCounts(Connection conn, String dinnerNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Map<String, Integer> reportCounts = new HashMap<>();
+
+		String query = "SELECT r.review_no, COUNT(rec.member_no) AS report_count " + "FROM tbl_review r "
+				+ "LEFT JOIN tbl_recommend rec ON r.review_no = rec.review_no AND rec.report = 'y' "
+				+ "WHERE r.dinner_no = ? " + "GROUP BY r.review_no";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo);
+			while (rset.next()) {
+				reportCounts.put(rset.getString("review_no"), rset.getInt("report_count"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+
+		}
+
+		return reportCounts;
+
+	}
 }

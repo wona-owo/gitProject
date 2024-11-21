@@ -45,13 +45,13 @@ public class ReviewWriteServlet extends HttpServlet {
             request.setAttribute("title", "성공!");
             request.setAttribute("msg", "리뷰 작성이 완료되었습니다.");
             request.setAttribute("icon", "success");
-            request.setAttribute("loc", "/dinnerDetail?dinnerNo=" + dinnerNo); // 리다이렉트 URL
+            request.setAttribute("loc", "/dinner/dinnerDetail?dinnerNo=" + dinnerNo); // 리다이렉트 URL
         } else {
             // 리뷰 작성 실패 시
             request.setAttribute("title", "실패!");
             request.setAttribute("msg", "리뷰 작성에 실패했습니다. 다시 시도해주세요.");
             request.setAttribute("icon", "error");
-            request.setAttribute("loc", "/dinnerDetail?dinnerNo=" + dinnerNo); // 실패 시에도 동일 페이지로 이동
+            request.setAttribute("loc", "/dinner/dinnerDetail?dinnerNo=" + dinnerNo); // 실패 시에도 동일 페이지로 이동
         }
 
         // msg.jsp로 포워딩

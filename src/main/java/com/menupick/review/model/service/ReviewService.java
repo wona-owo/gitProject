@@ -1,7 +1,9 @@
 package com.menupick.review.model.service;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.menupick.common.JDBCTemplate;
@@ -143,6 +145,14 @@ public class ReviewService {
 		JDBCTemplate.close(conn);
 		return reports;
 	}
+	
+	// 식당 상세 페이지(리뷰별 신고 당한 횟수 조회) (경래)
+	public List<ReviewReport> getReviewReportsBydinnerNo(String dinnerNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		List<ReviewReport> reviewReports = dao.getReviewReportsBydinnerNo(conn, dinnerNo);
+		JDBCTemplate.close(conn);
+		return reviewReports;
+	}
 
 	//리뷰 작성(경래)
 	public boolean insertReview(String dinnerNo, String memberNo, String content) {
@@ -158,5 +168,21 @@ public class ReviewService {
 		JDBCTemplate.close(conn);
 		
 		return result > 0;
+	}
+
+	//신고횟수 조회 맵 이용(경래)
+	public Map<String, Integer> getReviewReportCounts(String dinnerNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Map<String, Integer> reviewReportCounts = null;
+		
+		reviewReportCounts = dao.getReviewReportCounts(conn, dinnerNo);
+		
+		if (reviewReportCounts == null) {
+            reviewReportCounts = new HashMap<>(); // null 방지
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return reviewReportCounts;
 	}
 }

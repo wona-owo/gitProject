@@ -51,7 +51,6 @@
 				<br>
 
 				<div class="my-info-box">
-					<p>총 신고당한 횟수 : ${memberReport.totalReports}</p>
 					<div class="action-bar">
 						<div class="sort-dropdown">
 							<form action="/admin/memberDetail" method="get">
@@ -61,8 +60,6 @@
 										${param.sortOption == 'latest' ? 'selected' : ''}>최신순</option>
 									<option value="oldest"
 										${param.sortOption == 'oldest' ? 'selected' : ''}>오래된순</option>
-									<option value="report"
-										${param.sortOption == 'report' ? 'selected' : ''}>신고순</option>
 								</select>
 							</form>
 						</div>
@@ -76,48 +73,50 @@
 				<div class="my-info-wrap">
                     <div class="rvMainBox">
                         <c:choose>
-                            <c:when test="${not empty reviews}">
-                                <c:forEach var="review" items="${reviews}">
-                                    <div>
-                                        <p>식당명: ${review.dinnerName}</p>
-                                        <!-- 신고당한 횟수를 reviewReports에서 가져오기 -->
-                                        <c:set var="found" value="false" />
-                                        <c:forEach var="report" items="${reviewReports}">
-                                            <c:if test="${review.reviewNo == report.reviewNo}">
-                                                <p>신고당한 횟수: ${report.reportCount}</p>
-                                                <c:set var="found" value="true" />
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:if test="${!found}">
-                                            <p>신고당한 횟수: 0</p>
-                                        </c:if>
-                                        <p>아이디(별명): ${member.memberId} (${member.memberNick})</p>
-                                        <br>
-                                        <p>작성일자: ${review.reviewDate}</p>
-                                        <br>
-                                        <div class="reviewBox">
-                                            <c:choose>
-                                                <c:when test="${review.reviewImage != null}">
-                                                    <div class="reviewPhoto">
-                                                        <img src="data:image/jpeg;base64,${fn:escapeXml(review.reviewImage)}" alt="리뷰 이미지">
-                                                    </div>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div class="reviewPhoto">
-                                                        <img src="/resources/images/default_review.png" alt="기본 이미지">
-                                                    </div>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                        <p>${review.reviewContent}</p>
-                                        <div class="checkbox-container">
-                                            <input type="checkbox" name="rpchk" data-review-no="${review.reviewNo}">
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                            </c:when>
+							<c:when test="${not empty reviews}">
+								<c:forEach var="review" items="${reviews}">
+									<div>
+										<p>식당명: ${review.dinnerName}</p>
+										<!-- 신고당한 횟수를 reviewReports에서 가져오기 -->
+										<c:set var="found" value="false" />
+										<c:forEach var="report" items="${reviewReports}">
+											<c:if test="${review.reviewNo == report.reviewNo}">
+												<p>신고당한 횟수: ${report.reportCount}</p>
+												<c:set var="found" value="true" />
+											</c:if>
+										</c:forEach>
+										<c:if test="${!found}">
+											<p>신고당한 횟수: 0</p>
+										</c:if>
+										<p>아이디(별명): ${member.memberId} (${member.memberNick})</p>
+										<p>작성일자: ${review.reviewDate}</p>
+										<div class="reviewBox">
+											<c:choose>
+												<c:when test="${review.reviewImage != null}">
+													<div class="reviewPhoto">
+														<img
+															src="data:image/jpeg;base64,${fn:escapeXml(review.reviewImage)}"
+															alt="리뷰 이미지">
+													</div>
+												</c:when>
+												<c:otherwise>
+													<div class="reviewPhoto">
+														<img src="/resources/images/default_review.png"
+															alt="기본 이미지">
+													</div>
+												</c:otherwise>
+											</c:choose>
+										</div>
+										<p>${review.reviewContent}</p>
+										<div class="checkbox-container">
+											<input type="checkbox" name="rpchk"
+												data-review-no="${review.reviewNo}">
+										</div>
+									</div>
+								</c:forEach>
+							</c:when>
 
-                            <c:otherwise>
+							<c:otherwise>
                                 <p>작성한 리뷰가 없습니다.</p>
                             </c:otherwise>
                         </c:choose>
