@@ -101,9 +101,9 @@
 					action="${pageContext.request.contextPath}/dinner/update"
 					method="post" onsubmit="return validateAndConfirmUpdate();"
 					enctype="multipart/form-data">
-					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}" />
 					<input type="hidden" name="dinnerId" value="${dinner.dinnerId}" />
 					<input type="hidden" name="photoPath" value="${photoPath}" />
+					<c:set var="dinnerNo" value="${dinner.dinnerNo}"/>
 
 					<table class="tbl">
 						<tr>
@@ -119,13 +119,6 @@
 							<th>매장 ID</th>
 							<td><input type="text" value="${dinner.dinnerId}" readonly />
 								<input type="hidden" name="dinnerId" value="${dinner.dinnerId}" />
-							</td>
-						</tr>
-						<tr>
-							<th>비밀번호</th>
-							<td>
-								<button type="button" onclick="chgPassword()"
-									class="btn-primary">비밀번호 변경</button>
 							</td>
 						</tr>
 						<tr>
@@ -192,7 +185,7 @@
 					</table>
 
 					<div class="mypage-btn">
-						<button type="button" onclick="deleteDinner()" class="btn-primary">회원탈퇴</button>
+						<button type="button" onclick="confirmDelete('${dinnerNo}')" class="btn-primary">회원탈퇴</button>
 						<button type="button"
 							onclick="window.location.href='${pageContext.request.contextPath}/dinner/dinnerPageFrm?dinnerNo=${dinner.dinnerNo}'"
 							class="btn-primary" style="margin-left: 30px;">매장 상세페이지
@@ -206,17 +199,6 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
-		function chgPassword() {
-			let popupWidth = 500;
-			let popupHeight = 400;
-			let top = (window.innerHeight - popupHeight) / 2 + window.screenY;
-			let left = (window.innerWidth - popupWidth) / 2 + window.screenX;
-
-			window
-					.open("/dinner/chgPw", "chgPw",
-							`width=${popupWidth}, height=${popupHeight}, top=${top}, left=${left}`);
-		}
-
 		function validateAndConfirmUpdate() {
 			const dinnerOpen = document
 					.querySelector("input[name='dinnerOpen']").value;
@@ -253,32 +235,22 @@
 			// 확인 메시지
 			return confirm("매장 정보를 수정하시겠습니까?");
 		}
-		function deleteDinner() {
-			swal({
-				title : "매장 회원 삭제",
-				text : "정말 탈퇴 하시겠습니까?",
-				icon : "warning",
-				buttons : {
-					cancel : {
-						text : "취소",
-						value : false,
-						visible : true,
-						closeModal : true
-					},
-					confirm : {
-						text : "탈퇴",
-						value : true,
-						visible : true,
-						closeModal : true
-					}
-				}
-			}).then(function(isConfirm) {
-				if (isConfirm) {
-					$('#updateForm').attr('action', '/dinner/delete');
-					$('#updateForm').submit();
-				}
-			});
-		}
+
+        function confirmDelete(dinnerNo) {
+        	console.log(dinnerNo);
+            swal({
+                title: "정말로 삭제하시겠습니까?",
+                text: "이 작업은 되돌릴 수 없습니다!",
+                icon: "warning",
+                buttons: ["취소", "확인"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = "/dinner/deletefrm?dinnerNo=" + dinnerNo;
+                }
+            });
+        }
+
 	</script>
 </body>
 </html>
