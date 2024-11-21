@@ -1,3 +1,4 @@
+<%@page import="com.menupick.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -5,6 +6,8 @@
 // 세션에서 로그인 상태 확인
 Boolean isLogIn = (session.getAttribute("loginMember") != null);
 %>
+<% Member loginMember = (Member) session.getAttribute("loginMember"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -245,7 +248,17 @@ textarea {
 					<div class="tab-content" id="review-content">
 						리뷰 콘텐츠
 						<div>
-							<jsp:include page="/WEB-INF/views/dinner/dinnerWriteReview.jsp" />
+							<c:import url="/WEB-INF/views/dinner/dinnerWriteReview.jsp">
+							    <c:param name="dinnerName" value="${dinner.dinnerName}" />
+							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
+							    <c:param name="memberNo" value="${loginMember.memberNo}" />
+							</c:import>
+						</div>
+						<div>
+							<c:import url="/dinner/review">
+							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
+							    <c:param name="memberNo" value="${loginMember.memberNo}" />
+							</c:import>
 						</div>
 					</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>

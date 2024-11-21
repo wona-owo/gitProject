@@ -400,6 +400,23 @@ public class MemberService {
 		
 	}
 
+
+	//식당 상세페이지 멤버값 가져오기.(경래)
+	public Member dinnerDetail(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Member member = dao.memberDetail(conn, memberNo);
+		JDBCTemplate.close(conn);
+		
+		return member;
+	}
+
+	public List<Member> getReviewsBymemberNo(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		List<Member> members = dao.getReviewsBymemberNo(conn, memberNo);
+		JDBCTemplate.close(conn);
+		return members;
+	}
+
     }
 
  

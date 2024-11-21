@@ -126,7 +126,7 @@
 					<div class="review-header">
 						<p class="review-date">작성일: ${review.reviewDate}</p>
 						<p class="review-author">작성자: ${review.memberNick}</p>
-						<p>신고당한 횟수: 
+						<p>신고당한 횟수:
 							<c:set var="reportCount" value="0" />
 							<c:forEach var="report" items="${reviewReports}">
 								<c:if test="${review.reviewNo == report.reviewNo}">
@@ -150,7 +150,7 @@
 							</c:choose>
 						</div>
 						<p class="review-content">${review.reviewContent}</p>
-						<button type="button" onclick="reportReview('${review.reviewNo}')">신고</button>
+						<button type="button" onclick="reportReview('${review.reviewNo}','${memberNo}')">신고</button>
 					</div>
 				</div>
 			</c:forEach>
@@ -162,7 +162,7 @@
 </c:choose>
 
 <script>
-function reportReview(reviewNo) {
+function reportReview(reviewNo, memberNo) {
 	swal({
 		title : "리뷰 신고",
 		text : "이 리뷰를 신고하시겠습니까?",
@@ -175,18 +175,21 @@ function reportReview(reviewNo) {
 		if (confirm) {
 			$.ajax({
 				url : "/review/report",
-				type : "GET",
+				type : "POST",
 				data : {
 					review_no : reviewNo,
+					member_no : memberNo
 				},
 				success : function(response) {
 					if (response === "success") {
-						swal("알림", "리뷰 신고가 완료되었습니다.", "success");
-					} else if (response === "already_reported") {
-						swal("알림", "이미 신고된 리뷰입니다.", "info");
-					} else {
-						swal("오류", "알 수 없는 오류가 발생하였습니다.", "error");
-					}
+                        swal("알림", "리뷰 신고가 완료되었습니다.", "success");
+                    } else if (response === "already_reported") {
+                        swal("알림", "이미 신고된 리뷰입니다.", "info");
+                    } else if (response === "invalid_data") {
+                        swal("오류", "유효하지 않은 데이터입니다.", "error");
+                    } else {
+                        swal("오류", "알 수 없는 오류가 발생하였습니다.", "error");
+                    }
 				},
 				error : function() {
 					swal("오류", "리뷰 신고 중 오류가 발생하였습니다.", "error");
@@ -195,4 +198,5 @@ function reportReview(reviewNo) {
 		}
 	});
 }
+
 </script>

@@ -101,7 +101,7 @@ button {
                 data: {
                     dinnerName: "${dinner.dinnerName}",
                     dinnerNo: "${dinner.dinnerNo}",
-                    memberNo: "${member.memberNo}"
+                    memberNo: "${loginMember.memberNo}"
                 },
                 success: function (data) {
                     // 데이터를 컨테이너에 삽입
