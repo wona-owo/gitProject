@@ -74,7 +74,6 @@ button:hover {
 	function showIdSearchPopup() {
         document.getElementById("idSearchPopup").style.display = "block";
     }
-
     // 아이디 찾기 함수
     function searchId() {
         var memberName = document.getElementById("popupMemberName").value;
