@@ -98,12 +98,16 @@
 			<section class="section mypage-wrap">
 				<div class="page-title">매장 정보 수정</div>
 				<form id="updateForm"
-					action="${pageContext.request.contextPath}/dinner/update"
+				<%--
+${pageContext.request.contextPath}
+--%>
+					action="/dinner/update"
 					method="post" onsubmit="return validateAndConfirmUpdate();"
 					enctype="multipart/form-data">
 					<input type="hidden" name="dinnerId" value="${dinner.dinnerId}" />
 					<input type="hidden" name="photoPath" value="${photoPath}" />
 					<c:set var="dinnerNo" value="${dinner.dinnerNo}"/>
+					<input type="hidden" name="dinnerNo" value="${dinnerNo}" />
 
 					<table class="tbl">
 						<tr>

@@ -27,6 +27,8 @@ public class DinnerDao {
 		ArrayList<Dinner> list = new ArrayList<>();
 		String query = "select * from tbl_dinner order by dinner_name asc";
 
+		System.out.println("from dinnerDao before");
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -43,6 +45,9 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm")); // 승인여부
 				list.add(d);
 			}
+
+			System.out.println("from dinnerDao after");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -772,52 +777,53 @@ public class DinnerDao {
 	}
 
 	public Dinner getDinnerByNo(Connection conn, String dinnerNo) {
-	    PreparedStatement pstmt = null;
-	    ResultSet rs = null;
-	    Dinner dinner = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Dinner dinner = null;
 
-	    String query = "SELECT * FROM TBL_DINNER WHERE LOWER(dinner_no) = LOWER(?)";
+		String query = "SELECT * FROM TBL_DINNER WHERE LOWER(dinner_no) = LOWER(?)";
 
-	    try {
-	        pstmt = conn.prepareStatement(query);
-	        pstmt.setString(1, dinnerNo);
-	        rs = pstmt.executeQuery();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo);
+			rs = pstmt.executeQuery();
 
-	        if (rs.next()) {
-	            dinner = new Dinner();
-	            dinner.setDinnerNo(rs.getString("dinner_no"));
-	            dinner.setDinnerName(rs.getString("dinner_name"));
-	            dinner.setDinnerId(rs.getString("dinner_id"));
-	            dinner.setDinnerAddr(rs.getString("dinner_addr"));
+			if (rs.next()) {
+				dinner = new Dinner();
+				dinner.setDinnerNo(rs.getString("dinner_no"));
+				dinner.setDinnerName(rs.getString("dinner_name"));
+				dinner.setDinnerId(rs.getString("dinner_id"));
+				dinner.setDinnerAddr(rs.getString("dinner_addr"));
 
-	            // 시간 포맷팅 추가
-	            dinner.setDinnerOpen(formatTimeWithColon(rs.getString("dinner_open")));
-	            dinner.setDinnerClose(formatTimeWithColon(rs.getString("dinner_close")));
+				// 시간 포맷팅 추가
+				dinner.setDinnerOpen(formatTimeWithColon(rs.getString("dinner_open")));
+				dinner.setDinnerClose(formatTimeWithColon(rs.getString("dinner_close")));
 
-	            dinner.setDinnerPhone(rs.getString("dinner_phone"));
-	            dinner.setDinnerEmail(rs.getString("dinner_email"));
-	            dinner.setDinnerParking(rs.getString("dinner_parking"));
-	            dinner.setBusiNo(rs.getString("busi_no"));
-	            dinner.setDinnerMaxPerson(rs.getString("dinner_max_person"));
-	            dinner.setDinnerConfirm(rs.getString("dinner_confirm"));
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        JDBCTemplate.close(rs);
-	        JDBCTemplate.close(pstmt);
-	    }
+				dinner.setDinnerPhone(rs.getString("dinner_phone"));
+				dinner.setDinnerEmail(rs.getString("dinner_email"));
+				dinner.setDinnerParking(rs.getString("dinner_parking"));
+				dinner.setBusiNo(rs.getString("busi_no"));
+				dinner.setDinnerMaxPerson(rs.getString("dinner_max_person"));
+				dinner.setDinnerConfirm(rs.getString("dinner_confirm"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
 
-	    return dinner;
+		return dinner;
 	}
 
 	// 시간 데이터 포맷팅 메서드
 	private String formatTimeWithColon(String time) {
-	    if (time != null && time.length() == 4) {
-	        return time.substring(0, 2) + ":" + time.substring(2); // "1200" -> "12:00"
-	    }
-	    return time;
+		if (time != null && time.length() == 4) {
+			return time.substring(0, 2) + ":" + time.substring(2); // "1200" -> "12:00"
+		}
+		return time;
 	}
+
 	public List<Menu> getMenuByDinnerNo(Connection conn, String dinnerNo, String foodNo) {
 		List<Menu> menuList = new ArrayList<>();
 		String sql = "SELECT m.dinner_no, m.food_no, m.price, f.food_name " + "FROM tbl_menu m "
@@ -918,13 +924,13 @@ public class DinnerDao {
 		int result = 0;
 		String query = "update tbl_photo set photo_name = ?, photo_path = ? where dinner_no = ?";
 		Photo p = photoList.get(0);
-		
+
 		try {
 			pt = conn.prepareStatement(query);
 			pt.setString(1, p.getPhotoName());
 			pt.setString(2, p.getPhotoPath());
 			pt.setString(3, dinnerNo);
-			
+
 			result = pt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -935,44 +941,42 @@ public class DinnerDao {
 	}
 
 	public List<MenuDTO> getMenuDetailsByDinnerNo(Connection conn, String dinnerNo) {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<MenuDTO> menuList = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<MenuDTO> menuList = new ArrayList<>();
 
-        // SQL 쿼리
-        String query = "SELECT m.food_no, f.food_name, f.food_cat, m.price " +
-                       "FROM tbl_menu m " +
-                       "JOIN tbl_food f ON m.food_no = f.food_no " +
-                       "WHERE m.dinner_no = ?";
+		// SQL 쿼리
+		String query = "SELECT m.food_no, f.food_name, f.food_cat, m.price " + "FROM tbl_menu m "
+				+ "JOIN tbl_food f ON m.food_no = f.food_no " + "WHERE m.dinner_no = ?";
 
-        try {
-            // PreparedStatement 생성
-            pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, dinnerNo); // 파라미터 바인딩
-            rs = pstmt.executeQuery(); // 쿼리 실행
+		try {
+			// PreparedStatement 생성
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dinnerNo); // 파라미터 바인딩
+			rs = pstmt.executeQuery(); // 쿼리 실행
 
-            // ResultSet 처리
-            while (rs.next()) {
-                MenuDTO menu = new MenuDTO();
-                menu.setFoodNo(rs.getString("food_no"));
-                menu.setFoodName(rs.getString("food_name"));
-                menu.setFoodCat(rs.getString("food_cat"));
-                menu.setPrice(rs.getInt("price"));
+			// ResultSet 처리
+			while (rs.next()) {
+				MenuDTO menu = new MenuDTO();
+				menu.setFoodNo(rs.getString("food_no"));
+				menu.setFoodName(rs.getString("food_name"));
+				menu.setFoodCat(rs.getString("food_cat"));
+				menu.setPrice(rs.getInt("price"));
 
-                menuList.add(menu); // 결과 리스트에 추가
-            }
+				menuList.add(menu); // 결과 리스트에 추가
+			}
 
-            // 디버깅용 데이터 출력
-            System.out.println("Query executed successfully.");
-        } catch (SQLException e) {
-            // 예외 처리
-            e.printStackTrace();
-        } finally {
-            // 리소스 정리
-            JDBCTemplate.close(rs);
-            JDBCTemplate.close(pstmt);
-        }
+			// 디버깅용 데이터 출력
+			System.out.println("Query executed successfully.");
+		} catch (SQLException e) {
+			// 예외 처리
+			e.printStackTrace();
+		} finally {
+			// 리소스 정리
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
 
-        return menuList; // 결과 반환
-    }
+		return menuList; // 결과 반환
+	}
 }

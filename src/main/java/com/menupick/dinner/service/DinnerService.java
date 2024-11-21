@@ -217,10 +217,12 @@ public class DinnerService {
 	public int updateDinner(Dinner updDinner) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateDinner(conn, updDinner);
+		System.out.println("service before : "+result);
 		
 		if (updDinner.getPhotoList() != null) {
 			result = (dao.updateDinnerPhoto(conn, updDinner.getDinnerNo(), updDinner.getPhotoList())  == 1 ? 1 : 0);
 		}
+		System.out.println("service after : "+ result);
 
 		if (result > 0) {
 			JDBCTemplate.commit(conn);

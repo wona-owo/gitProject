@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,14 +26,8 @@ public class DinnerUpdateServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 
 		// daniel - 사진을 입력 받는것
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
@@ -140,6 +133,8 @@ public class DinnerUpdateServlet extends HttpServlet {
 			}
 		}
 
+		System.out.println(updDinner);
+
 		// 서비스 호출
 		int result = service.updateDinner(updDinner);
 
@@ -158,13 +153,15 @@ public class DinnerUpdateServlet extends HttpServlet {
 			request.setAttribute("title", "알림");
 			request.setAttribute("msg", "매장 정보 수정 중 오류가 발생했습니다.");
 			request.setAttribute("icon", "error");
-
 			request.setAttribute("loc", "/dinner/settingFrm");
-
 		}
+		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-		dispatcher.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 	// ":" 추가 메서드
@@ -177,8 +174,6 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 	private void forwardToErrorPage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/error.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/common/error.jsp").forward(request, response);
 	}
 }
-
