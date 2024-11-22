@@ -169,12 +169,12 @@ public class DinnerUpdateServlet extends HttpServlet {
 	}
 
 	// ":" 추가 메서드
-	private String addColonToTime(String time) {
-		if (time != null && time.length() == 4) {
-			return time.substring(0, 2) + ":" + time.substring(2); // "1200" -> "12:00"
-		}
-		return time;
-	}
+//	private String addColonToTime(String time) {
+//		if (time != null && time.length() == 4) {
+//			return time.substring(0, 2) + ":" + time.substring(2); // "1200" -> "12:00"
+//		}
+//		return time;
+//	}
 
 	private void forwardToErrorPage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

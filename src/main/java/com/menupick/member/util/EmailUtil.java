@@ -1,14 +1,19 @@
 package com.menupick.member.util;
 
 import java.util.Properties;
-import javax.mail.*;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailUtil {
 	public static void sendEmail(String to, String subject, String messageText) throws Exception {
-		final String from = "unemotioned@naver.com"; // 네이버 이메일
-		final String password = "Blackdwarf9"; // 비밀번호
+		final String from = "unemotioned@naver.com";
+		final String password = "Blackdwarf9";
 
 		if (!to.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			throw new IllegalArgumentException("Invalid email address: " + to);
@@ -23,7 +28,7 @@ public class EmailUtil {
 
 		Session session = Session.getInstance(props, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("unemotioned@naver.com", "Blackdwarf9"); // 인증 정보 설정
+				return new PasswordAuthentication("unemotioned@f.com", "Blackdwarf9"); // 인증 정보 설정
 			}
 		});
 

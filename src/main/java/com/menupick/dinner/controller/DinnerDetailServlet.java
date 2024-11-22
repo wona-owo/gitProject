@@ -47,7 +47,6 @@ public class DinnerDetailServlet extends HttpServlet {
 		request.setAttribute("dinner", dinner);
 		request.setAttribute("member", member);
 		request.setAttribute("photoPath", photoPath);
-		
 		request.getRequestDispatcher("/WEB-INF/views/common/dinnerDetail.jsp").forward(request, response);
 	}
 
