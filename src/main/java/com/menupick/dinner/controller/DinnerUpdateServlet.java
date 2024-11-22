@@ -26,6 +26,19 @@ public class DinnerUpdateServlet extends HttpServlet {
 		super();
 	}
 
+	private String addColonToTime(String time) {
+		if (time.length() == 4) {
+			// Calculate the middle index
+			int middleIndex = time.length() / 2;
+			// Add colon at the middle
+			String result = time.substring(0, middleIndex) + ":" + time.substring(middleIndex);
+
+			return result;
+		} else {
+			return time;
+		}
+	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -51,8 +64,8 @@ public class DinnerUpdateServlet extends HttpServlet {
 		String dinnerName = mRequest.getParameter("dinnerName");
 		String dinnerId = mRequest.getParameter("dinnerId");
 		String dinnerAddr = mRequest.getParameter("dinnerAddr");
-		String dinnerOpen = mRequest.getParameter("dinnerOpen");
-		String dinnerClose = mRequest.getParameter("dinnerClose");
+		String dinnerOpen = addColonToTime(mRequest.getParameter("dinnerOpen"));
+		String dinnerClose = addColonToTime(mRequest.getParameter("dinnerClose"));
 		String dinnerPhone = mRequest.getParameter("dinnerPhone");
 		String dinnerEmail = mRequest.getParameter("dinnerEmail");
 		String dinnerParking = mRequest.getParameter("dinnerParking");
@@ -163,14 +176,6 @@ public class DinnerUpdateServlet extends HttpServlet {
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
-
-	// ":" 추가 메서드
-//	private String addColonToTime(String time) {
-//		if (time != null && time.length() == 4) {
-//			return time.substring(0, 2) + ":" + time.substring(2); // "1200" -> "12:00"
-//		}
-//		return time;
-//	}
 
 	private void forwardToErrorPage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
