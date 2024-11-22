@@ -23,6 +23,8 @@ public class Dinner {
 	private String dinnerId;
 	private String dinnerPw;
 	private String dinnerConfirm;
+	
+	private String memberNo;
 
 	// 종속 데이터 변수 추가
 	private ArrayList<Dinner> dinnerList;

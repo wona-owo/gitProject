@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,83 +10,82 @@
 <style>
 /* 기본 설정 */
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* 모달 배경 스타일 */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 /* 모달 컨텐츠 스타일 */
 .modal-content {
-    width: 90%;
-    max-width: 600px;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    position: relative;
-    text-align: center;
+	width: 90%;
+	max-width: 600px;
+	background-color: #fff;
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	position: relative;
+	text-align: center;
 }
 
 /* 닫기 버튼 스타일 */
 .close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #f40;
-    font-weight: bold;
-    transition: color 0.3s;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	font-size: 20px;
+	cursor: pointer;
+	color: #f40;
+	font-weight: bold;
+	transition: color 0.3s;
 }
 
 .close-btn:hover {
-    color: #c30;
+	color: #c30;
 }
 
 /* 버튼 공통 스타일 */
 button {
-    padding: 12px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+	padding: 12px 20px;
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
 #openModalBtn {
-    background-color: #f40;
-    color: #fff;
-    margin: 20px auto;
-    display: block;
+	background-color: #f40;
+	color: #fff;
+	margin: 20px auto;
+	display: block;
 }
 
 #openModalBtn:hover {
-    background-color: #c30;
+	background-color: #c30;
 }
-
 </style>
 </head>
 <body>
-    <!-- 리뷰 작성 버튼 -->
-    <button id="openModalBtn">리뷰 작성하기</button>
+	<!-- 리뷰 작성 버튼 -->
+	<button id="openModalBtn">리뷰 작성하기</button>
 
-    <!-- AJAX로 모달을 삽입할 컨테이너 -->
-    <div id="reviewModalContainer"></div>
+	<!-- AJAX로 모달을 삽입할 컨테이너 -->
+	<div id="reviewModalContainer"></div>
 
-    <script>
+	<script>
     $(document).ready(function () {
         $("#openModalBtn").click(function () {
             // 이미 로드된 경우 다시 로드하지 않음
@@ -101,7 +101,7 @@ button {
                 data: {
                     dinnerName: "${dinner.dinnerName}",
                     dinnerNo: "${dinner.dinnerNo}",
-                    memberNo: "${loginMember.memberNo}"
+                    memberNo: "${loginMember != null ? loginMember.memberNo : ''}" // Null 체크 추가
                 },
                 success: function (data) {
                     // 데이터를 컨테이너에 삽입
