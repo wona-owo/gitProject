@@ -79,12 +79,11 @@ create table
   );
 
 -- tbl_menu 데이터
-insert into tbl_menu values ('d2411220004', 'f2411220001', 18000);
-insert into tbl_menu values ('d2411220003', 'f2411220002', 12000);
-insert into tbl_menu values ('d2411220003', 'f2411220003', 20000);
-insert into tbl_menu values ('d2411220004', 'f2411220004', 15000);
-insert into tbl_menu values ('d2411220005', 'f2411220005', 13000);
-insert into tbl_menu values ('d2411220005', 'f2411220001', 7000);
+insert into tbl_menu values ('d2411220001', 'f2411220005', 18000);
+insert into tbl_menu values ('d2411220002', 'f2411220008', 12000);
+insert into tbl_menu values ('d2411220003', 'f2411220002', 20000);
+insert into tbl_menu values ('d2411220004', 'f2411220005', 15000);
+insert into tbl_menu values ('d2411220005', 'f2411220001', 23000);
 
 create table
   tbl_member (
