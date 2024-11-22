@@ -171,7 +171,6 @@ textarea {
 .logo-img {
 	width: unset;
 }
-
 /*------------리뷰 작성 모듈 여기까지---------------*/
 </style>
 </head>
@@ -188,7 +187,7 @@ textarea {
 						type="hidden" name="memberNo">
 					<div class="dinner-main-img">
 						<img src="/resources/photos/${photoPath}" id="main-img"
-							alt="Restaurant Image" style="width: 500px;"/>
+							alt="Restaurant Image" style="width: 500px;" />
 					</div>
 					<div class="restaurant-detail">
 						<div class="restaurant-detail-container">

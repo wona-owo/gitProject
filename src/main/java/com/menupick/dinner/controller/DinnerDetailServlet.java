@@ -35,15 +35,15 @@ public class DinnerDetailServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinnerNo");
 		String memberNo = request.getParameter("memberNo");
-		
+
 		DinnerService service = new DinnerService();
 		MemberService mbService = new MemberService();
-		
+
 		Dinner dinner = service.dinnerDetail(dinnerNo);
 		String photoPath = service.dinnerPhotoPath(dinnerNo);
-		
+
 		Member member = mbService.dinnerDetail(memberNo);
-		
+
 		request.setAttribute("dinner", dinner);
 		request.setAttribute("member", member);
 		request.setAttribute("photoPath", photoPath);
