@@ -193,8 +193,8 @@ ul.time-list li.disabled {
 			submitBtn.disabled = count === minCnt; // 인원수가 minCnt이면 비활성화, 1 이상이면 활성화
 		}
 
-		const openTime = parseInt('${dinner.dinnerOpen}', 10); // 예: '0900' -> 900
-		const closeTime = parseInt('${dinner.dinnerClose}', 10); // 예: '1800' -> 1800
+		const openTime = parseInt(openTimeString.replace(":", ""), 10);
+		const closeTime = parseInt(closeTimeString.replace(":", ""), 10);
 		const interval = 100; // 1시간 간격 (100 단위)
 		let selectedTime = null; // 선택 시간값 초기호
 

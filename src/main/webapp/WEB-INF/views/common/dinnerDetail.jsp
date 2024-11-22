@@ -188,7 +188,7 @@ textarea {
 						type="hidden" name="memberNo">
 					<div class="dinner-main-img">
 						<img src="/resources/photos/${photoPath}" id="main-img"
-							alt="Restaurant Image" />
+							alt="Restaurant Image" style="width: 500px;"/>
 					</div>
 					<div class="restaurant-detail">
 						<div class="restaurant-detail-container">
