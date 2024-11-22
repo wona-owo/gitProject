@@ -175,12 +175,10 @@ create table
 -- 'p' || to_char(sysdate, 'yymmdd') || lpad (seq_photo.nextval, 4, '0')
 create sequence seq_photo maxvalue 9999 cycle;
 
-select * from tbl_dinner;
-select * from tbl_photo;
-
 insert into tbl_photo values ('f2411221001', 'd2411220001', '', '온리밋.png','20241122091918414_05740.png'); 
 insert into tbl_photo values ('f2411221002', 'd2411220002', '', '포유티.png','20241122092018188_03447.png'); 
 insert into tbl_photo values ('f2411221003', 'd2411220003', '', '오븐스프링.png','20241122092102253_06170.png'); 
 insert into tbl_photo values ('f2411221004', 'd2411220004', '', '바운더리프리.png','20241122092136220_00680.png'); 
 insert into tbl_photo values ('f2411221005', 'd2411220005', '', '청년감자탕.png','20241122092155060_04843.png'); 
+
 commit;
