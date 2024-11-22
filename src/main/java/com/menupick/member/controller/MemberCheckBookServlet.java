@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import com.menupick.dinner.service.DinnerService;
 import com.menupick.dinner.vo.Book;
-import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.service.MemberService;
 import com.menupick.member.model.vo.Member;

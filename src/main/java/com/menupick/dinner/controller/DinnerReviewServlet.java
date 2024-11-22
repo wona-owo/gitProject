@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.menupick.member.model.service.MemberService;
-import com.menupick.member.model.vo.Member;
 import com.menupick.review.model.service.ReviewService;
 import com.menupick.review.model.vo.Review;
 import com.menupick.review.model.vo.ReviewReport;
