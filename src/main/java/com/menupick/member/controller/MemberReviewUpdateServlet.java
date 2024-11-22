@@ -37,10 +37,6 @@ public class MemberReviewUpdateServlet extends HttpServlet {
         String reviewNo = request.getParameter("reviewNo");
         String reviewCon = request.getParameter("reviewCon");
 
-        // 로그 출력
-        System.out.println("Review No: " + reviewNo);
-        System.out.println("Review Content: " + reviewCon);
-
         // 입력 값 검증
         if (reviewNo == null || reviewNo.isEmpty() || reviewCon == null || reviewCon.isEmpty()) {
             request.setAttribute("message", "리뷰 번호나 내용이 유효하지 않습니다.");
@@ -62,7 +58,6 @@ public class MemberReviewUpdateServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/member/reviewUpdate.jsp").forward(request, response);
         }
 	}
-
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

@@ -117,8 +117,6 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 		DinnerService service = new DinnerService();
 
-		System.out.println(photoPath);
-
 		if (photoPath.length() < 1) {
 			service.insertFakePhoto(dinnerNo);
 		}
@@ -137,8 +135,6 @@ public class DinnerUpdateServlet extends HttpServlet {
 				file.delete();
 			}
 		}
-
-		System.out.println("from DinnerUpdateServlet" + updDinner);
 
 		// 서비스 호출
 		int result = service.updateDinner(updDinner);

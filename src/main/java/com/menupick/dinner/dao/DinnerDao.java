@@ -27,8 +27,6 @@ public class DinnerDao {
 		ArrayList<Dinner> list = new ArrayList<>();
 		String query = "select * from tbl_dinner order by dinner_name asc";
 
-		System.out.println("from dinnerDao before");
-
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -45,9 +43,6 @@ public class DinnerDao {
 				d.setDinnerConfirm(rset.getString("dinner_confirm")); // 승인여부
 				list.add(d);
 			}
-
-			System.out.println("from dinnerDao after");
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -924,9 +919,6 @@ public class DinnerDao {
 		int result = 0;
 		String query = "update tbl_photo set photo_name = ?, photo_path = ? where dinner_no = ?";
 		Photo p = photoList.get(0);
-		
-		System.out.println("from dinnerdao : "  + dinnerNo);
-		System.out.println(photoList);
 
 		try {
 			pt = conn.prepareStatement(query);
@@ -968,9 +960,6 @@ public class DinnerDao {
 
 				menuList.add(menu); // 결과 리스트에 추가
 			}
-
-			// 디버깅용 데이터 출력
-			System.out.println("Query executed successfully.");
 		} catch (SQLException e) {
 			// 예외 처리
 			e.printStackTrace();

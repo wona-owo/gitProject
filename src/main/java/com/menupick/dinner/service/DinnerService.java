@@ -217,13 +217,10 @@ public class DinnerService {
 	public int updateDinner(Dinner updDinner) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateDinner(conn, updDinner);
-		System.out.println("service before : " + result);
 
 		if (updDinner.getPhotoList() != null && !updDinner.getPhotoList().isEmpty()) {
-			System.out.println("photoList not null");
 			result = (dao.updateDinnerPhoto(conn, updDinner.getDinnerNo(), updDinner.getPhotoList()) == 1 ? 1 : 0);
 		}
-		System.out.println("service after : " + result);
 
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
@@ -314,13 +311,6 @@ public class DinnerService {
 
 			// DAO 호출 및 결과 반환
 			menuList = dao.getMenuDetailsByDinnerNo(conn, dinnerNo);
-
-			// 디버깅용 데이터 확인
-			System.out.println("Menu List Size: " + menuList.size());
-			for (MenuDTO menu : menuList) {
-				System.out.println("FoodNo: " + menu.getFoodNo() + ", Name: " + menu.getFoodName() + ", Category: "
-						+ menu.getFoodCat() + ", Price: " + menu.getPrice());
-			}
 		} catch (Exception e) {
 			// 예외 처리
 			e.printStackTrace();

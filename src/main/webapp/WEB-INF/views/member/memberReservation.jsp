@@ -13,7 +13,6 @@ Member member = (Member) request.getAttribute("loginMember");
 <meta charset="UTF-8">
 <title>memberReservation.jsp</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <style>
 form {
 	max-width: 600px;

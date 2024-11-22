@@ -62,10 +62,6 @@ public class MemberDao {
 			pstmt.setString(1, memberNo);
 
 			result = pstmt.executeUpdate();
-
-			System.out.println("Deleting member with memberNo: " + memberNo);
-			System.out.println("result=" + result);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -640,8 +636,6 @@ public class MemberDao {
 			if (result > 0) {
 				addLike = true;
 			}
-			System.out.println("result: " + result);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -24,9 +24,6 @@ public class DinnerDetailMenuServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String dinnerNo = request.getParameter("dinnerNo");
 
-		// 디버깅 로그
-		System.out.println("Received dinnerNo: " + dinnerNo);
-
 		if (dinnerNo == null || dinnerNo.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().write("Invalid dinnerNo");
@@ -36,12 +33,6 @@ public class DinnerDetailMenuServlet extends HttpServlet {
 		// 메뉴 데이터 조회
 		DinnerService service = new DinnerService();
 		List<MenuDTO> menuList = service.getMenuDetailsByDinnerNo(dinnerNo);
-
-		// 디버깅 로그
-		System.out.println("Menu List Size: " + menuList.size());
-		for (MenuDTO menu : menuList) {
-			System.out.println("Menu: " + menu.getFoodName() + ", Price: " + menu.getPrice());
-		}
 
 		// JSON 응답 반환 (인코딩 명시)
 		response.setContentType("application/json; charset=UTF-8"); // 인코딩 설정

@@ -34,10 +34,6 @@ public class ReviewWriteServlet extends HttpServlet {
         String memberNo = request.getParameter("memberNo");
         String content = request.getParameter("content");
         
-        System.out.println("dinerNo : " + dinnerNo);
-        System.out.println("memberNo : " + memberNo);
-        System.out.println("content : " + content);
-        
         ReviewService service = new ReviewService();
         boolean isSuccess = service.insertReview(dinnerNo, memberNo, content);
         

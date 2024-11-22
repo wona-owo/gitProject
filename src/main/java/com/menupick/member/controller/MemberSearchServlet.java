@@ -41,7 +41,6 @@ public class MemberSearchServlet extends HttpServlet {
         	
         // 검색어 비즈니스 로직
         ArrayList<Dinner> dinnerList = service.searchDinner(query);
-        System.out.println("검색 디버깅 테스트: " + dinnerList);
         
         // 값 전달
         request.setAttribute("dinnerList",dinnerList);

@@ -36,7 +36,6 @@ public class MemberLoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// System.out.println("saveId : " + request.getParameter("saveId")); <- 체크시 chk,
 		// 체크 안하는 경우 null
 
 		// 1. 인코딩 -> 필터
