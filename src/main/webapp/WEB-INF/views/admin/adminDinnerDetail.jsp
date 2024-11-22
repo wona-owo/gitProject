@@ -8,9 +8,7 @@
 <title>매장 상세 페이지</title>
 <link rel="stylesheet"
 	href="/resources/css/diner_admin_memberdetail.css" />
-<link rel="stylesheet" href="/resources/css/default.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/resources/js/sweetalert.min.js"></script>
 <style>
 /* 페이지 제목 스타일 */
 .page-title {
@@ -173,7 +171,7 @@
 						<button type="button" onclick="deleteDinner()" class="btn-primary">회원탈퇴</button>
 						<button type="submit" class="btn-primary">정보 수정</button>
 						<button type="button"
-							onclick="window.location.href='/admin/DinnerPageFrm'"
+							onclick="window.location.href='/dinner/dinnerDetail?dinnerNo=${dinner.dinnerNo}'"
 							class="btn-primary">매장 상세페이지 이동</button>
 					</div>
 				</form>

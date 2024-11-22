@@ -97,13 +97,12 @@
 		<main class="content mypage-container">
 			<section class="section mypage-wrap">
 				<div class="page-title">매장 정보 수정</div>
-				<form id="updateForm"
-					action="/dinner/update"
-					method="post" onsubmit="return validateAndConfirmUpdate();"
+				<form id="updateForm" action="/dinner/update" method="post"
+					onsubmit="return validateAndConfirmUpdate();"
 					enctype="multipart/form-data">
 					<input type="hidden" name="dinnerId" value="${dinner.dinnerId}" />
 					<input type="hidden" name="photoPath" value="${photoPath}" />
-					<c:set var="dinnerNo" value="${dinner.dinnerNo}"/>
+					<c:set var="dinnerNo" value="${dinner.dinnerNo}" />
 					<input type="hidden" name="dinnerNo" value="${dinnerNo}" />
 
 					<table class="tbl">
@@ -186,11 +185,11 @@
 					</table>
 
 					<div class="mypage-btn">
-						<button type="button" onclick="confirmDelete('${dinnerNo}')" class="btn-primary">회원탈퇴</button>
+						<button type="button" onclick="confirmDelete('${dinnerNo}')"
+							class="btn-primary">회원탈퇴</button>
 						<button type="button"
-							onclick="window.location.href='${pageContext.request.contextPath}/dinner/dinnerPageFrm?dinnerNo=${dinner.dinnerNo}'"
-							class="btn-primary" style="margin-left: 30px;">매장 상세페이지
-							이동</button>
+							onclick="window.location.href='/dinner/dinnerDetail?dinnerNo=${dinner.dinnerNo}'"
+							class="btn-primary">매장 상세페이지 이동</button>
 						<button type="submit" class="btn-primary">정보 수정</button>
 					</div>
 				</form>
