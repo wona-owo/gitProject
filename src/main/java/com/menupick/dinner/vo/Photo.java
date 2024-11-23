@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class Photo {
 	public String photoNo;
 	public String dinnerNo;
+	public String reviewNo;
 	public String photoName;
 	public String photoPath;
 }

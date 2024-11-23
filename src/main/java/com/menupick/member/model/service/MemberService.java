@@ -215,32 +215,31 @@ public class MemberService {
 		return members;
 	}
 
-	public int deleteMember (String memberNo) {
+	public int deleteMember(String memberNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.deleteMember(conn, memberNo);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			JDBCTemplate.commit(conn);
-		}else {
+		} else {
 			JDBCTemplate.rollback(conn);
 		}
 		JDBCTemplate.close(conn);
-		
+
 		return result;
 	}
 
 	public int bookingMember(Book book) {
 		Connection conn = JDBCTemplate.getConnection();
-		
+
 		int result = dao.bookingMember(conn, book);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			JDBCTemplate.commit(conn);
-		}else {
+		} else {
 			JDBCTemplate.rollback(conn);
 		}
-		
-		
+
 		JDBCTemplate.close(conn);
 		return result;
 	}
@@ -248,113 +247,103 @@ public class MemberService {
 	public int updateMember(Member updMember) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateMember(conn, updMember);
-		if(result>0) {
+		if (result > 0) {
 			JDBCTemplate.commit(conn);
-		}else {
+		} else {
 			JDBCTemplate.rollback(conn);
 		}
 		JDBCTemplate.close(conn);
 		return result;
 	}
 
-
 	public boolean checkPassword(String memberNo, String memberPw) {
 		Connection conn = JDBCTemplate.getConnection();
-	    boolean result = dao.checkPassword(conn, memberNo, memberPw);
-	    JDBCTemplate.close(conn);
-	    return result;
-	    }
-	
-	//식당 검색
+		boolean result = dao.checkPassword(conn, memberNo, memberPw);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	// 식당 검색
 	public ArrayList<Dinner> searchDinner(String srchQuery) {
 		Connection conn = JDBCTemplate.getConnection();
-	    ArrayList<Dinner> dinnerList= dao.searchDinner(conn, srchQuery);
-	    JDBCTemplate.close(conn);
-	    return dinnerList;
+		ArrayList<Dinner> dinnerList = dao.searchDinner(conn, srchQuery);
+		JDBCTemplate.close(conn);
+		return dinnerList;
 	}
 
 	// 회원 정보 조회 (회원 아이디, 전화번호로 비밀번호 찾기)
 	public Member searchMemberPw(String memberId, String memberPhone) {
-        Connection conn = JDBCTemplate.getConnection(); 
-        Member member = dao.searchMemberPw(conn, memberId, memberPhone);
-        JDBCTemplate.close(conn); 
-        return member;
-    }
+		Connection conn = JDBCTemplate.getConnection();
+		Member member = dao.searchMemberPw(conn, memberId, memberPhone);
+		JDBCTemplate.close(conn);
+		return member;
+	}
 
-    // 비밀번호 업데이트
-    public boolean updateMemberPassword(String memberId, String tempPassword) {
-        Connection conn = JDBCTemplate.getConnection(); 
-        boolean isUpdated = dao.updateMemberPassword(conn, memberId, tempPassword);
-        if (isUpdated) {
-            JDBCTemplate.commit(conn); 
-        } else {
-            JDBCTemplate.rollback(conn);
-        }
-        JDBCTemplate.close(conn); 
-        return isUpdated;
-    }
+	// 비밀번호 업데이트
+	public boolean updateMemberPassword(String memberId, String tempPassword) {
+		Connection conn = JDBCTemplate.getConnection();
+		boolean isUpdated = dao.updateMemberPassword(conn, memberId, tempPassword);
+		if (isUpdated) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return isUpdated;
+	}
 
-    // 임시 비밀번호를 이메일로 전송
-    public boolean sendPwByEmail(String recipientEmail, String tempPassword) {
-        try {
-            String subject = "비밀번호 찾기 결과";
-            String message = "회원님의 임시 비밀번호는 다음과 같습니다: " + tempPassword + " 로그인 후 비밀번호를 변경해주세요";
-            EmailUtil.sendEmail(recipientEmail, subject, message);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	// 임시 비밀번호를 이메일로 전송
+	public boolean sendPwByEmail(String recipientEmail, String tempPassword) {
+		try {
+			String subject = "비밀번호 찾기 결과";
+			String message = "회원님의 임시 비밀번호는 다음과 같습니다: " + tempPassword + " 로그인 후 비밀번호를 변경해주세요";
+			EmailUtil.sendEmail(recipientEmail, subject, message);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-    // 회원 ID 조회
-    public String searchMemberId(String memberName, String memberPhone) {
-	    Connection conn = JDBCTemplate.getConnection();
-	    String result = null;
-	    try {
-	        result = dao.searchMemberId(conn, memberName, memberPhone);
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (conn != null && !conn.isClosed()) {
-	                conn.close(); // Connection 자원 반환
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return result; // 조회된 결과를 반환
+	// 회원 ID 조회
+	public String searchMemberId(String memberName, String memberPhone) {
+		Connection conn = JDBCTemplate.getConnection();
+		String result = null;
+		try {
+			result = dao.searchMemberId(conn, memberName, memberPhone);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null && !conn.isClosed()) {
+					conn.close(); // Connection 자원 반환
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result; // 조회된 결과를 반환
 	}
 
 	public boolean memberAddLike(String dinnerNo, String memberNo) {
-		Connection conn = JDBCTemplate.getConnection();		
-		boolean likeDinner = false;		
+		Connection conn = JDBCTemplate.getConnection();
+		boolean likeDinner = false;
 		likeDinner = dao.memberAddLike(conn, dinnerNo, memberNo);
 		JDBCTemplate.close(conn);
-		return likeDinner;	
+		return likeDinner;
 	}
 
 	public boolean memberFindLike(String dinnerNo, String memberNo) {
-		Connection conn = JDBCTemplate.getConnection();		
-		boolean findLike = false;		
+		Connection conn = JDBCTemplate.getConnection();
+		boolean findLike = false;
 		findLike = dao.memberFindLike(conn, dinnerNo, memberNo);
 		JDBCTemplate.close(conn);
 		return findLike;
-		}
-
-	public Book getDupBookChk(String memberNo) {
-		Connection conn = JDBCTemplate.getConnection();
-		Book book = new Book();
-		book = dao.getDupBookChk(conn, memberNo);
-		JDBCTemplate.close(conn);
-		return book;
 	}
-	
-	
-	//예약 취소
+
+	// 예약 취소
 	public int memberDelBook(String bookNo) {
-		Connection conn = JDBCTemplate.getConnection();	
+		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.memberDelBook(conn, bookNo);
 
 		if (result > 0) {
@@ -366,10 +355,19 @@ public class MemberService {
 
 		return result;
 	}
-	
-	//리뷰 삭제
+
+	// 리뷰 삭제
+	public List<String> getReservedTimes(String dinnerNo, String bookDate) {
+		Connection conn = JDBCTemplate.getConnection();
+		List<String> reservedTimes = new ArrayList<>();
+		reservedTimes = dao.getReservedTimes(conn, dinnerNo, bookDate);
+		JDBCTemplate.close(conn);
+		return reservedTimes;
+	}
+
+	// 리뷰 삭제
 	public int memberDelReview(String reviewNo) {
-		Connection conn = JDBCTemplate.getConnection();	
+		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.memberDelReview(conn, reviewNo);
 
 		if (result > 0) {
@@ -381,21 +379,35 @@ public class MemberService {
 
 		return result;
 	}
-	
-	//리뷰 업데이트
+
+	// 리뷰 업데이트
 	public int memberUpdateReview(String reviewNo, String reviewCon) {
-		Connection conn = JDBCTemplate.getConnection();	
+		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.memberUpdateReview(conn, reviewNo, reviewCon);
-		
-		if(result>0) {
+
+		if (result > 0) {
 			JDBCTemplate.commit(conn);
-		}else {
+		} else {
 			JDBCTemplate.rollback(conn);
 		}
 		JDBCTemplate.close(conn);
 		return result;
-		
-	}
-    }
 
- 
+	}
+
+	// 식당 상세페이지 멤버값 가져오기.(경래)
+	public Member dinnerDetail(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Member member = dao.memberDetail(conn, memberNo);
+		JDBCTemplate.close(conn);
+
+		return member;
+	}
+
+	public List<Member> getReviewsBymemberNo(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		List<Member> members = dao.getReviewsBymemberNo(conn, memberNo);
+		JDBCTemplate.close(conn);
+		return members;
+	}
+}

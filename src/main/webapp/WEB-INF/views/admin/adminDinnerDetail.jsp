@@ -8,10 +8,7 @@
 <title>매장 상세 페이지</title>
 <link rel="stylesheet"
 	href="/resources/css/diner_admin_memberdetail.css" />
-<link rel="stylesheet" href="/resources/css/default.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="/resources/js/sweetalert.min.js"></script>
 <style>
 /* 페이지 제목 스타일 */
 .page-title {
@@ -78,16 +75,13 @@
 	gap: 20px; /* 버튼 간격 설정 */
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary {
 	padding: 10px 20px;
 	color: #fff;
 	border: none;
 	border-radius: 5px;
 	font-size: 1em;
 	cursor: pointer;
-}
-
-.btn-primary {
 	background-color: #3a5fcd;
 }
 
@@ -101,10 +95,9 @@
 	<div class="container">
 		<main class="content mypage-container">
 			<section class="section mypage-wrap">
-				<div class="page-title">매장 정보페이지</div>
+				<div class="page-title">매장 정보 수정</div>
 
 				<form id="updateForm" action="/adminDinner/update" method="post">
-
 					<input type="hidden" name="dinnerNo" value="${dinner.dinnerNo}">
 					<input type="hidden" name="dinnerId" value="${dinner.dinnerId}">
 
@@ -125,13 +118,13 @@
 						</tr>
 						<tr>
 							<th>오픈 시간</th>
-							<td><input type="text" id="dinnerOpen" name="dinnerOpen"
-								placeholder="예: 09:00 (HH:mm)" value="${dinner.dinnerOpen}"></td>
+							<td><input type="text" name="dinnerOpen"
+								value="${dinner.dinnerOpen}" placeholder="HH:mm" required /></td>
 						</tr>
 						<tr>
 							<th>마감 시간</th>
-							<td><input type="text" id="dinnerClose" name="dinnerClose"
-								placeholder="예: 22:00 (HH:mm)" value="${dinner.dinnerClose}"></td>
+							<td><input type="text" name="dinnerClose"
+								value="${dinner.dinnerClose}" placeholder="HH:mm" required /></td>
 						</tr>
 						<tr>
 							<th>식당 번호</th>
@@ -146,10 +139,10 @@
 						<tr>
 							<th>주차 여부</th>
 							<td><select name="dinnerParking">
-									<option value="Y"
-										${dinner.dinnerParking == 'Y' ? 'selected' : ''}>Y</option>
-									<option value="N"
-										${dinner.dinnerParking == 'N' ? 'selected' : ''}>N</option>
+									<option value="y"
+										${dinner.dinnerParking == 'y' ? 'selected' : ''}>Y</option>
+									<option value="n"
+										${dinner.dinnerParking == 'n' ? 'selected' : ''}>N</option>
 							</select></td>
 						</tr>
 						<tr>
@@ -164,28 +157,22 @@
 								value="${dinner.busiNo}"></td>
 						</tr>
 						<tr>
-							<th>매장 ID</th>
-							<td>${dinner.dinnerId}</td>
-						</tr>
-						<tr>
 							<th>승인 여부</th>
 							<td><select name="dinnerConfirm">
-									<option value="Y"
-										${dinner.dinnerConfirm == 'Y' ? 'selected' : ''}>Y</option>
-									<option value="N"
-										${dinner.dinnerConfirm == 'N' ? 'selected' : ''}>N</option>
+									<option value="y"
+										${dinner.dinnerConfirm == 'y' ? 'selected' : ''}>Y</option>
+									<option value="n"
+										${dinner.dinnerConfirm == 'n' ? 'selected' : ''}>N</option>
 							</select></td>
 						</tr>
 					</table>
 
 					<div class="mypage-btn">
 						<button type="button" onclick="deleteDinner()" class="btn-primary">회원탈퇴</button>
-						<button type="button" id="updateButton" class="btn-primary"
-							style="margin-left: 30px;" onclick="updateDinner()">정보수정</button>
+						<button type="submit" class="btn-primary">정보 수정</button>
 						<button type="button"
-							onclick="window.location.href='/admin/DinnerPageFrm'"
-							class="btn-primary" style="margin-left: 30px;">매장 상세페이지
-							이동</button>
+							onclick="window.location.href='/dinner/dinnerDetail?dinnerNo=${dinner.dinnerNo}'"
+							class="btn-primary">매장 상세페이지 이동</button>
 					</div>
 				</form>
 			</section>
@@ -194,77 +181,10 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
-		function updateDinner() {
-			const dinnerId = $('input[name="dinnerId"]').val(); // 숨겨진 필드에서 값 가져오기
-
-			if (!dinnerId || dinnerId.trim() === "") {
-				swal("알림", "DINNER_ID가 누락되었습니다. 관리자에게 문의하세요.", "error");
-				return;
-			}
-
-			// 입력 필드 가져오기
-			const dinnerOpen = $('#dinnerOpen');
-			const dinnerClose = $('#dinnerClose');
-			const dinnerPhone = $('#dinnerPhone');
-
-			// 정규식 패턴
-			const timeExp = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
-			const phoneExp = /^010-\d{3,4}-\d{4}$/;
-
-			// 유효성 검사
-			if (!timeExp.test(dinnerOpen.val())) {
-				swal("알림", "오픈 시간은 예: 09:00 (HH:mm) 형식으로 적어주세요", "warning");
-				return;
-			}
-
-			if (!timeExp.test(dinnerClose.val())) {
-				swal("알림", "마감 시간은 예: 22:00 (HH:mm) 형식으로 적어주세요", "warning");
-				return;
-			}
-
-			if (!phoneExp.test(dinnerPhone.val())) {
-				swal("알림", "전화번호는 - 포함 13자리로 입력해주세요", "warning");
-				return;
-			}
-
-			// ":" 제거
-			const formattedDinnerOpen = dinnerOpen.val().replace(":", "");
-			const formattedDinnerClose = dinnerClose.val().replace(":", "");
-
-			// 수정된 값으로 업데이트
-			dinnerOpen.val(formattedDinnerOpen);
-			dinnerClose.val(formattedDinnerClose);
-
-			// 확인 메시지
-			swal({
-				title : "알림",
-				text : "매장 정보를 수정하시겠습니까?",
-				icon : "warning",
-				buttons : {
-					cancel : {
-						text : "취소",
-						value : false,
-						visible : true,
-						closeModal : true
-					},
-					confirm : {
-						text : "수정",
-						value : true,
-						visible : true,
-						closeModal : true
-					}
-				}
-			}).then(function(isConfirm) {
-				if (isConfirm) {
-					$('#updateForm').submit(); // 폼 제출
-				}
-			});
-		}
-
 		function deleteDinner() {
 			swal({
-				title : "매장 회원 삭제",
-				text : "정말 매장회원을삭제 하시겠습니까?",
+				title : "매장 삭제",
+				text : "정말 매장을 삭제하시겠습니까?",
 				icon : "warning",
 				buttons : {
 					cancel : {
@@ -274,7 +194,7 @@
 						closeModal : true
 					},
 					confirm : {
-						text : "탈퇴",
+						text : "삭제",
 						value : true,
 						visible : true,
 						closeModal : true
@@ -286,6 +206,42 @@
 					$('#updateForm').submit();
 				}
 			});
+		}
+		function validateAndConfirmUpdate() {
+			const dinnerOpen = document
+					.querySelector("input[name='dinnerOpen']").value;
+			const dinnerClose = document
+					.querySelector("input[name='dinnerClose']").value;
+			const dinnerPhone = document
+					.querySelector("input[name='dinnerPhone']").value;
+
+			const timeExp = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
+			const phoneExp = /^010-\d{3,4}-\d{4}$/;
+
+			// 오픈 시간 유효성 검사
+			if (!timeExp.test(dinnerOpenField.value)) {
+				swal("알림", "오픈 시간 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
+
+			// 마감 시간 유효성 검사
+			if (!timeExp.test(dinnerCloseField.value)) {
+				swal("알림", "마감 시간 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
+
+			// 전화번호 유효성 검사
+			if (!phoneExp.test(dinnerPhone)) {
+				swal("알림", "전화번호 형식을 올바르게 입력하세요.", "warning");
+				return false;
+			}
+
+			// ":" 제거 후 값 변환
+			dinnerOpenField.value = dinnerOpenField.value.replace(":", "");
+			dinnerCloseField.value = dinnerCloseField.value.replace(":", "");
+
+			// 확인 메시지
+			return confirm("매장 정보를 수정하시겠습니까?");
 		}
 	</script>
 </body>

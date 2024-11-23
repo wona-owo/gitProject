@@ -78,7 +78,6 @@
 							<th style="width: 15%">전화번호</th>
 							<th style="width: 15%">주소</th>
 							<th style="width: 10%">등급</th>
-							<th style="width: 10%">강제탈퇴</th>
 						</tr>
 
 						<c:forEach var="m" items="${members}">
@@ -97,11 +96,6 @@
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberPhone}</a></td>
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">${m.memberAddr}</a></td>
 								<td><a href="/admin/memberDetail?memberNo=${m.memberNo}">회원</a></td>
-								<td>
-									<!-- 탈퇴 -->
-									<button class="btn-primary sm"
-										onclick="selectRemove('${m.memberNo}')">탈퇴</button>
-								</td>
 							</tr>
 						</c:forEach>
 					</table>

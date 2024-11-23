@@ -55,11 +55,12 @@ public class AdminMemberDetailServlet extends HttpServlet {
 		ReviewService rvservice = new ReviewService();
 		List<Review> reviews = rvservice.getReviewsByMemberNo(memberNo, sortOption);
 
+		// 리뷰별 신고 횟수 가져오기
+		List<ReviewReport> reviewReports = rvservice.getReviewReportsByMemberNo(memberNo);
+		
 		// 회원별 신고 횟수 가져오기
         MemberReport memberReport = rvservice.getMemberReport(memberNo);
 
-        // 리뷰별 신고 횟수 가져오기
-        List<ReviewReport> reviewReports = rvservice.getReviewReportsByMemberNo(memberNo);
         
         
 		// 4. 결과 처리

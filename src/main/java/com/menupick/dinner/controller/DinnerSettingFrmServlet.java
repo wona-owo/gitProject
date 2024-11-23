@@ -40,8 +40,20 @@ public class DinnerSettingFrmServlet extends HttpServlet {
 			return;
 		}
 		
+		String dinnerNo = loginDinner.getDinnerNo();
+		DinnerService service = new DinnerService();
+		String photoPath = service.dinnerPhotoPath(dinnerNo);
+		
+		if(photoPath == null) {
+			photoPath = "";
+		}
+
+		if(photoPath.length() < 10) {
+			photoPath = null;
+		}
+		
 		request.setAttribute("dinner", loginDinner);
-		request.setAttribute("photoPath", new DinnerService().dinnerPhotoPath(loginDinner.getDinnerNo()));
+		request.setAttribute("photoPath", photoPath);
 		request.getRequestDispatcher("/WEB-INF/views/dinner/dinnerSetting.jsp").forward(request, response);
 	}
 

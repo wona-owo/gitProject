@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,9 +26,17 @@ public class DinnerUpdateServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
+	private String addColonToTime(String time) {
+		if (time.length() == 4) {
+			// Calculate the middle index
+			int middleIndex = time.length() / 2;
+			// Add colon at the middle
+			String result = time.substring(0, middleIndex) + ":" + time.substring(middleIndex);
+
+			return result;
+		} else {
+			return time;
+		}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -52,32 +59,35 @@ public class DinnerUpdateServlet extends HttpServlet {
 
 		ArrayList<Photo> photoList = new ArrayList<>();
 
-		while (files.hasMoreElements()) {
-			String name = files.nextElement();
-			String pName = mRequest.getOriginalFileName(name);
-			String pPath = mRequest.getFilesystemName(name);
-			if (pPath != null) {
-				Photo p = new Photo();
-				p.setPhotoName(pName);
-				p.setPhotoPath(pPath);
-
-				photoList.add(p);
-			}
-		}
-
 		// 입력 값 추출
 		String dinnerNo = mRequest.getParameter("dinnerNo");
 		String dinnerName = mRequest.getParameter("dinnerName");
 		String dinnerId = mRequest.getParameter("dinnerId");
 		String dinnerAddr = mRequest.getParameter("dinnerAddr");
-		String dinnerOpen = mRequest.getParameter("dinnerOpen");
-		String dinnerClose = mRequest.getParameter("dinnerClose");
+		String dinnerOpen = addColonToTime(mRequest.getParameter("dinnerOpen"));
+		String dinnerClose = addColonToTime(mRequest.getParameter("dinnerClose"));
 		String dinnerPhone = mRequest.getParameter("dinnerPhone");
 		String dinnerEmail = mRequest.getParameter("dinnerEmail");
 		String dinnerParking = mRequest.getParameter("dinnerParking");
 		String busiNo = mRequest.getParameter("busiNo");
 		String dinnerMaxPerson = mRequest.getParameter("dinnerMaxPerson");
 		String dinnerConfirm = mRequest.getParameter("dinnerConfirm");
+		String photoPath = mRequest.getParameter("photoPath");
+
+		while (files.hasMoreElements()) {
+			String name = files.nextElement();
+			String pName = mRequest.getOriginalFileName(name);
+			String pPath = mRequest.getFilesystemName(name);
+
+			if (pPath != null) {
+				Photo p = new Photo();
+				p.setPhotoName(pName);
+				p.setPhotoPath(pPath);
+				photoList.add(p);
+			} else {
+				photoPath = "String to stop inserting fake photo";
+			}
+		}
 
 		// 기본값 설정
 		if (dinnerConfirm == null || dinnerConfirm.isEmpty()) {
@@ -117,25 +127,25 @@ public class DinnerUpdateServlet extends HttpServlet {
 		updDinner.setBusiNo(busiNo);
 		updDinner.setDinnerMaxPerson(dinnerMaxPerson);
 		updDinner.setDinnerConfirm(dinnerConfirm);
-		updDinner.setPhotoList(photoList);
 
 		DinnerService service = new DinnerService();
 
-		if (photoList != null && !photoList.isEmpty()) {
-			updDinner.setPhotoList(photoList);
+		if (photoPath.length() < 1) {
+			service.insertFakePhoto(dinnerNo);
+		}
 
-			String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
-			String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
+		updDinner.setPhotoList(photoList);
 
-			if (prevPhotoPath != null) {
-				absolutePath += prevPhotoPath;
+		String absolutePath = request.getSession().getServletContext().getRealPath("/") + "resources/photos/";
+		String prevPhotoPath = service.dinnerPhotoPath(dinnerNo);
 
-				File file = new File(absolutePath);
-				if (file.exists()) {
-					file.delete();
-				}
+		// 27 == 정상적으로 업로드된 파일 경로의 길이
+		if (prevPhotoPath != null && prevPhotoPath.length() != 27) {
+			absolutePath += prevPhotoPath;
 
-				service.insertFakePhoto(dinnerNo);
+			File file = new File(absolutePath);
+			if (file.exists()) {
+				file.delete();
 			}
 		}
 
@@ -152,15 +162,19 @@ public class DinnerUpdateServlet extends HttpServlet {
 			request.setAttribute("msg", "매장 정보가 수정되었습니다.");
 			request.setAttribute("icon", "success");
 			request.setAttribute("loc", "/dinner/settingFrm");
+
 		} else {
 			request.setAttribute("title", "알림");
 			request.setAttribute("msg", "매장 정보 수정 중 오류가 발생했습니다.");
 			request.setAttribute("icon", "error");
 			request.setAttribute("loc", "/dinner/settingFrm");
 		}
+		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+	}
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-		dispatcher.forward(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 	private void forwardToErrorPage(HttpServletRequest request, HttpServletResponse response)

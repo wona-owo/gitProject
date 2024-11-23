@@ -31,8 +31,6 @@ public class ReviewRomoveAllServlet extends HttpServlet {
 		//회원 상세페이지 선택한 리뷰 삭제
 		String reviewNoArr = request.getParameter("reviewNoArr");
 
-		System.out.println("reviewNoArr : " + reviewNoArr);
-
 		ReviewService service = new ReviewService();
 		int result = service.reviewRemoveAll(reviewNoArr);
 

@@ -2,13 +2,18 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-    // 세션에서 로그인 상태 확인
-    Boolean isLogIn = (session.getAttribute("loginMember") != null);
+// 세션에서 로그인 상태 확인
+Boolean isLogIn = (session.getAttribute("loginMember") != null);
+%>
+<%
+String dinnerNo = request.getParameter("dinnerNo");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <title>dinnerDetail</title>
 <style>
 
@@ -164,9 +169,12 @@ textarea {
 	font-size: 14px;
 	color: #555;
 }
+
+.logo-img {
+	width: unset;
+}
 /*------------리뷰 작성 모듈 여기까지---------------*/
 </style>
-
 </head>
 <body>
 	<div>
@@ -175,13 +183,13 @@ textarea {
 		<%-- 레스토랑 상세 정보 섹션 --%>
 		<main>
 			<%-- TODO form tag 가 없었음 action, method 지정 필요 --%>
-				<section class="restaurant-detail-header">
-			<form action="/dinner/settingsfrm" method="get">
-			<input type="hidden" name="${dinner.dinnerNo}">
-			<input type="hidden" name="memberNo">
+			<section class="restaurant-detail-header">
+				<form action="/dinner/settingsfrm" method="get">
+					<input type="hidden" name="${dinner.dinnerNo}"> <input
+						type="hidden" name="memberNo">
 					<div class="dinner-main-img">
 						<img src="/resources/photos/${photoPath}" id="main-img"
-							alt="Restaurant Image" />
+							alt="Restaurant Image" style="width: 500px;" />
 					</div>
 					<div class="restaurant-detail">
 						<div class="restaurant-detail-container">
@@ -235,62 +243,51 @@ textarea {
 
 				<%-- 탭 콘텐츠 --%>
 				<div class="restaurant-detail-content">
-					<div class="tab-content active" id="information-content">정보 콘텐츠</div>
-					<jsp:include page="/WEB-INF/views/common/menu.jsp" />		
-					<div class="tab-content" id="review-content">리뷰 콘텐츠
+					<div class="tab-content active" id="information-content">정보
+						콘텐츠</div>
+					<jsp:include page="/WEB-INF/views/common/dinnerMenu.jsp">
+						<jsp:param name="dinnerNo" value="${dinner.dinnerNo}" />
+					</jsp:include>
+					<div class="tab-content" id="review-content">
+						리뷰 콘텐츠
 						<div>
-							<c:import url="/WEB-INF/views/dinner/dinnerWriteReview.jsp">
-							    <c:param name="dinnerName" value="${dinner.dinnerName}" />
-							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
-							    <c:param name="memberNo" value="${member.memberNo}" />
-							</c:import>
-						</div>
-						<div>
-							<c:import url="/dinner/review">
-							    <c:param name="dinnerNo" value="${dinner.dinnerNo}" />
-							</c:import>
+							<jsp:include page="/WEB-INF/views/dinner/dinnerWriteReview.jsp" />
 						</div>
 					</div>
 					<div class="tab-content" id="picture-content">사진 콘텐츠</div>
 				</div>
 			</section>
-
 		</main>
-
-
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 	<script>
       function showContent(contentId) {
         // 모든 탭 콘텐츠 숨기기
         const contents = document.querySelectorAll(".tab-content");
         contents.forEach((content) => content.classList.remove("active"));
-		
+      
         // 선택된 콘텐츠만 보이도록 설정
         document.getElementById(contentId).classList.add("active");
       }
       
-    	  
       const parking = document.getElementById('parking');
       parking.innerHTML = "";
       if('${dinner.dinnerParking}' === 'y'){
-    	  parking.innerHTML = "주차가능"
+         parking.innerHTML = "주차가능"
       }else {
-    	  parking.innerHTML = "주차자리없음"
+         parking.innerHTML = "주차자리없음"
       }
       
-      let isLogIn = <%= isLogIn %>;
+      let isLogIn = <%=isLogIn%>;
       function resBtn(){
-    	  if(isLogIn = null){
-    		  event.preventDefault();
-    		  msg("알림","로그인 후 이용하세요","warning");
-    	  }else{
-    		  window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}&memberNo=${member.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');	  
-    	  }
+         if(isLogIn = null){
+            event.preventDefault();
+            msg("알림","로그인 후 이용하세요","warning");
+         }else{
+            window.open("/member/reservationFrm?dinnerNo=${dinner.dinnerNo}&memberNo=${member.memberNo}",'a','width=700, height=700, scrollbars=yes, resizable=no');     
+         }
       }
-
     </script>
-
 </body>
 </html>

@@ -23,19 +23,21 @@ import com.oreilly.servlet.MultipartRequest;
 @WebServlet("/dinnerJoin")
 public class DinnerJoinServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DinnerJoinServlet() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public DinnerJoinServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String rootPath = request.getSession().getServletContext().getRealPath("/"); // webapp 폴더 경로
 		String savePath = rootPath + "resources/photos/"; // 파일 저장 경로
 
@@ -48,7 +50,7 @@ public class DinnerJoinServlet extends HttpServlet {
 		}
 
 		MultipartRequest mRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new MyRenamePolicy());
-		
+
 		// 3. 첨부파일 복수개 처리(input type = file 이 여러개 존재)
 		Enumeration<String> files = mRequest.getFileNames(); // input type 이 file 인 태그들의 name 속성값
 
@@ -70,36 +72,36 @@ public class DinnerJoinServlet extends HttpServlet {
 			}
 		}
 
-        String dinnerName = mRequest.getParameter("dinnerName");
-        String dinnerAddr = mRequest.getParameter("dinnerAddr"); // 우편번호
-        String dinnerOpen = mRequest.getParameter("dinnerOpen");
-        String dinnerClose = mRequest.getParameter("dinnerClose");
-        String dinnerPhone = mRequest.getParameter("dinnerPhone");
-        String dinnerEmail = mRequest.getParameter("dinnerEmail");
-        String dinnerParking = mRequest.getParameter("dinnerParking");
-        String dinnerMaxPerson = mRequest.getParameter("dinnerMaxPerson");
-        String busiNo = mRequest.getParameter("busiNo");
-        String dinnerId = mRequest.getParameter("dinnerId");
-        String dinnerPw = mRequest.getParameter("dinnerPw");
-        
-        Dinner d = new Dinner();
-        
-        d.setDinnerName(dinnerName);
-        d.setDinnerAddr(dinnerAddr);
-        d.setDinnerOpen(dinnerOpen);
-        d.setDinnerClose(dinnerClose);
-        d.setDinnerPhone(dinnerPhone);
-        d.setDinnerEmail(dinnerEmail);
-        d.setDinnerParking(dinnerParking);
-        d.setDinnerMaxPerson(dinnerMaxPerson);
-        d.setBusiNo(busiNo);
-        d.setDinnerId(dinnerId);
-        d.setDinnerPw(dinnerPw);
-        
-        DinnerService service = new DinnerService();
-        boolean isInserted = service.insertDinner(d, photoList);
-        
-        if (isInserted) {
+		String dinnerName = mRequest.getParameter("dinnerName");
+		String dinnerAddr = mRequest.getParameter("dinnerAddr"); // 우편번호
+		String dinnerOpen = mRequest.getParameter("dinnerOpen");
+		String dinnerClose = mRequest.getParameter("dinnerClose");
+		String dinnerPhone = mRequest.getParameter("dinnerPhone");
+		String dinnerEmail = mRequest.getParameter("dinnerEmail");
+		String dinnerParking = mRequest.getParameter("dinnerParking");
+		String dinnerMaxPerson = mRequest.getParameter("dinnerMaxPerson");
+		String busiNo = mRequest.getParameter("busiNo");
+		String dinnerId = mRequest.getParameter("dinnerId");
+		String dinnerPw = mRequest.getParameter("dinnerPw");
+
+		Dinner d = new Dinner();
+
+		d.setDinnerName(dinnerName);
+		d.setDinnerAddr(dinnerAddr);
+		d.setDinnerOpen(dinnerOpen);
+		d.setDinnerClose(dinnerClose);
+		d.setDinnerPhone(dinnerPhone);
+		d.setDinnerEmail(dinnerEmail);
+		d.setDinnerParking(dinnerParking);
+		d.setDinnerMaxPerson(dinnerMaxPerson);
+		d.setBusiNo(busiNo);
+		d.setDinnerId(dinnerId);
+		d.setDinnerPw(dinnerPw);
+
+		DinnerService service = new DinnerService();
+		boolean isInserted = service.insertDinner(d, photoList);
+
+		if (isInserted) {
 			request.setAttribute("title", "성공");
 			request.setAttribute("msg", "식당 등록에 성공 하였습니다 로그인 페이지로 이동합니다");
 			request.setAttribute("icon", "success");
@@ -110,13 +112,15 @@ public class DinnerJoinServlet extends HttpServlet {
 			request.setAttribute("icon", "error");
 			request.setAttribute("loc", "/");
 		}
-        request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 
