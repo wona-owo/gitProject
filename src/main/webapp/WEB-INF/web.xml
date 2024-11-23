@@ -12,7 +12,6 @@
 		<welcome-file>default.jsp</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 	</welcome-file-list>
-
 	<!-- 필터 경로 설정 -->
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
@@ -24,4 +23,6 @@
 		<!-- / 밑에 있는 모든 URL -->
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	
 </web-app>
