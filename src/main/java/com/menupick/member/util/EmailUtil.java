@@ -12,8 +12,8 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailUtil {
 	public static void sendEmail(String to, String subject, String messageText) throws Exception {
-		final String from = "unemotioned@naver.com";
-		final String password = "Blackdwarf9";
+		final String from = "이메일";
+		final String password = "비밀번호";
 
 		if (!to.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			throw new IllegalArgumentException("Invalid email address: " + to);
@@ -28,7 +28,7 @@ public class EmailUtil {
 
 		Session session = Session.getInstance(props, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("unemotioned@f.com", "Blackdwarf9"); // 인증 정보 설정
+				return new PasswordAuthentication("이메일", "비밀번호"); // 인증 정보 설정
 			}
 		});
 
