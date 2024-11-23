@@ -95,7 +95,7 @@ public class ApiEmailSendServlet extends HttpServlet {
 		// 2. 세션 설정 및 인증 정보 설정
 		Session session = Session.getDefaultInstance(prop, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("unemotioned@naver.com", "Blackdwarf9");
+				return new PasswordAuthentication("이메일", "비밀번호");
 			}
 		});
 
@@ -106,7 +106,7 @@ public class ApiEmailSendServlet extends HttpServlet {
 			msg.setSentDate(new Date());
 
 			String emailSender = "메뉴픽";
-			msg.setFrom(new InternetAddress("unemotioned@naver.com", emailSender));
+			msg.setFrom(new InternetAddress("이메일", emailSender));
 
 			InternetAddress to = new InternetAddress(receiver);
 			msg.setRecipient(Message.RecipientType.TO, to);
