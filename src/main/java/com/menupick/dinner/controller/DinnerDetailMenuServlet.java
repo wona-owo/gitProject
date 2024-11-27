@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.menupick.dinner.service.DinnerService;
-import com.menupick.dinner.vo.MenuDTO;
+import com.menupick.dinner.vo.Menu;
 
 /**
  * Servlet implementation class DinnerDetailMenuServlet
@@ -32,7 +32,7 @@ public class DinnerDetailMenuServlet extends HttpServlet {
 
 		// 메뉴 데이터 조회
 		DinnerService service = new DinnerService();
-		List<MenuDTO> menuList = service.getMenuDetailsByDinnerNo(dinnerNo);
+		List<Menu> menuList = service.getMenuDetailsByDinnerNo(dinnerNo);
 
 		// JSON 응답 반환 (인코딩 명시)
 		response.setContentType("application/json; charset=UTF-8"); // 인코딩 설정
