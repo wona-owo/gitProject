@@ -13,7 +13,6 @@ import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Menu;
-import com.menupick.dinner.vo.MenuDTO;
 import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.vo.Member;
 
@@ -300,10 +299,10 @@ public class DinnerService {
 		return menuList;
 	}
 
-	public List<MenuDTO> getMenuDetailsByDinnerNo(String dinnerNo) {
+	public List<Menu> getMenuDetailsByDinnerNo(String dinnerNo) {
 		// Connection 생성
 		Connection conn = null;
-		List<MenuDTO> menuList = null;
+		List<Menu> menuList = null;
 
 		try {
 			conn = JDBCTemplate.getConnection(); // DB 연결

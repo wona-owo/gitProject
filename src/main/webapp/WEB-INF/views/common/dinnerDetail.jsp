@@ -245,7 +245,7 @@ textarea {
 				<div class="restaurant-detail-content">
 					<div class="tab-content active" id="information-content">정보
 						콘텐츠</div>
-					<jsp:include page="/WEB-INF/views/common/dinnerMenu.jsp">
+					<jsp:include page="/WEB-INF/views/common/dinnerDetail.jsp">
 						<jsp:param name="dinnerNo" value="${dinner.dinnerNo}" />
 					</jsp:include>
 					<div class="tab-content" id="review-content">

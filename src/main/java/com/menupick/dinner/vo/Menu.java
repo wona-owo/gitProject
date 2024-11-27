@@ -11,5 +11,6 @@ public class Menu {
 	private String dinnerNo;
 	private String foodNo;
 	private String foodName;
+	private String foodCat;
 	private int price;
 }

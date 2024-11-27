@@ -15,7 +15,6 @@ import com.menupick.dinner.vo.Book;
 import com.menupick.dinner.vo.BookInfo;
 import com.menupick.dinner.vo.Dinner;
 import com.menupick.dinner.vo.Menu;
-import com.menupick.dinner.vo.MenuDTO;
 import com.menupick.dinner.vo.Photo;
 import com.menupick.member.model.vo.Member;
 
@@ -935,10 +934,10 @@ public class DinnerDao {
 		return result;
 	}
 
-	public List<MenuDTO> getMenuDetailsByDinnerNo(Connection conn, String dinnerNo) {
+	public List<Menu> getMenuDetailsByDinnerNo(Connection conn, String dinnerNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<MenuDTO> menuList = new ArrayList<>();
+		List<Menu> menuList = new ArrayList<>();
 
 		// SQL 쿼리
 		String query = "SELECT m.food_no, f.food_name, f.food_cat, m.price " + "FROM tbl_menu m "
@@ -952,7 +951,7 @@ public class DinnerDao {
 
 			// ResultSet 처리
 			while (rs.next()) {
-				MenuDTO menu = new MenuDTO();
+				Menu menu = new Menu();
 				menu.setFoodNo(rs.getString("food_no"));
 				menu.setFoodName(rs.getString("food_name"));
 				menu.setFoodCat(rs.getString("food_cat"));
