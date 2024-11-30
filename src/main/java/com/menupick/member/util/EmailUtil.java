@@ -28,7 +28,7 @@ public class EmailUtil {
 
 		Session session = Session.getInstance(props, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("이메일", "비밀번호"); // 인증 정보 설정
+				return new PasswordAuthentication(from, password); // 인증 정보 설정
 			}
 		});
 

@@ -38,7 +38,6 @@ public class DinnerChgPwServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String dinnerId = request.getParameter("dinnerId");
-		String dinnerPw = request.getParameter("dinnerPw");
 		String newDinnerPw = request.getParameter("newDinnerPw");
 
 		HttpSession session = request.getSession(false);
