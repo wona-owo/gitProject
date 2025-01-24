@@ -1,4 +1,5 @@
--- 작성자 : 김찬희
+-- user: menudb
+-- pw: 1234
 
 drop table tbl_dinner cascade constraints;
 drop table tbl_food cascade constraints;
