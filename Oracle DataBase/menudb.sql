@@ -80,11 +80,11 @@ create table
   );
 
 -- tbl_menu 데이터
-insert into tbl_menu values ('d2411220001', 'f2411220005', 18000);
-insert into tbl_menu values ('d2411220002', 'f2411220008', 12000);
-insert into tbl_menu values ('d2411220003', 'f2411220002', 20000);
-insert into tbl_menu values ('d2411220004', 'f2411220005', 15000);
-insert into tbl_menu values ('d2411220005', 'f2411220001', 23000);
+insert into tbl_menu values ((select dinner_no from tbl_dinner where dinner_no like '%1'), (select food_no from tbl_food where food_no like '%5'), 18000);
+insert into tbl_menu values ((select dinner_no from tbl_dinner where dinner_no like '%2'), (select food_no from tbl_food where food_no like '%8'), 12000);
+insert into tbl_menu values ((select dinner_no from tbl_dinner where dinner_no like '%3'), (select food_no from tbl_food where food_no like '%2'), 20000);
+insert into tbl_menu values ((select dinner_no from tbl_dinner where dinner_no like '%4'), (select food_no from tbl_food where food_no like '%5'), 15000);
+insert into tbl_menu values ((select dinner_no from tbl_dinner where dinner_no like '%5'), (select food_no from tbl_food where food_no like '%1'), 23000);
 
 create table
   tbl_member (
@@ -118,9 +118,9 @@ create table
   );
 
 -- 즐겨찾기
-insert into tbl_like values ('d2411220001', 'm2411220002');
-insert into tbl_like values ('d2411220002', 'm2411220002');
-insert into tbl_like values ('d2411220003', 'm2411220003');
+insert into tbl_like values ((select dinner_no from tbl_dinner where dinner_no like '%1'), (select member_no from tbl_member where member_no like '%2'));
+insert into tbl_like values ((select dinner_no from tbl_dinner where dinner_no like '%2'), (select member_no from tbl_member where member_no like '%2'));
+insert into tbl_like values ((select dinner_no from tbl_dinner where dinner_no like '%3'), (select member_no from tbl_member where member_no like '%3'));
 
 create table
   tbl_review (
@@ -149,13 +149,14 @@ create table
 create sequence seq_book maxvalue 9999 cycle;
 
 -- Insert into tbl_book
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411220001', 'm2411220002', to_date ('24/11/06', 'yy/mm/dd'), '1230', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411220001', 'm2411220001', to_date ('24/11/15', 'yy/mm/dd'), '1230', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411220001', 'm2411220002', to_date ('24/11/15', 'yy/mm/dd'), '1245', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411220001', 'm2411220003', to_date ('24/11/15', 'yy/mm/dd'), '1800', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411220001', 'm2411220001', to_date ('24/11/15', 'yy/mm/dd'), '1830', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411220001', 'm2411220002', to_date ('24/11/15', 'yy/mm/dd'), '1900', 4);
-insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), 'd2411220001', 'm2411220003', to_date ('24/12/25', 'yy/mm/dd'), '1800', 4);
+-- 2123123
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), (select dinner_no from tbl_dinner where dinner_no like '%1'), (select member_no from tbl_member where member_no like '%2'), to_date ('25/01/24', 'yy/mm/dd'), '1230', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), (select dinner_no from tbl_dinner where dinner_no like '%1'), (select member_no from tbl_member where member_no like '%1'), to_date ('25/01/25', 'yy/mm/dd'), '1230', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), (select dinner_no from tbl_dinner where dinner_no like '%1'), (select member_no from tbl_member where member_no like '%2'), to_date ('25/01/25', 'yy/mm/dd'), '1245', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), (select dinner_no from tbl_dinner where dinner_no like '%1'), (select member_no from tbl_member where member_no like '%3'), to_date ('25/01/25', 'yy/mm/dd'), '1800', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), (select dinner_no from tbl_dinner where dinner_no like '%1'), (select member_no from tbl_member where member_no like '%1'), to_date ('25/01/25', 'yy/mm/dd'), '1830', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), (select dinner_no from tbl_dinner where dinner_no like '%1'), (select member_no from tbl_member where member_no like '%2'), to_date ('25/01/25', 'yy/mm/dd'), '1900', 4);
+insert into tbl_book values ( 'b' || to_char (sysdate, 'yymmdd') || lpad (seq_book.nextval, 4, '0'), (select dinner_no from tbl_dinner where dinner_no like '%1'), (select member_no from tbl_member where member_no like '%3'), to_date ('25/01/26', 'yy/mm/dd'), '1800', 4);
 
 create table
   tbl_recommend (
@@ -176,10 +177,10 @@ create table
 -- 'p' || to_char(sysdate, 'yymmdd') || lpad (seq_photo.nextval, 4, '0')
 create sequence seq_photo maxvalue 9999 cycle;
 
-insert into tbl_photo values ('f2411221001', 'd2411220001', '', '온리밋.png','20241122091918414_05740.png'); 
-insert into tbl_photo values ('f2411221002', 'd2411220002', '', '포유티.png','20241122092018188_03447.png'); 
-insert into tbl_photo values ('f2411221003', 'd2411220003', '', '오븐스프링.png','20241122092102253_06170.png'); 
-insert into tbl_photo values ('f2411221004', 'd2411220004', '', '바운더리프리.png','20241122092136220_00680.png'); 
-insert into tbl_photo values ('f2411221005', 'd2411220005', '', '청년감자탕.png','20241122092155060_04843.png'); 
+insert into tbl_photo values ('p2411221001', (select dinner_no from tbl_dinner where dinner_no like '%1'), '', '온리밋.png','20241122091918414_05740.png'); 
+insert into tbl_photo values ('p2411221002', (select dinner_no from tbl_dinner where dinner_no like '%2'), '', '포유티.png','20241122092018188_03447.png'); 
+insert into tbl_photo values ('p2411221003', (select dinner_no from tbl_dinner where dinner_no like '%3'), '', '오븐스프링.png','20241122092102253_06170.png'); 
+insert into tbl_photo values ('p2411221004', (select dinner_no from tbl_dinner where dinner_no like '%4'), '', '바운더리프리.png','20241122092136220_00680.png'); 
+insert into tbl_photo values ('p2411221005', (select dinner_no from tbl_dinner where dinner_no like '%5'), '', '청년감자탕.png','20241122092155060_04843.png'); 
 
 commit;
